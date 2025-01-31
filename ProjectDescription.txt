@@ -3,24 +3,38 @@ URL Github repo: https://github.com/CSE370HCI/melting
 URL ZenHub board: Leave it blank (mentioned in Piazza)
 Team’s alternate resolution approach: Staring contest (Best out of 3 rounds)
 
-Team Mission: In the point of view of the website we’d like to create a unique and exciting version of a cooking application. In the point of view of our team we would like to create a welcoming environment with open communication and expansive ideas. We would like to help each other when completing tasks and keeping each other accountable.
+Team Mission: In the point of view of the website we’d like to create a unique and exciting version of a cooking application. In the point of view of our team we would like to 
+create a welcoming environment with open communication and expansive ideas. We would like to help each other when completing tasks and keeping each other accountable.
 
-Team Vision: An experience that makes cooking fun fast and easy! Instead of putting a lot of thought process into what meal one would want to make the user would use our app, list down the current ingredients they have, and get a plethora of recipes to choose from.
+Team Vision: An experience that makes cooking fun fast and easy! Instead of putting a lot of thought process into what meal one would want to make the user would use our app, 
+list down the current ingredients they have, and get a plethora of recipes to choose from.
 
 
-Completed Version: We would like to have the user to use the app when they’d like to cook. First, they’d go to their kitchen and check what they have onsite/available. Instead of the user brainstorming and spending hours on figuring out what to cook, they can put the list of ingredients into the search bar; they then will get a bunch of recipes popping up. 
+Completed Version: We would like to have the user to use the app when they’d like to cook. First, they’d go to their kitchen and check what they have onsite/available. Instead 
+of the user brainstorming and spending hours on figuring out what to cook, they can put the list of ingredients into the search bar; they then will get a bunch of recipes popping up. 
 These recipes will be listed in factors of:
 - Easy (a recipe that'll take under 15 minutes),
 - Medium (possibly purchasing an extra ingredient or two that can range from $10-12 or take up to 45 minutes)
 - Hard (one of the best dishes you could make with the chance of purchasing multiple things ranging from $15-30 and takes up to an hour or less). 
 If someone is a very bad cook and needs guidance, they can do it easily with our app. For intermediate, they can do medium. For experts, such as sous chefs, they can do the harder levels! 
 
-Once the user is done with the recipe they can review the recipe out of 5 stars. They can also comment under a recipe leaving tweaks/ how it went for them. The user can also filter different recipes based on their preferred cuisine nationality.
+Once the user is done with the recipe they can review the recipe out of 5 stars. They can also comment under a recipe leaving tweaks/ how it went for them. The user can also filter 
+different recipes based on their preferred cuisine nationality.
 
-Typical User: A typical user would be in need of recipes based on a number of factors such as price, difficulty, and their current availability of ingredients. They would input their current ingredients into the search bar then recipes will pop up containing ingredients they have/ some they may need based on the user’s level of  experience. Then recipes will pop up completed by users/admin that people can try out. Users can upload new recipes and share them with friends and family. There will also be an option that is like tinder. Where if you have no idea what you want, a photo will pop up of a meal made along with the recipe. Then the user will be able to swipe left and right and add those that they like (right) to their saved cookbook
+Typical User: A typical user would be in need of recipes based on a number of factors such as price, difficulty, and their current availability of ingredients. They would input their 
+current ingredients into the search bar then recipes will pop up containing ingredients they have/ some they may need based on the user’s level of  experience. Then recipes will 
+pop up completed by users/admin that people can try out. Users can upload new recipes and share them with friends and family. There will also be an option that is like tinder. 
+Where if you have no idea what you want, a photo will pop up of a meal made along with the recipe. Then the user will be able to swipe left and right and add those that they 
+like (right) to their saved cookbook
 
 Two existing apps: Yummly and Tasty.
-- Yummly: Yummly is an app designed for recipes. Many of the features on the Yummly app are going to be considered when we design our website/app. Important features such as being able to filter out recipes based on what you type on the search bar. You’re also able to post your recipes to the database. Essentially these two key features will be our inspiration when we create our project.
-- Tasty: On Tasty, users will go through the recipes they want to make shown in the database, once they choose what they want, it will give them a list of ingredients needed to make the dish. A unique feature Tasty has is that you can buy the ingredients right on the app and you can purchase your ingredients online from your local Walmart. Our team has taken inspiration from the feature where recipes will list their ingredients and the total price of the ingredients. While in our design, you may not be able to buy the ingredients directly from the app, the price will actually determine the factor of the difficulty of the dish from easy, medium to hard as listed in our “Completed Version” section.
+- Yummly: Yummly is an app designed for recipes. Many of the features on the Yummly app are going to be considered when we design our website/app. Important features such as 
+being able to filter out recipes based on what you type on the search bar. You’re also able to post your recipes to the database. Essentially these two key features will be our 
+inspiration when we create our project.
+
+- Tasty: On Tasty, users will go through the recipes they want to make shown in the database, once they choose what they want, it will give them a list of ingredients needed to 
+make the dish. A unique feature Tasty has is that you can buy the ingredients right on the app and you can purchase your ingredients online from your local Walmart. Our team has 
+taken inspiration from the feature where recipes will list their ingredients and the total price of the ingredients. While in our design, you may not be able to buy the ingredients 
+directly from the app, the price will actually determine the factor of the difficulty of the dish from easy, medium to hard as listed in our “Completed Version” section.
 
 
