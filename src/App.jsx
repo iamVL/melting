@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
+import AboutUs from "./AboutUs";
 import HomePage from "./Component/HomePage";
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
@@ -86,6 +87,7 @@ function App() {
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/settings" element={<Settings />} />
+              <Route path="/AboutUs" element={<AboutUs />} />
               <Route
                 path="/"
                 element={
