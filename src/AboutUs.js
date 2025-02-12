@@ -2,7 +2,6 @@
 
 import React from "react";
 import "./AboutUs.css";
-import Justin from "./Team pictures/Justin.jpg";
 
 const AboutUs = () => {
   return (
@@ -48,14 +47,13 @@ const AboutUs = () => {
         </ul>
 
         <h2>Team behind Melting Pot</h2>
-          
-          <img 
-            src={Justin} className="team" alt="Justin" height={200} width={200}>
-          </img>
-          <p>
-            My name is Justin! I am a Junior graduating next spring and I have two dogs and a cat that I love very much.
-          </p>
-
+        <ul>
+          <a href="/about_rudy"><team>Rudraaksh Karthick Bhuvaneswari</team></a><br />
+          <a href="/about_yessica"><team>Quinonez Yessica</team></a><br />
+          <a href="/about_joshua"><team>Joshua Castillo</team></a><br />
+          <a href="/about_justin"><team>Justin Nguyen</team></a><br />    
+          <a href="/about_vi"><team>Vaishnavi Lokhande</team></a><br />      
+        </ul>
         <h2>Contact Us</h2>
         <p>
           We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.

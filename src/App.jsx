@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
 import AboutUs from "./AboutUs";
+import AboutJustin from "./Team Pages/AboutJustin"
 import HomePage from "./Component/HomePage";
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
@@ -88,6 +89,7 @@ function App() {
             <Routes>
               <Route path="/settings" element={<Settings />} />
               <Route path="/AboutUs" element={<AboutUs />} />
+              <Route path="/about_justin" element={<AboutJustin />} />
               <Route
                 path="/"
                 element={

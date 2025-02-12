@@ -135,11 +135,19 @@
       font-size: 1em;
     }
   }
-
-  team {
-    font-weight: bold;
-    color:#000000;
+  .profilepic:hover{
+    transform: scale(1.5);
   }
-  team:hover {
-    text-decoration: underline;
+
+  .profilepic{
+    transition: transform .4s;
+    padding-top: 20px;
+    clip-path: circle(140px at 50% 55%);
+  }
+
+  .Justin {
+    padding-bottom: 20px;
+    width: 1000px;
+    margin: auto;
+    color:#333;
   }
