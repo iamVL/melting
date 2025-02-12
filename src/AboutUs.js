@@ -2,6 +2,7 @@
 
 import React from "react";
 import "./AboutUs.css";
+import Justin from "./Team pictures/Justin.jpg";
 
 const AboutUs = () => {
   return (
@@ -13,7 +14,7 @@ const AboutUs = () => {
           <li><a href="/featured">Featured</a></li>
           <li><a href="/favorites">Favorites</a></li>
           <li><a href="/upload">Upload Recipe</a></li>
-          <li><a href="/about" className="active">About Us</a></li>
+          <li><a href="/aboutus" className="active">About Us</a></li>
         </ul>
         <div className="search-container">
           <input type="text" placeholder="Search..." />
@@ -45,6 +46,15 @@ const AboutUs = () => {
           <li><strong>Recipe Filters:</strong> Explore recipes based on preferred cuisines and nationalities.</li>
           <li><strong>Swipe Feature:</strong> Like Tinder for recipes—swipe through meal ideas and save your favorites to your cookbook.</li>
         </ul>
+
+        <h2>Team behind Melting Pot</h2>
+          
+          <img 
+            src={Justin} className="team" alt="Justin" height={200} width={200}>
+          </img>
+          <p>
+            My name is Justin! I am a Junior graduating next spring and I have two dogs and a cat that I love very much.
+          </p>
 
         <h2>Contact Us</h2>
         <p>
