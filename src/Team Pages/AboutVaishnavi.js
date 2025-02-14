@@ -23,7 +23,7 @@ const AboutUs = () => {
       </nav>
 
       <header className="header-section">
-        <h1>About Justin</h1>
+        <h1>About Vaishnavi</h1>
       </header>
         <img 
             src={Vaishnavi} class="profilepic" alt="Justin" height={300} width={300}>
