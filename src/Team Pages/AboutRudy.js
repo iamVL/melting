@@ -28,7 +28,8 @@ const AboutUs = () => {
             </img>
             <div class="Justin">
                 My name is Rudy Karthick! I am autistic and a fan of superhero movies. I love food tourism and American Geography too.
-                My dream place to live is Raleigh, NC. I also want to eat chimichangas in Tuscon, AZ.
+                My dream place to live is Raleigh, NC. I also want to eat chimichangas in Tuscon, AZ. 
+                I am excited for the upcoming James Gunn's Superman movie releasing in July.
             </div>
             <h2>Contact Us</h2>
             <p>
