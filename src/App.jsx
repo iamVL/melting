@@ -4,6 +4,7 @@ import Settings from "./Component/Settings";
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin"
 import AboutYessica from "./Team Pages/AboutYessica";
+import AboutRudy from "./Team Pages/AboutRudy";
 import HomePage from "./Component/HomePage";
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
@@ -92,6 +93,7 @@ function App() {
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/about_justin" element={<AboutJustin />} />
               <Route path="/about_yessica" element={<AboutYessica />} />
+              <Route path="/about_rudy" element={<AboutRudy />} />
               <Route
                 path="/"
                 element={
