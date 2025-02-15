@@ -9,11 +9,11 @@ const AboutUs = () => {
       <nav className="navbar">
         <div className="logo">Melting Pot</div>
         <ul className="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/featured">Featured</a></li>
-          <li><a href="/favorites">Favorites</a></li>
-          <li><a href="/upload">Upload Recipe</a></li>
-          <li><a href="/aboutus" className="active">About Us</a></li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/featured">Featured</Link></li>
+          <li><Link to="/favorites">Favorites</Link></li>
+          <li><Link to="/upload">Upload Recipe</Link></li>
+          <li><Link to="/aboutus" className="active">About Us</Link></li>
         </ul>
         <div className="search-container">
           <input type="text" placeholder="Search..." />
@@ -48,11 +48,11 @@ const AboutUs = () => {
 
         <h2>Team behind Melting Pot</h2>
         <ul>
-          <a href="/about_rudy"><team>Rudy Karthick</team></a><br />
-          <a href="/about_yessica"><team>Quinonez Yessica</team></a><br />
-          <a href="/about_joshua"><team>Joshua Castillo</team></a><br />
-          <a href="/about_justin"><team>Justin Nguyen</team></a><br />    
-          <a href="/about_vi"><team>Vaishnavi Lokhande</team></a><br />      
+          <li><Link to="/about_rudy">Rudy Karthick</Link></li>
+          <li><Link to="/about_yessica">Quinonez Yessica</Link></li>
+          <li><Link to="/about_joshua">Joshua Castillo</Link></li>
+          <li><Link to="/about_justin">Justin Nguyen</Link></li>
+          <li><Link to="/about_vi">Vaishnavi Lokhande</Link></li>   
         </ul>
         <h2>Contact Us</h2>
         <p>
