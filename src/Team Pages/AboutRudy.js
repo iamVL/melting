@@ -1,6 +1,6 @@
 import React from "react";
 import "./AboutJustin.css";
-import Yessica from "../Team pictures/Yessica.jpg";
+import Rudy from "../Team pictures/Rudy.jpg";
 
 const AboutUs = () => {
     return (
@@ -21,15 +21,15 @@ const AboutUs = () => {
             </nav>
 
             <header className="header-section">
-                <h1>About Yessica</h1>
+                <h1>About Rudy</h1>
             </header>
             <img
-                src={Yessica} class="profilepic" alt="Justin" height={300} width={300}>
+                src={Rudy} class="profilepic" alt="Justin" height={300} width={300}>
             </img>
             <div class="Justin">
-                My name is Yessica Quinonez! I am 22 years old (with asthma :( ) and a Junior graduating next semester. I have two pitbulls I adore. They are sweethearts!
-                I have no idea about what I want to do with my life yet but it'll either be in cybersecurity or front end dev!
-                I love snowboarding even tho I'm super mid at it. I also love the gym and matcha (equally? maybe idk!)
+                My name is Rudy Karthick! I am autistic and a fan of superhero movies. I love food tourism and American Geography too.
+                My dream place to live is Raleigh, NC. I also want to eat chimichangas in Tuscon, AZ. 
+                I am excited for the upcoming James Gunn's Superman movie releasing in July.
             </div>
             <h2>Contact Us</h2>
             <p>

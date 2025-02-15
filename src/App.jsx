@@ -5,6 +5,8 @@ import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin"
 
 import AboutYessica from "./Team Pages/AboutYessica";
+import AboutRudy from "./Team Pages/AboutRudy";
+
 
 import AboutVaishnavi from "./Team Pages/AboutVaishnavi"
 import AboutJoshua from "./Team Pages/AboutJoshua"
@@ -99,8 +101,12 @@ function App() {
 
               <Route path="/about_yessica" element={<AboutYessica />} />
 
+              <Route path="/about_rudy" element={<AboutRudy />} />
+
+
               <Route path="/about_vi" element={<AboutVaishnavi />} />
               <Route path="/about_joshua" element={<AboutJoshua />} />
+
 
               <Route
                 path="/"

@@ -48,7 +48,7 @@ const AboutUs = () => {
 
         <h2>Team behind Melting Pot</h2>
         <ul>
-          <a href="/about_rudy"><team>Rudraaksh Karthick Bhuvaneswari</team></a><br />
+          <a href="/about_rudy"><team>Rudy Karthick</team></a><br />
           <a href="/about_yessica"><team>Quinonez Yessica</team></a><br />
           <a href="/about_joshua"><team>Joshua Castillo</team></a><br />
           <a href="/about_justin"><team>Justin Nguyen</team></a><br />    
