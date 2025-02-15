@@ -8,7 +8,6 @@ import settingIcon from "../assets/settings.svg";
 import helpIcon from "../assets/help.svg";
 import exitIcon from "../assets/exit.png";
 import groupIcon from "../assets/group.png";
-import TMPLogo from "../assets/TMPLogo.png";
 
 
 /* The Navbar class provides navigation through react router links.  Note the callback
@@ -78,16 +77,6 @@ const Navbar = ({ toggleModal, logout }) => {
               className="sidenav-icon"
               alt="groups"
               title="groups"
-            />
-          </Link>
-        </li>
-        <li className="pm admin">
-          <Link to="/aboutus">
-            <img
-              src={TMPLogo}
-              className="sidenav-icon"
-              alt="TMPLogo"
-              title="TMPLogo"
             />
           </Link>
         </li>
