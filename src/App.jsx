@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
+import AboutUs from "./AboutUs";
+import AboutJustin from "./Team Pages/AboutJustin"
+
+import AboutYessica from "./Team Pages/AboutYessica";
+import AboutRudy from "./Team Pages/AboutRudy";
+
+
+import AboutVaishnavi from "./Team Pages/AboutVaishnavi"
+import AboutJoshua from "./Team Pages/AboutJoshua"
+
 import HomePage from "./Component/HomePage";
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
@@ -86,6 +96,18 @@ function App() {
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/settings" element={<Settings />} />
+              <Route path="/AboutUs" element={<AboutUs />} />
+              <Route path="/about_justin" element={<AboutJustin />} />
+
+              <Route path="/about_yessica" element={<AboutYessica />} />
+
+              <Route path="/about_rudy" element={<AboutRudy />} />
+
+
+              <Route path="/about_vi" element={<AboutVaishnavi />} />
+              <Route path="/about_joshua" element={<AboutJoshua />} />
+
+
               <Route
                 path="/"
                 element={
