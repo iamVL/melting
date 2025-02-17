@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import Favorites from "../Account_Buttons/Favorites.png"
+import Stars from "../Account_Buttons/Stars.png"
+import My_recipes from "../Account_Buttons/My_recipes.png"
+import { Link } from "react-router-dom";
+
 
 // The Profile component shows data from the user table.  This is set up fairly generically to allow for you to customize
 // user data by adding it to the attributes for each user, which is just a set of name value pairs that you can add things to
@@ -185,8 +190,32 @@ const Profile = (props) => {
           </form>
         </div>
 
-        <div>
-          <h2>Recipes you like :O</h2>
+        <div class="accountActions">
+          <div class = "recipeButtons"> 
+            <Link to="/favorites" class = "recipeButtons">
+              <recipebutton>
+                <img class="recipeimage" src={Favorites} alt="favorites"></img>
+                <a>Favorite Recipes</a>
+              </recipebutton>
+            </Link>
+
+            <Link to="/likes" class = "recipeButtons">
+              <recipebutton>
+                <img class="recipeimage" src={Stars} alt="Stars"></img>
+                <a>Recipes above 3 Stars</a>
+              </recipebutton>
+            </Link>
+
+            <Link to="/my_recipes" class = "recipeButtons">
+              <recipebutton>
+                <img class="recipeimage" src={My_recipes} alt="My_recipes"></img>
+                <a>My Recipes</a>
+              </recipebutton>
+            </Link>
+
+          </div>
+
+          <h2>What recipes are you searching for?</h2>
         </div>
       </div>
     </>
