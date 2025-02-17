@@ -156,8 +156,9 @@ input {
   height: 18px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  padding: 5px;
+  padding: 7px;
   font-size: 15px;
+  color:#787878
 }
 
 .submitbutton {
