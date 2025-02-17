@@ -126,7 +126,7 @@ const Profile = (props) => {
   return (
     <>
       {/* profile info */}
-
+    <form onSubmit={submitHandler} className="profileform">
       <div class="userContainer">
         <div class="containerInfo">
           <img class ="userPic" src={picture} alt="profile"></img>
@@ -140,7 +140,8 @@ const Profile = (props) => {
 
         {/* profile buttons */}
         <div class ="editUser">
-          <a href="/logout" class="profilebutton">Logout</a><br />
+          <a href="/logout" class="logout">Log out</a><br />
+          <input class="submitbutton" type="submit" value="Edit Profile" />
         </div>
       </div>
       <div class ="bottonProfileSection">
@@ -149,50 +150,49 @@ const Profile = (props) => {
             <h2>Account Settings</h2>
             <a>Update your personal information</a>
           </div>
-          <form onSubmit={submitHandler} className="profileform">
-            <label>
-              Picture<br/>
+          <div class="allinputs">
+            <div class ="inputs">
+            <a> Profile Picture</a>
               <input type="file" accept="image/*" onChange={uploadPicture} />
-            </label>
-            <label>
-              Username
+            </div>
+            <div class ="inputs">
+              <a> Username</a>
               <input
-                type="text"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-                maxlength="15"
-              />
-            </label>
-            <label>
-              First Name
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  maxlength="15"
+                />
+            </div>
+            <div class ="inputs">
+              <a> First Name</a>
               <input
-                type="text"
-                onChange={(e) => setFirstName(e.target.value)}
-                value={firstName}
-                maxlength="10"
-              />
-            </label>
-            <label>
-              Last Name
+                  type="text"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
+                  maxlength="10"
+                />
+            </div>
+            <div class ="inputs">
+              <a> Last Name</a>
               <input
-                type="text"
-                onChange={(e) => setLastName(e.target.value)}
-                value={lastName}
-                maxlength="10"
-              />
-            </label>
-            <label>
-              Favorite Color
+                  type="text"
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  maxlength="10"
+                />
+            </div>
+            <div class ="inputs">
+              <a> Favorite Color</a>
               <input
-                type="text"
-                onChange={(e) => setFavoriteColor(e.target.value)}
-                value={favoriteColor}
-                maxlength="15"
-              />
-            </label>
-            <input type="submit" value="Edit Profile" />
+                  type="text"
+                  onChange={(e) => setFavoriteColor(e.target.value)}
+                  value={favoriteColor}
+                  maxlength="15"
+                />
+            </div>
             {responseMessage}
-          </form>
+          </div>
         </div>
 
         <div class="accountActions">
@@ -223,6 +223,7 @@ const Profile = (props) => {
           <h2>What recipes are you searching for?</h2>
         </div>
       </div>
+    </form>
     </>
   );
 };
