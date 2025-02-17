@@ -33,6 +33,7 @@
   .nav-links li a {
     color: #fff;
     font-size: 1.1em;
+    transition: .3s;
   }
 
   .nav-links li a:hover {

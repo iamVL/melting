@@ -5,6 +5,7 @@ import Favorites from "../Account_Buttons/Favorites.png"
 import Stars from "../Account_Buttons/Stars.png"
 import My_recipes from "../Account_Buttons/My_recipes.png"
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 // The Profile component shows data from the user table.  This is set up fairly generically to allow for you to customize
@@ -20,8 +21,7 @@ const Profile = (props) => {
   const [responseMessage, setResponseMessage] = useState("");
   const [picture, setPicture] = useState("");
   const [country, setCountry] = useState("");
-  const [showSaved, setShowSaved] = useState(false);
-
+  const navigate = useNavigate();
 
   // Replace componentDidMount for fetching data
   useEffect(() => {
@@ -92,6 +92,8 @@ const Profile = (props) => {
       .catch((error) => {
         alert("error!");
       });
+
+      navigate("/settings");
   };
 
   const uploadPicture = (event) => {
@@ -156,34 +158,46 @@ const Profile = (props) => {
 
         {/* profile buttons */}
         <div class ="editUser">
-          <button onClick={logout} class="logout">Log out</button><br />
-          <a href="/edit-profile" onClick="toggleInputs()" class="editprofile">Edit Profile</a><br />
+          <button onClick={logout} class="logout">Log out</button><br />        
         </div>
       </div>
       <div class ="bottonProfileSection">
-        <div class ="accountSettings" >
+        <div class ="accountSettings">
           <div class="accountHeaders">
             <h2>Account Settings</h2>
             <a>Update your personal information</a>
           </div>
           <div class="allinputs">
             <div class ="inputs">
+            <a> Profile Picture</a>
+              <input type="file" accept="image/*" onChange={uploadPicture} />
+            </div>
+            <div class ="inputs">
               <a> Username</a>
-              <div class="display">
-                  {username}
-              </div>
+              <input
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  maxlength="13"
+                />
             </div>
             <div class ="inputs">
               <a> First Name</a>
-              <div class="display">
-                  {firstName}
-              </div>
+              <input
+                  type="text"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
+                  maxlength="9"
+                />
             </div>
             <div class ="inputs">
               <a> Last Name</a>
-              <div class="display">
-                  {lastName}
-              </div>
+              <input
+                  type="text"
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  maxlength="9"
+                />
             </div>
             {/* <div class ="inputs">
               <a> Favorite Color</a>
@@ -200,16 +214,19 @@ const Profile = (props) => {
                 <div class="countrybuttons">
                   <input 
                     type="button"
+                    onClick={(e) => setCountry(e.target.value)}
                     value="USA"
                     class={country === "USA" ? "selected_country" : "countrybutton"}
                   />
                   <input 
                     type="button"
+                    onClick={(e) => setCountry(e.target.value)}
                     value="Canada"
                     class={country === "Canada" ? "selected_country" : "countrybutton"}
                   />
                   <input 
                     type="button"
+                    onClick={(e) => setCountry(e.target.value)}
                     value="UK"
                     class={country === "UK" ? "selected_country" : "countrybutton"}
                   />
@@ -222,6 +239,7 @@ const Profile = (props) => {
                   maxlength="15"
                 /> */}
             </div>
+              <input class="submitbutton" type="submit" value="Save Changes" />
             {responseMessage}
           </div>
         </div>
