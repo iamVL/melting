@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const AboutUs = () => {
   return (
     <div className="about-page">
-      <nav className="navbar">
+      {/* <nav className="navbar">
         <div className="logo">Melting Pot</div>
         <ul className="nav-links">
           <li><Link to="/">Home</Link></li>
@@ -20,7 +20,7 @@ const AboutUs = () => {
           <input type="text" placeholder="Search..." />
           <button>🔍</button>
         </div>
-      </nav>
+      </nav> */}
 
       <header className="header-section">
         <h1>About Us</h1>

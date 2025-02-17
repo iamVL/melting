@@ -16,83 +16,97 @@ import TMPLogo from "../assets/TMPLogo.png";
    passed in via props from a parent component */
 const Navbar = ({ toggleModal, logout }) => {
   return (
-    <div id="sidenav" className="sidenav">
-      <ul id="side-menu-items">
-        <li className="pm admin student">
-          <Link to="/">
-            <img
-              src={postIcon}
-              className="sidenav-icon"
-              alt="Posts"
-              title="Posts"
-            />
-          </Link>
-        </li>
-        <li className="pm admin">
-          <Link to="/friends">
-            <img
-              src={friendIcon}
-              className="sidenav-icon"
-              alt="Friends"
-              title="Friends"
-            />
-          </Link>
-        </li>
-        <li className="pm admin">
-          <Link to="/settings">
-            <img
-              src={settingIcon}
-              className="sidenav-icon"
-              alt="Settings"
-              title="Settings"
-            />
-          </Link>
-        </li>
-        <li className="pm admin">
-          <button
-            className="link-button"
-            onClick={toggleModal}
-          >
-            <img
-              src={helpIcon}
-              className="sidenav-icon"
-              alt="Modal"
-              title="Modal"
-            />
-          </button>
-        </li>
-        <li className="pm admin">
-          <button className="link-button" onClick={logout}>
-            <img
-              src={exitIcon}
-              className="sidenav-icon"
-              alt="Logout"
-              title="Logout"
-            />
-          </button>
-        </li>
-        <li className="pm admin">
-          <Link to="/groups">
-            <img
-              src={groupIcon}
-              className="sidenav-icon"
-              alt="groups"
-              title="groups"
-            />
-          </Link>
-        </li>
-        <li className="pm admin">
-          <Link to="/aboutus">
-            <img
-              src={TMPLogo}
-              className="sidenav-icon"
-              alt="TMPLogo"
-              title="TMPLogo"
-            />
-          </Link>
-        </li>
-      </ul>
-    </div>
+    <nav className="navbar">
+        <nav className="navbar">
+        <ul className="nav-links">
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/featured">Featured</Link></li>
+          <li><Link to="/favorites">Favorites</Link></li>
+          <li><Link to="/upload">Upload Recipe</Link></li>
+          <li><Link to="/filter">Filter</Link></li>
+          <div className="logo">Melting Pot</div>
+          <li><Link to="/aboutus">About Us</Link></li>
+          <li><Link to="/settings"><img src={friendIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
+        </ul>
+      </nav>
+      </nav>
+    // <div id="sidenav" className="sidenav">
+    //   <ul id="side-menu-items">
+    //     <li className="pm admin student">
+    //       <Link to="/">
+    //         <img
+    //           src={postIcon}
+    //           className="sidenav-icon"
+    //           alt="Posts"
+    //           title="Posts"
+    //         />
+    //       </Link>
+    //     </li>
+    //     <li className="pm admin">
+    //       <Link to="/friends">
+    //         <img
+    //           src={friendIcon}
+    //           className="sidenav-icon"
+    //           alt="Friends"
+    //           title="Friends"
+    //         />
+    //       </Link>
+    //     </li>
+    //     <li className="pm admin">
+    //       <Link to="/settings">
+    //         <img
+    //           src={settingIcon}
+    //           className="sidenav-icon"
+    //           alt="Settings"
+    //           title="Settings"
+    //         />
+    //       </Link>
+    //     </li>
+    //     <li className="pm admin">
+    //       <button
+    //         className="link-button"
+    //         onClick={toggleModal}
+    //       >
+    //         <img
+    //           src={helpIcon}
+    //           className="sidenav-icon"
+    //           alt="Modal"
+    //           title="Modal"
+    //         />
+    //       </button>
+    //     </li>
+    //     <li className="pm admin">
+    //       <button className="link-button" onClick={logout}>
+    //         <img
+    //           src={exitIcon}
+    //           className="sidenav-icon"
+    //           alt="Logout"
+    //           title="Logout"
+    //         />
+    //       </button>
+    //     </li>
+    //     <li className="pm admin">
+    //       <Link to="/groups">
+    //         <img
+    //           src={groupIcon}
+    //           className="sidenav-icon"
+    //           alt="groups"
+    //           title="groups"
+    //         />
+    //       </Link>
+    //     </li>
+    //     <li className="pm admin">
+    //       <Link to="/aboutus">
+    //         <img
+    //           src={TMPLogo}
+    //           className="sidenav-icon"
+    //           alt="TMPLogo"
+    //           title="TMPLogo"
+    //         />
+    //       </Link>
+    //     </li>
+    //   </ul>
+    // </div>
   );
 };
 

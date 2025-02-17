@@ -119,7 +119,11 @@ const Profile = (props) => {
   // as you type them.
   return (
     <>
-      <img src={picture} alt="picture" />
+      <div class="userContainer">
+        <img class ="userPic" src={picture} alt="profile"></img>
+        <b>Username: {username}</b>
+        
+      </div>
       <form onSubmit={submitHandler} className="profileform">
         <label>
           Picture
