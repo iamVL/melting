@@ -16,12 +16,13 @@
   }
   
   .logo {
-    font-size: 1.8em;
+    font-size: 1.5em;
     font-weight: bold;
     color: #fff;
   }
   
   .nav-links { 
+    font-size: .8em;
     list-style: none;
     display: flex;
     align-items: center;
@@ -35,7 +36,7 @@
   }
 
   .nav-links li a:hover {
-    text-decoration: underline;
+    opacity: 60%;
   }
   
   .nav-links li a.active {

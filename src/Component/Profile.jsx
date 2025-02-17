@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import "../Profile.css";
 import Favorites from "../Account_Buttons/Favorites.png"
 import Stars from "../Account_Buttons/Stars.png"
 import My_recipes from "../Account_Buttons/My_recipes.png"
@@ -159,6 +160,7 @@ const Profile = (props) => {
                 type="text"
                 onChange={(e) => setUsername(e.target.value)}
                 value={username}
+                maxlength="15"
               />
             </label>
             <label>
@@ -167,6 +169,7 @@ const Profile = (props) => {
                 type="text"
                 onChange={(e) => setFirstName(e.target.value)}
                 value={firstName}
+                maxlength="10"
               />
             </label>
             <label>
@@ -175,6 +178,7 @@ const Profile = (props) => {
                 type="text"
                 onChange={(e) => setLastName(e.target.value)}
                 value={lastName}
+                maxlength="10"
               />
             </label>
             <label>
@@ -183,6 +187,7 @@ const Profile = (props) => {
                 type="text"
                 onChange={(e) => setFavoriteColor(e.target.value)}
                 value={favoriteColor}
+                maxlength="15"
               />
             </label>
             <input type="submit" value="Edit Profile" />
@@ -200,9 +205,9 @@ const Profile = (props) => {
             </Link>
 
             <Link to="/likes" class = "recipeButtons">
-              <recipebutton>
+              <recipebutton >
                 <img class="recipeimage" src={Stars} alt="Stars"></img>
-                <a>Recipes above 3 Stars</a>
+                <a> Recipes above 3 Stars</a>
               </recipebutton>
             </Link>
 

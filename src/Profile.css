@@ -1,0 +1,140 @@
+.settings{
+  width:100%;
+}
+
+.userContainer{
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  place-items: center; /* Centers both vertically and horizontally */
+  background-color:#a6a6a6;
+  gap:800px;
+}
+
+.containerInfo{
+  width: 500px;
+  display: flex;
+  place-items: center; /* Centers both vertically and horizontally */
+  background-color:#a6a6a6;
+  gap: 20px;
+}
+
+.userPic{
+  height: 150px;
+  width: 150px;
+  display: flex;
+  clip-path: circle(75px at 50% 50%);
+}
+
+.userInfo { 
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: .8;
+  filter: drop-shadow(2px 2px 1px #000000);
+}
+
+.editUser { 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: .8;
+}
+
+.profilebutton { 
+  width: 150%;
+  height: 60px;
+  margin: auto;
+  place-items: center; /* Centers both vertically and horizontally */
+  justify-content: center;
+  display: flex;
+  color:white;
+  line-height: .6;
+  background-color: #787878;
+  border-radius: 10%;
+  transition: 0.3s;
+}
+
+.profilebutton:hover {
+  background-color: #464646;
+}
+
+.bottonProfileSection {
+  color:black;
+  padding-left: 100px;
+  padding-right: 100px;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  line-height: 2;
+}
+
+.accountSettings {
+  width: 1200px;
+  height: 1000px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap:60px
+}
+
+.accountHeaders {
+  width: 500px;
+  padding-left: 50px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  line-height: .5;
+}
+
+.profileform label{
+  padding-left: 50px;
+  display: flex;
+  align-items: center;
+  gap: 40px; 
+  margin-bottom: 10px;
+  margin: auto;
+  font-size: 20px;
+}
+.accountActions {
+  padding: 30px;
+  width: 100%;
+}
+
+.recipeButtons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.recipeButtons recipebutton{
+  color:black;
+  border-color: grey;
+  border-radius: 5%;
+  border-style:solid;
+  height: 120px;
+  font-size: 20px;
+  width: 250px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.recipeimage {
+  max-height: 50px;
+  max-width: 100px;
+}
+
+recipebutton:hover{
+  border-color: #d46a4c;
+}
+
+a {
+  text-decoration:none;
+}
