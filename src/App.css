@@ -8,7 +8,7 @@
 }
 
 .App-header {
-  background-color: #7c2667;
+  background-color: #ffffff;
   min-height: 100vh;
   flex-direction: row;
   align-items: flex-center;
@@ -30,11 +30,17 @@
 }
 
 .userContainer{
-  padding: 100px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  place-items: center; /* Centers both vertically and horizontally */
+  background-color:#a6a6a6;
+  gap:1000px;
+}
+
+.containerInfo{
   display: flex;
   place-items: center; /* Centers both vertically and horizontally */
-  height: 100px;
-  width:100%;
   background-color:#a6a6a6;
   gap: 20px;
 }
@@ -45,6 +51,75 @@
   display: flex;
   clip-path: circle(75px at 50% 50%);
 }
+
+.userInfo { 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: .8;
+}
+
+.editUser { 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: .8;
+}
+
+.profilebutton { 
+  width: 150%;
+  height: 60px;
+  margin: auto;
+  place-items: center; /* Centers both vertically and horizontally */
+  justify-content: center;
+  display: flex;
+  color:white;
+  line-height: .6;
+  background-color: #787878;
+  border-radius: 10%;
+  transition: 0.3s;
+}
+
+.profilebutton:hover {
+  background-color: #464646;
+}
+
+.bottonProfileSection {
+  color:black;
+  padding-left: 100px;
+  padding-right: 100px;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 500px;
+  line-height: 2;
+}
+
+.accountSettings {
+  width: 700px;
+  height: 1000px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap:60px
+}
+
+.accountHeaders {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  line-height: .5;
+}
+
+.profileform label{
+  display: flex;
+  align-items: center;
+  gap: 40px; 
+  margin-bottom: 10px;
+  margin: auto;
+  font-size: 20px;
+}
+
 
 .link-button {
   background-color: transparent;
@@ -112,11 +187,6 @@
 
 .suggestions li:not(:last-of-type) {
   border-bottom: 1px solid #999;
-}
-
-.profileform label{
-   display:block;
-
 }
 
 .App-link {

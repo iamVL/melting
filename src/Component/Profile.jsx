@@ -119,53 +119,76 @@ const Profile = (props) => {
   // as you type them.
   return (
     <>
+      {/* profile info */}
+
       <div class="userContainer">
-        <img class ="userPic" src={picture} alt="profile"></img>
-        <b>Username: {username}</b>
-        
+        <div class="containerInfo">
+          <img class ="userPic" src={picture} alt="profile"></img>
+
+          {/* user info */}
+          <div class="userInfo">
+            <a>Justin Nguyen</a><br />
+            <a>Username: {username}</a>
+          </div>
+        </div>
+
+        {/* profile buttons */}
+        <div class ="editUser">
+          <a href="/logout" class="profilebutton">Logout</a><br />
+        </div>
       </div>
-      <form onSubmit={submitHandler} className="profileform">
-        <label>
-          Picture
-          <input type="file" accept="image/*" onChange={uploadPicture} />
-        </label>
-        <label>
-          Username
-          <input
-            type="text"
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-          />
-        </label>
-        <label>
-          First Name
-          <input
-            type="text"
-            onChange={(e) => setFirstName(e.target.value)}
-            value={firstName}
-          />
-        </label>
-        <label>
-          Last Name
-          <input
-            type="text"
-            onChange={(e) => setLastName(e.target.value)}
-            value={lastName}
-          />
-        </label>
-        <label>
-          Favorite Color
-          <input
-            type="text"
-            onChange={(e) => setFavoriteColor(e.target.value)}
-            value={favoriteColor}
-          />
-        </label>
-        <input type="submit" value="submit" />
-        <p>Username is : {username}</p>
-        <p>Firstname is : {firstName}</p>
-        {responseMessage}
-      </form>
+      <div class ="bottonProfileSection">
+        <div class ="accountSettings">
+          <div class="accountHeaders">
+            <h2>Account Settings</h2>
+            <a>Update your personal information</a>
+          </div>
+          <form onSubmit={submitHandler} className="profileform">
+            <label>
+              Picture<br/>
+              <input type="file" accept="image/*" onChange={uploadPicture} />
+            </label>
+            <label>
+              Username
+              <input
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+              />
+            </label>
+            <label>
+              First Name
+              <input
+                type="text"
+                onChange={(e) => setFirstName(e.target.value)}
+                value={firstName}
+              />
+            </label>
+            <label>
+              Last Name
+              <input
+                type="text"
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
+              />
+            </label>
+            <label>
+              Favorite Color
+              <input
+                type="text"
+                onChange={(e) => setFavoriteColor(e.target.value)}
+                value={favoriteColor}
+              />
+            </label>
+            <input type="submit" value="Edit Profile" />
+            {responseMessage}
+          </form>
+        </div>
+
+        <div>
+          <h2>Recipes you like :O</h2>
+        </div>
+      </div>
     </>
   );
 };
