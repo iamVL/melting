@@ -127,8 +127,8 @@ const Profile = (props) => {
 
           {/* user info */}
           <div class="userInfo">
-            <a>Justin Nguyen</a><br />
-            <a>Username: {username}</a>
+            <a>{firstName} {lastName}</a><br />
+            <a>User: {username}</a>
           </div>
         </div>
 

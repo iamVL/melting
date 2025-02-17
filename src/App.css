@@ -35,10 +35,11 @@
   justify-content: center;
   place-items: center; /* Centers both vertically and horizontally */
   background-color:#a6a6a6;
-  gap:1000px;
+  gap:1100px;
 }
 
 .containerInfo{
+  max-width: 500px;
   display: flex;
   place-items: center; /* Centers both vertically and horizontally */
   background-color:#a6a6a6;
@@ -53,10 +54,12 @@
 }
 
 .userInfo { 
+  max-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   line-height: .8;
+  filter: drop-shadow(2px 2px 1px #000000);
 }
 
 .editUser { 
