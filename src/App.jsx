@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin"
+import Login from "./Login";
 
 import AboutYessica from "./Team Pages/AboutYessica";
 import AboutRudy from "./Team Pages/AboutRudy";
@@ -97,6 +98,7 @@ function App() {
             <Routes>
               <Route path="/settings" element={<Settings />} />
               <Route path="/AboutUs" element={<AboutUs />} />
+              <Route path="/Login" element={<Login />} />
               <Route path="/about_justin" element={<AboutJustin />} />
 
               <Route path="/about_yessica" element={<AboutYessica />} />
