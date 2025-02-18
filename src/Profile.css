@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   place-items: center; /* Centers both vertically and horizontally */
-  background-color:#7e7e7e;
+  background-color:#696968;
   gap:800px;
 }
 
@@ -212,6 +212,10 @@ input {
   cursor: pointer;
 }
 
+.editprofile:active {
+  transform: scale(1);
+}
+
 .submitbutton {
   width: 200px;
   height: 40px;
@@ -243,7 +247,7 @@ input {
   border: 1px solid #ffff;
   padding: 5px;
   font-size: 20px;
-  background-color: #7e7e7e;
+  background-color: #696968;
   color:white;
   transition: .3s;
 }
@@ -251,6 +255,7 @@ input {
 .logout:hover {
   transform: scale(1.03);
   background-color: #d46a4c;
+  cursor: pointer;
 }
 
 .logout:active {
