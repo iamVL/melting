@@ -21,7 +21,7 @@
     margin-bottom: 20px;
   }
   
-  h2 {
+  .login-box h2 {
     color: #6b3d1f;
     margin-bottom: 10px;
   }
@@ -89,12 +89,12 @@
     background-color: #45a049;
   }
   
-  a {
+  .sign-up {
     color: #4CAF50;
     text-decoration: none;
   }
-  
-  a:hover {
+
+  .sign-up:hover {
     text-decoration: underline;
   }
 
