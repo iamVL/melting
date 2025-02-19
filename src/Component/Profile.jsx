@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import "../Profile.css";
+import Favorites from "../Account_Buttons/Favorites.png"
+import Stars from "../Account_Buttons/Stars.png"
+import My_recipes from "../Account_Buttons/My_recipes.png"
+import { Link } from "react-router-dom";
+
 
 // The Profile component shows data from the user table.  This is set up fairly generically to allow for you to customize
 // user data by adding it to the attributes for each user, which is just a set of name value pairs that you can add things to
@@ -13,6 +19,9 @@ const Profile = (props) => {
   const [favoriteColor, setFavoriteColor] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [picture, setPicture] = useState("");
+  const [country, setCountry] = useState("");
+  const [showSaved, setShowSaved] = useState(false);
+
 
   // Replace componentDidMount for fetching data
   useEffect(() => {
@@ -38,6 +47,7 @@ const Profile = (props) => {
           setLastName(result.attributes.lastName || "");
           setFavoriteColor(result.attributes.favoritecolor || "");
           setPicture(result.attributes.picture || "");
+          setCountry(result.attributes.country || "");
         }
       })
       .catch((error) => {
@@ -70,6 +80,7 @@ const Profile = (props) => {
             lastName: lastName,
             favoritecolor: favoriteColor,
             picture: picture,
+            country: country,
           },
         }),
       }
@@ -114,54 +125,136 @@ const Profile = (props) => {
       });
   };
 
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const logout = (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    setLoggedIn(false);
+    // reloads the window, so we get back to the login form
+    window.location.reload();
+  };
+
   // This is the function that draws the component to the screen.  It will get called every time the
   // state changes, automatically.  This is why you see the username and firstname change on the screen
   // as you type them.
   return (
     <>
-      <img src={picture} alt="picture" />
-      <form onSubmit={submitHandler} className="profileform">
-        <label>
-          Picture
-          <input type="file" accept="image/*" onChange={uploadPicture} />
-        </label>
-        <label>
-          Username
-          <input
-            type="text"
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-          />
-        </label>
-        <label>
-          First Name
-          <input
-            type="text"
-            onChange={(e) => setFirstName(e.target.value)}
-            value={firstName}
-          />
-        </label>
-        <label>
-          Last Name
-          <input
-            type="text"
-            onChange={(e) => setLastName(e.target.value)}
-            value={lastName}
-          />
-        </label>
-        <label>
-          Favorite Color
-          <input
-            type="text"
-            onChange={(e) => setFavoriteColor(e.target.value)}
-            value={favoriteColor}
-          />
-        </label>
-        <input type="submit" value="submit" />
-        <p>Username is : {username}</p>
-        <p>Firstname is : {firstName}</p>
-        {responseMessage}
-      </form>
+      {/* profile info */}
+    <form onSubmit={submitHandler} className="profileform">
+      <div class="userContainer">
+        <div class="containerInfo">
+          <img class ="userPic" src={picture} alt="profile"></img>
+
+          {/* user info */}
+          <div class="userInfo">
+            <a>{firstName} {lastName}</a><br />
+            <a>User: {username}</a>
+          </div>
+        </div>
+
+        {/* profile buttons */}
+        <div class ="editUser">
+          <button onClick={logout} class="logout">Log out</button><br />
+          <a href="/edit-profile" onClick="toggleInputs()" class="editprofile">Edit Profile</a><br />
+        </div>
+      </div>
+      <div class ="bottonProfileSection">
+        <div class ="accountSettings" >
+          <div class="accountHeaders">
+            <h2>Account Settings</h2>
+            <a>Update your personal information</a>
+          </div>
+          <div class="allinputs">
+            <div class ="inputs">
+              <a> Username</a>
+              <div class="display">
+                  {username}
+              </div>
+            </div>
+            <div class ="inputs">
+              <a> First Name</a>
+              <div class="display">
+                  {firstName}
+              </div>
+            </div>
+            <div class ="inputs">
+              <a> Last Name</a>
+              <div class="display">
+                  {lastName}
+              </div>
+            </div>
+            {/* <div class ="inputs">
+              <a> Favorite Color</a>
+              <input
+                  type="text"
+                  onChange={(e) => setFavoriteColor(e.target.value)}
+                  value={favoriteColor}
+                  maxlength="15"
+                />
+            </div> */}
+            <div class ="inputs">
+            <a> Country</a>
+            <form>
+                <div class="countrybuttons">
+                  <input 
+                    type="button"
+                    value="USA"
+                    class={country === "USA" ? "selected_country" : "countrybutton"}
+                  />
+                  <input 
+                    type="button"
+                    value="Canada"
+                    class={country === "Canada" ? "selected_country" : "countrybutton"}
+                  />
+                  <input 
+                    type="button"
+                    value="UK"
+                    class={country === "UK" ? "selected_country" : "countrybutton"}
+                  />
+                </div>
+              </form>
+              {/* <input
+                  type="text"
+                  onChange={(e) => setCountry(e.target.value)}
+                  value={country}
+                  maxlength="15"
+                /> */}
+            </div>
+            {responseMessage}
+          </div>
+        </div>
+
+        <div class="accountActions">
+          <div class = "recipeButtons"> 
+            <Link to="/favorites" class = "recipeButtons">
+              <recipebutton>
+                <img class="recipeimage" src={Favorites} alt="favorites"></img>
+                <a>Favorite Recipes</a>
+              </recipebutton>
+            </Link>
+
+            <Link to="/likes" class = "recipeButtons">
+              <recipebutton >
+                <img class="recipeimage" src={Stars} alt="Stars"></img>
+                <a> Recipes above 3 Stars</a>
+              </recipebutton>
+            </Link>
+
+            <Link to="/my_recipes" class = "recipeButtons">
+              <recipebutton>
+                <img class="recipeimage" src={My_recipes} alt="My_recipes"></img>
+                <a>My Recipes</a>
+              </recipebutton>
+            </Link>
+
+          </div>
+
+          <h2>What recipes are you searching for?</h2>
+        </div>
+      </div>
+    </form>
     </>
   );
 };

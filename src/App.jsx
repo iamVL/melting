@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
+import Edit from "./Component/Edit";
+
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin"
 import Login from "./Login";
@@ -97,6 +99,7 @@ function App() {
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/settings" element={<Settings />} />
+              <Route path="/edit-profile" element={<Edit />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Login" element={<Login />} />
               <Route path="/about_justin" element={<AboutJustin />} />

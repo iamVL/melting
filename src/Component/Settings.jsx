@@ -19,8 +19,7 @@ const Settings = () => {
   }, [userToken]);
 
   return (
-    <div className="settings">
-      <p>Settings</p>
+    <div className="settings">  
       <Profile userid={sessionStorage.getItem("user")} />
     </div>
   );
