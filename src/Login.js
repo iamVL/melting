@@ -26,7 +26,7 @@ const Login = ({ setLoggedIn }) => {
     <div className="login-container">
       <div className="login-box">
         <div className="logo">
-          <img src={require("./melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
+          <img src="/melting-pot-logo.jpeg" alt="Melting Pot Cooking" />
         </div>
         <h2>WELCOME BACK</h2>
         <p>Sign in with your Email address and Password</p>
