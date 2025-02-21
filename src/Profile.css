@@ -1,0 +1,401 @@
+.settings{
+  width:100%;
+}
+
+.userContainer{
+  height: 100px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  place-items: center; /* Centers both vertically and horizontally */
+  background-color:#696968;
+  gap:800px;
+}
+
+.containerInfo{
+  width: 500px;
+  display: flex;
+  place-items: center; /* Centers both vertically and horizontally */
+  gap: 20px;
+}
+
+.userPic{
+  height: 150px;
+  width: 150px;
+  display: flex;
+  clip-path: circle(75px at 50% 50%);
+}
+
+.userInfo { 
+  font-weight: bold;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: .8;
+  filter: drop-shadow(1px 1px 1px #000000);
+}
+
+.editUser { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: .3;
+}
+
+.profilebutton { 
+  width: 150%;
+  height: 60px;
+  margin: auto;
+  place-items: center; /* Centers both vertically and horizontally */
+  justify-content: center;
+  display: flex;
+  color:white;
+  line-height: .6;
+  background-color: #787878;
+  border-radius: 10%;
+  transition: 0.3s;
+}
+
+.profilebutton:hover {
+  background-color: #464646;
+}
+
+.bottonProfileSection {
+  color:black;
+  padding-left: 100px;
+  padding-right: 100px;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  line-height: 2;
+}
+
+.accountSettings {
+  width: 1200px;
+  height: 500px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 35px
+}
+
+.accountHeaders {
+  width: 500px;
+  padding-left: 50px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  line-height: .2;
+}
+
+.profileform label{
+  padding-left: 50px;
+  display: flex;
+  align-items: center;
+  gap: 40px; 
+  margin-bottom: 10px;
+  margin: auto;
+  font-size: 20px;
+}
+.accountActions {
+  padding: 30px;
+  width: 100%;
+}
+
+.recipeButtons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.recipeButtons recipebutton{
+  color:black;
+  border-color: grey;
+  border-radius: 10px;
+  border-style:solid;
+  height: 120px;
+  font-size: 20px;
+  width: 250px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.recipeimage {
+  max-height: 50px;
+  max-width: 100px;
+}
+
+recipebutton{
+  transition: .3s;
+}
+
+recipebutton:hover{
+  transform: scale(1.05);
+  border-color: #d46a4c;
+}
+
+recipebutton:active  {
+  transform: scale(1);
+}
+
+a {
+  text-decoration:none;
+}
+
+.inputs {
+  padding-left: 50px;
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.3;
+}
+
+.inputs a{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.inputs input {
+  width: 250px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 7px;
+  font-size: 15px;
+  color:#787878
+}
+
+.logout:hover {
+  transform: scale(1.03);
+  background-color: #d46a4c;
+}
+
+.logout:active {
+  transform: scale(1);
+}
+
+.display {
+  display:flex;
+  align-items: flex-start;
+  place-items: center;
+  width: 250px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 7px;
+  font-size: 15px;
+  color:#787878
+}
+.editprofile {
+  border: 1px solid white;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 188px;
+  height: 40px;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 19px;
+  background-color: #000000;
+  color:white;
+  transition: .3s;
+}
+
+.editprofile:hover {
+  transform: scale(1.04);
+  background-color: #d46a4c;
+  cursor: pointer;
+}
+
+.editprofile:active {
+  transform: scale(1);
+}
+
+.submitbutton {
+  width: 200px;
+  height: 40px;
+  border-radius: 50px;
+  padding: 5px;
+  margin-left: 70px;
+  font-size: 15px;
+  background-color: #000000;
+  color:white;
+  transition: .3s;
+}
+
+.submitbutton:hover {
+  transform: scale(1.04);
+  background-color: #4df56f;
+  cursor: pointer;
+}
+
+.submitbutton:active {
+  transform: scale(1);
+}
+
+.logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 52px;
+  border-radius: 5px;
+  border: 1px solid #ffff;
+  padding: 5px;
+  font-size: 20px;
+  background-color: #696968;
+  color:white;
+  transition: .3s;
+}
+
+.logout:hover {
+  transform: scale(1.03);
+  background-color: #d46a4c;
+  cursor: pointer;
+}
+
+.logout:active {
+  transform: scale(1);
+}
+
+
+.accountHeaders a {
+  font-size: 20px;
+}
+
+
+country {
+  display:flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.countrybutton {
+  background-color:#000000;
+  border-radius: 8px;
+  border-style:solid;
+  height: 40px;
+  font-size: 15px;
+  width: 80px;
+  transition: .3s;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.countrybutton:hover{
+  transform: scale(1.05);
+}
+
+.countrybutton:active{
+  transform: scale(1);
+}
+
+.countrybuttons a{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.countrybuttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.3;
+  padding-left: 50px;
+} 
+
+.selected_country {
+  background-color:#d46a4c;
+  border-radius: 8px;
+  border-style:solid;
+  height: 40px;
+  font-size: 15px;
+  width: 80px;
+  transition: .3s;
+  color: white;
+  border-color: #d46a4c;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.selected_country:hover{
+  transform: scale(1.05);
+}
+
+.selected_country:active{
+  transform: scale(1);
+}
+
+.inputsp button {
+  width: 100px;
+  height: 30px;
+  border-radius: 50px;
+  padding: 5px;
+  font-size: 15px;
+  background-color: #d46a4c;
+  color:white;
+  transition: .3s;
+}
+
+.inputsp button:hover {
+  background-color: #d46a4c;
+  transform: scale(1.04);
+  cursor: pointer;
+}
+
+.inputsp button:active {
+  transform: scale(1);
+}
+
+.password-container {
+  display: flex;
+}
+
+.inputsp input {
+  width: 150px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 7px;
+  font-size: 15px;
+  color:#787878
+}
+
+.allinputs {
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.allinputscp {
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.password-box {
+  padding-top: 5px;
+  padding-left: 50px;
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 0;
+}
+
+.password-box a{
+  font-size: 15px;
+  font-weight: bold;
+}

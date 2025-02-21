@@ -8,9 +8,8 @@
 }
 
 .App-header {
-  background-color: #7c2667;
+  background-color: #ffffff;
   min-height: 100vh;
-  display: flex;
   flex-direction: row;
   align-items: flex-center;
   justify-content: center;
@@ -24,10 +23,6 @@
 }
 .deleteIcon{
   float:right;
-}
-
-.settings{
-  width:100%;
 }
 
 .link-button {
@@ -96,11 +91,6 @@
 
 .suggestions li:not(:last-of-type) {
   border-bottom: 1px solid #999;
-}
-
-.profileform label{
-   display:block;
-
 }
 
 .App-link {
