@@ -208,10 +208,10 @@ const Profile = (props) => {
                   maxlength="15"
                 />
             </div> */}
-            <div class ="inputs">
+            <div class ="countrybuttons">
             <a> Country</a>
             <form>
-                <div class="countrybuttons">
+                <country>
                   <input 
                     type="button"
                     value="USA"
@@ -227,7 +227,7 @@ const Profile = (props) => {
                     value="UK"
                     class={country === "UK" ? "selected_country" : "countrybutton"}
                   />
-                </div>
+                </country>
               </form>
               {/* <input
                   type="text"

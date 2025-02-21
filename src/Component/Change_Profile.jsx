@@ -188,7 +188,7 @@ const Profile = (props) => {
                     }
                   }}
                   value={email}
-                  maxlength="30"
+                  maxlength="60"
                 />
             </div>
             <div class ="inputs">
@@ -197,7 +197,7 @@ const Profile = (props) => {
                   type="text"
                   onChange={(e) => setUsername(e.target.value)}
                   value={username}
-                  maxlength="13"
+                  maxlength="50"
                 />
             </div>
             <div class ="inputs">
@@ -205,13 +205,10 @@ const Profile = (props) => {
               <input
                 type="text"
                 onChange={(e) => {
-                  const input = e.target.value;
-                  if (input.includes(" ")) {
-                    setFullName(input);
-                  }
+                  setFullName(e.target.value);
                 }}
                 value={fullName}
-                maxLength="18"
+                maxlength="50"
               />
             </div>
             <div class ="inputs">
@@ -226,17 +223,17 @@ const Profile = (props) => {
                     }
                   }}
                   value={phone}
-                  maxLength="10"
+                  maxLength="11"
                 />
             </div>
-            <div class ="inputs">
+            <div class ="password-box">
               <a> Password</a>
               <div class ="inputsp">
                   <input
                   type={showPassword ? "text" : "password"}
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
-                  maxLength="20"
+                  maxlength="35"
                 />
                 <button
                   class="passwordbutton"
@@ -260,36 +257,30 @@ const Profile = (props) => {
                   maxlength="15"
                 />
             </div> */}
-            <div class ="inputs">
-            <a> Country</a>
-            <form>
-                <div class="countrybuttons">
-                  <input 
-                    type="button"
-                    onClick={(e) => setCountry(e.target.value)}
-                    value="USA"
-                    class={country === "USA" ? "selected_country" : "countrybutton"}
-                  />
-                  <input 
-                    type="button"
-                    onClick={(e) => setCountry(e.target.value)}
-                    value="Canada"
-                    class={country === "Canada" ? "selected_country" : "countrybutton"}
-                  />
-                  <input 
-                    type="button"
-                    onClick={(e) => setCountry(e.target.value)}
-                    value="UK"
-                    class={country === "UK" ? "selected_country" : "countrybutton"}
-                  />
-                </div>
-              </form>
-              {/* <input
-                  type="text"
-                  onChange={(e) => setCountry(e.target.value)}
-                  value={country}
-                  maxlength="15"
-                /> */}
+            <div class ="countrybuttons">
+              <a> Country</a>
+              <form>
+                  <country>
+                    <input 
+                      type="button"
+                      onClick={(e) => setCountry(e.target.value)}
+                      value="USA"
+                      class={country === "USA" ? "selected_country" : "countrybutton"}
+                    />
+                    <input 
+                      type="button"
+                      onClick={(e) => setCountry(e.target.value)}
+                      value="Canada"
+                      class={country === "Canada" ? "selected_country" : "countrybutton"}
+                    />
+                    <input 
+                      type="button"
+                      onClick={(e) => setCountry(e.target.value)}
+                      value="UK"
+                      class={country === "UK" ? "selected_country" : "countrybutton"}
+                    />
+                  </country>
+                </form>
             </div>
               <input class="submitbutton" type="submit" value="Save Changes" />
             {responseMessage}
