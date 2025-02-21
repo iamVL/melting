@@ -231,8 +231,10 @@ a {
 }
 
 .submitbutton:hover {
+  color:black;
   transform: scale(1.04);
-  background-color: #4df56f;
+  border-color: #19e842 ;
+  background-color: #87ff9f;
   cursor: pointer;
 }
 
@@ -398,4 +400,15 @@ country {
 .password-box a{
   font-size: 15px;
   font-weight: bold;
+}
+
+profile-header {
+  display: block;
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
 }
