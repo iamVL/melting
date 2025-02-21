@@ -32,7 +32,7 @@ const RegisterForm = ({ setLoggedIn }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        navigate("/login");
+        navigate("/");
         window.location.reload();
       });
   };
