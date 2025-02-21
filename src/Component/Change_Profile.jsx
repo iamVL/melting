@@ -169,7 +169,7 @@ const Profile = (props) => {
       <div class ="bottonProfileSection">
         <div class ="accountSettings">
           <div class="accountHeaders">
-            <h2>Account Settings</h2>
+            <profile-header>Account Settings</profile-header>
             <a>Update your personal information</a>
           </div>
           <div class="allinputscp">
@@ -312,7 +312,7 @@ const Profile = (props) => {
 
           </div>
 
-          <h2>What recipes are you searching for?</h2>
+          <profile-header>What recipes are you searching for?</profile-header>
         </div>
       </div>
     </form>
