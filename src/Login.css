@@ -43,7 +43,7 @@
     color: #000000;
   }
   
-  input {
+  .login-box input {
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #000000;

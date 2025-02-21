@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 // pull in the images for the menu items
 import postIcon from "../assets/post.svg";
-import friendIcon from "../assets/friends.svg";
+import profileIcon from "../assets/profile icon.png";
 import settingIcon from "../assets/settings.svg";
 import helpIcon from "../assets/help.svg";
 import exitIcon from "../assets/exit.png";
@@ -24,9 +24,9 @@ const Navbar = ({ toggleModal, logout }) => {
           <li><Link to="/favorites">Favorites</Link></li>
           <li><Link to="/upload">Upload Recipe</Link></li>
           <li><Link to="/filter">Filter</Link></li>
-          <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={75} />
+          <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={120} />
           <li><Link to="/aboutus">About Us</Link></li>
-          <li><Link to="/settings"><img src={friendIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
+          <li><Link to="/settings"><img src={profileIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
         </ul>
       </nav>
       </nav>

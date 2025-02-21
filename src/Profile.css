@@ -154,7 +154,7 @@ a {
   display:flex;
   flex-direction: column;
   align-items: flex-start;
-  line-height: 1.5;
+  line-height: 1.3;
 }
 
 .inputs a{
@@ -223,6 +223,7 @@ a {
   height: 40px;
   border-radius: 50px;
   padding: 5px;
+  margin-left: 70px;
   font-size: 15px;
   background-color: #000000;
   color:white;
@@ -269,8 +270,14 @@ a {
   font-size: 20px;
 }
 
-.countrybuttons input {
-  background-color:black;
+
+country {
+  display:flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.countrybutton {
+  background-color:#000000;
   border-radius: 8px;
   border-style:solid;
   height: 40px;
@@ -293,6 +300,19 @@ a {
   transform: scale(1);
 }
 
+.countrybuttons a{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.countrybuttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.3;
+  padding-left: 50px;
+} 
+
 .selected_country {
   background-color:#d46a4c;
   border-radius: 8px;
@@ -302,6 +322,7 @@ a {
   width: 80px;
   transition: .3s;
   color: white;
+  border-color: #d46a4c;
 
   display: flex;
   flex-direction: column;
@@ -317,12 +338,6 @@ a {
   transform: scale(1);
 }
 
-.countrybuttons {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-}
-
 .inputsp button {
   width: 100px;
   height: 30px;
@@ -335,7 +350,7 @@ a {
 }
 
 .inputsp button:hover {
-  background-color: #da603e;
+  background-color: #d46a4c;
   transform: scale(1.04);
   cursor: pointer;
 }
@@ -356,4 +371,25 @@ a {
   padding: 7px;
   font-size: 15px;
   color:#787878
+}
+
+.allinputs {
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.password-box {
+  padding-top: 5px;
+  padding-left: 50px;
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 0;
+}
+
+.password-box a{
+  font-size: 15px;
+  font-weight: bold;
 }
