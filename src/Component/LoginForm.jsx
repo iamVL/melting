@@ -1,11 +1,72 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
+import "../Login.css";
 import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Mock authentication (Replace with actual API call)
+    if (email === "user@example.com" && password === "password") {
+      sessionStorage.setItem("token", "mockToken");
+      sessionStorage.setItem("user", email);
+      setLoggedIn(true);
+      navigate("/");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-box">
+        <div className="logo">
+          <img src={require("../melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
+        </div>
+        <h2>WELCOME BACK</h2>
+        <p>Sign in with your Email address and Password</p>
+        <form onSubmit={handleLogin}>
+          <label>Email Address</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <div className="options">
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              Remember me
+            </label>
+            <a href="/reset-password" className="forgot-password">Forgot Password?</a>
+          </div>
+          <button type="submit">Log In</button>
+        </form>
+        <p>Don’t have an account? <a href="/register" className="sign-up">Sign Up</a></p>
+      </div>
+    </div>
+  );
+};/*{
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [sessionToken, setSessionToken] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const submitHandler = (event) => {
@@ -47,40 +108,48 @@ const LoginForm = ({ setLoggedIn }) => {
   };
 
   return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={submitHandler}>
-        <label>
-          Email
+    <div className="login-container">
+      <div className="login-box">
+        <div className="logo">
+          <img src={require("../melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
+        </div>
+        <h2>WELCOME BACK</h2>
+        <p>Sign in with your Email address and Password</p>
+        <form onSubmit={submitHandler}>
+          <label>Email Address</label>
           <input
             type="email"
-            // event.target refers to the DOM that is triggered from an event, such as onChange, onClick, etc.
-            // event.target.value holds the value that is passed in to the input field from the onChange
+            value={email}
             onChange={(event) => setEmail(event.target.value)}
+            required
           />
-        </label>
-        <br />
-        <label>
-          Password
+          <label>Password</label>
           <input
             type="password"
+            value={password}
             onChange={(event) => setPassword(event.target.value)}
+            required
           />
-        </label>
-        <input type="submit" className="submitbutton" value="submit" />
-      </form>
-      <div>
-        <p>
-          Register <Link to="/register">here</Link>
-        </p>
+          <div className="options">
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              Remember me
+            </label>
+            <Link to="/reset-password" className="forgot-password">
+              Forgot Password?
+            </Link>
+          </div>
+          <button type="submit">Log In</button>
+        </form>
+        <p>Don’t have an account? <Link to="/register" className="sign-up">Sign Up</Link></p>
       </div>
-      <div>
-        <p>
-          Reset your password <Link to="/reset-password">here</Link>
-        </p>
-      </div>
-    </>
+    </div>
   );
-};
+};*/
 
 export default LoginForm;
+

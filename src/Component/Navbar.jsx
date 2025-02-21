@@ -24,7 +24,7 @@ const Navbar = ({ toggleModal, logout }) => {
           <li><Link to="/favorites">Favorites</Link></li>
           <li><Link to="/upload">Upload Recipe</Link></li>
           <li><Link to="/filter">Filter</Link></li>
-          <div className="logo">Melting Pot</div>
+          <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={75} />
           <li><Link to="/aboutus">About Us</Link></li>
           <li><Link to="/settings"><img src={friendIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
         </ul>
