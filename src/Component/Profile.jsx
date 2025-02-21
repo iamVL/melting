@@ -14,13 +14,13 @@ const Profile = (props) => {
   // states which contain basic user information/attributes
   // Initially set them all as empty strings to post them to the backend
   const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [favoriteColor, setFavoriteColor] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [picture, setPicture] = useState("");
   const [country, setCountry] = useState("");
-  const [showSaved, setShowSaved] = useState(false);
+  const [phone, setPhone] = useState(false);
 
 
   // Replace componentDidMount for fetching data
@@ -43,9 +43,10 @@ const Profile = (props) => {
           // if the attributes already exists and they are stored, set the states to those attributes
           // so that nothing gets overwritten
           setUsername(result.attributes.username || "");
-          setFirstName(result.attributes.firstName || "");
-          setLastName(result.attributes.lastName || "");
-          setFavoriteColor(result.attributes.favoritecolor || "");
+          setFullName(result.attributes.fullName || "");
+          setPhone(result.attributes.phone || "");
+          setEmail(result.attributes.email || "");
+          setPassword(result.attributes.password || "");
           setPicture(result.attributes.picture || "");
           setCountry(result.attributes.country || "");
         }
@@ -76,9 +77,10 @@ const Profile = (props) => {
         body: JSON.stringify({
           attributes: {
             username: username,
-            firstName: firstName,
-            lastName: lastName,
-            favoritecolor: favoriteColor,
+            fullName: fullName,
+            phone: phone,
+            email: email,
+            password: password,
             picture: picture,
             country: country,
           },
@@ -149,7 +151,7 @@ const Profile = (props) => {
 
           {/* user info */}
           <div class="userInfo">
-            <a>{firstName} {lastName}</a><br />
+            <a>{fullName}</a><br />
             <a>User: {username}</a>
           </div>
         </div>
@@ -168,21 +170,33 @@ const Profile = (props) => {
           </div>
           <div class="allinputs">
             <div class ="inputs">
+              <a> Email</a>
+              <div class="display">
+                  {email}
+              </div>
+            </div>
+            <div class ="inputs">
               <a> Username</a>
               <div class="display">
                   {username}
               </div>
             </div>
             <div class ="inputs">
-              <a> First Name</a>
+              <a> Full Name</a>
               <div class="display">
-                  {firstName}
+                  {fullName}
               </div>
             </div>
             <div class ="inputs">
-              <a> Last Name</a>
+              <a> Phone Number</a>
               <div class="display">
-                  {lastName}
+                  {phone}
+              </div>
+            </div>
+            <div class ="inputs">
+              <a> Password</a>
+              <div class="display">
+                {"•".repeat(password.length)}
               </div>
             </div>
             {/* <div class ="inputs">
@@ -260,3 +274,4 @@ const Profile = (props) => {
 };
 
 export default Profile;
+
