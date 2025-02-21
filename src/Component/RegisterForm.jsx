@@ -23,17 +23,52 @@ const RegisterForm = ({ setLoggedIn }) => {
   
   const submitHandler = (event) => {
     event.preventDefault();
+  
     fetch(process.env.REACT_APP_API_PATH + "/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password, phone, fullName, country, username }),
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     })
       .then((res) => res.json())
       .then((result) => {
-        navigate("/login");
+        if (!result.token || !result.userID) {
+          throw new Error("Signup failed!"); // Handle signup failure
+        }
+  
+        return fetch(
+          `${process.env.REACT_APP_API_PATH}/users/${result.userID}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${result.token}`,
+            },
+            body: JSON.stringify({
+              attributes: {
+                username: username,
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                password: password,
+                country: country,
+              },
+            }),
+          }
+        );
+      })
+      .then((res) => res.json())
+      .then((profileResult) => {
+        navigate("/");
         window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Registration or profile setup failed!");
       });
   };
 
