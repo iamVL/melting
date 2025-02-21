@@ -172,7 +172,7 @@ const Profile = (props) => {
             <h2>Account Settings</h2>
             <a>Update your personal information</a>
           </div>
-          <div class="allinputs">
+          <div class="allinputscp">
             <div class ="inputs">
             <a> Profile Picture</a>
               <input type="file" accept="image/*" onChange={uploadPicture} />
