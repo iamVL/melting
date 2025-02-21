@@ -154,6 +154,7 @@ a {
   display:flex;
   flex-direction: column;
   align-items: flex-start;
+  line-height: 1.5;
 }
 
 .inputs a{
@@ -161,7 +162,7 @@ a {
   font-weight: bold;
 }
 
-input {
+.inputs input {
   width: 250px;
   height: 18px;
   border-radius: 5px;
@@ -268,7 +269,7 @@ input {
   font-size: 20px;
 }
 
-.countrybutton {
+.countrybuttons input {
   background-color:black;
   border-radius: 8px;
   border-style:solid;
@@ -322,7 +323,7 @@ input {
   gap: 5px;
 }
 
-.passwordbutton {
+.inputsp button {
   width: 100px;
   height: 30px;
   border-radius: 50px;
@@ -333,25 +334,18 @@ input {
   transition: .3s;
 }
 
-.passwordbutton:hover {
+.inputsp button:hover {
+  background-color: #da603e;
   transform: scale(1.04);
   cursor: pointer;
 }
 
-.passwordbutton:active {
+.inputsp button:active {
   transform: scale(1);
 }
 
-.inputsp {
-  display:flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap:3px;
-}
-
-.inputsp a{
-  font-size: 15px;
-  font-weight: bold;
+.password-container {
+  display: flex;
 }
 
 .inputsp input {
