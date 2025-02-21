@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../App.css";
 import "../Login.css";
 import { Link, useNavigate } from "react-router-dom";
+import foodImage from "../food-image.jpeg";
 
 const LoginForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
@@ -51,42 +52,47 @@ const LoginForm = ({ setLoggedIn }) => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <div className="logo">
-          <img src={require("../melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
-        </div>
-        <h2>WELCOME BACK</h2>
-        <p>Sign in with your Email address and Password</p>
-        <form onSubmit={submitHandler}>
-          <label>Email Address</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-          <div className="options">
-            <label className="remember-me">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-              />
-              Remember me
-            </label>
-            <Link to="/reset-password" className="forgot-password">
-              Forgot Password?
-            </Link>
+        <div className="left-column">
+          <div className="logo">
+            <img src={require("../melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
           </div>
-          <button type="submit">Log In</button>
-        </form>
-        <p>Don’t have an account? <Link to="/register" className="sign-up">Sign Up</Link></p>
+          <h2>WELCOME BACK</h2>
+          <p>Sign in with your Email address and Password</p>
+          <form onSubmit={submitHandler}>
+            <label>Email Address</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+            <div className="options">
+              <label className="remember-me">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                />
+                Remember me
+              </label>
+              <Link to="/reset-password" className="forgot-password">
+                Forgot Password?
+              </Link>
+            </div>
+            <button type="submit">Log In</button>
+          </form>
+          <p>Don’t have an account? <Link to="/register" className="sign-up">Sign Up</Link></p>
+        </div>
+        <div className="right-column">
+          <img src={foodImage} alt="Delicious food" />
+        </div>
       </div>
     </div>
   );
