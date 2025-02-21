@@ -110,13 +110,14 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
       <div className="Howto">
     <h1>How-To Guides</h1>
     </div>
-  </div>
-  )}
-  <div className="light-gray-box2">
+    <div className="light-gray-box2">
 </div>
 
 <div className="light-gray-box3">
 </div>
+  </div>
+  )}
+
   </div>
 
   
