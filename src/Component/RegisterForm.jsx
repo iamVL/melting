@@ -126,7 +126,7 @@ const RegisterForm = ({ setLoggedIn }) => {
             <button type="submit" className="signup-btn">Sign Up</button>
 
             <p className="login-text">
-              Already have an account? <Link to="/login">Log In</Link>
+              Already have an account? <Link to="/">Log In</Link>
             </p>
           </form>
         </div>
