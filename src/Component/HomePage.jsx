@@ -77,6 +77,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
   {/* User's Reviews */}
   <div className="reviews-section">
     <h1>User's Reviews</h1>
+    <p>See what others are saying about our recepies!</p>
   </div>
 
         {/* Popular Recipes Section */}
@@ -93,6 +94,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
     </ul>
   </div>
 
+  <div className="light-gray-box">
+</div>
+
+<div className="light-gray-box1">
+</div>
+
+
     {/* Cookingg Tips */}
     <div className="cooking-tips">
     <h1>Cooking Tips</h1>
@@ -104,7 +112,14 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
     </div>
   </div>
   )}
+  <div className="light-gray-box2">
+</div>
+
+<div className="light-gray-box3">
+</div>
   </div>
+
+  
 
 
   );
