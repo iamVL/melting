@@ -380,6 +380,12 @@ country {
   align-items: flex-start;
 }
 
+.allinputscp {
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .password-box {
   padding-top: 5px;
   padding-left: 50px;
