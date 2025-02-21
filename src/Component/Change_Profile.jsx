@@ -15,13 +15,16 @@ const Profile = (props) => {
   // states which contain basic user information/attributes
   // Initially set them all as empty strings to post them to the backend
   const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [favoriteColor, setFavoriteColor] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [picture, setPicture] = useState("");
   const [country, setCountry] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [phone, setPhone] = useState(false);
   const navigate = useNavigate();
+
 
   // Replace componentDidMount for fetching data
   useEffect(() => {
@@ -43,9 +46,10 @@ const Profile = (props) => {
           // if the attributes already exists and they are stored, set the states to those attributes
           // so that nothing gets overwritten
           setUsername(result.attributes.username || "");
-          setFirstName(result.attributes.firstName || "");
-          setLastName(result.attributes.lastName || "");
-          setFavoriteColor(result.attributes.favoritecolor || "");
+          setFullName(result.attributes.fullName || "");
+          setPhone(result.attributes.phone || "");
+          setEmail(result.attributes.email || "");
+          setPassword(result.attributes.password || "");
           setPicture(result.attributes.picture || "");
           setCountry(result.attributes.country || "");
         }
@@ -76,9 +80,10 @@ const Profile = (props) => {
         body: JSON.stringify({
           attributes: {
             username: username,
-            firstName: firstName,
-            lastName: lastName,
-            favoritecolor: favoriteColor,
+            fullName: fullName,
+            phone: phone,
+            email: email,
+            password: password,
             picture: picture,
             country: country,
           },
@@ -151,7 +156,7 @@ const Profile = (props) => {
 
           {/* user info */}
           <div class="userInfo">
-            <a>{firstName} {lastName}</a><br />
+            <a>{fullName}</a><br />
             <a>User: {username}</a>
           </div>
         </div>
@@ -173,6 +178,20 @@ const Profile = (props) => {
               <input type="file" accept="image/*" onChange={uploadPicture} />
             </div>
             <div class ="inputs">
+              <a> Email</a>
+              <input
+                  type="text"
+                  onChange={(e) => {
+                    const input = e.target.value;
+                    if (input.includes("@")) {
+                      setEmail(input);
+                    }
+                  }}
+                  value={email}
+                  maxlength="30"
+                />
+            </div>
+            <div class ="inputs">
               <a> Username</a>
               <input
                   type="text"
@@ -182,22 +201,55 @@ const Profile = (props) => {
                 />
             </div>
             <div class ="inputs">
-              <a> First Name</a>
+              <a> Full Name</a>
+              <input
+                type="text"
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (input.includes(" ")) {
+                    setFullName(input);
+                  }
+                }}
+                value={fullName}
+                maxLength="18"
+              />
+            </div>
+            <div class ="inputs">
+              <a> Phone Number</a>
               <input
                   type="text"
-                  onChange={(e) => setFirstName(e.target.value)}
-                  value={firstName}
-                  maxlength="9"
+                  pattern="[0-9]*"
+                  onChange={(e) => {
+                    const input = e.target.value.replace(/\D/g, "");
+                    if (input.length <= 10) {
+                      setPhone(input);
+                    }
+                  }}
+                  value={phone}
+                  maxLength="10"
                 />
             </div>
             <div class ="inputs">
-              <a> Last Name</a>
-              <input
-                  type="text"
-                  onChange={(e) => setLastName(e.target.value)}
-                  value={lastName}
-                  maxlength="9"
+              <a> Password</a>
+              <div class ="inputsp">
+                  <input
+                  type={showPassword ? "text" : "password"}
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  maxLength="20"
                 />
+                <button
+                  class="passwordbutton"
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    marginLeft: "10px",
+                    cursor: "pointer",
+                  }}
+                  >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
             </div>
             {/* <div class ="inputs">
               <a> Favorite Color</a>

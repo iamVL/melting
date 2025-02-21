@@ -3,6 +3,7 @@
 }
 
 .userContainer{
+  height: 100px;
   padding: 40px;
   display: flex;
   justify-content: center;
@@ -319,4 +320,46 @@ input {
   display: flex;
   flex-direction: row;
   gap: 5px;
+}
+
+.passwordbutton {
+  width: 100px;
+  height: 30px;
+  border-radius: 50px;
+  padding: 5px;
+  font-size: 15px;
+  background-color: #d46a4c;
+  color:white;
+  transition: .3s;
+}
+
+.passwordbutton:hover {
+  transform: scale(1.04);
+  cursor: pointer;
+}
+
+.passwordbutton:active {
+  transform: scale(1);
+}
+
+.inputsp {
+  display:flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap:3px;
+}
+
+.inputsp a{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.inputsp input {
+  width: 150px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 7px;
+  font-size: 15px;
+  color:#787878
 }
