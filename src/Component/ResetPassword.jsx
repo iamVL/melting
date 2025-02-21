@@ -17,7 +17,7 @@ const ResetPassword = () => {
       body: JSON.stringify({ email }),
     }).then((res) => {
       if (res.ok) {
-        setGotToken(true); // Switch to token input form
+        setGotToken(true); // Switch to jtoken input form
       }
     });
   };
