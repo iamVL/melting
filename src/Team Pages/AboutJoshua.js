@@ -1,26 +1,12 @@
 // AboutUs.js
 
 import React from "react";
-import "./AboutJoshua.css";
+import "./AboutTeam.css";
 import Joshua from "../Team pictures/Joshua.jpg";
 
 const AboutUs = () => {
   return (
     <div className="about-page">
-      <nav className="navbar">
-        <div className="logo">Melting Pot</div>
-        <ul className="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/featured">Featured</a></li>
-          <li><a href="/favorites">Favorites</a></li>
-          <li><a href="/upload">Upload Recipe</a></li>
-          <li><a href="/aboutus" className="active">About Us</a></li>
-        </ul>
-        <div className="search-container">
-          <input type="text" placeholder="Search..." />
-          <button>🔍</button>
-        </div>
-      </nav>
 
       <header className="header-section">
         <h1>About Joshua</h1>

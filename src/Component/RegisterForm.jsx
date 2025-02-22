@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../RegisterForm.css"; // ✅ CORRECT
 
 const RegisterForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // You can assign the user extra attributes for when they register an account.
-  // As you can see on swagger, attributes is optional where its an object and you
-  // can store extra attributes like profile picture, favorite color, etc.
-  // to fill out when the user creates an account.
-  const [attributes, setAttributes] = useState({
-    additionalProp1: {},
-  });
+  const [phone, setPhone] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [country, setCountry] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
-  const submitHandler = (event) => {
-    // event.preventDefault() prevents the browser from performing its default action
-    // In this instance, it will prevent the page from reloading
-    // keeps the form from actually submitting as well
-    event.preventDefault();
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, [navigate]); // ✅ Fix: Add 'navigate' to dependency array
 
+  useEffect (() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, []);
+  
+  const submitHandler = (event) => {
+    event.preventDefault();
+  
     fetch(process.env.REACT_APP_API_PATH + "/auth/signup", {
       method: "POST",
       headers: {
@@ -31,60 +36,102 @@ const RegisterForm = ({ setLoggedIn }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        // Successfully registered an account
-        console.log(result);
-        // set the auth token and user ID in the session state
-        sessionStorage.setItem("token", result.token);
-        sessionStorage.setItem("user", result.userID);
-        // call setLoggedIn hook from App.jsx to save the login state throughout the app
-        setLoggedIn(true);
-        // Reload the window for when the user logs in to show the posts
+        if (!result.token || !result.userID) {
+          throw new Error("Signup failed!"); // Handle signup failure
+        }
+  
+        return fetch(
+          `${process.env.REACT_APP_API_PATH}/users/${result.userID}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${result.token}`,
+            },
+            body: JSON.stringify({
+              attributes: {
+                username: username,
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                password: password,
+                country: country,
+              },
+            }),
+          }
+        );
+      })
+      .then((res) => res.json())
+      .then((profileResult) => {
         navigate("/");
         window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Registration or profile setup failed!");
       });
   };
 
-  useEffect(() => {
-    // If the user is logged in, make sure they cannot see the login form
-    if (sessionStorage.getItem("token")) {
-      navigate("/");
-    }
-  }, []);
-
   return (
-    <>
-      <h1>Register</h1>
-      <form onSubmit={submitHandler}>
-        <label>
-          Email
-          <input
-            type="email"
-            // event.target refers to the DOM that is triggered from an event, such as onChange, onClick, etc.
-            // event.target.value holds the value that is passed in to the input field from the onChange
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Password
-          <input
-            type="password"
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-        <input type="submit" className="submitbutton" value="submit" />
-      </form>
-      <div>
-        <p>
-          Login <Link to="/">here</Link>
-        </p>
+    <div className="register-container">
+      {/* White Layer with Orange Border */}
+      <div className="content-wrapper">
+        {/* Left Side: Food Image */}
+        <div className="image-container">
+          <img src="/Reg-page-photo.png" alt="Food" className="food-image" />
+        </div>
+
+        {/* Right Side: Registration Form */}
+        <div className="form-container">
+        <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo-login" />
+          <h1 className="title">Registration</h1>
+          <form onSubmit={submitHandler} className="register-form">
+            <div className="input-group">
+              <label>Full Name</label>
+              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            </div>
+
+            <div className="input-row">
+              <div className="input-group">
+                <label>Email address</label>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              </div>
+              <div className="input-group">
+                <label>Phone Number</label>
+                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+              </div>
+            </div>
+
+            <div className="input-row">
+              <div className="input-group">
+                <label>Username</label>
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+              </div>
+              <div className="input-group">
+                <label>Country</label>
+                <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} required />
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label>Password</label>
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+
+            <div className="input-group">
+              <label>Confirm Password</label>
+              <input type="password" required />
+            </div>
+
+            <button type="submit" className="signup-btn">Sign Up</button>
+
+            <p className="login-text">
+              Already have an account? <Link to="/">Log In</Link>
+            </p>
+          </form>
+        </div>
       </div>
-      <div>
-        <p>
-          Reset your password <Link to="/reset-password">here</Link>
-        </p>
-      </div>
-    </>
+    </div>
   );
 };
 

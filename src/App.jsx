@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
+import Edit from "./Component/Edit";
+
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin"
+import Login from "./Login";
 
 import AboutYessica from "./Team Pages/AboutYessica";
 import AboutRudy from "./Team Pages/AboutRudy";
@@ -79,6 +82,7 @@ function App() {
     })
   }, [])
 
+  
   return (
     // the app is wrapped in a router component, that will render the
     // appropriate content based on the URL path.  Since this is a
@@ -96,7 +100,9 @@ function App() {
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/settings" element={<Settings />} />
+              <Route path="/edit-profile" element={<Edit />} />
               <Route path="/AboutUs" element={<AboutUs />} />
+              <Route path="/Login" element={<Login />} />
               <Route path="/about_justin" element={<AboutJustin />} />
 
               <Route path="/about_yessica" element={<AboutYessica />} />
