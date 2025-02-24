@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "/Users/vailok/Desktop/UBcourses/melting/src/HowToGuides.css";
+import "../HowToGuides.css";
 import cupcakeIcon from "../assets/cupcake.png";  
 import grillChickenIcon from "../assets/grill-chicken.png";  
 import commentIcon from "../assets/comment-icon.png";  
