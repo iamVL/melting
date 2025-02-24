@@ -1,0 +1,150 @@
+/* HowToGuides Page Styles */
+.howto-container {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+  padding-top: 20px;
+}
+
+/* Header Styling */
+.howto-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.howto-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #000000; /* Force black */
+  margin-bottom: 10px;
+}
+
+.header-icon {
+  width: 50px;
+  height: 50px;
+}
+
+/* Guide Cards */
+.howto-guides {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.guide-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4c8b4;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.guide-card:hover {
+  transform: scale(1.02); /* Subtle hover effect */
+}
+
+/* Guide Info - Ensuring Black Text */
+.guide-info {
+  text-align: left;
+  flex: 1;
+}
+
+.guide-info h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  color: #000000; /* Force black */
+}
+
+.guide-info p {
+  font-size: 16px;
+  color: #000000; /* Force black */
+  margin: 5px 0 0;
+}
+
+/* Icons Section */
+.guide-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer; /* Makes icons clickable */
+}
+
+.icon img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon img:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.icon p {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #000000; /* Ensure black text */
+}
+
+/* Full-screen image overlay */
+.full-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  cursor: pointer; /* Clicking anywhere closes the image */
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Full-screen image */
+.full-screen-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+.full-screen-image:hover {
+  transform: scale(1.03);
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .guide-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .guide-icons {
+    justify-content: center;
+  }
+}
