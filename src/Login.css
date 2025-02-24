@@ -1,132 +1,146 @@
-/* Login.css */
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
 .login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100vw;
   height: 100vh;
-  background-color: #d17d5a;
+  background-color: #E8775B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-box {
+  background-color: white;
+  width: 75vw; /* Adjust width */
+  max-width: 1152px;
+  height: auto;
+  max-height: 720px;
   display: flex;
-  background: rgb(255, 255, 255);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 900px;
-  overflow: hidden;
+  padding: 20px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-left: -6vw; /* Move left */
 }
 
-/* Left Column - Form */
 .left-column {
-  padding: 30px;
+  flex: 1;
+  padding: 2rem;
   text-align: left;
-  width: 50%;
-}
-
-.logo img {
-  width: 180px;
-  margin-bottom: 20px;
-}
-
-h2 {
-  color: #6b3d1f;
-  font-size: 26px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-p {
-  color: #444;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-form {
+  max-width: 50%;
+  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
-label {
-  text-align: left;
+.right-column {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 50%;
+}
+
+.food-image {
+  width: 90%;
+  max-width: 400px; /* Ensures the image stays within white box */
+  height: auto;
+  object-fit: contain;
+  border-radius: 0px;
+}
+
+.logo-login {
+  width: 150px;
+  margin-bottom: 5px;
+  align-self: flex-start;
+  margin-left: 0px; /* Ensure proper left alignment */
+}
+
+.title {
+  font-family: 'Itim', cursive;
+  font-size: 32px;
+  color: #4A2E1F;
   font-weight: bold;
-  margin-top: 10px;
-  color: #000000;
-  font-size: 14px;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  margin-top: 0px;
 }
 
-input {
-  padding: 12px;
-  margin-top: 5px;
+.subtitle {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 2px;
+  font-size: 1.3rem;
+  color: #4a2c2a;
+  font-family: 'Itim', cursive;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 100%;
+  background-color: #f5f5f5;
   font-size: 16px;
-  background: #f5f5f5;
 }
 
 .options {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
   font-size: 14px;
+  margin-top: 10px;
 }
 
 .remember-me {
   display: flex;
   align-items: center;
   color: #000000;
-}
-
-.remember-me input {
-  margin-right: 5px;
+  font-size: 13px;
 }
 
 .forgot-password {
-  color: #000000;
+  color: black;
   text-decoration: none;
 }
 
-button {
-  background-color: #4CAF50;
+.signup-btn {
+  font-size: 18px;
+  background: #43A32D;
   color: white;
   padding: 12px;
-  font-size: 16px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
+  width: 100%;
+  text-align: center;
   margin-top: 15px;
-  width: 100%;
 }
 
-button:hover {
-  background-color: #45a049;
+.login-text {
+  margin-top: 10px;
+  font-size: 16px;
+  color: black;
+  text-align: left;
 }
 
-/* Right Column - Image */
-.right-column {
-  width: 50%;
-}
-
-.right-column img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .login-box {
-      flex-direction: column;
-      max-width: 100%;
-  }
-
-  .left-column, .right-column {
-      width: 100%;
-  }
-
-  .right-column img {
-      display: none; /* Hide the image on smaller screens */
-  }
+.sign-up-link {
+  color: #43A32D;
+  font-weight: bold;
+  text-decoration: none;
 }
