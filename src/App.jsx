@@ -15,7 +15,9 @@ import AboutVaishnavi from "./Team Pages/AboutVaishnavi";
 import AboutJoshua from "./Team Pages/AboutJoshua";
 
 import HomePage from "./Component/HomePage";
-import HowToGuides from "./Component/HowToGuides"; // Import the new page
+import HowToGuides from "./Component/HowToGuides"; // Import How-To Guides Page
+import BakingBasics from "./Component/BakingBasics"; // Import Baking Basics Page
+import GrillingTechniques from "./Component/GrillingTechniques";
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
 import Groups from "./Component/Groups";
@@ -84,7 +86,7 @@ function App() {
               <Route path="/about_vi" element={<AboutVaishnavi />} />
               <Route path="/about_joshua" element={<AboutJoshua />} />
 
-              {/* Updated Home Route */}
+              {/* Home Page Route */}
               <Route
                 path="/"
                 element={
@@ -96,9 +98,12 @@ function App() {
                 }
               />
 
-              {/* Added How-To Guides Route */}
+              {/* How-To Guides Route */}
               <Route path="/how-to-guides" element={<HowToGuides />} />
 
+              {/* Baking Basics Route */}
+              <Route path="/baking-basics" element={<BakingBasics />} />
+              <Route path="/grilling-techniques" element={<GrillingTechniques />} /> 
               <Route path="/register" element={<RegisterForm setLoggedIn={setLoggedIn} />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/friends" element={<Friends />} />
