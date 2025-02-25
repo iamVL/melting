@@ -12,7 +12,15 @@ const Navbar = () => {
     <nav className="navbar">
       <ul className="nav-links">
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/featured">Featured</Link></li>
+        <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
+          <span className="dropdown-title">Featured ▼</span>
+          {dropdownOpen && (
+            <ul className="dropdown-menu">
+              <li><Link to="/tips">Cooking Tips</Link></li>
+              <li><Link to="/how-to-guides">How To Guides</Link></li>
+            </ul>
+          )}
+        </li>
         <li><Link to="/favorites">Favorites</Link></li>
 
         {/* Upload Dropdown */}
