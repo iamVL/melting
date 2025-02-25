@@ -6,6 +6,7 @@ import Edit from "./Component/Edit";
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin";
 import Login from "./Login";
+import StyleGuide from "./StyleGuide";
 
 import AboutYessica from "./Team Pages/AboutYessica";
 import AboutRudy from "./Team Pages/AboutRudy";
@@ -78,6 +79,7 @@ function App() {
               <Route path="/edit-profile" element={<Edit />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Login" element={<Login />} />
+              <Route path="/StyleGuide" element={<StyleGuide />} />
               <Route path="/about_justin" element={<AboutJustin />} />
               <Route path="/about_yessica" element={<AboutYessica />} />
               <Route path="/about_rudy" element={<AboutRudy />} />

@@ -14,12 +14,13 @@
   background-color: white;
   width: 80vw; /* 80% of screen width */
   max-width: 1152px; /* Ensuring it doesn't go too big */
-  height: 80vh; /* 80% of screen height */
+  height: auto/*80vh*/; /* 80% of screen height */
   max-height: 720px; /* Ensuring it doesn't go too tall */
   border-radius: 0px; /* Slight rounded corners */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   display: flex;
   padding: 20px;
+  flex-wrap: wrap;
 }
 
 
@@ -35,7 +36,8 @@
 /* Food Image */
 .food-image {
   width: 480px;  /* Exact width from Figma */
-  height: 600px; /* Exact height from Figma */
+  max-width: 800px; /* Restricts to prevent excessive size */
+  height: auto/*600px*/; /* Exact height from Figma */
   object-fit: cover; /* Ensures it fills the area without distortion */
   border-radius: 0px;
 }
@@ -99,6 +101,8 @@
 }
 
 .input-group input {
+  width: 100%;
+  max-width: 800px;
   padding: 8px;
   height: 30px;
   border: 1px solid #ccc;
@@ -112,10 +116,12 @@
 .input-row {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .input-row .input-group {
-  flex: 1;
+  flex: 1 1 48%;
+  min-width: 200px;
 }
 
 /* Sign Up Button */
