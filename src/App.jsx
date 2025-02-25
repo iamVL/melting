@@ -14,7 +14,6 @@ import AboutVaishnavi from "./Team Pages/AboutVaishnavi";
 import AboutJoshua from "./Team Pages/AboutJoshua";
 
 import HomePage from "./Component/HomePage";
-import HowToGuides from "./Component/HowToGuides"; // Import the new page
 import CommunityPage from "./Component/Community";
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
@@ -99,9 +98,6 @@ function App() {
               <Route path="/how-to-guides" element={<HowToGuides />} />
 
               <Route path="/community" element={<CommunityPage />} />
-                {/* Baking Basics Route */}
-              <Route path="/baking-basics" element={<BakingBasics />} />
-              <Route path="/grilling-techniques" element={<GrillingTechniques />} /> 
 
               <Route path="/register" element={<RegisterForm setLoggedIn={setLoggedIn} />} />
               <Route path="/reset-password" element={<ResetPassword />} />

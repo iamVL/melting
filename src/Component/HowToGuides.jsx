@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "../HowToGuides.css";
 import cupcakeIcon from "../assets/cupcake.png";  
 import grillChickenIcon from "../assets/grill-chicken.png";  
