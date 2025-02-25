@@ -1,0 +1,79 @@
+/* Grilling Techniques Page Styles */
+.grilling-container {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  padding-top: 20px;
+}
+
+/* Back link styling */
+.back-link {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.back-link a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #D26E4B;
+  font-weight: bold;
+}
+
+.back-link a:hover {
+  color: #a3452c;
+}
+
+/* Title */
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #D26E4B;
+  margin-bottom: 20px;
+  text-decoration: underline;
+}
+
+/* Poster */
+.poster-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.poster {
+  max-width: 50%;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Information Section */
+.info-section {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.info-section h2 {
+  font-size: 24px;
+  color: #D26E4B;
+  margin-bottom: 10px;
+}
+
+.info-section p,
+.info-section ul {
+  font-size: 18px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.info-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.info-section li {
+  margin-bottom: 10px;
+}
+
+.info-section li::before {
+  content: "✔️ ";
+  color: #D26E4B;
+}

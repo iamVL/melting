@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
 import Edit from "./Component/Edit";
+import ViewTip from "./Component/CookingTipPage";
+import TipForm from "./Component/Tip"
+import TipDetails  from "./Component/TipDetails";
 
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin";
 import Login from "./Login";
+import StyleGuide from "./StyleGuide";
 
 import AboutYessica from "./Team Pages/AboutYessica";
 import AboutRudy from "./Team Pages/AboutRudy";
@@ -16,6 +20,9 @@ import AboutJoshua from "./Team Pages/AboutJoshua";
 import HomePage from "./Component/HomePage";
 import HowToGuides from "./Component/HowToGuides"; // Import the new page
 import CommunityPage from './Component/Community';
+import HowToGuides from "./Component/HowToGuides"; // Import How-To Guides Page
+import BakingBasics from "./Component/BakingBasics"; // Import Baking Basics Page
+import GrillingTechniques from "./Component/GrillingTechniques";
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
 import Groups from "./Component/Groups";
@@ -73,17 +80,21 @@ function App() {
           <Navbar toggleModal={(e) => toggleModal(e)} logout={(e) => logout(e)} />
           <div className="maincontent" id="mainContent">
             <Routes>
+              <Route path="/tip-upload" element={<TipForm />} />
+              <Route path="/tips" element={<ViewTip />} />
+              <Route path="/tip/:id" element={<TipDetails />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/edit-profile" element={<Edit />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Login" element={<Login />} />
+              <Route path="/StyleGuide" element={<StyleGuide />} />
               <Route path="/about_justin" element={<AboutJustin />} />
               <Route path="/about_yessica" element={<AboutYessica />} />
               <Route path="/about_rudy" element={<AboutRudy />} />
               <Route path="/about_vi" element={<AboutVaishnavi />} />
               <Route path="/about_joshua" element={<AboutJoshua />} />
 
-              {/* Updated Home Route */}
+              {/* Home Page Route */}
               <Route
                 path="/"
                 element={
@@ -95,9 +106,13 @@ function App() {
                 }
               />
 
-              {/* Added How-To Guides Route */}
+              {/* How-To Guides Route */}
               <Route path="/how-to-guides" element={<HowToGuides />} />
               <Route path="/community" element={<CommunityPage />} />
+
+              {/* Baking Basics Route */}
+              <Route path="/baking-basics" element={<BakingBasics />} />
+              <Route path="/grilling-techniques" element={<GrillingTechniques />} /> 
               <Route path="/register" element={<RegisterForm setLoggedIn={setLoggedIn} />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/friends" element={<Friends />} />

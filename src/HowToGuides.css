@@ -41,11 +41,12 @@
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 10px;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .guide-card:hover {
   transform: scale(1.02); /* Subtle hover effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow */
 }
 
 /* Guide Info - Ensuring Black Text */
@@ -61,6 +62,18 @@
   color: #000000; /* Force black */
 }
 
+/* How-To Guide Links */
+.guide-link {
+  font-size: 20px;
+  font-weight: bold;
+  color: #D26E4B !important;  /* Orange color */
+  text-decoration: underline !important; /* Ensure underline */
+}
+
+.guide-link:hover {
+  color: #a3452c !important; /* Darker orange on hover */
+}
+
 .guide-info p {
   font-size: 16px;
   color: #000000; /* Force black */
@@ -74,21 +87,25 @@
   gap: 20px;
 }
 
+/* Highlight Guide Poster Icon */
 .icon {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer; /* Makes icons clickable */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .icon img {
   width: 40px;
   height: 40px;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.icon img:hover {
-  transform: scale(1.1); /* Slight zoom on hover */
+/* Add hover effect to make the Guide Poster icon stand out */
+.icon:hover img {
+  transform: scale(1.2); /* Slight zoom */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Glowing effect */
 }
 
 .icon p {
