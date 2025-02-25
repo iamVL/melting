@@ -31,59 +31,72 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding-top: 170px; /* Moves all content down */
 }
 
 .right-column {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   max-width: 50%;
+  max-height: 66%; /* Restrict column height */
+  overflow: hidden; /* Ensures the image doesn't overflow */
+  padding-top: 10px;
 }
 
 .food-image {
   width: 90%;
-  max-width: 400px; /* Ensures the image stays within white box */
+  max-width: 400px;
+  max-height: 80%; /* Reduce height by 1/3rd */
   height: auto;
   object-fit: contain;
   border-radius: 0px;
 }
 
-.logo-login {
-  width: 150px;
-  margin-bottom: 5px;
-  align-self: flex-start;
-  margin-left: 0px; /* Ensure proper left alignment */
+.logo-loginn {
+  width: 200px;  /* Increase width for larger logo */
+  margin: 0 auto; /* Center the logo */
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  display: block; /* Ensure proper centering */
 }
 
 .title {
   font-family: 'Itim', cursive;
-  font-size: 32px;
+  font-size: 36px; /* Increase font size */
   color: #4A2E1F;
   font-weight: bold;
-  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-  margin-top: 0px;
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2); /* Enhance text depth */
+  margin-top: 10px; /* Reduce top margin */
+  text-align: center;
+  margin-bottom: 5px; /* Reduce space below "WELCOME BACK" */
 }
 
 .subtitle {
   font-size: 18px;
   color: #444;
   margin-bottom: 20px;
+  margin-top: 0px; /* Remove extra space above subtitle */
 }
 
 .register-form {
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* Ensures all child elements align left */
+  width: 100%;
   gap: 10px;
 }
 
-.input-group {
+
+.input-groupp {
   display: flex;
   flex-direction: column;
   text-align: left;
 }
 
-.input-group label {
+.input-groupp label {
   font-weight: bold;
   margin-bottom: 2px;
   font-size: 1.3rem;
@@ -91,13 +104,14 @@
   font-family: 'Itim', cursive;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  font-size: 16px;
+.input-groupp input {
+  width: 515px;
+  max-width: 800px; /* Adjust to bring it closer to "Forgot Password?" */
+  padding: 12px; /* Slightly increase padding */
+  border: 2px solid #ffffff; /* Thicker border for better visibility */
+  border-radius: 8px; /* Rounder edges */
+  background-color: #b4b4b4;
+  font-size: 18px; /* Larger input font size */
 }
 
 .options {
@@ -105,31 +119,49 @@
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 5px;
+  width: 100%; /* Ensure full width */;
+}
+
+.remember-me input[type="checkbox"] {
+  width: 16px; /* Adjust checkbox size */
+  height: 16px;
+  accent-color: #43A32D; /* Green checkbox */
+  margin-right: 6px; /* Ensure spacing between checkbox and text */
+  font-size: 14px;
+  gap: 6px;
+  font-weight: bold;
 }
 
 .remember-me {
-  display: flex;
   align-items: center;
-  color: #000000;
-  font-size: 13px;
+  gap: 6pm;
+  font-weight: bold; /* Make it bold as in the reference */
+  font-size: 14px; /* Match "Forgot Password?" */
 }
+
 
 .forgot-password {
-  color: black;
+  color: #000000;
+  font-size: 14px; /* Ensure same size */
   text-decoration: none;
+  margin-left: auto; /* Aligns to the right */
 }
 
-.signup-btn {
-  font-size: 18px;
+.signup-btna {
+  font-size: 20px;
   background: #43A32D;
   color: white;
-  padding: 12px;
+  padding: 14px;
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: auto; /* Prevents button from stretching */
   text-align: center;
-  margin-top: 15px;
+  margin-top: 10px;
+  align-self: flex-start; /* Ensures it aligns left */
+  margin-left: 2px; /* Fine-tune left position */
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .login-text {
@@ -143,4 +175,6 @@
   color: #43A32D;
   font-weight: bold;
   text-decoration: none;
+  text-shadow: 2px 2px 4px rgba(67, 163, 45, 0.5);
 }
+

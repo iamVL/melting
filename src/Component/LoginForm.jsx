@@ -66,11 +66,11 @@ const LoginForm = ({ setLoggedIn }) => {
       <div className="login-box">
         {/* Left Column - Logo & Form */}
         <div className="left-column">
-          <img src="/melting-pot-logo.jpeg" alt="Melting Pot" className="logo-login" />
+          <img src="/melting-pot-logo.jpeg" alt="Melting Pot" className="logo-loginn" />
           <h1 className="title">WELCOME BACK</h1>
           <p className="subtitle">Sign in with your Email address and Password</p>
           <form onSubmit={submitHandler} className="register-form">
-            <div className="input-group">
+            <div className="input-groupp">
               <label>Email Address</label>
               <input
                 type="email"
@@ -80,7 +80,7 @@ const LoginForm = ({ setLoggedIn }) => {
               />
             </div>
 
-            <div className="input-group">
+            <div className="input-groupp">
               <label>Password</label>
               <input
                 type="password"
@@ -100,7 +100,7 @@ const LoginForm = ({ setLoggedIn }) => {
               </Link>
             </div>
 
-            <button type="submit" className="signup-btn">Log In</button>
+            <button type="submit" className="signup-btna">Log In</button>
 
             <p className="login-text">
               Don’t have an account? <Link to="/register" className="sign-up-link">Sign Up</Link>
