@@ -14,8 +14,13 @@ import StyleGuide from "./StyleGuide";
 import AboutYessica from "./Team Pages/AboutYessica";
 import AboutRudy from "./Team Pages/AboutRudy";
 
-import AboutVaishnavi from "./Team Pages/AboutVaishnavi";
-import AboutJoshua from "./Team Pages/AboutJoshua";
+
+
+import AboutVaishnavi from "./Team Pages/AboutVaishnavi"
+import AboutJoshua from "./Team Pages/AboutJoshua"
+import UploadRecipe from "./Component/UploadRecipe";
+
+
 
 import HomePage from "./Component/HomePage";
 import CommunityPage from './Component/Community';
@@ -31,7 +36,13 @@ import PromiseComponent from "./Component/PromiseComponent";
 import RegisterForm from "./Component/RegisterForm";
 import ResetPassword from "./Component/ResetPassword";
 import Messaging from "./Component/Messaging";
+
+
+// App.jsx is the starting point for the application.  This is the component called by index, which will be rendered when
+// a user goes to your app URL.  This component will handle routing to other parts of your app, and any initial setup.
+=======
 import { io } from "socket.io-client";
+
 
 // Initialize the socket with the respective path and tenantID
 const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
@@ -92,6 +103,7 @@ function App() {
               <Route path="/about_rudy" element={<AboutRudy />} />
               <Route path="/about_vi" element={<AboutVaishnavi />} />
               <Route path="/about_joshua" element={<AboutJoshua />} />
+              <Route path="/upload" element={<UploadRecipe />} />
 
               {/* Home Page Route */}
               <Route
