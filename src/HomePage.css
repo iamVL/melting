@@ -1,312 +1,346 @@
 .categories {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 20px;
-    border: 2px dashed #ccc;
-    padding: 10px;
-  }
-  
-  .category-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 120px;
-    padding: 10px;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-  }
-  
-  .category-item span {
-    font-size: 2rem;
-  }
-  
-  .category-item p {
-    margin: 5px 0 0;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  border: 2px dashed #ccc;
+  padding: 10px;
+}
 
-  .banner h1 {
-    position: relative;
-    z-index: 2;
-    color: rgb(255, 255, 255);
-  }
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
 
-  .banner p {
-    position: relative;
-    z-index: 2;
-    color: rgb(255, 255, 255);
-  }
+.category-item span {
+  font-size: 2rem;
+}
 
-  .banner::before {
-    content: ''; 
-    position: absolute;
-    top: 44%; 
-    left: 50%; 
-    width: 95%; 
-    height: 25%; 
-    background-color: rgba(0, 0, 0, 0.5); 
-    z-index: 1; 
-    transform: translate(-50%, -50%); 
-  }
-  
-  .banner {
-    width: 95%;   
-    padding-top: 20px;      
-    margin: 0 auto;
-    height: 200px;       
-    background-image: url('https://cdn.discordapp.com/attachments/852261934488354849/1342329759367168010/food.jpg?ex=67b93d81&is=67b7ec01&hm=bf30294d76b0ef474f46e3cfd0eeeae2b663a802e96905facba223c08c1894d5&');
-    background-size: cover;      
-    background-position: center; 
-    overflow: hidden;    
-  }
+.category-item p {
+  margin: 5px 0 0;
+}
 
-  .recent-recipes {
-    position: relative; 
-    top: -40px; 
-    left: -px; 
-    font-size: 14px; 
-    padding: 10px; 
-    margin: 20px 0; 
-    width: 100%; 
-    max-width: 400px; 
-  }
-  
-  .recent-recipes h1 {
-    font-size: 20px; 
-    margin-bottom: 10px; 
-    color: #333; 
-    position: relative; 
-    top: -150px; 
-    left: -90px; 
-  }
-  
-  .recent-recipes ul {
-    list-style-type: none; 
-    margin: 0; 
-    padding: 0; 
-  }
-  
-  .recent-recipes li strong {
-    font-weight: bold; 
-    color: #555; 
-    display: block; 
-    position: relative; 
-    top: -120px; 
-    left: -0px; 
-  }
-  
-  .recent-recipes li p {
-    margin: 4px 0; 
-    color: #777; 
-    font-size: 12px; 
-  }
+.banner h1 {
+  position: relative;
+  z-index: 2;
+  color: rgb(255, 255, 255);
+}
+
+.banner p {
+  position: relative;
+  z-index: 2;
+  color: rgb(255, 255, 255);
+}
+
+.banner::before {
+  content: ''; 
+  position: absolute;
+  top: 44%; 
+  left: 50%; 
+  width: 95%; 
+  height: 25%; 
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 1; 
+  transform: translate(-50%, -50%); 
+}
+
+.banner {
+  width: 95%;   
+  padding-top: 20px;      
+  margin: 0 auto;
+  height: 200px;       
+  background-image: url('https://cdn.discordapp.com/attachments/852261934488354849/1342329759367168010/food.jpg?ex=67b93d81&is=67b7ec01&hm=bf30294d76b0ef474f46e3cfd0eeeae2b663a802e96905facba223c08c1894d5&');
+  background-size: cover;      
+  background-position: center; 
+  overflow: hidden;    
+}
+
+.recent-recipes {
+  position: relative; 
+  top: -40px; 
+  left: -px; 
+  font-size: 14px; 
+  padding: 10px; 
+  margin: 20px 0; 
+  width: 100%; 
+  max-width: 400px; 
+}
+
+.recent-recipes h1 {
+  font-size: 20px; 
+  margin-bottom: 10px; 
+  color: #333; 
+  position: relative; 
+  top: -150px; 
+  left: -90px; 
+}
+
+.recent-recipes ul {
+  list-style-type: none; 
+  margin: 0; 
+  padding: 0; 
+}
+
+.recent-recipes li strong {
+  font-weight: bold; 
+  color: #555; 
+  display: block; 
+  position: relative; 
+  top: -120px; 
+  left: -0px; 
+}
+
+.recent-recipes li p {
+  margin: 4px 0; 
+  color: #777; 
+  font-size: 12px; 
+}
 
 /* Cooking Level Section */
 .cooking-level {
-    font-size: 14px; /* Smaller font size */
-    padding: 10px; /* Reduced padding */
-    margin: 20px auto; /* Center the section horizontally */
-    width: 100%; /* Full width */
-    max-width: 400px; /* Limit maximum width */
-    text-align: center; /* Center text */
-    position: relative; 
-    top: -10px; 
-    left: 250px; 
-  }
-  
-  .cooking-level h1 {
-    font-size: 20px; 
-    margin-bottom: 10px; 
-    color: #333; 
-  }
-  
-  .cooking-level .level-buttons {
-    display: flex; 
-    gap: 10px; 
-    justify-content: center; 
-  }
-  
-  .cooking-level .level-button {
-    padding: 10px 20px; 
-    font-size: 14px; 
-    border: none; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    transition: background-color 0.3s ease; 
-  }
-  
-  .cooking-level .level-button.easy {
-    background-color: #333333; 
-    color: white; 
-  }
-  
-  .cooking-level .level-button.medium {
-    background-color: #333333; 
-    color: white; 
-  }
-  
-  .cooking-level .level-button.hard {
-    background-color: #333333; 
-    color: white; 
-  }
-  
-  .cooking-level .level-button:hover {
-    opacity: 0.9; 
-  }
-  .popular-recipes {
-    font-size: 14px; 
-    padding: 10px; 
-    margin: 20px 0; 
-    width: 100%; 
-    max-width: 400px; 
-  }
+  font-size: 14px; /* Smaller font size */
+  padding: 10px; /* Reduced padding */
+  margin: 20px auto; /* Center the section horizontally */
+  width: 100%; /* Full width */
+  max-width: 400px; /* Limit maximum width */
+  text-align: center; /* Center text */
+  position: relative; 
+  top: -10px; 
+  left: 250px; 
+}
 
-  .popular-recipes{
-    color: #333;
-  }
+.cooking-level h1 {
+  font-size: 20px; 
+  margin-bottom: 10px; 
+  color: #333; 
+}
 
-  .popular-recipes{
-    position: relative; 
-    top: -150px;  
-  }
+.cooking-level .level-buttons {
+  display: flex; 
+  gap: 10px; 
+  justify-content: center; 
+}
 
-  .popular-recipes h1 {
-    font-size: 20px; 
-    margin-bottom: 10px; 
-    color: #333; 
-    position: relative; 
-    top: -20px; 
-    left: -85px; 
-  }
+.cooking-level .level-button {
+  padding: 10px 20px; 
+  font-size: 14px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
 
-  .popular-recipes ul {
-    list-style-type: none; 
-    margin: 0; 
-    padding: 0; 
-  }
+.cooking-level .level-button.easy {
+  background-color: #333333; 
+  color: white; 
+}
 
-  .popular-recipes .prep-time {
-    font-size: 12px; /* Smaller font size for prep time */
-    color: #777; /* Lighter text color for prep time */
-    margin-left: 10px; /* Add some space between recipe info and prep time */
-    position: relative; 
-    top: -45px; 
-    left: 150px; 
-  }
+.cooking-level .level-button.medium {
+  background-color: #333333; 
+  color: white; 
+}
 
-  .reviews_section{
-    color: #333;
-    font-size: 20px;
-  }
+.cooking-level .level-button.hard {
+  background-color: #333333; 
+  color: white; 
+}
 
-  .reviews-section {
+.cooking-level .level-button:hover {
+  opacity: 0.9; 
+}
+.popular-recipes {
+  font-size: 14px; 
+  padding: 10px; 
+  margin: 20px 0; 
+  width: 100%; 
+  max-width: 400px; 
+}
+
+.popular-recipes{
+  color: #333;
+}
+
+.popular-recipes{
+  position: relative; 
+  top: -150px;  
+}
+
+.popular-recipes h1 {
+  font-size: 20px; 
+  margin-bottom: 10px; 
+  color: #333; 
+  position: relative; 
+  top: -20px; 
+  left: -85px; 
+}
+
+.popular-recipes ul {
+  list-style-type: none; 
+  margin: 0; 
+  padding: 0; 
+}
+
+.popular-recipes .prep-time {
+  font-size: 12px; /* Smaller font size for prep time */
+  color: #777; /* Lighter text color for prep time */
+  margin-left: 10px; /* Add some space between recipe info and prep time */
+  position: relative; 
+  top: -45px; 
+  left: 150px; 
+}
+
+.reviews_section{
+  color: #333;
+  font-size: 20px;
+}
+
+.reviews-section {
+  font-size: 12px;
+  color: #333;
+  width: 35%; /* Adjust as needed */
+  float: right; /* Ensures text alignment */
+  position: relative; 
+  top: -290px; 
+  left: 100px; 
+}
+
+.Trending-recipes{
+  color: #333;
+  font-size: 10px;
+  position: relative;
+  top: -125px; 
+  left: -100px; 
+}
+
+.cooking-tips {
+  color: #333;
+  font-size: 14px; 
+  padding: 10px; 
+  margin: 20px 0; 
+  width: 100%; 
+  max-width: 400px; 
+}
+
+.cooking-tips h1 {
+  font-size: 20px; 
+  margin-bottom: 10px; 
+  color: #333; 
+  position: relative; 
+  top: -600px; 
+  left: -95px; 
+}
+
+/* How-To Guides Section */
+.howto {
+  color: #333;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.Howto h1 {
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: underline; 
+  margin-bottom: 10px;
+  color: #E8775B; /* Purple color to indicate it's a link */
+  position: relative;
+  top: -670px;
+  left: -100px;
+  transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.Howto h1 a {
+  text-decoration: none; /* Removes underline */
+  color: inherit; /* Keeps the purple color */
+}
+
+.Howto h1:hover {
+  color: #E8775B; /* Slightly darker purple on hover */
+  transform: scale(1.05); /* Small hover effect */
+  cursor: pointer; /* Indicates clickability */
+}
+
+.light-gray-box {
+  width: 170px; /* Adjust width */
+  height: 200px; /* Adjust height */
+  background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
+  border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
+  display: flex;
+  position: relative; 
+  top: -400px; 
+  left: 460px; 
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.light-gray-box1 {
+  width: 170px; /* Adjust width */
+  height: 200px; /* Adjust height */
+  background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
+  border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
+  display: flex;
+  position: relative; 
+  top: -602px; 
+  left: 650px; 
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.CommunityPage{
     font-size: 12px;
-    color: #333;
-    width: 35%; /* Adjust as needed */
-    float: right; /* Ensures text alignment */
-    position: relative; 
-    top: -290px; 
-    left: 100px; 
-  }
-
-  .Trending-recipes{
-    color: #333;
-    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline; 
+    margin-bottom: 10px;
+    color: #E8775B; /* Purple color to indicate it's a link */
     position: relative;
-    top: -125px; 
-    left: -100px; 
+    top: -1127px;
+    left: 585px;
+    transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
   }
 
-  .cooking-tips {
-    color: #333;
-    font-size: 14px; 
-    padding: 10px; 
-    margin: 20px 0; 
-    width: 100%; 
-    max-width: 400px; 
+  .CommunityPage h1 a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Keeps the purple color */
   }
-
-  .cooking-tips h1 {
-    font-size: 20px; 
-    margin-bottom: 10px; 
-    color: #333; 
-    position: relative; 
-    top: -600px; 
-    left: -95px; 
-  }
-
-  .howto {
-    color: #333;
-    font-size: 14px; 
-    padding: 10px; 
-    margin: 20px 0; 
-    width: 100%; 
-    max-width: 400px; 
-  }
-
-  .Howto h1 {
-    font-size: 20px; 
-    margin-bottom: 10px; 
-    color: #333; 
-    position: relative; 
-    top: -670px; 
-    left: -100px; 
-  }
-
-  .light-gray-box {
-    width: 170px; /* Adjust width */
-    height: 200px; /* Adjust height */
-    background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
-    border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
-    display: flex;
-    position: relative; 
-    top: -400px; 
-    left: 460px; 
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .light-gray-box1 {
-    width: 170px; /* Adjust width */
-    height: 200px; /* Adjust height */
-    background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
-    border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
-    display: flex;
-    position: relative; 
-    top: -602px; 
-    left: 650px; 
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .light-gray-box2 {
-    width: 170px; /* Adjust width */
-    height: 200px; /* Adjust height */
-    background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
-    border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
-    display: flex;
-    position: relative; 
-    top: -650px; 
-    left: 460px; 
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .light-gray-box3 {
-    width: 170px; /* Adjust width */
-    height: 200px; /* Adjust height */
-    background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
-    border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
-    display: flex;
-    position: relative; 
-    top: -850px; 
-    left: 650px; 
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-
-
-
   
-  
+  .CommunityPage h1:hover {
+    color: #E8775B; /* Slightly darker purple on hover */
+    transform: scale(1.05); /* Small hover effect */
+    cursor: pointer; /* Indicates clickability */
+  }
+
+.light-gray-box2 {
+  width: 170px; /* Adjust width */
+  height: 200px; /* Adjust height */
+  background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
+  border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
+  display: flex;
+  position: relative; 
+  top: -650px; 
+  left: 460px; 
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.light-gray-box3 {
+  width: 170px; /* Adjust width */
+  height: 200px; /* Adjust height */
+  background-color: rgba(240, 240, 240, 0.5); /* Light gray with 50% transparency */
+  border: 1px solid rgba(200, 200, 200, 0.5); /* Optional border */
+  display: flex;
+  position: relative; 
+  top: -850px; 
+  left: 650px; 
+  font-size: 16px;
+  font-weight: bold;
+}

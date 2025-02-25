@@ -55,8 +55,8 @@ const CommentForm = ({
           Add A Comment to Post {parent}
           <br />
           <textarea
-            rows="10"
-            cols="70"
+            rows="5"
+            cols="40"
             onChange={(e) => setPostText(e.target.value)}
           />
         </label>
