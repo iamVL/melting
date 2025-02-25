@@ -2,14 +2,26 @@ import React, { useEffect, useState } from "react";
 import "../App.css";
 import "../Login.css";
 import { Link, useNavigate } from "react-router-dom";
+import "../RegisterForm.css"; // Using the same styling as RegisterForm
 import foodImage from "../food-image.jpeg";
 
 const LoginForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const [sessionToken, setSessionToken] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, []);
 
   const submitHandler = (event) => {
     // event.preventDefault() prevents the browser from performing its default action
@@ -52,46 +64,53 @@ const LoginForm = ({ setLoggedIn }) => {
   return (
     <div className="login-container">
       <div className="login-box">
+        {/* Left Column - Logo & Form */}
         <div className="left-column">
-          <div className="logo">
-            <img src={require("../melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
-          </div>
-          <h2>WELCOME BACK</h2>
-          <p>Sign in with your Email address and Password</p>
-          <form onSubmit={submitHandler}>
-            <label>Email Address</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
+          <img src="/melting-pot-logo.jpeg" alt="Melting Pot" className="logo-loginn" />
+          <h1 className="title">WELCOME BACK</h1>
+          <p className="subtitle">Sign in with your Email address and Password</p>
+          <form onSubmit={submitHandler} className="register-form">
+            <div className="input-groupp">
+              <label>Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="input-groupp">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
             <div className="options">
               <label className="remember-me">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
-                />
+                <input type="checkbox" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
                 Remember me
               </label>
               <Link to="/reset-password" className="forgot-password">
                 Forgot Password?
               </Link>
             </div>
-            <button type="submit">Log In</button>
+
+            <button type="submit" className="signup-btna">Log In</button>
+
+            <p className="login-text">
+              Don’t have an account? <Link to="/register" className="sign-up-link">Sign Up</Link>
+            </p>
           </form>
-          <p>Don’t have an account? <Link to="/register" className="sign-up">Sign Up</Link></p>
         </div>
+
+        {/* Right Column - Food Image */}
         <div className="right-column">
-          <img src={foodImage} alt="Delicious food" />
+          <img src={foodImage} alt="Delicious food" className="food-image" />
         </div>
       </div>
     </div>
