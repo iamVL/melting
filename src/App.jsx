@@ -18,7 +18,6 @@ import AboutVaishnavi from "./Team Pages/AboutVaishnavi";
 import AboutJoshua from "./Team Pages/AboutJoshua";
 
 import HomePage from "./Component/HomePage";
-import HowToGuides from "./Component/HowToGuides"; // Import How-To Guides Page
 import BakingBasics from "./Component/BakingBasics"; // Import Baking Basics Page
 import GrillingTechniques from "./Component/GrillingTechniques";
 import Navbar from "./Component/Navbar";
