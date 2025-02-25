@@ -99,6 +99,9 @@ function App() {
               <Route path="/how-to-guides" element={<HowToGuides />} />
 
               <Route path="/community" element={<CommunityPage />} />
+                {/* Baking Basics Route */}
+              <Route path="/baking-basics" element={<BakingBasics />} />
+              <Route path="/grilling-techniques" element={<GrillingTechniques />} /> 
 
               <Route path="/register" element={<RegisterForm setLoggedIn={setLoggedIn} />} />
               <Route path="/reset-password" element={<ResetPassword />} />
