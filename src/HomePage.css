@@ -296,6 +296,29 @@
   font-weight: bold;
 }
 
+.CommunityPage{
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: underline; 
+    margin-bottom: 10px;
+    color: #E8775B; /* Purple color to indicate it's a link */
+    position: relative;
+    top: -1127px;
+    left: 585px;
+    transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  }
+
+  .CommunityPage h1 a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Keeps the purple color */
+  }
+  
+  .CommunityPage h1:hover {
+    color: #E8775B; /* Slightly darker purple on hover */
+    transform: scale(1.05); /* Small hover effect */
+    cursor: pointer; /* Indicates clickability */
+  }
+
 .light-gray-box2 {
   width: 170px; /* Adjust width */
   height: 200px; /* Adjust height */

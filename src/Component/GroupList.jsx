@@ -246,7 +246,7 @@ const GroupList = () => {
         <ul>
           {groups.map((group) => (
             <div key={group.id} className="userlist">
-              {group.name}
+              <h4>{group.name}</h4>
               <div className="deletePost">
                 {conditionalAction(group.id)}
                 <img
@@ -256,12 +256,15 @@ const GroupList = () => {
                   title="Delete Group"
                   onClick={(e) => deleteGroup(group.id)}
                 />
+                <button className="comment-button" onClick={() => console.log('Comment clicked')}>
+                Comment
+                </button>
               </div>
             </div>
           ))}
         </ul>
-        <button onClick={testGroupUpdate}>Test Update</button>
-        <button onClick={testGroupAdd}>Test Add</button>
+        {/*<button onClick={testGroupUpdate}>Test Update</button>*/}
+        {/*<button onClick={testGroupAdd}>Test Add</button>*/}
       </div>
     );
   }
