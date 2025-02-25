@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";  // Import Link for navigation
 import "../HowToGuides.css";
 import cupcakeIcon from "../assets/cupcake.png";  
 import grillChickenIcon from "../assets/grill-chicken.png";  
@@ -12,12 +13,14 @@ const guides = [
     description: "Learn the Essentials of Baking at Home",
     guideIcon: cupcakeIcon,
     recipeImage: cupcakeRecipe,  // Image that opens full screen
+    link: "/baking-basics",  // Link to Baking Basics page
   },
   {
     title: "Grilling Techniques",
     description: "Master the Art of Grilling",
     guideIcon: grillChickenIcon,
     recipeImage: grillChickenRecipe,  // Image that opens full screen
+    link: "/grilling-techniques",  // Link to Grilling Techniques page
   },
 ];
 
@@ -42,7 +45,9 @@ const HowToGuides = () => {
         {guides.map((guide, index) => (
           <div key={index} className="guide-card">
             <div className="guide-info">
-              <h3>{guide.title}</h3>
+              <h3>
+                <Link to={guide.link} className="guide-link">{guide.title}</Link>
+              </h3>
               <p>{guide.description}</p>
             </div>
             <div className="guide-icons">
