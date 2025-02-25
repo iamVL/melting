@@ -93,11 +93,12 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
           <div className="light-gray-box"></div>
           <div className="light-gray-box1"></div>
 
-          {/* Cooking Tips */}
-          <div className="cooking-tips">
-            <h1>Cooking Tips</h1>
-          </div>
-
+    {/* Cookingg Tips */}
+    <Link to="/tips" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <div className="cooking-tips">
+        <h1>Cooking Tips</h1>
+      </div>
+    </Link>
           {/* How-To Guides */}
           <div className="Howto">
             <h1>
