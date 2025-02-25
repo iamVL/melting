@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../Communities.css";
 import Groups from "./Groups";
 import GroupList from "./GroupList";
+import commentIcon from "../assets/comment-icon.png";  
 
 function CommunityPage() {
   const [groups, setGroups] = useState([]); 
@@ -88,6 +89,7 @@ function CommunityPage() {
           <p>Loading groups...</p>
         )}
       </div>
+      
     </div>
     
   );

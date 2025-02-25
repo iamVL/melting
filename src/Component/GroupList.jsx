@@ -256,6 +256,9 @@ const GroupList = () => {
                   title="Delete Group"
                   onClick={(e) => deleteGroup(group.id)}
                 />
+                <button className="comment-button" onClick={() => console.log('Comment clicked')}>
+                Comment
+                </button>
               </div>
             </div>
           ))}

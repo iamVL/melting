@@ -29,33 +29,33 @@
   }
 
   .create-group-input {
-    width: 200px; /* Adjust the width */
-    height: 33px; /* Adjust the height */
-    font-size: 16px; /* Change text size */
-    padding: 8px; /* Adjust spacing inside the box */
-    border: 1px solid #ccc; /* Optional border */
-    border-radius: 8px; /* Optional rounded corners */
+    width: 200px; 
+    height: 33px; 
+    font-size: 16px; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 8px;
   }
 
 /* Styles for the group list section */
 
   .GroupListSection h3 {
     font-size: 24px;
-    color: #333;  /* Dark color for the heading */
-    text-align: center;  /* Center the heading */
+    color: #333;  
+    text-align: center;  
     margin-bottom: 15px;
   }
   
 /* Style for the individual groups */
 .userlist {
-    background-color: #d6d6d6;  /* White background for each group */
-    border-radius: 10px;  /* Rounded corners for each group */
-    padding: 15px;  /* Add some padding inside each group */
-    margin: 10px 20px;  /* Add space between groups */
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow to make groups stand out */
-    display: flex;  /* Use flexbox for layout */
-    justify-content: space-between;  /* Align items with space between them */
-    align-items: center;  /* Vertically center the content */
+    background-color: #d6d6d6;  
+    border-radius: 10px;  
+    padding: 15px;  
+    margin: 10px 20px;  
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);  
+    display: flex;  
+    justify-content: space-between;  
+    align-items: center;  
     width: 400px;
     height: 80px;
     color: #333;
@@ -66,21 +66,37 @@
   .userlist h4 {
     font-weight: bold;
     text-align: center;
-    margin: 0;  /* Optional: Removes extra space around h4 */
+    margin: 0;  
   }
   
   .userlist .deletePost img {
-    width: 25px;  /* Adjust the size of the icons */
+    width: 25px;  
     height: 25px;
-    cursor: pointer;  /* Change the cursor to indicate it's clickable */
+    cursor: pointer; 
   }
   
   /* Hover effect for each group */
   .userlist:hover {
-    background-color: #a4a4a4;  /* Slightly darker background on hover */
-    transform: scale(1.02);  /* Slightly enlarge the group on hover */
-    transition: transform 0.2s ease, background-color 0.2s ease;  /* Smooth transition */
+    background-color: #a4a4a4;  
+    transform: scale(1.02);  
+    transition: transform 0.2s ease, background-color 0.2s ease;  
   }
+
+  .comment-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #333; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px;
+  }
+  
+  .comment-button:hover {
+    background-color: #333;
+  }
+  
   
   
 
