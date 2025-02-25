@@ -13,6 +13,7 @@ import AboutRudy from "./Team Pages/AboutRudy";
 
 import AboutVaishnavi from "./Team Pages/AboutVaishnavi"
 import AboutJoshua from "./Team Pages/AboutJoshua"
+import UploadRecipe from "./Component/UploadRecipe";
 
 import HomePage from "./Component/HomePage";
 import Navbar from "./Component/Navbar";
@@ -25,6 +26,7 @@ import RegisterForm from "./Component/RegisterForm";
 import ResetPassword from "./Component/ResetPassword";
 import Messaging from "./Component/Messaging";
 import { io } from "socket.io-client"
+//import UploadRecipe from "./Component/UploadRecipe";
 
 // App.jsx is the starting point for the application.  This is the component called by index, which will be rendered when
 // a user goes to your app URL.  This component will handle routing to other parts of your app, and any initial setup.
@@ -112,6 +114,7 @@ function App() {
 
               <Route path="/about_vi" element={<AboutVaishnavi />} />
               <Route path="/about_joshua" element={<AboutJoshua />} />
+              <Route path="/upload" element={<UploadRecipe />} />
 
 
               <Route
