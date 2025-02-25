@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
 import Edit from "./Component/Edit";
+import ViewTip from "./Component/CookingTipPage";
+import TipForm from "./Component/Tip"
+import TipDetails  from "./Component/TipDetails";
 
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin"
@@ -99,6 +102,9 @@ function App() {
           />
           <div className="maincontent" id="mainContent">
             <Routes>
+              <Route path="/tip-upload" element={<TipForm />} />
+              <Route path="/tips" element={<ViewTip />} />
+              <Route path="/tip/:id" element={<TipDetails />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/edit-profile" element={<Edit />} />
               <Route path="/AboutUs" element={<AboutUs />} />

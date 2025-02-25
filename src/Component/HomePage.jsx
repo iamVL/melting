@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import LoginForm from "./LoginForm";
 import "../HomePage.css"; 
+import { Link } from "react-router-dom";
+
 
 const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
   const [userToken, setUserToken] = useState("");
@@ -102,9 +104,11 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
 
 
     {/* Cookingg Tips */}
-    <div className="cooking-tips">
-    <h1>Cooking Tips</h1>
-  </div>
+    <Link to="/tips" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <div className="cooking-tips">
+        <h1>Cooking Tips</h1>
+      </div>
+    </Link>
 
       {/* How-To Guides */}
       <div className="Howto">
