@@ -246,7 +246,7 @@ const GroupList = () => {
         <ul>
           {groups.map((group) => (
             <div key={group.id} className="userlist">
-              {group.name}
+              <h4>{group.name}</h4>
               <div className="deletePost">
                 {conditionalAction(group.id)}
                 <img
@@ -260,8 +260,8 @@ const GroupList = () => {
             </div>
           ))}
         </ul>
-        <button onClick={testGroupUpdate}>Test Update</button>
-        <button onClick={testGroupAdd}>Test Add</button>
+        {/*<button onClick={testGroupUpdate}>Test Update</button>*/}
+        {/*<button onClick={testGroupAdd}>Test Add</button>*/}
       </div>
     );
   }

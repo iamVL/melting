@@ -1,0 +1,92 @@
+.MainHeading {
+    text-align: center;      
+    margin-top: 50px;        
+    color: #333;
+  }
+
+.SubHeading {
+    text-align: center;      
+    margin-top: 50px;        
+    color: #333;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.create-group-btn {
+    padding: 15px 20px;
+    font-size: 16px;
+    width: auto;
+    border-radius: 8px;
+    background-color: #333; 
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .create-group-btn:hover {
+    background-color: #595959; 
+  }
+
+  .create-group-input {
+    width: 200px; /* Adjust the width */
+    height: 33px; /* Adjust the height */
+    font-size: 16px; /* Change text size */
+    padding: 8px; /* Adjust spacing inside the box */
+    border: 1px solid #ccc; /* Optional border */
+    border-radius: 8px; /* Optional rounded corners */
+  }
+
+/* Styles for the group list section */
+
+  .GroupListSection h3 {
+    font-size: 24px;
+    color: #333;  /* Dark color for the heading */
+    text-align: center;  /* Center the heading */
+    margin-bottom: 15px;
+  }
+  
+/* Style for the individual groups */
+.userlist {
+    background-color: #d6d6d6;  /* White background for each group */
+    border-radius: 10px;  /* Rounded corners for each group */
+    padding: 15px;  /* Add some padding inside each group */
+    margin: 10px 20px;  /* Add space between groups */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow to make groups stand out */
+    display: flex;  /* Use flexbox for layout */
+    justify-content: space-between;  /* Align items with space between them */
+    align-items: center;  /* Vertically center the content */
+    width: 400px;
+    height: 80px;
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+  }
+
+  .userlist h4 {
+    font-weight: bold;
+    text-align: center;
+    margin: 0;  /* Optional: Removes extra space around h4 */
+  }
+  
+  .userlist .deletePost img {
+    width: 25px;  /* Adjust the size of the icons */
+    height: 25px;
+    cursor: pointer;  /* Change the cursor to indicate it's clickable */
+  }
+  
+  /* Hover effect for each group */
+  .userlist:hover {
+    background-color: #a4a4a4;  /* Slightly darker background on hover */
+    transform: scale(1.02);  /* Slightly enlarge the group on hover */
+    transition: transform 0.2s ease, background-color 0.2s ease;  /* Smooth transition */
+  }
+  
+  
+
+  
+  
+
+  
+  
+

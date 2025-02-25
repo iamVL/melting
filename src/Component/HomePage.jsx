@@ -107,6 +107,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
 
           <div className="light-gray-box2"></div>
           <div className="light-gray-box3"></div>
+
+          {/* Community Page */}
+          <div className="CommunityPage">
+            <h1>
+            <Link to="/community" className="ComunityPagee">Communities</Link>
+            </h1>
+          </div>
         </div>
       )}
     </div>
