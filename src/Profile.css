@@ -366,7 +366,7 @@ country {
 }
 
 .inputsp input {
-  width: 150px;
+  width: 250px;
   height: 18px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -394,7 +394,7 @@ country {
   display:flex;
   flex-direction: column;
   align-items: flex-start;
-  line-height: 0;
+  line-height: 1.1;
 }
 
 .password-box a{

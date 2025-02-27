@@ -11,14 +11,15 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <ul className="nav-links">
+        <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={120} />
         <li><Link to="/">Home</Link></li>
         <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
           <span className="dropdown-title">Featured ▼</span>
           {dropdownOpen && (
-            <ul className="dropdown-menu">
+            <ut className="dropdown-menu">
               <li><Link to="/tips">Cooking Tips</Link></li>
               <li><Link to="/how-to-guides">How To Guides</Link></li>
-            </ul>
+            </ut>
           )}
         </li>
         <li><Link to="/favorites">Favorites</Link></li>
@@ -27,15 +28,14 @@ const Navbar = () => {
         <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
           <span className="dropdown-title">Upload ▼</span>
           {dropdownOpen && (
-            <ul className="dropdown-menu">
+            <ut className="dropdown-menu">
               <li><Link to="/tip-upload">Cooking Tip</Link></li>
               <li><Link to="/upload">Recipe</Link></li>
-            </ul>
+            </ut>
           )}
         </li>
 
         <li><Link to="/filter">Filter</Link></li>
-        <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={120} />
         <li><Link to="/aboutus">About Us</Link></li>
         <li><Link to="/settings"><img src={profileIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
       </ul>

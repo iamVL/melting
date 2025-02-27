@@ -81,6 +81,7 @@
   flex-direction: column;
   opacity: 0;
   visibility: hidden;
+  z-index: 1000;
   transition: opacity 0.3s ease, transform 0.2s ease;
   transform: translateY(10px);
 }
