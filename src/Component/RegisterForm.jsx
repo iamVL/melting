@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import "../RegisterForm.css";
 
 const RegisterForm = ({ setLoggedIn }) => {
@@ -83,7 +84,7 @@ const RegisterForm = ({ setLoggedIn }) => {
 
         {/* Right Side: Registration Form */}
         <div className="form-container">
-        <img src="../assets/melting-pot-logo.jpeg" alt="Melting" className="logo-login" />
+        <img src={meltingLogo} alt="Melting" className="logo-login" />
           <h1 className="title">Registration</h1>
           <form onSubmit={submitHandler} className="register-form">
             <div className="input-group">
