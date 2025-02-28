@@ -178,3 +178,46 @@
   text-shadow: 2px 2px 4px rgba(67, 163, 45, 0.5);
 }
 
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .login-box {
+    flex-direction: column;
+    width: 95vw;
+    padding: 15px;
+  }
+
+  .left-column, .right-column {
+    max-width: 100%;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .left-column {
+    padding-top: 20px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .logo-loginn {
+    width: 120px; /* Reduce logo size */
+    margin-bottom: 5px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .signup-btna {
+    width: 100%;
+  }
+
+  .food-image {
+    max-width: 250px;
+    height: auto;
+  }
+
+  .input-groupp input {
+    width: 100%;
+  }
+}
