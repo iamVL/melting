@@ -83,7 +83,7 @@ const RegisterForm = ({ setLoggedIn }) => {
 
         {/* Right Side: Registration Form */}
         <div className="form-container">
-        <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo-login" />
+        <img src="../assets/melting-pot-logo.jpeg" alt="Melting" className="logo-login" />
           <h1 className="title">Registration</h1>
           <form onSubmit={submitHandler} className="register-form">
             <div className="input-group">

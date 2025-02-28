@@ -66,7 +66,7 @@ const LoginForm = ({ setLoggedIn }) => {
       <div className="login-box">
         {/* Left Column - Logo & Form */}
         <div className="left-column">
-          <img src="/melting-pot-logo.jpeg" alt="Melting Pot" className="logo-loginn" />
+          <img src="../assets/melting-pot-logo.jpeg" alt="Melting Pot" className="logo-loginn" />
           <h1 className="title">WELCOME BACK</h1>
           <p className="subtitle">Sign in with your Email address and Password</p>
           <form onSubmit={submitHandler} className="register-form">
