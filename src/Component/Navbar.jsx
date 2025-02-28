@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <ul className="nav-links">
-        <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={120} />
+      <Link to="/"> <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={120} /></Link>
         <li><Link to="/">Home</Link></li>
         <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
           <span className="dropdown-title">Featured ▼</span>
