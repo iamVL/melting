@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import "../Login.css";
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import "../RegisterForm.css"; // Using the same styling as RegisterForm
 import foodImage from "../food-image.jpeg";
@@ -66,7 +67,7 @@ const LoginForm = ({ setLoggedIn }) => {
       <div className="login-box">
         {/* Left Column - Logo & Form */}
         <div className="left-column">
-          <img src="/melting-pot-logo.jpeg" alt="Melting Pot" className="logo-loginn" />
+          <img src={meltingLogo} alt="Melting Pot" className="logo-loginn" />
           <h1 className="title">WELCOME BACK</h1>
           <p className="subtitle">Sign in with your Email address and Password</p>
           <form onSubmit={submitHandler} className="register-form">
