@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../RegisterForm.css"; // ✅ CORRECT
+import "../RegisterForm.css";
 
 const RegisterForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");

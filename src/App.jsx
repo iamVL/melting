@@ -36,12 +36,14 @@ import PromiseComponent from "./Component/PromiseComponent";
 import RegisterForm from "./Component/RegisterForm";
 import ResetPassword from "./Component/ResetPassword";
 import Messaging from "./Component/Messaging";
+import RecipeDetails from "./Component/RecipeDetails";
 
 
 // App.jsx is the starting point for the application.  This is the component called by index, which will be rendered when
 // a user goes to your app URL.  This component will handle routing to other parts of your app, and any initial setup.
 
 import { io } from "socket.io-client";
+import Posts from "./Component/Posts";
 
 
 // Initialize the socket with the respective path and tenantID
@@ -52,6 +54,7 @@ const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
   },
 });
 export { socket };
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -104,6 +107,7 @@ function App() {
               <Route path="/about_vi" element={<AboutVaishnavi />} />
               <Route path="/about_joshua" element={<AboutJoshua />} />
               <Route path="/upload" element={<UploadRecipe />} />
+              <Route path="/recipe/:id" element={<RecipeDetails /> }/>
 
               {/* Home Page Route */}
               <Route
@@ -129,6 +133,7 @@ function App() {
               <Route path="/friends" element={<Friends />} />
               <Route path="/groups" element={<Groups />} />
               <Route path="/promise" element={<PromiseComponent />} />
+              <Route path= "/posts" element={<Posts />} />
 
               {/* Dynamic Room ID for Messaging */}
               <Route path="/messages/:roomID" element={<Messaging />} />
