@@ -164,8 +164,11 @@ const UploadRecipe = () => {
 
                 setIsLoaded(true);
                 console.log("Recipe uploaded successfully:", data);
-                navigate("/posts");
+
+                // 🔀 Redirect to the new recipe details page
+                navigate(`/recipe/${data.id}`);
             })
+
             .catch((error) => {
                 setIsLoaded(true);
                 setError(error);
