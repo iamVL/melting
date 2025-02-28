@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../ResetPassword.css";
-import logo from "../melting-pot-logo.jpeg";
+import logo from "../assets/melting-pot-logo.jpeg";
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
