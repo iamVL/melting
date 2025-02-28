@@ -181,43 +181,63 @@
 /* Media Queries for Mobile Responsiveness */
 @media (max-width: 768px) {
   .login-box {
-    flex-direction: column;
+    flex-direction: column; /* Stack elements vertically */
     width: 95vw;
     padding: 15px;
+    align-items: center;
   }
 
-  .left-column, .right-column {
+  /* ✅ Push Everything (Except Logo) Down */
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px !important; /* Moves all content down */
+  }
+
+  .register-form {
+    margin-top: 30px !important; /* Adds extra spacing below title */
+  }
+
+  .left-column,
+  .right-column {
     max-width: 100%;
     padding: 10px;
     align-items: center;
     justify-content: center;
   }
 
-  .left-column {
-    padding-top: 20px;
-    align-items: center;
-    text-align: center;
-  }
-
+  /* ✅ Keep Logo in Place & Add Space Below */
   .logo-loginn {
-    width: 120px; /* Reduce logo size */
-    margin-bottom: 5px;
+    width: 110px; /* Slightly smaller */
+    position: relative; /* Ensure it doesn’t affect other elements */
+    margin-bottom: 70px; /* Pushes title further down */
   }
 
+  /* ✅ Move Title Down */
   .title {
     font-size: 28px;
+    text-align: center;
+    margin-top: 20px; /* Pushes "WELCOME BACK" lower */
   }
 
-  .signup-btna {
-    width: 100%;
-  }
-
+  /* ✅ Fix Image Scaling */
   .food-image {
-    max-width: 250px;
+    max-width: 100%; /* Ensure it fits */
     height: auto;
   }
 
   .input-groupp input {
     width: 100%;
   }
+
+  /* ✅ Collapse Navbar for Mobile */
+  .navbar {
+    display: none; /* Hides full navbar */
+  }
+
+  .hamburger-menu {
+    display: block; /* Show hamburger menu */
+  }
 }
+
