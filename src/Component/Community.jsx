@@ -9,7 +9,7 @@ function CommunityPage() {
   const [groups, setGroups] = useState([]); 
   const [newGroupName, setNewGroupName] = useState(""); 
   const [isLoaded, setIsLoaded] = useState(false); 
-  const [showSearchBar, setShowSearchBar] = useState(false); 
+  const [showSearchBar, setShowSearchBar] = useState(true); 
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   // Fetch groups when the component mounts
