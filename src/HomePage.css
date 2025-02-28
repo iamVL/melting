@@ -7,7 +7,7 @@
 
 .hero {
   margin-bottom: 0px;
-  height: 350px;
+  max-height: 350px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -405,4 +405,15 @@ leveltext {
 
 .popular-recipes h2 {
   margin-top: 0px;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    max-height: 100%;
+  }
 }
