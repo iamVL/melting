@@ -32,7 +32,7 @@
   .navbar ul {
     list-style: none;
     display: flex;
-    gap: 15px;
+    gap: 65px;
   }
   
   .navbar ul li {

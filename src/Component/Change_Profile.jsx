@@ -226,7 +226,7 @@ const Profile = (props) => {
                   maxLength="11"
                 />
             </div>
-            <div class ="password-box">
+            {/*<div class ="password-box">
               <a> Password</a>
               <div class ="inputsp">
                   <input
@@ -235,19 +235,8 @@ const Profile = (props) => {
                   value={password}
                   maxlength="35"
                 />
-                <button
-                  class="passwordbutton"
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    marginLeft: "10px",
-                    cursor: "pointer",
-                  }}
-                  >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
               </div>
-            </div>
+            </div>*/}
             {/* <div class ="inputs">
               <a> Favorite Color</a>
               <input
