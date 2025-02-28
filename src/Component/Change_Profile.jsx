@@ -226,7 +226,7 @@ const Profile = (props) => {
                   maxLength="11"
                 />
             </div>
-            <div class ="password-box">
+            {/*<div class ="password-box">
               <a> Password</a>
               <div class ="inputsp">
                   <input
@@ -236,7 +236,7 @@ const Profile = (props) => {
                   maxlength="35"
                 />
               </div>
-            </div>
+            </div>*/}
             {/* <div class ="inputs">
               <a> Favorite Color</a>
               <input
