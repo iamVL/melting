@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import profileIcon from "../assets/profile icon.png";
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -11,7 +12,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <ul className="nav-links">
-      <Link to="/"> <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={120} /></Link>
+      <Link to="/"> <img src={meltingLogo} alt="Melting" className="logo" width={120} /></Link>
         <li><Link to="/">Home</Link></li>
         <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
           <span className="dropdown-title">Featured ▼</span>
