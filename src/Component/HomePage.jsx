@@ -180,12 +180,12 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
               <div className="guide-card">
                 <h3>Grilling Techniques</h3>
                 <p> Master the Art of Grilling.</p>
-                <a href="/grilling-techniques ">Learn More →</a>
+                <Link to="/grilling-techniques"><a>Learn More →</a></Link>
               </div>
               <div className="guide-card">
                 <h3>Baking Basics</h3>
                 <p>Essential techniques for perfect baked goods.</p>
-                <a href="/baking-basics">Learn More →</a>
+                <Link to="/baking-basics"><a>Learn More →</a></Link>
               </div>
             </div>
           </section>
