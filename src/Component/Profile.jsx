@@ -193,12 +193,6 @@ const Profile = (props) => {
                   {phone}
               </div>
             </div>
-            <div class ="inputs">
-              <a> Password</a>
-              <div class="display">
-                {"•".repeat(password.length)}
-              </div>
-            </div>
             {/* <div class ="inputs">
               <a> Favorite Color</a>
               <input
