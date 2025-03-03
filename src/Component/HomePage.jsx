@@ -86,7 +86,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
               </p>
               <div className="hero-buttons">
                 <Link to="/upload"><button className="btn primary">Post Your Own</button></Link>
-                <Link to="/featured"><button className="btn secondary">Browse Recipes</button></Link>
+                <Link to="/recipes"><button className="btn secondary">Browse Recipes</button></Link>
               </div>
             </div>
             <div className="hero-image">

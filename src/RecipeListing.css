@@ -1,0 +1,116 @@
+/* Container */
+.recipe-container {
+  text-align: center;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Header */
+.recipe-header {
+  font-size: 35px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.recipe-subheader {
+  font-size: 16px;
+  color: gray;
+  margin-bottom: 30px;
+}
+
+/* Force EXACTLY 3 columns, but each has a decent min-width */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(400px, 1fr)); /* <== 400px min width */
+  gap: 20px;
+  justify-items: center;
+}
+
+/* Each recipe card */
+.recipe-card {
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  /* Remove hidden overflow so the bottom doesn’t get cropped */
+  overflow: visible;  
+  text-align: left;
+  width: 100%;
+  max-width: 500px; /* <== increased from 360px to 500px */
+  transition: transform 0.2s ease-in-out;
+}
+
+.recipe-card:hover {
+  transform: scale(1.03);
+}
+
+/* Card image */
+.recipe-image {
+  width: 100%;
+  /* Either fix a larger height or let it be auto. Example: 300px. */
+  height: 300px;
+  object-fit: cover;
+}
+
+/* Card text */
+.recipe-content {
+  padding: 20px;
+}
+
+.recipe-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 8px;
+}
+
+.recipe-description {
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 10px;
+}
+
+/* No recipes message */
+.no-recipes {
+  font-size: 16px;
+  color: red;
+  margin-top: 20px;
+}
+
+/* “Read More” button */
+.read-more-button {
+  display: block;
+  background-color: #ff7043;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.read-more-button:hover {
+  background-color: #e64a19;
+}
+
+/* Delete button */
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+  width: 100%; /* full width under the “Read More” button */
+  margin-top: 8px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}

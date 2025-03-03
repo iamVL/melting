@@ -10,6 +10,7 @@ import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin";
 import Login from "./Login";
 import StyleGuide from "./StyleGuide";
+import RecipeListing from "./Component/RecipeListing";
 
 import AboutYessica from "./Team Pages/AboutYessica";
 import AboutRudy from "./Team Pages/AboutRudy";
@@ -95,6 +96,7 @@ function App() {
             <Routes>
               <Route path="/tip-upload" element={<TipForm />} />
               <Route path="/tips" element={<ViewTip />} />
+              <Route path="/recipes" element={<RecipeListing />} />
               <Route path="/tip/:id" element={<TipDetails />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/edit-profile" element={<Edit />} />
