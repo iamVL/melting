@@ -159,7 +159,7 @@ const Profile = (props) => {
         {/* profile buttons */}
         <div class ="editUser">
           <button onClick={logout} class="logout">Log out</button><br />
-          <a href="/edit-profile" onClick="toggleInputs()" class="editprofile">Edit Profile</a><br />
+          <Link to="/edit-profile"><a onClick="toggleInputs()" class="editprofile">Edit Profile</a><br /></Link>
         </div>
       </div>
       <div class ="bottonProfileSection">
