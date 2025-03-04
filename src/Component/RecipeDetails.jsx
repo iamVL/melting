@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import "../RecipeDetails.css"; // Ensure you have this CSS for styling
-import CommentForm from "./CommentForm.jsx"; // Import the Comment Form
-import Post from "./Post.jsx"; // Import Post Component for Comments
+\import React, { useEffect, useState , useRef} from "react";
+import {Link, useParams} from "react-router-dom";
+import "../RecipeDetails.css";
 
 const RecipeDetails = () => {
-    const { id } = useParams(); // Get recipe ID from URL
+    const { id } = useParams();
     const [recipe, setRecipe] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [comments, setComments] = useState([]);
+    const [rating, setRating] = useState(0);
+    const [commentName, setCommentName] = useState("");
+    const [commentText, setCommentText] = useState("");
+    const [reviews, setReviews] = useState([]);
+    const reviewsRef = useRef(null);
 
-    // ✅ Fetch the recipe details
+
+
+
+    // Fetch recipe details
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
             .then((res) => res.json())
@@ -23,98 +28,190 @@ const RecipeDetails = () => {
                 setError(err);
                 setIsLoading(false);
             });
-
-        loadComments(); // Load comments as well
     }, [id]);
 
-    // ✅ Load Comments
-    const loadComments = () => {
-        fetch(`${process.env.REACT_APP_API_PATH}/posts?parentID=${id}`)
-            .then((res) => res.json())
-            .then((data) => setComments(data[0] || []))
-            .catch((err) => setError(err));
+    // Load reviews from local storage
+    useEffect(() => {
+        const storedReviews = localStorage.getItem(`reviews-${id}`);
+        if (storedReviews) {
+            setReviews(JSON.parse(storedReviews));
+        }
+    }, [id]);
+    const scrollLeft = () => {
+        if (reviewsRef.current) {
+            reviewsRef.current.scrollBy({ left: -350, behavior: "smooth" });
+        }
     };
 
-    // ✅ Reload comments after submitting a new one
+    const scrollRight = () => {
+        if (reviewsRef.current) {
+            reviewsRef.current.scrollBy({ left: 350, behavior: "smooth" });
+        }
+    };
+
+    // Handle review submission
     const handleCommentSubmit = () => {
-        loadComments();
+        if (commentName && commentText && rating > 0) {
+            const newReview = {
+                name: commentName,
+                text: commentText,
+                rating: rating,
+            };
+
+            const updatedReviews = [...reviews, newReview];
+            setReviews(updatedReviews);
+            localStorage.setItem(`reviews-${id}`, JSON.stringify(updatedReviews));
+
+            setCommentName("");
+            setCommentText("");
+            setRating(0);
+        } else {
+            alert("Please fill in all fields for the review.");
+        }
     };
 
     if (isLoading) return <p>Loading recipe details...</p>;
     if (error) return <p>Error loading recipe: {error.message}</p>;
     if (!recipe) return <p>Recipe not found.</p>;
 
+
     return (
-        <div className="recipe-details-container-2">
-            {/* ✅ Main Content (Recipe Details) */}
-            <div className="recipe-main-content-2">
-                <div className="recipe-header-container-2">
-                    <div className="recipe-header-text-2">
-                        <h2 className="recipe-title-2">{recipe.attributes?.title}</h2>
-                        <p className="recipe-description-2">{recipe.content}</p>
+
+        <div className="recipe-details-container">
+            <div className="back-to-recipes">
+                <Link to="/recipe" className="back-button">
+                    ← All Recipes
+                </Link>
+            </div>
+
+            <div className="recipe-content">
+                <div className="recipe-header">
+                    <div className="recipe-text-content">
+                        <h2 className="recipe-title">{recipe.attributes?.title}</h2>
+                        <p className="recipe-description">{recipe.content}</p>
                     </div>
-                    {recipe.attributes?.mainImage && (
-                        <img src={recipe.attributes.mainImage} alt={recipe.attributes.title} className="recipe-main-image-2" />
+                    {recipe.attributes?.image && (
+                        <img
+                            src={recipe.attributes.image}
+                            alt={recipe.attributes.title}
+                            className="recipe-image-top"
+                        />
                     )}
                 </div>
 
-                {/* ✅ Recipe Metadata */}
-                <div className="recipe-meta-2">
-                    <p><strong>⏳ Time:</strong> {recipe.attributes?.totalTime}</p>
-                    <p><strong>🍽 Serving Size:</strong> {recipe.attributes?.servingSize}</p>
-                    <p><strong>🔥 Difficulty:</strong> {recipe.attributes?.difficulty}</p>
-                </div>
-
-                {/* ✅ Ingredients Section */}
-                <div className="recipe-section-2">
-                    <h3>🛒 Ingredients</h3>
-                    <ul>
+                <div className="recipe-section">
+                    <h3 className="ingredients">Ingredients</h3>
+                    <ul className="recipe-ingredients-list">
                         {recipe.attributes?.ingredients?.map((ingredient, index) => (
                             <li key={index}>{ingredient}</li>
                         ))}
                     </ul>
                 </div>
 
-                {/* ✅ Steps Section */}
-                <div className="recipe-section-2">
-                    <h3>📖 Steps</h3>
-                    <div className="recipe-steps-container-2">
+                <div className="recipe-section">
+                    <h3 className="steps">Recipe Instructions</h3>
+                    <div className="steps-container">
                         {recipe.attributes?.steps?.map((step, index) => (
-                            <div key={index} className="recipe-step-2">
-                                <div className="recipe-step-content-1">
-                                    <span className="recipe-step-number-2">{`Step ${index + 1}`}</span>
-                                    <p className="recipe-step-description-1">{step}</p>
-                                </div>
+                            <div key={index} className="step-card">
+                                <div className="step-number">Step {index + 1}</div>
+                                <p className="step-text">{step}</p>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* ✅ Cuisine Tags */}
-                {recipe.attributes?.cuisine?.length > 0 && (
-                    <div className="recipe-section-2">
-                        <h3>🌍 Cuisine</h3>
-                        <p>{recipe.attributes.cuisine.join(", ")}</p>
-                    </div>
-                )}
-            </div>
-
-            {/* ✅ Comments Section (Right Side) */}
-            <div className="recipe-comments-container-2">
-                <h3 className="comments-title-3">Comments</h3>
-                <CommentForm parent={id} loadPosts={handleCommentSubmit} loadComments={handleCommentSubmit} />
-                <div className="comments-list-3">
-                    {comments.length > 0 ? (
-                        comments.map((comment) => (
-                            <Post key={comment.id} post={comment} type="commentlist" loadPosts={handleCommentSubmit} />
-                        ))
-                    ) : (
-                        <p className="no-comments-3">No comments yet. Be the first to share your thoughts!</p>
+                <div className="recipe-section">
+                    <h3 className="reviews">Reviews</h3>
+                    {reviews.length > 2 && (
+                        <div className="scroll-buttons">
+                            <button className="scroll-button left" onClick={scrollLeft}>
+                                &lt;
+                            </button>
+                            <button className="scroll-button right" onClick={scrollRight}>
+                                &gt;
+                            </button>
+                        </div>
                     )}
+                    <div className="reviews-list" ref={reviewsRef}>
+                        {reviews.map((review, index) => (
+                            <div className="review-item" key={index}>
+                                <div className="review-header">
+                                    <strong>{review.name}</strong>
+                                    <div className="review-rating">
+                                        {Array.from({length: review.rating}, (_, i) => (
+                                            <span key={i} className="star">★</span>
+                                        ))}
+                                    </div>
+
+                                </div>
+                                <p className="review-text">{review.text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="recipe-section">
+                    <h3 className="leave-comment">Leave a Review</h3>
+                    <div className="comment-form">
+                        <div className="rating-stars">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    className={`star ${star <= rating ? "active" : ""}`}
+                                    onClick={() => setRating(star)}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Your Name"
+                            value={commentName}
+                            onChange={(e) => setCommentName(e.target.value)}
+                        />
+                        <textarea
+                            placeholder="Your Review"
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                        />
+                        <button onClick={handleCommentSubmit}>Post Review</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-};
 
-export default RecipeDetails;
+            <div className="recipe-sidebar">
+                <div className="sidebar-section">
+                    <h4>Total Time</h4>
+                    <div className="total-time-display">
+                        {recipe.attributes?.totalTime || "N/A"}
+                    </div>
+                </div>
+
+
+                <div className="sidebar-section">
+                    <h4>Cooking Level</h4>
+                    <div className="cooking-level-display">
+                        {recipe.attributes?.difficulty || "Medium"}
+                    </div>
+                </div>
+
+                <div className="sidebar-section">
+                    <h4>Serving Size</h4>
+                    <div className="serving-size-display">
+                        {recipe.attributes?.servingSize}
+                    </div>
+                </div>
+
+                    <div className="sidebar-section">
+                        <h4>Cuisine</h4>
+                        <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>
+                    </div>
+
+
+                </div>
+            </div>
+            );
+            };
+
+            export default RecipeDetails;

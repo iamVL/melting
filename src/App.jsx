@@ -34,7 +34,10 @@ import ResetPassword from "./Component/ResetPassword";
 import Messaging from "./Component/Messaging";
 import RecipeDetails from "./Component/RecipeDetails";
 import Posts from "./Component/Posts";
+import RecipeList from "./Component/RecipeList";
+
 import { io } from "socket.io-client";
+
 
 // Initialize socket connection
 const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
@@ -85,7 +88,7 @@ function App() {
               <Route path="/recipes" element={<RecipeListContainer />} />
               <Route path="/tip/:id" element={<TipDetails />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/edit-profile" element={<Edit />} />
+              <Route path="/edit-profile" element={<Edit  />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Login" element={<Login />} />
               <Route path="/StyleGuide" element={<StyleGuide />} />
@@ -126,7 +129,14 @@ function App() {
               <Route path="/friends" element={<Friends />} />
               <Route path="/groups" element={<Groups />} />
               <Route path="/promise" element={<PromiseComponent />} />
-              <Route path="/posts" element={<Posts />} />
+
+              <Route path= "/posts" element={<Posts />} />
+              <Route path= "/recipe" element={<RecipeList />} />
+
+     {/* Dynamic Room ID for Messaging */}
+
+   
+
               <Route path="/messages/:roomID" element={<Messaging />} />
             </Routes>
           </div>
