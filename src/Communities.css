@@ -1,15 +1,45 @@
 .MainHeading {
-    text-align: center;      
-    margin-top: 50px;        
-    color: #333;
+  font-size: 35px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 70px;
+  margin-bottom: 10px;
   }
 
 .SubHeading {
     text-align: center;      
     margin-top: 50px;        
-    color: #333;
+    color: #727272;
     margin-top: 20px;
     font-size: 18px;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.toggle-btn:hover {
+  background-color: #555;
+}
+
+.search-input {
+  width: 300px; 
+  height: 33px; 
+  font-size: 16px; 
+  padding: 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 8px;
 }
 
 .create-group-btn {
@@ -29,7 +59,7 @@
   }
 
   .create-group-input {
-    width: 200px; 
+    width: 300px; 
     height: 33px; 
     font-size: 16px; 
     padding: 8px; 
@@ -48,16 +78,16 @@
   
 /* Style for the individual groups */
 .userlist {
-    background-color: #d6d6d6;  
+    background-color: #ffffff;  
     border-radius: 10px;  
     padding: 15px;  
-    margin: 10px 20px;  
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);  
+    margin: 15px 20px;  
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);  
     display: flex;  
     justify-content: space-between;  
     align-items: center;  
-    width: 400px;
-    height: 80px;
+    width: 350px;
+    height: 250px;
     color: #333;
     font-weight: bold;
     display: inline-block;
@@ -77,26 +107,25 @@
   
   /* Hover effect for each group */
   .userlist:hover {
-    background-color: #a4a4a4;  
+    background-color: #ffffff;  
     transform: scale(1.02);  
     transition: transform 0.2s ease, background-color 0.2s ease;  
   }
 
   .comment-button {
-    margin-left: 10px;
+    position: static;
     padding: 5px 10px;
     background-color: #333; 
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100px;
+    width: 90px;
   }
   
   .comment-button:hover {
     background-color: #333;
   }
-  
   
   
 

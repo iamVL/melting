@@ -159,7 +159,7 @@ const Profile = (props) => {
         {/* profile buttons */}
         <div class ="editUser">
           <button onClick={logout} class="logout">Log out</button><br />
-          <a href="/edit-profile" onClick="toggleInputs()" class="editprofile">Edit Profile</a><br />
+          <Link to="/edit-profile"><a onClick="toggleInputs()" class="editprofile">Edit Profile</a><br /></Link>
         </div>
       </div>
       <div class ="bottonProfileSection">
@@ -191,12 +191,6 @@ const Profile = (props) => {
               <a> Phone Number</a>
               <div class="display">
                   {phone}
-              </div>
-            </div>
-            <div class ="inputs">
-              <a> Password</a>
-              <div class="display">
-                {"•".repeat(password.length)}
               </div>
             </div>
             {/* <div class ="inputs">

@@ -1,12 +1,11 @@
-/* Baking Basics Page Styles */
-.baking-basics-container {
+.pasta-container {
   width: 80%;
   margin: auto;
   text-align: center;
   padding-top: 20px;
 }
 
-/* Back link styling */
+/* Back link */
 .back-link {
   text-align: left;
   margin-bottom: 15px;
@@ -27,9 +26,9 @@
 .title {
   font-size: 32px;
   font-weight: bold;
-  color: #D26E4B;  /* Set orange color */
+  color: #D26E4B;
   margin-bottom: 20px;
-  text-decoration: underline; /* Add underline */
+  text-decoration: underline;
 }
 
 /* Poster */
@@ -56,14 +55,6 @@
   color: #D26E4B;
   margin-bottom: 10px;
 }
-
-.info-section p,
-.info-section ul {
-  font-size: 18px;
-  color: #444;
-  line-height: 1.6;
-}
-
 
 .info-section ul {
   list-style: none;
