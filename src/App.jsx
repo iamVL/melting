@@ -3,51 +3,40 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
 import Edit from "./Component/Edit";
 import ViewTip from "./Component/CookingTipPage";
-import TipForm from "./Component/Tip"
-import TipDetails  from "./Component/TipDetails";
+import TipForm from "./Component/Tip";
+import TipDetails from "./Component/TipDetails";
 import RecipeListContainer from "./Component/RecipeCollection";
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin";
 import Login from "./Login";
 import StyleGuide from "./StyleGuide";
 import RecipeListing from "./Component/RecipeListing";
-
 import AboutYessica from "./Team Pages/AboutYessica";
 import AboutRudy from "./Team Pages/AboutRudy";
-
-
-
-import AboutVaishnavi from "./Team Pages/AboutVaishnavi"
-import AboutJoshua from "./Team Pages/AboutJoshua"
+import AboutVaishnavi from "./Team Pages/AboutVaishnavi";
+import AboutJoshua from "./Team Pages/AboutJoshua";
 import UploadRecipe from "./Component/UploadRecipe";
-
-
-
 import HomePage from "./Component/HomePage";
 import CommunityPage from './Component/Community';
-import HowToGuides from "./Component/HowToGuides"; // Import How-To Guides Page
-import BakingBasics from "./Component/BakingBasics"; // Import Baking Basics Page
+import HowToGuides from "./Component/HowToGuides"; 
+import BakingBasics from "./Component/BakingBasics"; 
 import GrillingTechniques from "./Component/GrillingTechniques";
+import KnifeSkills from "./Component/KnifeSkills"; // New
+import PastaGuide from "./Component/PastaCooking"; // New
+import PancakeSecrets from "./Component/PancakeRecipe"; // New
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
 import Groups from "./Component/Groups";
 import Modal from "./Component/Modal";
 import PromiseComponent from "./Component/PromiseComponent";
-// import LoginForm from "./Component/LoginForm";
 import RegisterForm from "./Component/RegisterForm";
 import ResetPassword from "./Component/ResetPassword";
 import Messaging from "./Component/Messaging";
 import RecipeDetails from "./Component/RecipeDetails";
-
-
-// App.jsx is the starting point for the application.  This is the component called by index, which will be rendered when
-// a user goes to your app URL.  This component will handle routing to other parts of your app, and any initial setup.
-
-import { io } from "socket.io-client";
 import Posts from "./Component/Posts";
+import { io } from "socket.io-client";
 
-
-// Initialize the socket with the respective path and tenantID
+// Initialize socket connection
 const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
   path: "/hci/api/realtime-socket/socket.io",
   query: {
@@ -55,7 +44,6 @@ const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
   },
 });
 export { socket };
-
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -71,14 +59,12 @@ function App() {
   };
 
   const doRefreshPosts = () => {
-    console.log("CALLING DOREFRESHPOSTS IN APP.JSX");
     setRefreshPosts(true);
   };
 
   const toggleModal = (e) => {
     e.preventDefault();
     setOpenModal((prev) => !prev);
-    console.log(openModal);
   };
 
   useEffect(() => {
@@ -91,7 +77,7 @@ function App() {
     <Router basename={process.env.PUBLIC_URL}>
       <div className="App">
         <header className="App-header">
-          <Navbar toggleModal={(e) => toggleModal(e)} logout={(e) => logout(e)} />
+          <Navbar toggleModal={toggleModal} logout={logout} />
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/tip-upload" element={<TipForm />} />
@@ -109,9 +95,9 @@ function App() {
               <Route path="/about_vi" element={<AboutVaishnavi />} />
               <Route path="/about_joshua" element={<AboutJoshua />} />
               <Route path="/upload" element={<UploadRecipe />} />
-              <Route path="/recipe/:id" element={<RecipeDetails /> }/>
+              <Route path="/recipe/:id" element={<RecipeDetails />} />
 
-              {/* Home Page Route */}
+              {/* Home Page */}
               <Route
                 path="/"
                 element={
@@ -123,27 +109,30 @@ function App() {
                 }
               />
 
-              {/* How-To Guides Route */}
+              {/* How-To Guides */}
               <Route path="/how-to-guides" element={<HowToGuides />} />
               <Route path="/community" element={<CommunityPage />} />
 
-              {/* Baking Basics Route */}
+              {/* How-To Guide Pages */}
               <Route path="/baking-basics" element={<BakingBasics />} />
               <Route path="/grilling-techniques" element={<GrillingTechniques />} /> 
+              <Route path="/knife-skills" element={<KnifeSkills />} /> 
+              <Route path="/perfect-pasta" element={<PastaGuide />} /> 
+              <Route path="/fluffy-pancakes" element={<PancakeSecrets />} /> 
+
+              {/* Other Pages */}
               <Route path="/register" element={<RegisterForm setLoggedIn={setLoggedIn} />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/groups" element={<Groups />} />
               <Route path="/promise" element={<PromiseComponent />} />
-              <Route path= "/posts" element={<Posts />} />
-
-              {/* Dynamic Room ID for Messaging */}
+              <Route path="/posts" element={<Posts />} />
               <Route path="/messages/:roomID" element={<Messaging />} />
             </Routes>
           </div>
         </header>
 
-        <Modal show={openModal} onClose={(e) => toggleModal(e)}>
+        <Modal show={openModal} onClose={toggleModal}>
           This is a modal dialog!
         </Modal>
       </div>
