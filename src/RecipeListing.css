@@ -1,90 +1,84 @@
 /* Container */
 .recipe-container {
-  text-align: center;
-  padding: 40px 20px;
   max-width: 1200px;
-  margin: auto;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-/* Header */
 .recipe-header {
-  font-size: 35px;
+  font-size: 32px;
   font-weight: bold;
-  color: black;
   margin-bottom: 10px;
+  color: #333;
 }
 
 .recipe-subheader {
-  font-size: 16px;
-  color: gray;
+  color: #777;
   margin-bottom: 30px;
 }
 
-/* Force EXACTLY 3 columns, but each has a decent min-width */
+/* Grid for the cards */
 .recipe-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(400px, 1fr)); /* <== 400px min width */
+  grid-template-columns: repeat(3, 1fr);
+  /* 
+    The above sets each column to min 280px, 
+    so you get up to 3 (or more) columns depending on screen size.
+  */
   gap: 20px;
   justify-items: center;
 }
 
-/* Each recipe card */
-.recipe-card {
-  background: white;
-  border-radius: 5px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  /* Remove hidden overflow so the bottom doesn’t get cropped */
-  overflow: visible;  
-  text-align: left;
+/* Card */
+.recipe-card-1 {
+  background-color: #fff;
+  border-radius: 8px;
   width: 100%;
-  max-width: 500px; /* <== increased from 360px to 500px */
+  max-width: 350px;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   transition: transform 0.2s ease-in-out;
 }
 
-.recipe-card:hover {
-  transform: scale(1.03);
+.recipe-card-1:hover {
+  transform: scale(1.02);
 }
 
-/* Card image */
-.recipe-image {
+.recipe-image-1 {
   width: 100%;
-  /* Either fix a larger height or let it be auto. Example: 300px. */
-  height: 300px;
+  height: 200px;
   object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }
 
-/* Card text */
-.recipe-content {
+/* Content inside each card */
+.recipe-content-1 {
   padding: 20px;
 }
 
-.recipe-title {
+.recipe-title-1 {
   font-size: 20px;
   font-weight: bold;
-  color: black;
   margin-bottom: 8px;
+  color: #333;
 }
 
-.recipe-description {
+.recipe-description-1 {
   font-size: 14px;
-  color: gray;
-  margin-bottom: 10px;
+  color: #666;
+  margin-bottom: 12px;
 }
 
-/* No recipes message */
-.no-recipes {
-  font-size: 16px;
-  color: red;
-  margin-top: 20px;
-}
-
-/* “Read More” button */
-.read-more-button {
+/* Buttons */
+.read-more-button-1{
   display: block;
   background-color: #ff7043;
   color: white;
   text-align: center;
-  padding: 8px;
+  padding: 10px;
   font-size: 14px;
   font-weight: bold;
   border-radius: 5px;
@@ -92,13 +86,7 @@
   text-decoration: none;
   transition: background-color 0.3s ease-in-out;
 }
-
-.read-more-button:hover {
-  background-color: #e64a19;
-}
-
-/* Delete button */
-.delete-button {
+.delete-recipe-button-1 {
   background-color: #ff4d4d;
   color: white;
   border: none;
@@ -106,11 +94,34 @@
   cursor: pointer;
   font-size: 14px;
   border-radius: 5px;
-  width: 100%; /* full width under the “Read More” button */
-  margin-top: 8px;
+  width: 100%;
   transition: background-color 0.3s ease-in-out;
+  margin-top: 8px;
 }
 
-.delete-button:hover {
-  background-color: #cc0000;
+.read-more-button-1 {
+  background-color: #ff7043;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.read-more-button-1:hover {
+  background-color: #e64a19;
+}
+
+.delete-recipe-button-1 {
+  background-color: #e57373;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.delete-recipe-button-1:hover {
+  background-color: #d32f2f;
+}
+
+/* Fallback if no recipes */
+.no-recipes-found {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #999;
 }
