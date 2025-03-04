@@ -44,6 +44,7 @@ import RecipeDetails from "./Component/RecipeDetails";
 
 import { io } from "socket.io-client";
 import Posts from "./Component/Posts";
+import RecipeList from "./Component/RecipeList";
 
 
 // Initialize the socket with the respective path and tenantID
@@ -97,7 +98,7 @@ function App() {
               <Route path="/tips" element={<ViewTip />} />
               <Route path="/tip/:id" element={<TipDetails />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/edit-profile" element={<Edit />} />
+              <Route path="/edit-profile" element={<Edit  />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Login" element={<Login />} />
               <Route path="/StyleGuide" element={<StyleGuide />} />
@@ -134,6 +135,7 @@ function App() {
               <Route path="/groups" element={<Groups />} />
               <Route path="/promise" element={<PromiseComponent />} />
               <Route path= "/posts" element={<Posts />} />
+              <Route path= "/recipe" element={<RecipeList />} />
 
               {/* Dynamic Room ID for Messaging */}
               <Route path="/messages/:roomID" element={<Messaging />} />
