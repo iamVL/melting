@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import "../RegisterForm.css";
+import regPhoto from "../assets/Reg-page-photo.png";
 
 const RegisterForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
@@ -79,7 +80,7 @@ const RegisterForm = ({ setLoggedIn }) => {
       <div className="content-wrapper">
         {/* Left Side: Food Image */}
         <div className="image-container">
-          <img src="/Reg-page-photo.png" alt="Food" className="food-image" />
+          <img src={regPhoto} alt="Food" className="food-image" />
         </div>
 
         {/* Right Side: Registration Form */}
