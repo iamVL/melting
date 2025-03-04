@@ -3,25 +3,52 @@ import { Link } from "react-router-dom";  // Import Link for navigation
 import "../HowToGuides.css";
 import cupcakeIcon from "../assets/cupcake.png";  
 import grillChickenIcon from "../assets/grill-chicken.png";  
+import knifeIcon from "../assets/knife-skills.png";
+import pastaIcon from "../assets/pasta-guide.png";
+import pancakeIcon from "../assets/pancake-guide.png";
 import commentIcon from "../assets/comment-icon.png";  
 import cupcakeRecipe from "../assets/cupcake-recipe.png";  
 import grillChickenRecipe from "../assets/grill-chicken-recipe.png";  
+import knifeSkillsRecipe from "../assets/knife-skills-recipe.png";
+import pastaRecipe from "../assets/pasta-recipe.png";
+import pancakeRecipe from "../assets/pancake-recipe.png";
 
 const guides = [
   {
     title: "Baking Basics",
     description: "Learn the Essentials of Baking at Home",
     guideIcon: cupcakeIcon,
-    recipeImage: cupcakeRecipe,  // Image that opens full screen
-    link: "/baking-basics",  // Link to Baking Basics page
+    recipeImage: cupcakeRecipe,
+    link: "/baking-basics",
   },
   {
     title: "Grilling Techniques",
     description: "Master the Art of Grilling",
     guideIcon: grillChickenIcon,
-    recipeImage: grillChickenRecipe,  // Image that opens full screen
-    link: "/grilling-techniques",  // Link to Grilling Techniques page
+    recipeImage: grillChickenRecipe,
+    link: "/grilling-techniques",
   },
+  {
+    title: "Knife Skills 101",
+    description: "Learn how to chop, dice, and julienne like a pro!",
+    guideIcon: knifeIcon,
+    recipeImage: knifeSkillsRecipe,
+    link: "/knife-skills",
+  },
+  {
+    title: "Perfect Pasta Guide",
+    description: "Cook pasta perfectly every time with these simple tricks.",
+    guideIcon: pastaIcon,
+    recipeImage: pastaRecipe,
+    link: "/perfect-pasta",
+  },
+  {
+    title: "Fluffy Pancakes Secrets",
+    description: "Discover the science behind the fluffiest pancakes ever!",
+    guideIcon: pancakeIcon,
+    recipeImage: pancakeRecipe,
+    link: "/fluffy-pancakes",
+  }
 ];
 
 const HowToGuides = () => {
@@ -64,7 +91,6 @@ const HowToGuides = () => {
         ))}
       </div>
 
-      {/* Full-Screen Image Viewer */}
       {fullScreenImage && (
         <div className="full-screen-overlay" onClick={closeFullScreen}>
           <img src={fullScreenImage} alt="Recipe" className="full-screen-image" />
