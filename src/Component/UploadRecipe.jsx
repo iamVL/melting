@@ -145,18 +145,20 @@ const UploadRecipe = () => {
             },
             body: JSON.stringify({
                 authorID: sessionStorage.getItem("user"),
-                content: recipe.description,
+                content: recipe.title,  // or keep recipe.description if you prefer
                 attributes: {
-                    title: recipe.title,
-                    totalTime: `${recipe.timeHours}h ${recipe.timeMinutes}m`,
-                    servingSize: parseInt(recipe.servingSize) || 1,
-                    difficulty: recipe.difficulty || "Easy",
-                    ingredients: recipe.ingredients.length ? recipe.ingredients : ["Unknown"],
-                    steps: recipe.steps,
-                    cuisine: recipe.cuisine,
-                    image: uploadedImageUrl, // ✅ Attach uploaded image URL
+                  title: recipe.title,
+                  description: recipe.description,   // <— ADD THIS LINE
+                  totalTime: `${recipe.timeHours}h ${recipe.timeMinutes}m`,
+                  servingSize: parseInt(recipe.servingSize) || 1,
+                  difficulty: recipe.difficulty || "Easy",
+                  ingredients: recipe.ingredients.length ? recipe.ingredients : ["Unknown"],
+                  steps: recipe.steps,
+                  cuisine: recipe.cuisine,
+                  mainImage: uploadedImageUrl,
+                  postType: "recipe",
                 },
-            }),
+              }),
         })
             .then(async (res) => {
                 const data = await res.json();
