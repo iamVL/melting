@@ -37,7 +37,15 @@ const Navbar = () => {
         </li>
 
         <li><Link to="/filter">Filter</Link></li>
-        <li><Link to="/aboutus">About Us</Link></li>
+        <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
+          <span className="dropdown-title">About ▼</span>
+          {dropdownOpen && (
+            <ut className="dropdown-menu">
+              <li><Link to="/aboutus">Our Team</Link></li>
+              <li><Link to="/StyleGuide">Style Guide</Link></li>
+            </ut>
+          )}
+        </li>
         <li><Link to="/settings"><img src={profileIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
       </ul>
     </nav>

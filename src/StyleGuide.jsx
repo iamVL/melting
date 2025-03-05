@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./StyleGuide.css"; // Import CSS styles
+import meltingLogo from "./assets/melting-pot-logo.jpeg";
+
 
 const StyleGuide = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,7 +17,12 @@ const StyleGuide = () => {
 
       {/* Fonts & Font Sizes */}
       <div className="column">
-        <h2>1. Fonts & Font Sizes</h2>
+        <h2>1. Website Logo</h2>
+        <img src={meltingLogo} alt="Melting" className="logo" width={300} />
+      </div>
+
+      <div className="column">
+        <h2>2. Fonts & Font Sizes</h2>
         <p><strong>Primary Font:</strong> Roboto, Arial, sans-serif.</p>
         <div className="font-examples">
           <p className="heading-1">Heading 1 - 32px Bold</p>
@@ -26,8 +33,8 @@ const StyleGuide = () => {
       </div>
 
       {/* Color Palette */}
-      <div className="column">
-        <h2>2. Color Palette & Usage</h2>
+      <div className="color-box">
+        <h2>3. Color Palette & Usage</h2>
         <div className="color-sample brand">Terracotta (#E8775B)</div>
         <div className="color-sample text">Dark Gray (#333333)</div>
         <div className="color-sample success">Success Green (#5CB85C)</div>
@@ -36,16 +43,20 @@ const StyleGuide = () => {
 
       {/* Buttons */}
       <div className="column">
-        <h2>3. Buttons</h2>
+        <h2>4. Buttons</h2>
         <div className="button-container">
           <button className="btn btn-primary">Sign Up</button>
           <button className="btn btn-secondary">Cancel</button>
         </div>
+        <country>
+          <input type="button" value="YES" class="countrybutton" />
+          <input type="button" value="NO" class="selected_country" />
+        </country>
       </div>
 
       {/* Popups / Modals */}
       <div className="column">
-        <h2>4. Popups / Modals</h2>
+        <h2>5. Popups / Modals</h2>
         <p>This modal centers itself and dims the background.</p>
         <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
           Show Modal
@@ -65,14 +76,14 @@ const StyleGuide = () => {
 
       {/* Feedback Messages */}
       <div className="column">
-        <h2>5. Feedback Messages</h2>
+        <h2>6. Feedback Messages</h2>
         <div className="alert success">Success Message: Action completed!</div>
         <div className="alert error">Error Message: Something went wrong!</div>
       </div>
 
       {/* Inline Help */}
       <div className="column">
-        <h2>6. Inline Help</h2>
+        <h2>7. Inline Help</h2>
         <p>
           Need more info?
           <span className="help-icon" title="This is an inline help tooltip">?</span>
