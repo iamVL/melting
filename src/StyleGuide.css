@@ -136,6 +136,9 @@
   .text { background-color: #333333; color: white; }
   .success { background-color: #5CB85C; color: white; }
   .error { background-color: #D9534F; color: white; }
+  .posthome { background-color: #ff8c42; color: white; }
+  .cuisine { background-color: #ff8f4a39; color: white; }
+
   
   /* Buttons */
   .button-container {
@@ -269,14 +272,6 @@
     font-weight: bold;
   }
   
-  .countrybuttons {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.3;
-    padding-left: 50px;
-  } 
-  
   .selected_country {
     background-color:#d46a4c;
     border-radius: 8px;
@@ -300,4 +295,41 @@
   
   .selected_country:active{
     transform: scale(1);
+  }
+
+  .editprofile {
+    border: 1px solid white;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 188px;
+    height: 40px;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 19px;
+    background-color: #000000;
+    color:white;
+    transition: .3s;
+  }
+  
+  .editprofile:hover {
+    transform: scale(1.04);
+    cursor: pointer;
+  }
+
+  .cuisine-card p {
+    font-size: 20px;
+  }
+
+  .tip-add-step-btn {
+    background: #e4684a;
+  color: white;
+  border: none;
+  padding: 14px;
+  cursor: pointer;
+  margin-top: 15px;
+  border-radius: 8px;
+  font-size: 18px;
+  width: 300px;
+  transition: .3s;
   }

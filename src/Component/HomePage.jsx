@@ -187,6 +187,21 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                 <p>Essential techniques for perfect baked goods.</p>
                 <Link to="/baking-basics"><a>Learn More →</a></Link>
               </div>
+              <div className="guide-card">
+                <h3>Knife Skills 101</h3>
+                <p> Learn how to chop, dice, and julienne like a pro!</p>
+                <Link to="/knife-skills"><a>Learn More →</a></Link>
+              </div>
+              <div className="guide-card">
+                <h3>Perfect Pasta</h3>
+                <p>Cook pasta perfectly every time with these simple tricks.</p>
+                <Link to="/perfect-pasta"><a>Learn More →</a></Link>
+              </div>
+              <div className="guide-card">
+                <h3>Fluffy Pancakes Secrets</h3>
+                <p>Discover the science behind the fluffiest pancakes ever!</p>
+                <Link to="/fluffy-pancakes"><a>Learn More →</a></Link>
+              </div>
             </div>
           </section>
 

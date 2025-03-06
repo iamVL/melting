@@ -35,7 +35,9 @@ const StyleGuide = () => {
       {/* Color Palette */}
       <div className="color-box">
         <h2>3. Color Palette & Usage</h2>
-        <div className="color-sample brand">Terracotta (#E8775B)</div>
+        <div className="color-sample brand">Terracotta (#E8775B)</div>  
+        <div className="color-sample posthome">Pumpkin (#FF8C42)</div>
+        <div className="color-sample cuisine">Ivory (#FF8F4A)</div>
         <div className="color-sample text">Dark Gray (#333333)</div>
         <div className="color-sample success">Success Green (#5CB85C)</div>
         <div className="color-sample error">Error Red (#D9534F)</div>
@@ -52,6 +54,12 @@ const StyleGuide = () => {
           <input type="button" value="YES" class="countrybutton" />
           <input type="button" value="NO" class="selected_country" />
         </country>
+        <button className="editprofile">Edit Profile</button>
+        <a class="read-more">Read More →</a>
+        <button class="btn primary">Join Now</button>
+        <button class="btn primary">Post Your Own</button>
+        <div class="cuisine-card"><p>Cuisine</p></div>
+        <button type="button" class="tip-add-step-btn">Step</button>
       </div>
 
       {/* Popups / Modals */}
