@@ -25,16 +25,56 @@ const shuffle = (array) => {
 const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
   const [userToken, setUserToken] = useState("");
   const [randomTips, setRandomTips] = useState([]);
+  const [randomRecipes, setRandomRecipes] = useState([]);
+
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     setUserToken(token);
     if (token) {
       fetchRandomTips(token);
+      fetchRandomRecipes(token);
     }
 
     window.scrollTo(0, 0);
   }, []);
+
+  const fetchRandomRecipes = async (token) => {
+    try {
+      // Increase the limit if needed to get a larger pool of recipes
+      const response = await fetch(
+        `${process.env.REACT_APP_API_PATH}/posts?limit=50`, 
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Fetched data:", data);
+        let recipes = [];
+  
+        // Check if the API returns an array or an object with a "posts" property
+        if (Array.isArray(data)) {
+          recipes = data[0].filter((post) => post.attributes?.postType === "recipe");
+        } else if (data.posts) {
+          recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
+        }
+  
+        // Shuffle and select 5 random recipes
+        const randomRecipesSelected = shuffle([...recipes]).slice(0, 4);
+        setRandomRecipes(randomRecipesSelected);
+      } else {
+        console.error("Failed to fetch recipes, status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
 
   const fetchRandomTips = async (token) => {
     try {
@@ -98,13 +138,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
           <section className="cuisine-section">
             <div className="cuisine-grid">
               {[
+                { name: "American" },
                 { name: "Chinese" },
+                { name: "Filipino"},
                 { name: "Italian"},
                 { name: "Indian"},
-                { name: "Filipino"},
                 { name: "Mexican" },
                 { name: "Vietnamese"},
-                { name: "American" },
               ].map((cuisine, index) => (
                 <div key={index} className="cuisine-card">
                   <p>{cuisine.name}</p>
@@ -113,39 +153,46 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
             </div>
           </section>
 
-          {/* Choose Your Level */}
-          <section className="choose-level">
-            <h2>Recommended Recipes based on Cooking Level!</h2>
-            <div className="levels">
-              <div className="level">
-                <leveltext>Easy</leveltext>
-              </div>
-              <div className="level">
-                <leveltext>Medium</leveltext>
-              </div>
-              <div className="level">
-                <leveltext>Hard</leveltext>
-              </div>
-            </div>
-          </section>
-
           {/* Popular Recipes */}
           <section className="popular-recipes">
+            <section className="choose-level">
+              <h2>Recommended Recipes based on Cooking Level!</h2>
+              <div className="levels">
+                <div className="level">
+                  <leveltext>Easy</leveltext>
+                </div>
+                <div className="level">
+                  <leveltext>Medium</leveltext>
+                </div>
+                <div className="level">
+                  <leveltext>Hard</leveltext>
+                </div>
+              </div>
+            </section>
             <div className="recipes-grid">
-              <div className="recipe-card">
-
-              </div>
-              <div className="recipe-card">
-
-              </div>
-              <div className="recipe-card">
-
-              </div>
-              <div className="recipe-card">
-
-              </div>
+              {randomRecipes.length > 0 ? (
+                randomRecipes.map((recipe) => (
+                  <div key={recipe.id} className="recipe-card">
+                    <img src={recipe.attributes?.mainImage} alt="recipe pic" className="recipe-image" />
+                    <h3>{recipe.content}</h3>
+                    <p>
+                      {recipe.attributes?.description
+                        ? recipe.attributes.description.length > 120
+                          ? `${recipe.attributes.description.substring(0, 120)}...`
+                          : recipe.attributes.description
+                        : "No description available"}
+                    </p>
+                    <Link to={`/recipe/${recipe.id}`} className="read-more">
+                      View Recipe →
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p>Loading recipes...</p>
+              )}
             </div>
           </section>
+
 
           {/* Featured Cooking Tips */}
           <section className="featured-tips">
@@ -154,6 +201,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
               {randomTips.length > 0 ? (
                 randomTips.map((tip) => (
                   <div key={tip.id} className="tip-card">
+                    <img src={tip.attributes?.mainImage} alt="tip pic" className="tip-image" />
                     <h3>{tip.content}</h3>
                     <p>{tip.attributes?.description 
                       ? tip.attributes.description.length > 100 
