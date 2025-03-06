@@ -101,11 +101,10 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                 { name: "Chinese" },
                 { name: "Italian"},
                 { name: "Indian"},
-                { name: "Japanese" },
                 { name: "Filipino"},
                 { name: "Mexican" },
                 { name: "Vietnamese"},
-                { name: "British" },
+                { name: "American" },
               ].map((cuisine, index) => (
                 <div key={index} className="cuisine-card">
                   <p>{cuisine.name}</p>
