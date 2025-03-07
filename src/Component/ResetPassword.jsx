@@ -1,15 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../ResetPassword.css";
 import logo from "../assets/melting-pot-logo.jpeg";
-
-import {Link} from "react-router-dom";
-
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [gotToken, setGotToken] = useState(false);
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // For programmatic navigation
 
   const handleResetRequest = (event) => {
     event.preventDefault();
@@ -20,7 +19,9 @@ const ResetPassword = () => {
       body: JSON.stringify({ email }),
     }).then((res) => {
       if (res.ok) {
-        setGotToken(true); // Switch to jtoken input form
+        setGotToken(true); // Show the token/password form
+      } else {
+        alert("Failed to send reset link. Please try again.");
       }
     });
   };
@@ -35,7 +36,9 @@ const ResetPassword = () => {
     }).then((res) => {
       if (res.ok) {
         alert("Password successfully reset!");
-        window.location.href = "/"; // Redirect to login
+        navigate("/"); // Redirect to login page ("/")
+      } else {
+        alert("Failed to reset password. Please try again.");
       }
     });
   };
@@ -78,7 +81,7 @@ const ResetPassword = () => {
                     required
                 />
                 <button type="submit" className="reset-button">
-                    <Link to="/"> Reset Password </Link>
+                  Reset Password
                 </button>
               </form>
           )}
