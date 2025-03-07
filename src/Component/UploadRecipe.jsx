@@ -145,20 +145,18 @@ const UploadRecipe = () => {
             },
             body: JSON.stringify({
                 authorID: sessionStorage.getItem("user"),
-                content: recipe.title,  // or keep recipe.description if you prefer
+                content: recipe.description,
                 attributes: {
-                  title: recipe.title,
-                  description: recipe.description,   // <— ADD THIS LINE
-                  totalTime: `${recipe.timeHours}h ${recipe.timeMinutes}m`,
-                  servingSize: parseInt(recipe.servingSize) || 1,
-                  difficulty: recipe.difficulty || "Easy",
-                  ingredients: recipe.ingredients.length ? recipe.ingredients : ["Unknown"],
-                  steps: recipe.steps,
-                  cuisine: recipe.cuisine,
-                  mainImage: uploadedImageUrl,
-                  postType: "recipe",
+                    title: recipe.title,
+                    totalTime: `${recipe.timeHours}hours ${recipe.timeMinutes}minutes`,
+                    servingSize: parseInt(recipe.servingSize) || 1,
+                    difficulty: recipe.difficulty || "Easy",
+                    ingredients: recipe.ingredients.length ? recipe.ingredients : ["Unknown"],
+                    steps: recipe.steps,
+                    cuisine: recipe.cuisine,
+                    image: uploadedImageUrl, // ✅ Attach uploaded image URL
                 },
-              }),
+            }),
         })
             .then(async (res) => {
                 const data = await res.json();
@@ -167,15 +165,15 @@ const UploadRecipe = () => {
                 setIsLoaded(true);
                 console.log("Recipe uploaded successfully:", data);
 
-                // 🔀 Redirect to the new recipe details page
+                // ✅ Remove the state object from navigate
                 navigate(`/recipe/${data.id}`);
             })
-
             .catch((error) => {
                 setIsLoaded(true);
                 setError(error);
                 console.log("Error uploading recipe:", error);
             });
+
     };
     //check if the user is logged in.
     useEffect(() => {

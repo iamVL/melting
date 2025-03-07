@@ -1,236 +1,280 @@
-/* ✅ Full Page Layout */
-.recipe-details-container-2 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
+.recipe-details-container {
     max-width: 1200px;
-    margin: auto;
-    padding: 50px 30px;
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
     border-radius: 12px;
-    background: white;
-    gap: 50px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
 }
 
-/* ✅ Main Content (Recipe & Steps) */
-.recipe-main-content-2 {
-    flex: 2;
-    max-width: 750px;
-    text-align: left;
+.recipe-content {
+    grid-column: 1;
 }
 
-/* ✅ Header Section */
-.recipe-header-container-2 {
+.recipe-sidebar {
+    grid-column: 2;
+    background-color: #f3f3f3;
+    color:black;
+    padding: 50px;
+    border-radius: 8px;
+    font-size: 15px;
+    height: 20%;
+}
+
+.recipe-header {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 40px;
-    margin-bottom: 30px;
+    align-items: center; /* Aligns items vertically */
+    gap: 20px;
 }
-
-.recipe-header-text-2 {
+.recipe-header .recipe-content {
     flex: 1;
-    max-width: 500px;
+    display: flex; /* Use flexbox to stack title and description */
+    flex-direction: column;/* Title and description on the left */
 }
-
-.recipe-title-2 {
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
+.recipe-header .recipe-image-top {
+    width: 200px; /* Set a fixed width */
+    height: 200px; /* Set a fixed height */
+    object-fit: cover;
+    border-radius: 12px;/* Remove bottom margin */
+}
+.recipe-title {
+    font-size: 1em;
+    color: #2c3e50;
     margin-bottom: 10px;
 }
 
-.recipe-description-2 {
-    font-size: 18px;
-    color: #555;
+.recipe-description {
+    font-size: .7em;
+    color: #7f8c8d;
+    margin-bottom: 30px;
     line-height: 1.6;
 }
 
-/* ✅ Main Image */
-.recipe-main-image-2 {
-    width: 350px;
-    height: 250px;
-    object-fit: cover;
+.recipe-image-top {
+    width: 100%;
+    max-height: 300px; /* Reduced max-height */
+    object-fit: contain; /* Changed to 'contain' */
     border-radius: 12px;
+    margin-bottom: 20px;
 }
 
-/* ✅ Recipe Metadata */
-.recipe-meta-2 {
-    font-size: 1.1rem;
-    background: #f9f9f9;
+.recipe-section {
+    margin-bottom: 40px;
+}
+
+.recipe-section h3 {
+    font-size: 1em;
+    color: #e67e22;
+    border-bottom: 2px solid #e67e22;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+
+.recipe-section .recipe-ingredients-list { /* Increased specificity */
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.recipe-section .recipe-ingredients-list li { /* Increased specificity */
+    padding: 8px 12px;
+
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 0.7em;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.steps-container {
+    padding-left: 20px;
+}
+
+.step-card {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
     padding: 10px;
+    border-radius: 8px;
+    font-size: .6em;
+    color:grey;
+}
+
+.step-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.sidebar-section h4 {
+    font-size: 1.3em;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.cooking-level-display,
+.serving-size-display {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
     border-radius: 5px;
     margin-top: 10px;
-    color: #000; 
 }
 
-/* ✅ Ensure the specific text inside is black */
-.recipe-meta-2 p {
-    color: #000; /* Force text color to black */
-    font-weight: bold;
+.cuisine-tag { 
+    background-color: #e67e22; /* Orange background */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.star {
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+    transition: color 0.2s;
 }
 
-/* ✅ Steps Layout */
-.recipe-steps-container-2 {
+.star.active {
+    color: gold;
+}
+.reviews-list {
+    margin-top: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth; /* Hide horizontal scrollbar */
+    white-space: nowrap;
+    width: fit-content; /* Adjust width to fit two reviews */
+    max-width: 700px;  /* Prevent reviews from wrapping */
+}
+
+.review-item {
+    background-color: #f9f9f9;
+    flex: 0 0 auto;
+    color: lightgrey;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Make reviews inline-block */
+    width: 300px; /* Adjust width as needed */
+    margin-right: 15px;
+    font-size: .7em;
+    /* Add spacing between reviews */
+}
+.scroll-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 25px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.scroll-button {
+
+     /* Adjust position as needed */
+    padding: 5px 15px;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: .7em;
+}
+.scroll-button:hover {
+    background-color: #cc5500;
 }
 
-/* ✅ Recipe Section (Ingredients, Steps, Cuisine) */
-.recipe-section-2 {
-    margin-top: 25px;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.08);
-    color: #000; 
-}
-
-/* ✅ Ensure the text inside Cuisine is black */
-.recipe-section-2 p {
-    color: #000; /* Set text to black */
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.recipe-section-2 h3 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
 }
 
-/* ✅ Ingredients & Steps Lists */
-.recipe-section-2 ul,
-.recipe-section-2 ol {
-    text-align: left;
-    padding-left: 20px;
-    font-size: 16px;
-    color: #555;
-    line-height: 1.6;
-}
-
-.recipe-step-2 {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.08);
-}
-
-.recipe-step-number-2 {
-    background-color: #ff7043;
-    color: white;
-    padding: 10px;
-    border-radius: 25px;
-    font-size: 18px;
+.review-name {
     font-weight: bold;
+    font-size: 1em;
 }
 
-/* ✅ Comments Section */
-.recipe-comments-container-2 {
-    flex: 1;
-    max-width: 400px;
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.08);
+.review-rating .star {
+    color: gold;
+    font-size: .7em;
 }
 
-/* ✅ Step Container */
-.recipe-step-1 {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.08);
-    max-width: 750px;
-}
-
-/* ✅ Step Content */
-.recipe-step-content-1 {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-/* ✅ Step Number (Styled Circle) */
-.recipe-step-number-1 {
-    background-color: #ff7043;
-    color: white;
-    padding: 10px;
-    border-radius: 25px;
-    font-size: 18px;
-    font-weight: bold;
-    width: 100px;
-    text-align: center;
-}
-
-/* ✅ Step Description */
-.recipe-step-description-1 {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.6;
-    margin-top: 5px;
-    word-wrap: break-word;
-}
-
-/* ✅ Comments Section Container */
-.recipe-comments-container-3 {
-    flex: 1;
-    max-width: 400px;
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.08);
-    text-align: left;
-    position: relative;
-}
-
-/* ✅ Comments Title */
-.comments-title-3 {
-    font-size: 22px;
-    font-weight: bold;
+.review-text {
+    font-size: 0.7em;
     color: #333;
-    margin-bottom: 15px;
-    text-align: left;
+    line-height: 1.6;
 }
 
-/* ✅ Comment List */
-.comments-list-3 {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-height: 300px;
-    overflow-y: auto; /* ✅ Enables scrolling if too many comments */
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment-form input[type="text"],
+.comment-form textarea {
+    width: 100%;
     padding: 10px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: .6em;
+    box-sizing: border-box;
 }
 
-/* ✅ No Comments Message */
-.no-comments-3 {
-    font-size: 14px;
-    color: #777;
-    text-align: center;
-    padding: 10px;
-    font-style: italic;
+.comment-form textarea {
+    resize: vertical;
 }
 
+.rating-stars {
+    margin-bottom: 10px;
+}
 
-/* ✅ Responsive Fixes */
-@media (max-width: 1024px) {
-    .recipe-details-container-2 {
-        flex-direction: column;
-        align-items: center;
-    }
+.star {
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+    transition: color 0.2s;
+}
 
-    .recipe-comments-container-2 {
-        max-width: 100%;
-    }
+.star.active {
+    color: gold;
+}
+
+.comment-form button {
+    background-color: #e67e22;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: .7em;
+}
+.back-to-recipes {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.back-button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: grey;
+}
+.cooking-level-display,
+.serving-size-display,
+.total-time-display { 
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
 }

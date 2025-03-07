@@ -201,7 +201,7 @@
 }
 
 /* Buttons */
-.tip-add-step-btn,
+.tip-form .tip-add-step-btn,
 .tip-submit-btn {
   background: #e4684a;
   color: white;

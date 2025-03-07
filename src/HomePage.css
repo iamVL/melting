@@ -120,6 +120,7 @@
 
 .featured-tips h2 {
   color:black;
+  margin-top: 0px;
 }
 .featured-tips {
   margin-top: 40px;
@@ -142,15 +143,27 @@
 
 .tip-card {
   background: white;
-  font-size: 20px;
-  padding: 20px;
+  font-size: 15px;
+  padding-bottom: 20px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   width: 300px;
-  height: 280px;
+  height: 270px;
   color:black;
   transition: transform 0.3s ease-in-out;
+}
+
+.tip-card h3 {
+  font-size: 15px;
+}
+.tip-image {
+  margin-top: 0px;
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .tip-card:hover {
@@ -190,33 +203,36 @@
   transform: scale(1);
 }
 
-.guides, .recipes-grid {
+.guides, .popular-recipes .recipes-grid {
   display: flex;
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.guide-card {
-  gap: 20px;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  min-width: 220px;
-  transition: transform 0.3s ease-in-out;
+.guides .guide-card {
+  font-size: 25px;
+  width: 600px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4c8b4;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: transform 0.2sease-in-out, box-shadow 0.2sease-in-out;
 }
 
-.recipe-card{
-  gap: 20px;
+.recipes-grid .recipe-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: rgb(242, 242, 242);
-  padding: 25px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 220px;
-  height: 150px;
+  width: 305px;
+  height: 310px;
   transition: transform 0.3s ease-in-out;
 }
 
@@ -345,7 +361,7 @@ leveltext {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.contact h2, p {
+.contact h2 {
   color:white;
 }
 
@@ -416,4 +432,40 @@ html, body {
   .hero {
     max-height: 100%;
   }
+}
+
+.recipe-card p{
+  color: black;
+  font-size: 15px;
+}
+
+.recipe-card h3{
+  color: black;
+  font-size: 20px;
+  margin: 0px;
+}
+
+.recipe-card .read-more {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #666666;
+  color: white;
+  text-decoration: none;
+  border-radius: 15px;
+  width: 60%;
+  transition: background 0.3s;
+  transition: .3s;
+  font-size: 13px;
+
+}
+
+.recipe-card .read-more:hover {
+  background-color: #e07636;
+  transform: scale(1.03);
+  
+}
+
+.recipe-card .read-more:active {
+  transform: scale(1);
 }
