@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "../ResetPassword.css";
 import logo from "../assets/melting-pot-logo.jpeg";
 
+import {Link} from "react-router-dom";
+
+
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [gotToken, setGotToken] = useState(false);
@@ -75,7 +78,7 @@ const ResetPassword = () => {
                     required
                 />
                 <button type="submit" className="reset-button">
-                  Reset Password
+                    <Link to="/"> Reset Password </Link>
                 </button>
               </form>
           )}
