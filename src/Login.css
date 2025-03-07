@@ -1,100 +1,252 @@
-/* Login.css */
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #E8775B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto; 
+}
+
+.login-box {
+  background-color: white;
+  width: 75vw; /* Adjust width */
+  max-width: 1152px;
+  height: auto;
+  max-height: 720px;
+  display: flex;
+  padding: 20px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-left: -6vw; /* Move left */
+  overflow-x: auto; 
+}
+
+.left-column {
+  flex: 1;
+  padding: 2rem;
+  text-align: left;
+  max-width: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 170px; /* Moves all content down */
+}
+
+.right-column {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 50%;
+  max-height: 66%; /* Restrict column height */
+  overflow: hidden; /* Ensures the image doesn't overflow */
+  padding-top: 10px;
+}
+
+.food-image {
+  width: 90%;
+  max-width: 400px;
+  max-height: 80%; /* Reduce height by 1/3rd */
+  height: auto;
+  object-fit: contain;
+  border-radius: 0px;
+}
+
+.logo-loginn {
+  width: 200px;  /* Increase width for larger logo */
+  margin: 0 auto; /* Center the logo */
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  display: block; /* Ensure proper centering */
+}
+
+.title {
+  font-family: 'Itim', cursive;
+  font-size: 36px; /* Increase font size */
+  color: #4A2E1F;
+  font-weight: bold;
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2); /* Enhance text depth */
+  margin-top: 10px; /* Reduce top margin */
+  text-align: center;
+  margin-bottom: 5px; /* Reduce space below "WELCOME BACK" */
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 20px;
+  margin-top: 0px; /* Remove extra space above subtitle */
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Ensures all child elements align left */
+  width: 100%;
+  gap: 10px;
+}
+
+
+.input-groupp {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.input-groupp label {
+  font-weight: bold;
+  margin-bottom: 2px;
+  font-size: 1.3rem;
+  color: #4a2c2a;
+  font-family: 'Itim', cursive;
+}
+
+.input-groupp input {
+  width: 515px;
+  max-width: 800px; /* Adjust to bring it closer to "Forgot Password?" */
+  padding: 12px; /* Slightly increase padding */
+  border: 2px solid #ffffff; /* Thicker border for better visibility */
+  border-radius: 8px; /* Rounder edges */
+  background-color: #b4b4b4;
+  font-size: 18px; /* Larger input font size */
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-top: 5px;
+  width: 100%; /* Ensure full width */;
+}
+
+.remember-me input[type="checkbox"] {
+  width: 16px; /* Adjust checkbox size */
+  height: 16px;
+  accent-color: #43A32D; /* Green checkbox */
+  margin-right: 6px; /* Ensure spacing between checkbox and text */
+  font-size: 14px;
+  gap: 6px;
+  font-weight: bold;
+}
+
+.remember-me {
+  align-items: center;
+  gap: 6pm;
+  font-weight: bold; /* Make it bold as in the reference */
+  font-size: 14px; /* Match "Forgot Password?" */
+}
+
+
+.forgot-password {
+  color: #000000;
+  font-size: 14px; /* Ensure same size */
+  text-decoration: none;
+  margin-left: auto; /* Aligns to the right */
+}
+
+.signup-btna {
+  font-size: 20px;
+  background: #43A32D;
+  color: white;
+  padding: 14px;
+  border: none;
+  cursor: pointer;
+  width: auto; /* Prevents button from stretching */
+  text-align: center;
+  margin-top: 10px;
+  align-self: flex-start; /* Ensures it aligns left */
+  margin-left: 2px; /* Fine-tune left position */
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-text {
+  margin-top: 10px;
+  font-size: 16px;
+  color: black;
+  text-align: left;
+}
+
+.sign-up-link {
+  color: #43A32D;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 2px 2px 4px rgba(67, 163, 45, 0.5);
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .login-container {
+    width: 100%;
     height: 100vh;
-    background-color: #d17d5a;
+    overflow-x: auto; /* ✅ Allow scrolling if necessary */
   }
   
   .login-box {
-    background: rgb(255, 255, 255);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 400px;
-  }
-  
-  .logo img {
-    width: 150px;
-    margin-bottom: 20px;
-  }
-  
-  .login-box h2 {
-    color: #6b3d1f;
-    margin-bottom: 10px;
-  }
-  
-  p {
-    color: #444;
-    font-size: 14px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    text-align: left;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #000000;
-  }
-  
-  input {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    width: 100%;
-    color: #000000;
-  }
-  
-  .options {
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column; /* Stack elements vertically */
+    width: 95vw;
+    padding: 15px;
     align-items: center;
-    margin-top: 10px;
-    font-size: 14px;
-  }
-  
-  .remember-me {
-    display: flex;
-    align-items: center;
-    color: #000000;
-  }
-  
-  .remember-me input {
-    margin-right: 5px;
-  }
-  
-  .forgot-password {
-    color: #000000;
-    text-decoration: none;
-  }
-  
-  button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .sign-up {
-    color: #4CAF50;
-    text-decoration: none;
+    overflow-x: auto; 
   }
 
-  .sign-up:hover {
-    text-decoration: underline;
+  /* ✅ Push Everything (Except Logo) Down */
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px !important; /* Moves all content down */
   }
+
+  .register-form {
+    margin-top: 30px !important; /* Adds extra spacing below title */
+  }
+
+  .left-column,
+  .right-column {
+    max-width: 100%;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ✅ Keep Logo in Place & Add Space Below */
+  .logo-loginn {
+    width: 110px; /* Slightly smaller */
+    position: relative; /* Ensure it doesn’t affect other elements */
+    margin-bottom: 70px; /* Pushes title further down */
+  }
+
+  /* ✅ Move Title Down */
+  .title {
+    font-size: 28px;
+    text-align: center;
+    margin-top: 20px; /* Pushes "WELCOME BACK" lower */
+  }
+
+  /* ✅ Fix Image Scaling */
+  .food-image {
+    max-width: 100%; /* Ensure it fits */
+    height: auto;
+  }
+
+  .input-groupp input {
+    width: 100%;
+  }
+
+  /* ✅ Collapse Navbar for Mobile */
+  .navbar {
+    display: none; /* Hides full navbar */
+  }
+
+  .hamburger-menu {
+    display: block; /* Show hamburger menu */
+  }
+}
 

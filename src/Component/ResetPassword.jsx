@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "../ResetPassword.css";
 import logo from "../assets/melting-pot-logo.jpeg";
+
 import {Link} from "react-router-dom";
+
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");

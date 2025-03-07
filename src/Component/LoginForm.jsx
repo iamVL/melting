@@ -1,73 +1,28 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import "../Login.css";
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import { Link, useNavigate } from "react-router-dom";
+import "../RegisterForm.css"; // Using the same styling as RegisterForm
+import foodImage from "../food-image.jpeg";
 
 const LoginForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Mock authentication (Replace with actual API call)
-    if (email === "user@example.com" && password === "password") {
-      sessionStorage.setItem("token", "mockToken");
-      sessionStorage.setItem("user", email);
-      setLoggedIn(true);
-      navigate("/");
-    } else {
-      alert("Invalid credentials");
-    }
-  };
-
-  return (
-    <div className="login-container">
-      <div className="login-box">
-        <div className="logo">
-          <img src={require("../melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
-        </div>
-        <h2>WELCOME BACK</h2>
-        <p>Sign in with your Email address and Password</p>
-        <form onSubmit={handleLogin}>
-          <label>Email Address</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <div className="options">
-            <label className="remember-me">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-              />
-              Remember me
-            </label>
-            <a href="/reset-password" className="forgot-password">Forgot Password?</a>
-          </div>
-          <button type="submit">Log In</button>
-        </form>
-        <p>Don’t have an account? <a href="/register" className="sign-up">Sign Up</a></p>
-      </div>
-    </div>
-  );
-};/*{
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [sessionToken, setSessionToken] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, []);
 
   const submitHandler = (event) => {
     // event.preventDefault() prevents the browser from performing its default action
@@ -110,46 +65,58 @@ const LoginForm = ({ setLoggedIn }) => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <div className="logo">
-          <img src={require("../melting-pot-logo.jpeg")} alt="Melting Pot Cooking" />
-        </div>
-        <h2>WELCOME BACK</h2>
-        <p>Sign in with your Email address and Password</p>
-        <form onSubmit={submitHandler}>
-          <label>Email Address</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-          <div className="options">
-            <label className="remember-me">
+        {/* Left Column - Logo & Form */}
+        <div className="left-column">
+          <img src={meltingLogo} alt="Melting Pot" className="logo-loginn" />
+          <h1 className="title">WELCOME BACK</h1>
+          <p className="subtitle">Sign in with your Email address and Password</p>
+          <form onSubmit={submitHandler} className="register-form">
+            <div className="input-groupp">
+              <label>Email Address</label>
               <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
-              Remember me
-            </label>
-            <Link to="/reset-password" className="forgot-password">
-              Forgot Password?
-            </Link>
-          </div>
-          <button type="submit">Log In</button>
-        </form>
-        <p>Don’t have an account? <Link to="/register" className="sign-up">Sign Up</Link></p>
+            </div>
+
+            <div className="input-groupp">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="options">
+              <label className="remember-me">
+                <input type="checkbox" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
+                Remember me
+              </label>
+              <Link to="/reset-password" className="forgot-password">
+                Forgot Password?
+              </Link>
+            </div>
+
+            <button type="submit" className="signup-btna">Log In</button>
+
+            <p className="login-text">
+              Don’t have an account? <Link to="/register" className="sign-up-link">Sign Up</Link>
+            </p>
+          </form>
+        </div>
+
+        {/* Right Column - Food Image */}
+        <div className="right-column">
+          <img src={foodImage} alt="Delicious food" className="food-image" />
+        </div>
       </div>
     </div>
   );
-};*/
+};
 
 export default LoginForm;
 

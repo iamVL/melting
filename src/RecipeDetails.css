@@ -1,0 +1,280 @@
+.recipe-details-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.recipe-content {
+    grid-column: 1;
+}
+
+.recipe-sidebar {
+    grid-column: 2;
+    background-color: #f3f3f3;
+    color:black;
+    padding: 50px;
+    border-radius: 8px;
+    font-size: 15px;
+    height: 20%;
+}
+
+.recipe-header {
+    display: flex;
+    align-items: center; /* Aligns items vertically */
+    gap: 20px;
+}
+.recipe-header .recipe-content {
+    flex: 1;
+    display: flex; /* Use flexbox to stack title and description */
+    flex-direction: column;/* Title and description on the left */
+}
+.recipe-header .recipe-image-top {
+    width: 200px; /* Set a fixed width */
+    height: 200px; /* Set a fixed height */
+    object-fit: cover;
+    border-radius: 12px;/* Remove bottom margin */
+}
+.recipe-title {
+    font-size: 1em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.recipe-description {
+    font-size: .7em;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.recipe-image-top {
+    width: 100%;
+    max-height: 300px; /* Reduced max-height */
+    object-fit: contain; /* Changed to 'contain' */
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.recipe-section {
+    margin-bottom: 40px;
+}
+
+.recipe-section h3 {
+    font-size: 1em;
+    color: #e67e22;
+    border-bottom: 2px solid #e67e22;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+
+.recipe-section .recipe-ingredients-list { /* Increased specificity */
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.recipe-section .recipe-ingredients-list li { /* Increased specificity */
+    padding: 8px 12px;
+
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 0.7em;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.steps-container {
+    padding-left: 20px;
+}
+
+.step-card {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: .6em;
+    color:grey;
+}
+
+.step-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.sidebar-section h4 {
+    font-size: 1.3em;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.cooking-level-display,
+.serving-size-display {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.cuisine-tag { 
+    background-color: #e67e22; /* Orange background */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.star {
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: gold;
+}
+.reviews-list {
+    margin-top: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth; /* Hide horizontal scrollbar */
+    white-space: nowrap;
+    width: fit-content; /* Adjust width to fit two reviews */
+    max-width: 700px;  /* Prevent reviews from wrapping */
+}
+
+.review-item {
+    background-color: #f9f9f9;
+    flex: 0 0 auto;
+    color: lightgrey;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Make reviews inline-block */
+    width: 300px; /* Adjust width as needed */
+    margin-right: 15px;
+    font-size: .7em;
+    /* Add spacing between reviews */
+}
+.scroll-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.scroll-button {
+
+     /* Adjust position as needed */
+    padding: 5px 15px;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: .7em;
+}
+.scroll-button:hover {
+    background-color: #cc5500;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.review-name {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.review-rating .star {
+    color: gold;
+    font-size: .7em;
+}
+
+.review-text {
+    font-size: 0.7em;
+    color: #333;
+    line-height: 1.6;
+}
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment-form input[type="text"],
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: .6em;
+    box-sizing: border-box;
+}
+
+.comment-form textarea {
+    resize: vertical;
+}
+
+.rating-stars {
+    margin-bottom: 10px;
+}
+
+.star {
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: gold;
+}
+
+.comment-form button {
+    background-color: #e67e22;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: .7em;
+}
+.back-to-recipes {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.back-button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: grey;
+}
+.cooking-level-display,
+.serving-size-display,
+.total-time-display { 
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}

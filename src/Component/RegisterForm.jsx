@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../RegisterForm.css"; // ✅ CORRECT
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
+import "../RegisterForm.css";
+import regPhoto from "../assets/Reg-page-photo.png";
 
 const RegisterForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
@@ -23,17 +25,52 @@ const RegisterForm = ({ setLoggedIn }) => {
   
   const submitHandler = (event) => {
     event.preventDefault();
+  
     fetch(process.env.REACT_APP_API_PATH + "/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password, phone, fullName, country, username }),
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     })
       .then((res) => res.json())
       .then((result) => {
-        navigate("/login");
+        if (!result.token || !result.userID) {
+          throw new Error("Signup failed!"); // Handle signup failure
+        }
+  
+        return fetch(
+          `${process.env.REACT_APP_API_PATH}/users/${result.userID}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${result.token}`,
+            },
+            body: JSON.stringify({
+              attributes: {
+                username: username,
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                password: password,
+                country: country,
+              },
+            }),
+          }
+        );
+      })
+      .then((res) => res.json())
+      .then((profileResult) => {
+        navigate("/");
         window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Registration or profile setup failed!");
       });
   };
 
@@ -43,12 +80,12 @@ const RegisterForm = ({ setLoggedIn }) => {
       <div className="content-wrapper">
         {/* Left Side: Food Image */}
         <div className="image-container">
-          <img src="/Reg-page-photo.png" alt="Food" className="food-image" />
+          <img src={regPhoto} alt="Food" className="food-image" />
         </div>
 
         {/* Right Side: Registration Form */}
         <div className="form-container">
-        <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo-login" />
+        <img src={meltingLogo} alt="Melting" className="logo-login" />
           <h1 className="title">Registration</h1>
           <form onSubmit={submitHandler} className="register-form">
             <div className="input-group">
@@ -91,7 +128,7 @@ const RegisterForm = ({ setLoggedIn }) => {
             <button type="submit" className="signup-btn">Sign Up</button>
 
             <p className="login-text">
-              Already have an account? <Link to="/login">Log In</Link>
+              Already have an account? <Link to="/">Log In</Link>
             </p>
           </form>
         </div>

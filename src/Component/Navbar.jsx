@@ -1,112 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import profileIcon from "../assets/profile icon.png";
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
 
-// pull in the images for the menu items
-import postIcon from "../assets/post.svg";
-import friendIcon from "../assets/friends.svg";
-import settingIcon from "../assets/settings.svg";
-import helpIcon from "../assets/help.svg";
-import exitIcon from "../assets/exit.png";
-import groupIcon from "../assets/group.png";
-import TMPLogo from "../assets/TMPLogo.png";
-
+const Navbar = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
 /* The Navbar class provides navigation through react router links.  Note the callback
    to the parent app class in the last entry... this is an example of calling a function
    passed in via props from a parent component */
-const Navbar = ({ toggleModal, logout }) => {
   return (
     <nav className="navbar">
-        <nav className="navbar">
-        <ul className="nav-links">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/featured">Featured</Link></li>
-          <li><Link to="/favorites">Favorites</Link></li>
-          <li><Link to="/upload">Upload Recipe</Link></li>
-          <li><Link to="/filter">Filter</Link></li>
-          <img src="/melting-pot-logo.jpeg" alt="Melting" className="logo" width={75} />
-          <li><Link to="/aboutus">About Us</Link></li>
-          <li><Link to="/settings"><img src={friendIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
-        </ul>
-      </nav>
-      </nav>
-    // <div id="sidenav" className="sidenav">
-    //   <ul id="side-menu-items">
-    //     <li className="pm admin student">
-    //       <Link to="/">
-    //         <img
-    //           src={postIcon}
-    //           className="sidenav-icon"
-    //           alt="Posts"
-    //           title="Posts"
-    //         />
-    //       </Link>
-    //     </li>
-    //     <li className="pm admin">
-    //       <Link to="/friends">
-    //         <img
-    //           src={friendIcon}
-    //           className="sidenav-icon"
-    //           alt="Friends"
-    //           title="Friends"
-    //         />
-    //       </Link>
-    //     </li>
-    //     <li className="pm admin">
-    //       <Link to="/settings">
-    //         <img
-    //           src={settingIcon}
-    //           className="sidenav-icon"
-    //           alt="Settings"
-    //           title="Settings"
-    //         />
-    //       </Link>
-    //     </li>
-    //     <li className="pm admin">
-    //       <button
-    //         className="link-button"
-    //         onClick={toggleModal}
-    //       >
-    //         <img
-    //           src={helpIcon}
-    //           className="sidenav-icon"
-    //           alt="Modal"
-    //           title="Modal"
-    //         />
-    //       </button>
-    //     </li>
-    //     <li className="pm admin">
-    //       <button className="link-button" onClick={logout}>
-    //         <img
-    //           src={exitIcon}
-    //           className="sidenav-icon"
-    //           alt="Logout"
-    //           title="Logout"
-    //         />
-    //       </button>
-    //     </li>
-    //     <li className="pm admin">
-    //       <Link to="/groups">
-    //         <img
-    //           src={groupIcon}
-    //           className="sidenav-icon"
-    //           alt="groups"
-    //           title="groups"
-    //         />
-    //       </Link>
-    //     </li>
-    //     <li className="pm admin">
-    //       <Link to="/aboutus">
-    //         <img
-    //           src={TMPLogo}
-    //           className="sidenav-icon"
-    //           alt="TMPLogo"
-    //           title="TMPLogo"
-    //         />
-    //       </Link>
-    //     </li>
-    //   </ul>
-    // </div>
+      <ul className="nav-links">
+      <Link to="/"> <img src={meltingLogo} alt="Melting" className="logo" width={120} /></Link>
+        <li><Link to="/">Home</Link></li>
+        <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
+          <span className="dropdown-title">Featured ▼</span>
+          {dropdownOpen && (
+            <ut className="dropdown-menu">
+              <li><Link to="/tips">Cooking Tips</Link></li>
+              <li><Link to="/how-to-guides">How To Guides</Link></li>
+            </ut>
+          )}
+        </li>
+        <li><Link to="/favorites">Favorites</Link></li>
+
+        {/* Upload Dropdown */}
+        <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
+          <span className="dropdown-title">Upload ▼</span>
+          {dropdownOpen && (
+            <ut className="dropdown-menu">
+              <li><Link to="/tip-upload">Cooking Tip</Link></li>
+              <li><Link to="/upload">Recipe</Link></li>
+            </ut>
+          )}
+        </li>
+
+        <li><Link to="/filter">Filter</Link></li>
+        <li className="dropdown" onMouseEnter={() => setDropdownOpen(true)} onMouseLeave={() => setDropdownOpen(false)}>
+          <span className="dropdown-title">About ▼</span>
+          {dropdownOpen && (
+            <ut className="dropdown-menu">
+              <li><Link to="/aboutus">Our Team</Link></li>
+              <li><Link to="/StyleGuide">Style Guide</Link></li>
+            </ut>
+          )}
+        </li>
+        <li><Link to="/settings"><img src={profileIcon} width={60} height={60} className="active" alt="profile" title="profile" /></Link></li>
+      </ul>
+    </nav>
   );
 };
 

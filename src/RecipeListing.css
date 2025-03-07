@@ -1,0 +1,127 @@
+/* Container */
+.recipe-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.recipe-header {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.recipe-subheader {
+  color: #777;
+  margin-bottom: 30px;
+}
+
+/* Grid for the cards */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 
+    The above sets each column to min 280px, 
+    so you get up to 3 (or more) columns depending on screen size.
+  */
+  gap: 20px;
+  justify-items: center;
+}
+
+/* Card */
+.recipe-card-1 {
+  background-color: #fff;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 350px;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+}
+
+.recipe-card-1:hover {
+  transform: scale(1.02);
+}
+
+.recipe-image-1 {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Content inside each card */
+.recipe-content-1 {
+  padding: 20px;
+}
+
+.recipe-title-1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.recipe-description-1 {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+/* Buttons */
+.read-more-button-1{
+  display: block;
+  background-color: #ff7043;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+}
+.delete-recipe-button-1 {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+  width: 100%;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 8px;
+}
+
+.read-more-button-1 {
+  background-color: #ff7043;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.read-more-button-1:hover {
+  background-color: #e64a19;
+}
+
+.delete-recipe-button-1 {
+  background-color: #e57373;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.delete-recipe-button-1:hover {
+  background-color: #d32f2f;
+}
+
+/* Fallback if no recipes */
+.no-recipes-found {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #999;
+}
