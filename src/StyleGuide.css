@@ -112,14 +112,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 45%;
-    background-color: var(--color-white);
-    padding: 1.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    min-height: 250px;
     text-align: center;
     gap: 10px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid black;
+    width: 90%;
   }
   /* Color Samples */
   .color-sample {
@@ -333,3 +330,33 @@
   width: 300px;
   transition: .3s;
   }
+
+  .snip-box {
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+  }
+
+  code {
+    display: flex;
+    color:black;
+    font-size: 20px;
+    line-height: 1;
+    font-family: Courier New, Courier, monospace;
+    text-align: left;
+  }
+  codes {
+    display: flex;
+    color:black;
+    font-size: 20px;
+    line-height: 1;
+    font-family: Courier New, Courier, monospace;
+    text-align: left;
+  }
+
+  pre {
+    font-size: 18px;
+    padding: 20px;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+}
