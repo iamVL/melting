@@ -70,6 +70,14 @@ const RecipeDetails = () => {
         }
     };
 
+    const getAverageRating = () => {
+        if (reviews.length === 0) return 0;
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        return (totalRating / reviews.length).toFixed(1);
+    };
+    
+    const averageRating = parseFloat(getAverageRating());
+
     if (isLoading) return <p>Loading recipe details...</p>;
     if (error) return <p>Error loading recipe: {error.message}</p>;
     if (!recipe) return <p>Recipe not found.</p>;
@@ -89,6 +97,10 @@ const RecipeDetails = () => {
                     <div className="recipe-text-content">
                         <h2 className="recipe-title">{recipe.attributes?.title}</h2>
                         <p className="recipe-description">{recipe.content}</p>
+                    </div>
+                    <div className="average-rating-display">
+                        <span key={1} className={`star ${1 < Math.round(averageRating) ? "active" : ""}`}> ★</span>
+                    <span className="average-rating-value"> {averageRating} / 5 </span>
                     </div>
                     {recipe.attributes?.image && (
                         <img
