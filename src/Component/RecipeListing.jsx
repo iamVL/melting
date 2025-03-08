@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../RecipeListing.css";
 
 const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
+  const [sortOption, setSortOption] = useState("rating");
   const currentUserID = sessionStorage.getItem("user");
 
   if (!sessionStorage.getItem("token")) {
@@ -52,16 +53,43 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
     }
   };
 
+  const sortedPosts = [...posts].map((post) => ({
+    ...post,
+    averageRating: getAverageRating(post.id),
+  }));
+
+  if (sortOption === "rating") {
+    sortedPosts.sort((a, b) => b.averageRating - a.averageRating);
+  } else if (sortOption === "title") {
+    sortedPosts.sort((a, b) => (a.attributes?.title || "").localeCompare(b.attributes?.title || ""));
+  } else if (sortOption === "likes") {
+    sortedPosts.sort((a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0));
+  }
+
   return (
     <div className="recipe-container">
-      <h2 className="recipe-header">Browse Recipes</h2>
+      <div className="recipe-header-container">
+        <h2 className="recipe-header">Browse Recipes</h2>
+        <div className="sort-dropdown">
+          <label htmlFor="sort">Sort by: </label>
+          <select
+            id="sort"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="rating">Rating</option>
+            <option value="title">Title</option>
+            <option value="likes">Likes</option>
+          </select>
+        </div>
+      </div>
       <p className="recipe-subheader">
         Explore our community’s shared recipes. Click any card to see details!
       </p>
 
-      {posts.length > 0 ? (
+      {sortedPosts.length > 0 ? (
         <div className="recipe-grid">
-          {posts.map((post) => {
+          {sortedPosts.map((post) => {
             const authorID = post.authorID;
             // For safety, handle if attributes is null/undefined
             const attrs = post.attributes || {};
@@ -71,20 +99,15 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
 
             // Truncate description if it’s very long (optional)
             const shortDescription =
-              description.length > 100
-                ? description.substring(0, 100) + "..."
-                : description;
-            const averageRating = getAverageRating(post.id);
+              description.length > 100 ? description.substring(0, 100) + "..." : description;
+            const averageRating = post.averageRating;
 
             return (
               <div key={post.id} className="recipe-card-1">
                 {mainImage && <img src={mainImage} alt={title} className="recipe-image-1" />}
 
-                <div className="recipe-content-1">
-                  <h3 className="recipe-title-1">{title}</h3>
-                  <p className="recipe-description-1">{shortDescription}</p>
-
-                  <div className="average-rating-display">
+                <div className="average-rating-display">
+                  <div className="stars">
                     {Array.from({ length: 5 }, (_, i) => {
                       const fullStar = i + 1 <= averageRating;
                       const halfStar = i < averageRating && i + 1 > averageRating;
@@ -94,8 +117,13 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
                         </span>
                       );
                     })}
-                    <span className="average-rating-value"> {averageRating} / 5</span>
                   </div>
+                  <span className="average-rating-value"> {averageRating}</span>
+                </div>
+
+                <div className="recipe-content-1">
+                  <h3 className="recipe-title-1">{title}</h3>
+                  <p className="recipe-description-1">{shortDescription}</p>
 
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
