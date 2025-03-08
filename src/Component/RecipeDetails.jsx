@@ -79,7 +79,7 @@ const RecipeDetails = () => {
 
         <div className="recipe-details-container">
             <div className="back-to-recipes">
-                <Link to="/recipe" className="back-button">
+                <Link to="/recipes" className="back-button">
                     ← All Recipes
                 </Link>
             </div>
