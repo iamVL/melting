@@ -180,7 +180,6 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
         Explore our community’s shared recipes. Click any card to see details!
       </p>
 
-      {/* If there are recipes, display them in a grid. Otherwise, show a message. */}
       {posts.length > 0 ? (
         <div className="recipe-grid">
           {posts.map((post) => {
@@ -188,37 +187,20 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
             // For safety, handle if attributes is null/undefined
             const attrs = post.attributes || {};
             const mainImage = attrs.mainImage;
-            const title = attrs.title || post.content; // fallback to post.content if no title
+            const title = attrs.title || post.content;
             const description = attrs.description || "No description available";
             const recipeID = post.id;
             const isFavorited = favoritedRecipes.includes(recipeID);
 
-            // Truncate description if it’s very long (optional)
-            const shortDescription =
-              description.length > 100
-                ? description.substring(0, 100) + "..."
-                : description;
-
             return (
               <div key={post.id} className="recipe-card-1">
-                {/* If there's an image, render it */}
-                {mainImage && (
-                  <img
-                    src={mainImage}
-                    alt={title}
-                    className="recipe-image-1"
-                  />
-                )}
-
+                {mainImage && <img src={mainImage} alt={title} className="recipe-image-1" />}
                 <div className="recipe-content-1">
                   <h3 className="recipe-title-1">{title}</h3>
-                  <p className="recipe-description-1">{shortDescription}</p>
-
-                  {/* "Read More" button links to individual recipe page */}
+                  <p className="recipe-description-1">{description}</p>
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
                   </Link>
-
                   <button
                     className={`favorite-button ${isFavorited ? "favorited" : ""}`}
                     onClick={() => handleFavorite(recipeID)}
