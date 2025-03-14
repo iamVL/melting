@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../RecipeListing.css"; // <-- Make sure this file exists and is imported
 
 const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
-  const currentUserID = sessionStorage.getItem("user");
+  const currentUserID = JSON.parse(sessionStorage.getItem("user"));
   const token = sessionStorage.getItem("token");
 
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
@@ -11,13 +11,34 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
   // Fetch user's favorited recipes
   useEffect(() => {
     if (!token) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/favorites`, {
-      headers: { Authorization: `Bearer ${token}` },
+    
+    const baseApiPath = process.env.REACT_APP_API_PATH?.replace(/\/api\/melting$/, ""); // ✅ Fix API path
+    const apiUrl = `${baseApiPath}/posts?postType=favorite`; // ✅ Use query params
+
+    console.log("Fetching favorites from:", apiUrl);
+    console.log(`Final API Path: ${baseApiPath}`);
+    console.log(`Attempting fetch to: ${apiUrl}`);
+
+    fetch(apiUrl, {
+        mode: "cors",
+        method: "GET",  // ✅ Some APIs require POST for filtered queries
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
     })
-      .then((res) => res.json())
-      .then((data) => setFavoritedRecipes(data.map(fav => fav.recipeID)))
-      .catch(err => console.error("Error fetching favorites:", err));
-  }, [token]);
+    .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        return res.json();
+    })
+    .then((data) => {
+        // ✅ Fix: Use 'id' instead of 'recipeID'
+        setFavoritedRecipes(data.map(fav => fav.id));
+    })
+    .catch(err => console.error("Error fetching favorites:", err));
+}, [token]);
+
+  
 
   // Function to toggle favorite status
   const handleFavorite = async (recipeID) => {
@@ -29,40 +50,42 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
     const isFavorited = favoritedRecipes.includes(recipeID);
     const method = isFavorited ? "DELETE" : "POST";
 
+    const baseApiPath = process.env.REACT_APP_API_PATH?.replace(/\/api\/melting$/, ""); 
+    const apiUrl = `${baseApiPath}/posts`; 
+
+    console.log(`Sending ${method} request to:`, apiUrl);
+    console.log(`Attempting fetch to: ${apiUrl}`);
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_PATH}/favorites`, {
+      const response = await fetch(apiUrl, {
         method,
+        mode: "cors",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ recipeID }),
+        body: JSON.stringify({
+          id: recipeID,  
+          postType: "favorite",
+        }),
       });
 
       if (response.ok) {
         setFavoritedRecipes((prevFavorites) =>
-          isFavorited ? prevFavorites.filter(id => id !== recipeID) : [...prevFavorites, recipeID]
+          isFavorited
+            ? prevFavorites.filter((id) => id !== recipeID)
+            : [...prevFavorites, recipeID]
         );
       } else {
-        alert("Error updating favorite status.");
+        const errorMessage = await response.text();
+        console.error("Error updating favorite status:", errorMessage);
+        alert("Error updating favorite status: " + errorMessage);
       }
     } catch (error) {
       console.error("Failed to update favorite:", error);
     }
-  };
+};
 
-  if (!token) return <div>Please Log In...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!isLoaded) return <div>Loading...</div>;
-
-  // If not logged in, or data not yet loaded, show messages:
-  if (!sessionStorage.getItem("token")) {
-    return <div>Please Log In...</div>;
-  } else if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
 
   // Handler for deleting a recipe
   const handleDelete = async (postID) => {

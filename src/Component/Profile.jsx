@@ -7,6 +7,7 @@ import My_recipes from "../Account_Buttons/My_recipes.png"
 import { Link } from "react-router-dom";
 
 
+
 // The Profile component shows data from the user table.  This is set up fairly generically to allow for you to customize
 // user data by adding it to the attributes for each user, which is just a set of name value pairs that you can add things to
 // in order to support your group specific functionality.  In this example, we store basic profile information for the user
@@ -21,6 +22,21 @@ const Profile = (props) => {
   const [picture, setPicture] = useState("");
   const [country, setCountry] = useState("");
   const [phone, setPhone] = useState(false);
+  const [favoritedRecipes, setFavoritedRecipes] = useState([]);
+  const token = sessionStorage.getItem("token");
+
+  
+
+  useEffect(() => {
+    if (!token) return;
+    fetch(`${process.env.REACT_APP_API_PATH}/favorites`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => setFavoritedRecipes(data))
+      .catch(err => console.error("Error fetching favorites:", err));
+  }, [token]);
 
 
   // Replace componentDidMount for fetching data
@@ -268,4 +284,3 @@ const Profile = (props) => {
 };
 
 export default Profile;
-

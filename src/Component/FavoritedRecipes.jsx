@@ -8,8 +8,10 @@ const FavoritedRecipes = () => {
   useEffect(() => {
     if (!token) return;
 
-    fetch(`${process.env.REACT_APP_API_PATH}/favorites`, {
-      headers: { Authorization: `Bearer ${token}` },
+    fetch(`${process.env.REACT_APP_API_PATH}/melting/favorites`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+        mode: "no-cors",  // <--- Add this
     })
       .then((res) => res.json())
       .then((data) => setFavorites(data))
