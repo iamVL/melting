@@ -29,14 +29,25 @@ const Profile = (props) => {
 
   useEffect(() => {
     if (!token) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/favorites`, {
-      method: "GET",
+  
+    const apiUrl = `${process.env.REACT_APP_API_PATH}/posts?postType=favorite`;
+  
+    console.log("Fetching favorites from:", apiUrl);
+  
+    fetch(apiUrl, {
+      method: "GET",  // ✅ Corrected method (was "POST" before)
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((data) => setFavoritedRecipes(data))
-      .catch(err => console.error("Error fetching favorites:", err));
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        setFavoritedRecipes(data.map((fav) => fav.id));  // ✅ Properly mapping the IDs
+      })
+      .catch((err) => console.error("Error fetching favorites:", err));
   }, [token]);
+  
 
 
   // Replace componentDidMount for fetching data
