@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../RecipeListing.css"; // <-- Make sure this file exists and is imported
+import "../RecipeListing.css";
 
 const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
+  const [sortOption, setSortOption] = useState("rating");
   const currentUserID = sessionStorage.getItem("user");
 
-  // If not logged in, or data not yet loaded, show messages:
   if (!sessionStorage.getItem("token")) {
     return <div>Please Log In...</div>;
   } else if (error) {
@@ -14,7 +14,15 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
     return <div>Loading...</div>;
   }
 
-  // Handler for deleting a recipe
+  const getAverageRating = (postID) => {
+    const storedReviews = localStorage.getItem(`reviews-${postID}`);
+    if (!storedReviews) return 0;
+    const reviews = JSON.parse(storedReviews);
+    if (reviews.length === 0) return 0;
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    return (totalRating / reviews.length).toFixed(1);
+  };
+
   const handleDelete = async (postID) => {
     const token = sessionStorage.getItem("token");
     if (!token) {
@@ -35,7 +43,7 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
 
       if (response.ok) {
         alert("Recipe deleted successfully!");
-        loadPosts(); // Refresh the list after deletion
+        loadPosts();
       } else {
         const result = await response.json();
         alert("Error deleting recipe: " + (result.error || "Something went wrong"));
@@ -45,56 +53,84 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
     }
   };
 
+  const sortedPosts = [...posts].map((post) => ({
+    ...post,
+    averageRating: getAverageRating(post.id),
+  }));
+
+  if (sortOption === "rating") {
+    sortedPosts.sort((a, b) => b.averageRating - a.averageRating);
+  } else if (sortOption === "title") {
+    sortedPosts.sort((a, b) => (a.attributes?.title || "").localeCompare(b.attributes?.title || ""));
+  } else if (sortOption === "likes") {
+    sortedPosts.sort((a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0));
+  }
+
   return (
     <div className="recipe-container">
-      <h2 className="recipe-header">Browse Recipes</h2>
+      <div className="recipe-header-container">
+        <h2 className="recipe-header">Browse Recipes</h2>
+        <div className="sort-dropdown">
+          <label htmlFor="sort">Sort by: </label>
+          <select
+            id="sort"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="rating">Rating</option>
+            <option value="title">Title</option>
+            <option value="likes">Likes</option>
+          </select>
+        </div>
+      </div>
       <p className="recipe-subheader">
         Explore our community’s shared recipes. Click any card to see details!
       </p>
 
-      {/* If there are recipes, display them in a grid. Otherwise, show a message. */}
-      {posts.length > 0 ? (
+      {sortedPosts.length > 0 ? (
         <div className="recipe-grid">
-          {posts.map((post) => {
+          {sortedPosts.map((post) => {
             const authorID = post.authorID;
             // For safety, handle if attributes is null/undefined
             const attrs = post.attributes || {};
             const mainImage = attrs.mainImage;
-            const title = attrs.title || post.content; // fallback to post.content if no title
+            const title = attrs.title || post.content;
             const description = attrs.description || "No description available";
 
             // Truncate description if it’s very long (optional)
             const shortDescription =
-              description.length > 100
-                ? description.substring(0, 100) + "..."
-                : description;
+              description.length > 100 ? description.substring(0, 100) + "..." : description;
+            const averageRating = post.averageRating;
 
             return (
               <div key={post.id} className="recipe-card-1">
-                {/* If there's an image, render it */}
-                {mainImage && (
-                  <img
-                    src={mainImage}
-                    alt={title}
-                    className="recipe-image-1"
-                  />
-                )}
+                {mainImage && <img src={mainImage} alt={title} className="recipe-image-1" />}
+
+                <div className="average-rating-display">
+                  <div className="stars">
+                    {Array.from({ length: 5 }, (_, i) => {
+                      const fullStar = i + 1 <= averageRating;
+                      const halfStar = i < averageRating && i + 1 > averageRating;
+                      return (
+                        <span key={i} className={`star ${fullStar ? "active" : halfStar ? "half-active" : ""}`}>
+                          ★
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <span className="average-rating-value"> {averageRating}</span>
+                </div>
 
                 <div className="recipe-content-1">
                   <h3 className="recipe-title-1">{title}</h3>
                   <p className="recipe-description-1">{shortDescription}</p>
 
-                  {/* "Read More" button links to individual recipe page */}
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
                   </Link>
 
-                  {/* Only show "Delete" if the post belongs to the current user */}
                   {String(authorID) === String(currentUserID) && (
-                    <button
-                      className="delete-recipe-button-1"
-                      onClick={() => handleDelete(post.id)}
-                    >
+                    <button className="delete-recipe-button-1" onClick={() => handleDelete(post.id)}>
                       🗑 Delete
                     </button>
                   )}
