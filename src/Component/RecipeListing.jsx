@@ -1,9 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../RecipeListing.css"; // <-- Make sure this file exists and is imported
 
 const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
   const currentUserID = sessionStorage.getItem("user");
+  const token = sessionStorage.getItem("token");
+
+  const [favoritedRecipes, setFavoritedRecipes] = useState([]);
+
+  // Fetch user's favorited recipes
+  useEffect(() => {
+    if (!token) return;
+    fetch(`${process.env.REACT_APP_API_PATH}/favorites`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => setFavoritedRecipes(data.map(fav => fav.recipeID)))
+      .catch(err => console.error("Error fetching favorites:", err));
+  }, [token]);
+
+  // Function to toggle favorite status
+  const handleFavorite = async (recipeID) => {
+    if (!token) {
+      alert("You must be logged in to favorite recipes.");
+      return;
+    }
+
+    const isFavorited = favoritedRecipes.includes(recipeID);
+    const method = isFavorited ? "DELETE" : "POST";
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_PATH}/favorites`, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ recipeID }),
+      });
+
+      if (response.ok) {
+        setFavoritedRecipes((prevFavorites) =>
+          isFavorited ? prevFavorites.filter(id => id !== recipeID) : [...prevFavorites, recipeID]
+        );
+      } else {
+        alert("Error updating favorite status.");
+      }
+    } catch (error) {
+      console.error("Failed to update favorite:", error);
+    }
+  };
+
+  if (!token) return <div>Please Log In...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!isLoaded) return <div>Loading...</div>;
 
   // If not logged in, or data not yet loaded, show messages:
   if (!sessionStorage.getItem("token")) {
@@ -62,6 +112,8 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
             const mainImage = attrs.mainImage;
             const title = attrs.title || post.content; // fallback to post.content if no title
             const description = attrs.description || "No description available";
+            const recipeID = post.id;
+            const isFavorited = favoritedRecipes.includes(recipeID);
 
             // Truncate description if it’s very long (optional)
             const shortDescription =
@@ -88,6 +140,13 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
                   </Link>
+
+                  <button
+                    className={`favorite-button ${isFavorited ? "favorited" : ""}`}
+                    onClick={() => handleFavorite(recipeID)}
+                  >
+                    {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                  </button>
 
                   {/* Only show "Delete" if the post belongs to the current user */}
                   {String(authorID) === String(currentUserID) && (
