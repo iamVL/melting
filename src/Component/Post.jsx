@@ -286,4 +286,5 @@ const Post = ({ post, type, loadPosts }) => {
   );
 };
 
+
 export default Post;
