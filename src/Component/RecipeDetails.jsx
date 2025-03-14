@@ -103,10 +103,7 @@ const RecipeDetails = () => {
                         <h2 className="recipe-title">{recipe.attributes?.title}</h2>
                         <p className="recipe-description">{recipe.content}</p>
                     </div>
-                    <div className="average-rating-display">
-                        <span key={1} className={`star ${1 < Math.round(averageRating) ? "active" : ""}`}> ★</span>
-                    <span className="average-rating-value"> {averageRating} / 5 </span>
-                    </div>
+
                     {recipe.attributes?.image && (
                         <img
                             src={recipe.attributes.image}
