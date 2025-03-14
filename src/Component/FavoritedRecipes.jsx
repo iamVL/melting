@@ -70,6 +70,7 @@ const FavoritedRecipes = () => {
                 // ✅ Ensure the API response structure is correctly mapped
                 return {
                     id: recipeData.id || postID,
+                    reactionID: reaction.id, // Store reaction ID for easy removal
                     title: recipeData.title || recipeData.name || recipeData.attributes?.title || "Untitled Recipe",
                     description: recipeData.description || recipeData.summary || recipeData.attributes?.description || "No description available",
                     // 🔹 Fix image URL extraction:
@@ -92,6 +93,40 @@ const FavoritedRecipes = () => {
     })
     .catch((err) => console.error("Error fetching favorites:", err));
   }, [token, reactorID]);
+
+  // ✅ Function to remove a recipe from favorites
+  const removeFavorite = async (reactionID) => {
+    if (!token) {
+      alert("You must be logged in to remove favorites.");
+      return;
+    }
+
+    const deleteUrl = `${process.env.REACT_APP_API_PATH}/post-reactions/${reactionID}`;
+    console.log(`Sending DELETE request to: ${deleteUrl}`);
+
+    try {
+      const response = await fetch(deleteUrl, {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        // ✅ Remove the recipe from the state after deletion
+        setFavorites((prevFavorites) => prevFavorites.filter(recipe => recipe.reactionID !== reactionID));
+        console.log("Successfully removed favorite.");
+      } else {
+        const errorMessage = await response.text();
+        console.error("Error removing favorite:", errorMessage);
+        alert("Error removing favorite: " + errorMessage);
+      }
+    } catch (error) {
+      console.error("Failed to remove favorite:", error);
+    }
+  };
 
   if (!token) return <div>Please Log In...</div>;
 
@@ -123,6 +158,13 @@ const FavoritedRecipes = () => {
                   <Link to={`/recipe/${recipe.id}`} className="read-more-button-1">
                     View Recipe →
                   </Link>
+                  {/* ✅ Add Remove Favorite Button */}
+                  <button
+                    className="remove-favorite-button"
+                    onClick={() => removeFavorite(recipe.reactionID)}
+                  >
+                    ❌ Remove Favorite
+                  </button>
                 </div>
               </div>
             );
