@@ -37,9 +37,8 @@ const FavoritedRecipes = () => {
     .then((data) => {
         console.log("Favorited reactions fetched:", data);
 
-        // ✅ Ensure we extract the first array from API response
+        // ✅ Extract the correct list of reactions
         const reactions = Array.isArray(data[0]) ? data[0] : data;
-
         console.log("Filtered reactions:", reactions);
 
         // ✅ Fetch full recipe details for each favorited post
@@ -50,20 +49,42 @@ const FavoritedRecipes = () => {
                 return null; // Skip invalid reactions
             }
             const recipeUrl = `${process.env.REACT_APP_API_PATH}/posts/${postID}`;
-            const response = await fetch(recipeUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          return response.json();
-        };
+            
+            try {
+                const response = await fetch(recipeUrl, {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("Error fetching recipe:", await response.text());
+                    return null;
+                }
+
+                const recipeData = await response.json();
+                console.log("Fetched Recipe Data:", recipeData); // ✅ LOG API RESPONSE
+
+                // ✅ Ensure the API response structure is correctly mapped
+                return {
+                    id: recipeData.id || postID,
+                    title: recipeData.title || recipeData.name || recipeData.attributes?.title || "Untitled Recipe",
+                    description: recipeData.description || recipeData.summary || recipeData.attributes?.description || "No description available",
+                    image: recipeData.image || recipeData.mainImage || recipeData.thumbnail || recipeData.attributes?.image || "/default-recipe-image.jpg",
+                };
+
+            } catch (error) {
+                console.error("Failed to fetch recipe details:", error);
+                return null;
+            }
+        };        
 
         Promise.all(reactions.map(fetchRecipeDetails))
             .then((recipes) => {
                 const validRecipes = recipes.filter(recipe => recipe !== null); // Remove null responses
-                const uniqueRecipes = Array.from(new Map(validRecipes.map(item => [item.id, item])).values());
+                const uniqueRecipes = Array.from(new Map(validRecipes.map(item => [item.id, item])).values()); // ✅ Remove duplicates
                 setFavorites(uniqueRecipes);
         });
 
@@ -80,24 +101,31 @@ const FavoritedRecipes = () => {
 
       {favorites.length > 0 ? (
         <div className="recipe-grid">
-          {favorites.map((recipe) => (
-            <div key={recipe.id || recipe.postID} className="recipe-card-1">
-              <img
-                src={recipe.image || "https://via.placeholder.com/350"}
-                alt={recipe.title}
-                className="recipe-image-1"
-              />
-              <div className="recipe-content-1">
-                <h3 className="recipe-title-1">{recipe.title}</h3>
-                <p className="recipe-description-1">
-                  {recipe.description || "No description available"}
-                </p>
-                <Link to={`/recipe/${recipe.id}`} className="read-more-button-1">
-                  View Recipe →
-                </Link>
+          {favorites.map((recipe, index) => {
+            console.log("Rendering Recipe:", recipe); // ✅ Debugging to check available fields
+            
+            return (
+              <div key={recipe.id || recipe.postID || index} className="recipe-card-1">
+                <img
+                  src={recipe.image}
+                  alt={recipe.title}
+                  className="recipe-image-1"
+                  onError={(e) => e.target.src = "/default-recipe-image.jpg"} // ✅ Fallback image
+                />
+                <div className="recipe-content-1">
+                  <h3 className="recipe-title-1">
+                    {recipe.title}
+                  </h3>
+                  <p className="recipe-description-1">
+                    {recipe.description}
+                  </p>
+                  <Link to={`/recipe/${recipe.id}`} className="read-more-button-1">
+                    View Recipe →
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <p className="no-recipes-found">You have no favorite recipes yet.</p>
