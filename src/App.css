@@ -17,12 +17,12 @@
   color: white;
 }
 
-.deletePost{
-  width:100%;
-
+.deletePost {
+  width: 100%;
 }
-.deleteIcon{
-  float:right;
+
+.deleteIcon {
+  float: right;
 }
 
 .link-button {
@@ -32,34 +32,33 @@
   display: inline;
   margin: 0;
   padding: 0;
-  outline:none;
+  outline: none;
 }
 
 .link-button:hover,
 .link-button:focus,
 .link-button:active {
   text-decoration: none;
-  outline:none;
+  outline: none;
 }
 
-.submitbutton{
+.submitbutton {
   background-color: blue;
-  margin:10px;
+  margin: 10px;
   border-radius: 5px;
 }
 
 .no-suggestions {
   color: #999;
   padding: 0.5rem;
-
 }
 
 .autocomplete input {
-    width: calc(300px + 1rem);
+  width: calc(300px + 1rem);
 }
 
-.autocomplete{
-    min-height: 165px;
+.autocomplete {
+  min-height: 165px;
 }
 
 .suggestions {
@@ -71,10 +70,8 @@
   overflow-y: auto;
   padding-left: 0;
   width: calc(300px + 1rem);
-
-  display:inline-block;
-  position:relative;
-
+  display: inline-block;
+  position: relative;
 }
 
 .suggestions li {
@@ -101,10 +98,9 @@
   text-align: left;
   background: blue;
   border-radius: 20px;
-  padding:30px;
-  margin:10px;
-
-  width:60%;
+  padding: 30px;
+  margin: 10px;
+  width: 60%;
   display: inline-flex;
 }
 
@@ -112,162 +108,154 @@
   text-align: left;
   background: blue;
   border-radius: 20px;
-  padding:30px;
-  margin:10px;
-  width:60%;
+  padding: 30px;
+  margin: 10px;
+  width: 60%;
   display: inline-flex;
   justify-content: space-between;
 }
 
-.comments{
-    background:white;
-    width:90%;
-    display:block;
-    border-radius: 20px;
-    padding:10px;
-    margin:10px;
-    color:black;
+.comments {
+  background: white;
+  width: 90%;
+  display: block;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 10px;
+  color: black;
 }
 
 .commentlist {
   text-align: left;
   background: lightblue;
-  color:black;
+  color: black;
   border-radius: 20px;
-  padding:10px;
-  margin:10px;
+  padding: 10px;
+  margin: 10px;
   font-size: 12px;
-  width:90%;
-  display:block;
+  width: 90%;
+  display: block;
 }
 
-.hide{
-  display:none;
+.hide {
+  display: none;
 }
 
-.maincontent{
+.maincontent {
   display: flex;
   flex-direction: column;
-
   justify-content: center;
   flex-grow: 1;
 }
 
-.posts{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.postbody{
-  max-width: 650px;
-  width:100%;
-  display:flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  color:red;
-}
-
-.comment-block{
-  width:100%;
-  display:flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.sidenav{
-  /* need to specify some position other than static, so height can apply.
-     Fixed works since it will stay fixed to the side - 0 from both left and top. */
-  position:fixed;
-  left:0px;
-  top:0px;
-  height:100%;
-  width:100px;
-
-  /* internally to this container, we want to use flex positioning of the menu elements */
-  display:flex;
+.posts {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+}
 
+.postbody {
+  max-width: 650px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  color: red;
+}
+
+.comment-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.sidenav {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   background-color: blue;
 }
 
-.tag-active{
-  border:red;
-  border-width:thick;
+.tag-active {
+  border: red;
+  border-width: thick;
   border-style: solid;
 }
 
-.sidenav ul{
-   list-style-type: none;
-   padding:10px;
-   margin:0px;
-   margin-top: 40px;
+.sidenav ul {
+  list-style-type: none;
+  padding: 10px;
+  margin: 0px;
+  margin-top: 40px;
 }
 
-.sidenav-icon{
-  width:40px;
-  height:40px;
-
-  margin-bottom:15px;
+.sidenav-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 15px;
 }
 
-.comment-indicator{
-  text-align:right;
-  width:100%;
-  display:block;
-  float:right;
+.comment-indicator {
+  text-align: right;
+  width: 100%;
+  display: block;
+  float: right;
   margin-top: 10px;
 }
 
-.comment-icon{
-  width:40px;
-  height:40px;
-  float:right;
+.comment-icon {
+  width: 40px;
+  height: 40px;
+  float: right;
 }
 
-.comment-indicator-text{
+.comment-indicator-text {
   background-color: lightblue;
   color: black;
   border-radius: 10px;
   font-size: 16px;
   font-weight: bold;
-  width:120px;
-  padding:5px;
-  float:right;
-  margin-left:10px;
+  width: 120px;
+  padding: 5px;
+  float: right;
+  margin-left: 10px;
   text-align: center;
 }
 
-.hide{
-  display:none;
+.hide {
+  display: none;
 }
 
 /* The Modal (background) */
 .modal {
   display: block;
-  position: fixed; /* Stay in place */
-  z-index: 0; /* Sit on top */
+  position: fixed;
+  z-index: 0;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 15% auto;
   padding: 1px 10px 20px 20px;
   border: 1px solid #888;
-  width: 50%; /* Could be more or less, depending on screen size */
+  width: 50%;
   height: 200px;
 }
 
@@ -327,16 +315,15 @@
 }
 
 .messageIcon {
-  width:40px;
-  height:40px;
+  width: 40px;
+  height: 40px;
   transition: transform 0.3s ease;
 }
 
 .messageIcon:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
   cursor: pointer;
 }
-
 
 .sendBtn {
   width: 150px;
@@ -381,4 +368,25 @@
   font-size: 13px;
   color: #000;
   text-align: right;
+}
+
+/* NEW STYLES FOR SEPARATE LIKE/DISLIKE SECTIONS */
+.like-dislike-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 110px; /* enough space for 2 icons + counters */
+  margin-top: 6px;
+}
+
+.like-box, .dislike-box {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* space between icon and count */
+}
+
+.reaction-count {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
 }

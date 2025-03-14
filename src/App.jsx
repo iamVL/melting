@@ -35,6 +35,7 @@ import Messaging from "./Component/Messaging";
 import RecipeDetails from "./Component/RecipeDetails";
 import Posts from "./Component/Posts";
 import RecipeList from "./Component/RecipeList";
+import FavoritedRecipes from "./Component/FavoritedRecipes";
 
 import { io } from "socket.io-client";
 
@@ -99,6 +100,7 @@ function App() {
               <Route path="/about_joshua" element={<AboutJoshua />} />
               <Route path="/upload" element={<UploadRecipe />} />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
+              <Route path="/favorites" element={<FavoritedRecipes />} />
 
               {/* Home Page */}
               <Route

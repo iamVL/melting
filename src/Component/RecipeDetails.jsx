@@ -48,6 +48,16 @@ const RecipeDetails = () => {
             reviewsRef.current.scrollBy({ left: 350, behavior: "smooth" });
         }
     };
+    const getAverageRating = () => {
+        if (reviews.length === 0) return 0; // No reviews, return 0
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        return (totalRating / reviews.length).toFixed(1); // Get average, round to 1 decimal
+    };
+
+    const getRatingPercentage = () => {
+        return ((getAverageRating() / 5) * 100).toFixed(0); // Convert to percentage
+    }
+
 
     // Handle review submission
     const handleCommentSubmit = () => {
@@ -70,6 +80,14 @@ const RecipeDetails = () => {
         }
     };
 
+    const getAverageRating = () => {
+        if (reviews.length === 0) return 0;
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        return (totalRating / reviews.length).toFixed(1);
+    };
+    
+    const averageRating = parseFloat(getAverageRating());
+
     if (isLoading) return <p>Loading recipe details...</p>;
     if (error) return <p>Error loading recipe: {error.message}</p>;
     if (!recipe) return <p>Recipe not found.</p>;
@@ -89,6 +107,10 @@ const RecipeDetails = () => {
                     <div className="recipe-text-content">
                         <h2 className="recipe-title">{recipe.attributes?.title}</h2>
                         <p className="recipe-description">{recipe.content}</p>
+                    </div>
+                    <div className="average-rating-display">
+                        <span key={1} className={`star ${1 < Math.round(averageRating) ? "active" : ""}`}> ★</span>
+                    <span className="average-rating-value"> {averageRating} / 5 </span>
                     </div>
                     {recipe.attributes?.image && (
                         <img
@@ -113,8 +135,8 @@ const RecipeDetails = () => {
                     <div className="steps-container">
                         {recipe.attributes?.steps?.map((step, index) => (
                             <div key={index} className="step-card">
-                                <div className="step-number">Step {index + 1}</div>
-                                <p className="step-text">{step}</p>
+                                <div className="step-title">Step {index + 1}</div>
+                                <p className="step-instruction">{step}</p>
                             </div>
                         ))}
                     </div>
@@ -122,6 +144,14 @@ const RecipeDetails = () => {
 
                 <div className="recipe-section">
                     <h3 className="reviews">Reviews</h3>
+                    {reviews.length > 0 && (
+                        <div className="average-rating">
+                            ⭐ Average Rating: {getAverageRating()} / 5
+                            ({getRatingPercentage()}% positive)
+                        </div>
+                    )}
+
+
                     {reviews.length > 2 && (
                         <div className="scroll-buttons">
                             <button className="scroll-button left" onClick={scrollLeft}>
@@ -132,6 +162,7 @@ const RecipeDetails = () => {
                             </button>
                         </div>
                     )}
+
                     <div className="reviews-list" ref={reviewsRef}>
                         {reviews.map((review, index) => (
                             <div className="review-item" key={index}>
@@ -203,15 +234,23 @@ const RecipeDetails = () => {
                     </div>
                 </div>
 
-                    <div className="sidebar-section">
-                        <h4>Cuisine</h4>
-                        <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>
+                <div className="sidebar-section">
+                    <h4>Cuisine</h4>
+                    <div className="cuisine-tags">
+                        {Array.isArray(recipe.attributes?.cuisine)
+                            ? recipe.attributes.cuisine.map((cuisine, index) => (
+                                <div key={index} className="cuisine-tag">
+                                    {cuisine}
+                                </div>
+                            ))
+                            : <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>}
                     </div>
-
-
                 </div>
-            </div>
-            );
-            };
 
-            export default RecipeDetails;
+
+            </div>
+        </div>
+    );
+};
+
+export default RecipeDetails;
