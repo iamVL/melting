@@ -72,7 +72,8 @@ const FavoritedRecipes = () => {
                     id: recipeData.id || postID,
                     title: recipeData.title || recipeData.name || recipeData.attributes?.title || "Untitled Recipe",
                     description: recipeData.description || recipeData.summary || recipeData.attributes?.description || "No description available",
-                    image: recipeData.image || recipeData.mainImage || recipeData.thumbnail || recipeData.attributes?.image || "/default-recipe-image.jpg",
+                    // 🔹 Fix image URL extraction:
+                    image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail || "/default-recipe-image.jpg",
                 };
 
             } catch (error) {
