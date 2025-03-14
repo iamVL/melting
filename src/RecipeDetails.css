@@ -1,13 +1,17 @@
 .recipe-details-container {
     max-width: 1200px;
+    min-width :1200px;
     margin: 40px auto;
     padding: 20px;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 30px;
+    min-height: 600px; /* Ensure a consistent minimum height */
+    display: grid; /* Use flexbox to align children properly */
+    flex-direction: column;
+
 }
 
 .recipe-content {
@@ -17,11 +21,20 @@
 .recipe-sidebar {
     grid-column: 2;
     background-color: #f3f3f3;
-    color:black;
-    padding: 50px;
+    color: black;
+    padding: 30px;
     border-radius: 8px;
     font-size: 15px;
-    height: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 350px;
+    max-height: 400px;
+    width: 320px;
+    height: auto;
+    word-wrap: break-word; /* Forces long words to wrap */
+    overflow: hidden;
+
 }
 
 .recipe-header {
@@ -52,13 +65,24 @@
     margin-bottom: 30px;
     line-height: 1.6;
 }
+.step-title {
+    font-weight: bold;
+    color: black; /* Step title in black */
+}
+
+.step-instruction {
+    color: grey; /* Instruction text in grey */
+}
 
 .recipe-image-top {
     width: 100%;
     max-height: 300px; /* Reduced max-height */
     object-fit: contain; /* Changed to 'contain' */
-    border-radius: 12px;
-    margin-bottom: 20px;
+
+    display: block; /* Ensures it's treated as a block element */
+    margin: 20px auto; /* Adds space and centers the image */
+    max-width: 100%; /* Prevents overflow */
+    border-radius: 8px;
 }
 
 .recipe-section {
@@ -81,7 +105,6 @@
 
 .recipe-section .recipe-ingredients-list li { /* Increased specificity */
     padding: 8px 12px;
-
     border-radius: 4px;
     margin-bottom: 5px;
     font-size: 0.7em;
@@ -99,7 +122,8 @@
     padding: 10px;
     border-radius: 8px;
     font-size: .6em;
-    color:grey;
+    color:black;
+
 }
 
 .step-number {
@@ -119,15 +143,22 @@
     padding: 8px 15px;
     border-radius: 5px;
     margin-top: 10px;
+
 }
 
-.cuisine-tag { 
+.cuisine-tag {
     background-color: #e67e22; /* Orange background */
     color: white;
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
     margin-top: 10px;
+
+}
+.cuisine-tags2 {
+    display: flex;
+    flex-direction: column; /* Stack cuisines */
+    gap: 5px; /* Add spacing */
 }
 .star {
     cursor: pointer;
@@ -271,10 +302,42 @@
 }
 .cooking-level-display,
 .serving-size-display,
-.total-time-display { 
+.total-time-display {
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 8px 15px;
     border-radius: 5px;
     margin-top: 10px;
+}
+.average-rating {
+    font-size: .8em;
+
+    color: #e67e22;
+    margin-bottom: 15px;
+    text-align: center;
+}
+@media (max-width: 768px) {
+    .recipe-page {
+        flex-direction: column; /* Stack content and sidebar */
+        align-items: center;
+        gap: 20px;
+    }
+
+    .recipe-content-container {
+        max-width: 100%; /* Allow recipe content to take full width */
+    }
+
+    .recipe-sidebar-container {
+        max-width: 100%; /* Sidebar should take full width */
+        display: flex; /* Ensure it doesn't collapse */
+        justify-content: center;
+    }
+
+    .recipe-sidebar {
+        width: 90%; /* Ensure it appears properly */
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
