@@ -59,40 +59,85 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
     }
 
     const isFavorited = favoritedRecipes.includes(recipeID);
-    const method = isFavorited ? "DELETE" : "POST";
     const apiUrl = `${process.env.REACT_APP_API_PATH}/post-reactions`;
 
-    console.log(`Sending ${method} request to:`, apiUrl);
+    if (isFavorited) {
+        // **🔹 First, fetch the reaction ID for this recipe**
+        try {
+            const fetchUrl = `${apiUrl}?postID=${recipeID}&reactorID=${reactorID}`;
+            const response = await fetch(fetchUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-    try {
-        const response = await fetch(apiUrl, {
-            method,
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                postID: recipeID,
-                reactorID: reactorID, // ✅ Use `reactorID` instead of `userID`
-                reactionType: "like", // ✅ Ensure this reactionType is valid
-                name: "favorite", // ✅ ADD `name` property as required by API
-            }),
-        });
+            const data = await response.json();
+            console.log("Fetched reaction data:", data);
 
-        if (response.ok) {
-            setFavoritedRecipes((prevFavorites) =>
-                isFavorited
-                    ? prevFavorites.filter((id) => id !== recipeID)
-                    : [...prevFavorites, recipeID]
-            );
-        } else {
-            const errorMessage = await response.text();
-            console.error("Error updating favorite status:", errorMessage);
-            alert("Error updating favorite status: " + errorMessage);
+            // **🔹 Ensure we have valid data before proceeding**
+            if (!data || data.length === 0 || !data[0].id) {
+              console.error("No valid reaction found for deletion.");
+              alert("Error: No favorite reaction found to remove.");
+              return;
+            }
+
+            const reactionID = data[0].id; // ✅ Get the actual reaction ID
+
+            // **🔹 Now, send the DELETE request**
+            const deleteUrl = `${apiUrl}/${reactionID}`;
+            console.log(`Sending DELETE request to: ${deleteUrl}`);
+
+            const deleteResponse = await fetch(deleteUrl, {
+                method: "DELETE",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (deleteResponse.ok) {
+                setFavoritedRecipes((prevFavorites) => prevFavorites.filter((id) => id !== recipeID));
+            } else {
+                const errorMessage = await deleteResponse.text();
+                console.error("Error removing favorite:", errorMessage);
+                alert("Error removing favorite: " + errorMessage);
+            }
+        } catch (error) {
+            console.error("Failed to remove favorite:", error);
         }
-    } catch (error) {
-        console.error("Failed to update favorite:", error);
+    } else {
+        // **🔹 Send POST request to add favorite**
+        console.log(`Sending POST request to: ${apiUrl} (Adding Favorite)`);
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    postID: recipeID,
+                    reactorID: reactorID,
+                    reactionType: "like",
+                    name: "favorite", // ✅ ADD `name` property as required by API
+                }),
+            });
+
+            if (response.ok) {
+                setFavoritedRecipes((prevFavorites) => [...prevFavorites, recipeID]);
+            } else {
+                const errorMessage = await response.text();
+                console.error("Error updating favorite status:", errorMessage);
+                alert("Error updating favorite status: " + errorMessage);
+            }
+        } catch (error) {
+            console.error("Failed to update favorite:", error);
+        }
     }
 };
 
