@@ -186,3 +186,16 @@
   font-size: 16px;
   color: #999;
 }
+
+.favorite-button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.favorite-button.favorited {
+  color: gold;
+}
