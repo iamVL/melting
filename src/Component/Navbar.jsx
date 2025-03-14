@@ -18,6 +18,7 @@ const Navbar = () => {
           <span className="dropdown-title">Featured ▼</span>
           {dropdownOpen && (
             <ut className="dropdown-menu">
+              <li><Link to="/recipes">Recipes</Link></li>
               <li><Link to="/tips">Cooking Tips</Link></li>
               <li><Link to="/how-to-guides">How To Guides</Link></li>
             </ut>

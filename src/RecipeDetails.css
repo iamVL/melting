@@ -40,7 +40,7 @@
 .recipe-header {
     display: flex;
     align-items: center; /* Aligns items vertically */
-    gap: 20px;
+    gap: 10%;
 }
 .recipe-header .recipe-content {
     flex: 1;
@@ -309,6 +309,7 @@
     border-radius: 5px;
     margin-top: 10px;
 }
+
 .average-rating {
     font-size: .8em;
 
@@ -341,3 +342,17 @@
         align-items: center;
     }
 }
+
+
+.average-rating-value{ 
+    color:black;
+}
+
+.average-rating-display {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
