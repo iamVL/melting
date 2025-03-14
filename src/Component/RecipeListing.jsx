@@ -5,84 +5,94 @@ import "../RecipeListing.css"; // <-- Make sure this file exists and is imported
 const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
   const currentUserID = JSON.parse(sessionStorage.getItem("user"));
   const token = sessionStorage.getItem("token");
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const userID = user.id || user.userID; // Ensure correct user ID format
 
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
 
-  // Fetch user's favorited recipes
+  // ✅ Fetch recipes and extract favorite status
   useEffect(() => {
-    if (!token) return;
-    
-    const baseApiPath = process.env.REACT_APP_API_PATH?.replace(/\/api\/melting$/, ""); // ✅ Fix API path
-    const apiUrl = `${baseApiPath}/posts?postType=favorite`; // ✅ Use query params
+    if (!token || !userID) return;
 
-    console.log("Fetching favorites from:", apiUrl);
-    console.log(`Final API Path: ${baseApiPath}`);
-    console.log(`Attempting fetch to: ${apiUrl}`);
+    const apiUrl = `${process.env.REACT_APP_API_PATH}/post-reactions?userID=${userID}`;
+
+    console.log("Fetching favorited recipes from:", apiUrl);
 
     fetch(apiUrl, {
-        mode: "cors",
-        method: "GET",  // ✅ Some APIs require POST for filtered queries
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        return res.json();
-    })
-    .then((data) => {
-        // ✅ Fix: Use 'id' instead of 'recipeID'
-        setFavoritedRecipes(data.map(fav => fav.id));
-    })
-    .catch(err => console.error("Error fetching favorites:", err));
-}, [token]);
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched favorites:", data);
+        const favorited = data.map((reaction) => reaction.postID); // Extract favorited post IDs
+        setFavoritedRecipes(favorited);
+      })
+      .catch((err) => console.error("Error fetching favorites:", err));
+  }, [token, userID]);
 
-  
-
-  // Function to toggle favorite status
+  // ✅ Function to toggle favorite status
   const handleFavorite = async (recipeID) => {
     if (!token) {
-      alert("You must be logged in to favorite recipes.");
-      return;
+        alert("You must be logged in to favorite recipes.");
+        return;
+    }
+
+    const rawUser = sessionStorage.getItem("user");
+    let user;
+    try {
+        user = JSON.parse(rawUser);
+        if (typeof user === "number") user = { id: user };
+    } catch (e) {
+        user = { id: rawUser };
+    }
+
+    const reactorID = user?.id || user?.userID || user?.ID || user?.userid;
+    console.log("Extracted Reactor ID:", reactorID);
+
+    if (!reactorID) {
+        alert("Your session has expired. Please log in again.");
+        return;
     }
 
     const isFavorited = favoritedRecipes.includes(recipeID);
     const method = isFavorited ? "DELETE" : "POST";
-
-    const baseApiPath = process.env.REACT_APP_API_PATH?.replace(/\/api\/melting$/, ""); 
-    const apiUrl = `${baseApiPath}/posts`; 
+    const apiUrl = `${process.env.REACT_APP_API_PATH}/post-reactions`;
 
     console.log(`Sending ${method} request to:`, apiUrl);
-    console.log(`Attempting fetch to: ${apiUrl}`);
 
     try {
-      const response = await fetch(apiUrl, {
-        method,
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          id: recipeID,  
-          postType: "favorite",
-        }),
-      });
+        const response = await fetch(apiUrl, {
+            method,
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                postID: recipeID,
+                reactorID: reactorID, // ✅ Use `reactorID` instead of `userID`
+                reactionType: "like", // ✅ Ensure this reactionType is valid
+                name: "favorite", // ✅ ADD `name` property as required by API
+            }),
+        });
 
-      if (response.ok) {
-        setFavoritedRecipes((prevFavorites) =>
-          isFavorited
-            ? prevFavorites.filter((id) => id !== recipeID)
-            : [...prevFavorites, recipeID]
-        );
-      } else {
-        const errorMessage = await response.text();
-        console.error("Error updating favorite status:", errorMessage);
-        alert("Error updating favorite status: " + errorMessage);
-      }
+        if (response.ok) {
+            setFavoritedRecipes((prevFavorites) =>
+                isFavorited
+                    ? prevFavorites.filter((id) => id !== recipeID)
+                    : [...prevFavorites, recipeID]
+            );
+        } else {
+            const errorMessage = await response.text();
+            console.error("Error updating favorite status:", errorMessage);
+            alert("Error updating favorite status: " + errorMessage);
+        }
     } catch (error) {
-      console.error("Failed to update favorite:", error);
+        console.error("Failed to update favorite:", error);
     }
 };
 

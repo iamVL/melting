@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../RecipeListing.css"; // ✅ Import RecipeListing.css instead of FavoritedRecipes.css
+import "../RecipeListing.css"; 
 
 const FavoritedRecipes = () => {
   const [favorites, setFavorites] = useState([]);
@@ -9,13 +9,24 @@ const FavoritedRecipes = () => {
   useEffect(() => {
     if (!token) return;
 
-    fetch(`${process.env.REACT_APP_API_PATH}/melting/favorites`, {
+    // ✅ Corrected API path
+    const apiUrl = `${process.env.REACT_APP_API_PATH}/melting/favorites`;
+
+    console.log("Fetching favorited recipes from:", apiUrl);
+
+    fetch(apiUrl, {
       method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
-      .then((res) => res.json())
-      .then((data) => setFavorites(data))
-      .catch((err) => console.error("Error fetching favorites:", err));
+    .then((res) => res.json())
+    .then((data) => {
+        console.log("Favorited recipes fetched:", data);
+        setFavorites(data);
+    })
+    .catch((err) => console.error("Error fetching favorites:", err));
   }, [token]);
 
   if (!token) return <div>Please Log In...</div>;
@@ -28,7 +39,7 @@ const FavoritedRecipes = () => {
       {favorites.length > 0 ? (
         <div className="recipe-grid">
           {favorites.map((recipe) => (
-            <div key={recipe.recipeID} className="recipe-card-1">
+            <div key={recipe.id} className="recipe-card-1">
               <img
                 src={recipe.image || "https://via.placeholder.com/350"}
                 alt={recipe.title}
@@ -39,7 +50,7 @@ const FavoritedRecipes = () => {
                 <p className="recipe-description-1">
                   {recipe.description || "No description available"}
                 </p>
-                <Link to={`/recipe/${recipe.recipeID}`} className="read-more-button-1">
+                <Link to={`/recipe/${recipe.id}`} className="read-more-button-1">
                   View Recipe →
                 </Link>
               </div>
