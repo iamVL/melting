@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom"; // ✅ Import Link for navigation
 import "../TipListing.css"; // ✅ Ensure CSS is imported
 import Tip from "../Component/Tip";
@@ -8,6 +8,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
   const currentUserID = sessionStorage.getItem("user"); // ✅ Get logged-in user ID
 
+  const [searchQuery, setSearchQuery] = useState(""); // Search query for title
+  const [advancedSearch, setAdvancedSearch] = useState(false); // Toggle advanced search
+  const [descriptionQuery, setDescriptionQuery] = useState(""); // Search query for description
+
   if (!sessionStorage.getItem("token")) {
     return <div>Please Log In...</div>;
   } else if (error) {
@@ -15,6 +19,17 @@ const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   }
+
+  // ✅ Filter posts based on search criteria
+  const filteredPosts = posts.filter((post) => {
+    const matchesTitle = post.content.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesDescription = post.attributes?.description?.toLowerCase().includes(descriptionQuery.toLowerCase());
+
+    if (advancedSearch) {
+      return matchesTitle && matchesDescription; // Both filters apply in advanced mode
+    }
+    return matchesTitle; // Basic search only checks title
+  });
 
   const handleDelete = async (postID) => {
     const token = sessionStorage.getItem("token");
@@ -52,10 +67,38 @@ const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
       <h2 className="tip-header-2">Cooking Tips & Tricks</h2>
       <p className="tip-subheader-2">Discover culinary secrets from around the world in this melting pot of flavors!</p>
 
-      {posts.length > 0 ? (
+      {/* ✅ Search Bar */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by title..."
+          className="search-bar"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button className="toggle-advanced-btn" onClick={() => setAdvancedSearch(!advancedSearch)}>
+          {advancedSearch ? "Hide Advanced Search" : "Show Advanced Search"}
+        </button>
+      </div>
+
+      {/* ✅ Advanced Search Options */}
+      {advancedSearch && (
+        <div className="advanced-search-container">
+          <input
+            type="text"
+            placeholder="Search by description..."
+            className="search-bar"
+            value={descriptionQuery}
+            onChange={(e) => setDescriptionQuery(e.target.value)}
+          />
+        </div>
+      )}
+
+      {/* ✅ Display Filtered Tips */}
+      {filteredPosts.length > 0 ? (
         <div className="tip-grid-2">
-          {posts.map((post) => {
-            const authorID = post.authorID; 
+          {filteredPosts.map((post) => {
+            const authorID = post.authorID;
             const mainImage = post.attributes?.mainImage;
             const description = post.attributes?.description || "No description available";
 

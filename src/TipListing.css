@@ -20,6 +20,76 @@
   margin-bottom: 30px;
 }
 
+/* Search Container */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Search Input Box */
+.search-bar {
+  width: 300px;
+  padding: 12px;
+  border: 2px solid #ccc !important;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+  display: block; /* ✅ Ensures it renders */
+  background-color: white; /* ✅ Ensure visibility */
+  color: black; /* ✅ Ensure readable text */
+}
+
+.search-bar:focus {
+  border-color: #ff7043;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 112, 67, 0.5);
+}
+
+/* Advanced Search Input */
+.advanced-search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Advanced Search Visibility */
+.toggle-advanced-btn {
+  background-color: #ff7043;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.toggle-advanced-btn:hover {
+  background-color: #e64a19;
+}
+
+/* Ensure Hide Advanced Search is Visible */
+.toggle-advanced-btn:focus {
+  color: black; /* Make sure the text stays visible */
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+  }
+  .advanced-search-container {
+    flex-direction: column;
+  }
+}
+
 /* Grid layout */
 .tip-grid-2 {
   display: grid;
