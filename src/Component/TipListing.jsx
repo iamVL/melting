@@ -73,6 +73,7 @@ const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
           type="text"
           placeholder="Search by title..."
           className="search-bar"
+          style={{ width: "300px" }} // Force width
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -88,6 +89,7 @@ const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
             type="text"
             placeholder="Search by description..."
             className="search-bar"
+            style={{ width: "300px" }} // Force width
             value={descriptionQuery}
             onChange={(e) => setDescriptionQuery(e.target.value)}
           />

@@ -30,9 +30,17 @@
   margin-bottom: 20px;
 }
 
+.search-container, .advanced-search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Ensure both containers take full width */
+}
+
 /* Search Input Box */
 .search-bar {
-  width: 300px;
+  width: 300px !important;
   padding: 12px;
   border: 2px solid #ccc !important;
   border-radius: 6px;
@@ -41,6 +49,7 @@
   display: block; /* ✅ Ensures it renders */
   background-color: white; /* ✅ Ensure visibility */
   color: black; /* ✅ Ensure readable text */
+  max-width: 100% !important;
 }
 
 .search-bar:focus {
@@ -51,11 +60,13 @@
 
 /* Advanced Search Input */
 .advanced-search-container {
+  flex-direction: column; /* Ensure same structure */
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+  width: 100%; /* Make sure it doesn’t stretch wider */
 }
 
 /* Advanced Search Visibility */
