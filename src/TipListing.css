@@ -38,18 +38,19 @@
   width: 100%; /* Ensure both containers take full width */
 }
 
-/* Search Input Box */
-.search-bar {
-  width: 300px !important;
+/* Search Input Box - Ensure Both Have the Same Width */
+.search-container .search-bar,
+.advanced-search-container .search-bar {
+  width: 300px; /* ✅ Ensure both input fields have the same width */
+  max-width: 100%; /* ✅ Responsive adjustment */
   padding: 12px;
   border: 2px solid #ccc !important;
   border-radius: 6px;
   font-size: 16px;
   transition: all 0.3s ease-in-out;
-  display: block; /* ✅ Ensures it renders */
-  background-color: white; /* ✅ Ensure visibility */
-  color: black; /* ✅ Ensure readable text */
-  max-width: 100% !important;
+  display: block;
+  background-color: white;
+  color: black;
 }
 
 .search-bar:focus {
