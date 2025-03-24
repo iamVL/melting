@@ -4,6 +4,9 @@ import "../RecipeListing.css";
 
 const FavoritedRecipes = () => {
   const [favorites, setFavorites] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // Search by title
+  const [descriptionQuery, setDescriptionQuery] = useState(""); // Search by description
+  const [advancedSearch, setAdvancedSearch] = useState(false); // Toggle advanced search
   const token = sessionStorage.getItem("token");
   const rawUser = sessionStorage.getItem("user");
 
@@ -130,14 +133,51 @@ const FavoritedRecipes = () => {
 
   if (!token) return <div>Please Log In...</div>;
 
+  // 🔍 Filter based on title and (optional) description
+  const filteredFavorites = favorites.filter((recipe) => {
+    const matchesTitle = recipe.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesDescription = recipe.description.toLowerCase().includes(descriptionQuery.toLowerCase());
+    return advancedSearch ? matchesTitle && matchesDescription : matchesTitle;
+  });
+
   return (
     <div className="recipe-container">
       <h2 className="recipe-header">Your Favorite Recipes</h2>
       <p className="recipe-subheader">Here are the recipes you favorited!</p>
 
-      {favorites.length > 0 ? (
+      {/* 🔍 Search Bar */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by title..."
+          className="search-bar"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button
+          className="toggle-advanced-btn"
+          onClick={() => setAdvancedSearch(!advancedSearch)}
+        >
+          {advancedSearch ? "Hide Advanced Search" : "Show Advanced Search"}
+        </button>
+      </div>
+
+      {/* 🔍 Advanced Search Field */}
+      {advancedSearch && (
+        <div className="advanced-search-container">
+          <input
+            type="text"
+            placeholder="Search by description..."
+            className="search-bar"
+            value={descriptionQuery}
+            onChange={(e) => setDescriptionQuery(e.target.value)}
+          />
+        </div>
+      )}
+
+      {filteredFavorites.length > 0 ? (
         <div className="recipe-grid">
-          {favorites.map((recipe, index) => {
+          {filteredFavorites.map((recipe, index) => {
             console.log("Rendering Recipe:", recipe); // ✅ Debugging to check available fields
             
             return (
