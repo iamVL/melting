@@ -199,3 +199,9 @@
 .favorite-button.favorited {
   color: gold;
 }
+.checkbox-label {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+

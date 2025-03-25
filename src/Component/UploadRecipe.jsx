@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "../UploadRecipe.css";
 
 const UploadRecipe = () => {
@@ -185,7 +185,7 @@ const UploadRecipe = () => {
     }, []);
 
     //options for cuisine toggle
-    const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese"];
+    const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
 
     return (
         <div className="page-container">
@@ -265,7 +265,12 @@ const UploadRecipe = () => {
                             ))}
                         </div>
 
-                        <button type="button" className="submit-btn" onClick={handleSubmit}>Serve</button>
+
+
+                        <button type="button" className="submit-btn"
+                                onClick={handleSubmit}>Serve
+                        </button>
+
                     </div>
                     <div className="upload-recipe-image">
                         <label>Upload an Image *</label>

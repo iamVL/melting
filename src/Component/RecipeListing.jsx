@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../RecipeListing.css"; // <-- Make sure this file exists and is imported
 
-const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
+const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOption = false,selectedRecipes = [],
+                       toggleRecipeSelection = null
+                       }) => {
   const currentUserID = JSON.parse(sessionStorage.getItem("user"));
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -182,19 +184,28 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     return (totalRating / reviews.length).toFixed(1);
   };
+    let sortedPosts = [...posts].map((post) => ({
+        ...post,
+        averageRating: getAverageRating(post.id),
+    }));
 
-  const sortedPosts = [...posts].map((post) => ({
-    ...post,
-    averageRating: getAverageRating(post.id),
-  }));
+    if (sortOption === "created") {
+        //  Only show posts where you're the author
+        sortedPosts = sortedPosts.filter(
+            (post) => String(post.authorID) === String(currentUserID)
+        );
+    } else if (sortOption === "rating") {
+        sortedPosts.sort((a, b) => b.averageRating - a.averageRating);
+    } else if (sortOption === "title") {
+        sortedPosts.sort((a, b) =>
+            (a.attributes?.title || "").localeCompare(b.attributes?.title || "")
+        );
+    } else if (sortOption === "likes") {
+        sortedPosts.sort(
+            (a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0)
+        );
+    }
 
-  if (sortOption === "rating") {
-    sortedPosts.sort((a, b) => b.averageRating - a.averageRating);
-  } else if (sortOption === "title") {
-    sortedPosts.sort((a, b) => (a.attributes?.title || "").localeCompare(b.attributes?.title || ""));
-  } else if (sortOption === "likes") {
-    sortedPosts.sort((a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0));
-  }
 
   return (
     <div className="recipe-container">
@@ -210,6 +221,7 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
              <option value="rating">Rating</option>
              <option value="title">Title</option>
              <option value="likes">Likes</option>
+               {showCreatedByYouOption && <option value="created">Created by You</option>}
            </select>
          </div>
        </div>
@@ -254,8 +266,20 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
  
 
                 <div className="recipe-content-1">
+
                   <h3 className="recipe-title-1">{title}</h3>
-                  <p className="recipe-description-1">{description}</p>
+                    {toggleRecipeSelection && (
+                        <label className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={selectedRecipes.includes(recipeID)}
+                                onChange={() => toggleRecipeSelection(recipeID)}
+                            />
+                            Add to Cookbook
+                        </label>
+                    )}
+
+                    <p className="recipe-description-1">{description}</p>
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
                   </Link>
