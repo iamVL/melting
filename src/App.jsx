@@ -35,6 +35,7 @@ import Messaging from "./Component/Messaging";
 import RecipeDetails from "./Component/RecipeDetails";
 import Posts from "./Component/Posts";
 import RecipeList from "./Component/RecipeList";
+import CommunityDetails from "./Component/CommunityDetails";
 import FavoritedRecipes from "./Component/FavoritedRecipes";
 
 
@@ -103,6 +104,7 @@ function App() {
               <Route path="/about_joshua" element={<AboutJoshua />} />
               <Route path="/upload" element={<UploadRecipe />} />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
+              <Route path="/community-details/:communityId" element={<CommunityDetails />} />
               <Route path="/favorites" element={<FavoritedRecipes />} />
 
               {/* Home Page */}

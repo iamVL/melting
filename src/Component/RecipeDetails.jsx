@@ -22,6 +22,7 @@ const RecipeDetails = () => {
         fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
             .then((res) => res.json())
             .then((data) => {
+                console.log("Fetched Recipe Data:", data); // Debugging
                 setRecipe(data);
                 setIsLoading(false);
             })
@@ -30,6 +31,7 @@ const RecipeDetails = () => {
                 setIsLoading(false);
             });
     }, [id]);
+
     useEffect(() => {
         if (!recipe?.authorID) return;
 
@@ -46,6 +48,7 @@ const RecipeDetails = () => {
             })
             .catch((err) => console.error("Error fetching author info:", err));
     }, [recipe]);
+
 
     // Load reviews from local storage
     useEffect(() => {
@@ -121,10 +124,10 @@ const RecipeDetails = () => {
                         <p className="recipe-description">{recipe.content}</p>
                     </div>
 
-                    {recipe.attributes?.image && (
+                    {recipe.attributes?.mainImage && (
                         <img
-                            src={recipe.attributes.image}
-                            alt={recipe.attributes.title}
+                            src={recipe.attributes.mainImage}
+                            alt={recipe.attributes?.title || "Recipe Image"}
                             className="recipe-image-top"
                         />
                     )}

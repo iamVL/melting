@@ -28,6 +28,54 @@
   width: 100%;
 }
 
+/* Ensure <select> styled like .search-bar */
+.search-bar-1 select,
+select.search-bar-1 {
+  width: 330px; /* ✅ Match input width */
+  height: 48px; /* Match .search-bar padding */
+  background-color: white;
+  color: black;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  appearance: none; /* Remove native dropdown styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.cuisine-filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* ✅ Changed from center */
+  max-width: 650px; /* ✅ Better control for larger screens */
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.cuisine-filter-tags label {
+  display: flex;
+  align-items: center;
+  background-color: #fff3e0;
+  border: 1px solid #ff7043;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5d4037;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cuisine-filter-tags label:hover {
+  background-color: #ffe0b2;
+}
+
+.cuisine-filter-tags input[type="checkbox"] {
+  margin-right: 6px;
+}
+
 .sort-container {
   display: flex;
   align-items: center;
