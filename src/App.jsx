@@ -38,7 +38,10 @@ import RecipeList from "./Component/RecipeList";
 import CommunityDetails from "./Component/CommunityDetails";
 import FavoritedRecipes from "./Component/FavoritedRecipes";
 
+
 import { io } from "socket.io-client";
+import CookbookManager from "./Component/CookbookManager";
+import CookbookDetail from "./Component/CookbookDetail";
 
 
 // Initialize socket connection
@@ -136,6 +139,8 @@ function App() {
 
               <Route path= "/posts" element={<Posts />} />
               <Route path= "/recipe" element={<RecipeList />} />
+              <Route path="/cookbooks" element={<CookbookManager/>}/>
+              <Route path="/cookbooks/:cookbookName" element={<CookbookDetail />} />
 
      {/* Dynamic Room ID for Messaging */}
 
