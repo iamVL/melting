@@ -1,13 +1,15 @@
 /* For gods sake, please replace this with styles that are less horrifying than these */
 .App {
   text-align: center;
-}
-
-.App-logo {
+ }
+ 
+ 
+ .App-logo {
   height: 40vmin;
-}
-
-.App-header {
+ }
+ 
+ 
+ .App-header {
   background-color: #ffffff;
   min-height: 100vh;
   flex-direction: row;
@@ -15,17 +17,25 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.deletePost {
+ }
+ 
+ 
+ /* Make the username (deletePost area) bigger,
+   but keep the post text smaller (see postbody below). */
+ .deletePost {
   width: 100%;
-}
-
-.deleteIcon {
+  font-size: 16px; /* bigger username */
+  font-weight: bold;
+  color: #222;     /* dark gray text for user line */
+ }
+ 
+ 
+ .deleteIcon {
   float: right;
-}
-
-.link-button {
+ }
+ 
+ 
+ .link-button {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -33,35 +43,44 @@
   margin: 0;
   padding: 0;
   outline: none;
-}
-
-.link-button:hover,
-.link-button:focus,
-.link-button:active {
+ }
+ 
+ 
+ .link-button:hover,
+ .link-button:focus,
+ .link-button:active {
   text-decoration: none;
   outline: none;
-}
-
-.submitbutton {
-  background-color: blue;
+ }
+ 
+ 
+ /* Change default button color to orange for consistency */
+ .submitbutton {
+  background-color: #ff9800; /* orange shade */
   margin: 10px;
   border-radius: 5px;
-}
-
-.no-suggestions {
+  color: #fff;           /* white text on orange */
+  padding: 5px 10px;     /* a bit of padding */
+ }
+ 
+ 
+ .no-suggestions {
   color: #999;
   padding: 0.5rem;
-}
-
-.autocomplete input {
+ }
+ 
+ 
+ .autocomplete input {
   width: calc(300px + 1rem);
-}
-
-.autocomplete {
+ }
+ 
+ 
+ .autocomplete {
   min-height: 165px;
-}
-
-.suggestions {
+ }
+ 
+ 
+ .suggestions {
   border: 1px solid #999;
   border-top-width: 0;
   list-style: none;
@@ -72,108 +91,127 @@
   width: calc(300px + 1rem);
   display: inline-block;
   position: relative;
-}
-
-.suggestions li {
+ }
+ 
+ 
+ .suggestions li {
   padding: 0.5rem;
-}
-
-.suggestion-active,
-.suggestions li:hover {
+ }
+ 
+ 
+ .suggestion-active,
+ .suggestions li:hover {
   background-color: #008f68;
   color: #fae042;
   cursor: pointer;
   font-weight: 700;
-}
-
-.suggestions li:not(:last-of-type) {
+ }
+ 
+ 
+ .suggestions li:not(:last-of-type) {
   border-bottom: 1px solid #999;
-}
-
-.App-link {
+ }
+ 
+ 
+ .App-link {
   color: #09d3ac;
-}
-
-.postlist {
+ }
+ 
+ 
+ /* --CHANGED--
+   Removed 'display: inline-flex;' and 'width: 60%;'
+   so they won't force narrower or misaligned containers.
+   Switched to 'display: block; width: 100%;'.
+ */
+ .postlist {
   text-align: left;
-  background: blue;
+  background: #ffa500; /* bright orange */
   border-radius: 20px;
   padding: 30px;
   margin: 10px;
-  width: 60%;
-  display: inline-flex;
-}
-
-.userlist {
+  display: block;
+  width: 100%;
+ }
+ 
+ 
+ /* Also change userlist to block, width: 100% */
+ .userlist {
   text-align: left;
-  background: blue;
+  background: #ffa500;
   border-radius: 20px;
   padding: 30px;
   margin: 10px;
-  width: 60%;
-  display: inline-flex;
+  display: block;
+  width: 100%;
   justify-content: space-between;
-}
-
-.comments {
-  background: white;
+ }
+ 
+ 
+ /* The "Add a comment" container & posted comments:
+   changed from white to a lighter orange tint for consistency */
+ .comments {
+  background: #f0e6df; /* light orange tint */
   width: 90%;
   display: block;
   border-radius: 20px;
   padding: 10px;
   margin: 10px;
   color: black;
-}
-
-.commentlist {
+ }
+ 
+ 
+ /* --CHANGED--
+   Make sure each comment box is 100% wide,
+   and margin is consistent so they stack nicely.
+ */
+ .commentlist {
   text-align: left;
-  background: lightblue;
+  background: #eeae9a; /* pale orange */
   color: black;
   border-radius: 20px;
   padding: 10px;
-  margin: 10px;
+  margin: 10px 0;  /* was margin: 10px; replaced with 10px 0 */
   font-size: 12px;
-  width: 90%;
   display: block;
-}
-
-.hide {
-  display: none;
-}
-
-.maincontent {
+  width: 100%;
+ }
+ 
+ 
+ /* So the posted comments + the "Add a Comment" form line up on the left */
+ .posts {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  flex-grow: 1;
-}
-
-.posts {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-}
-
-.postbody {
-  max-width: 650px;
+ }
+ 
+ 
+ /* --CHANGED--
+   Remove max-width or set it to none.
+   Now .postbody won't force narrower boxes.
+ */
+ .postbody {
+  /* max-width: 650px;    <-- REMOVED */
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  color: red;
-}
-
-.comment-block {
+  font-size: 14px;
+  color: #444;
+ }
+ 
+ 
+ .comment-block {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-}
-
-.sidenav {
+ }
+ 
+ 
+ .sidenav {
   position: fixed;
   left: 0px;
   top: 0px;
@@ -184,43 +222,50 @@
   align-items: center;
   justify-content: flex-start;
   background-color: blue;
-}
-
-.tag-active {
-  border: red;
-  border-width: thick;
-  border-style: solid;
-}
-
-.sidenav ul {
+ }
+ 
+ 
+ /* Orange border for the tag-active highlight */
+ .tag-active {
+  border: 2px solid #e64a19;
+ }
+ 
+ 
+ .sidenav ul {
   list-style-type: none;
   padding: 10px;
   margin: 0px;
   margin-top: 40px;
-}
-
-.sidenav-icon {
+ }
+ 
+ 
+ .sidenav-icon {
   width: 40px;
   height: 40px;
   margin-bottom: 15px;
-}
-
-.comment-indicator {
+ }
+ 
+ 
+ .comment-indicator {
   text-align: right;
   width: 100%;
   display: block;
   float: right;
   margin-top: 10px;
-}
-
-.comment-icon {
+ }
+ 
+ 
+ /* Keep icons the same size, but you can tweak as needed */
+ .comment-icon {
   width: 40px;
   height: 40px;
   float: right;
-}
-
-.comment-indicator-text {
-  background-color: lightblue;
+ }
+ 
+ 
+ /* Also changed from lightblue to a more pale orange to match the theme */
+ .comment-indicator-text {
+  background-color: #e64a19;
   color: black;
   border-radius: 10px;
   font-size: 16px;
@@ -230,14 +275,16 @@
   float: right;
   margin-left: 10px;
   text-align: center;
-}
-
-.hide {
+ }
+ 
+ 
+ .hide {
   display: none;
-}
-
-/* The Modal (background) */
-.modal {
+ }
+ 
+ 
+ /* The Modal (background) */
+ .modal {
   display: block;
   position: fixed;
   z-index: 0;
@@ -247,85 +294,97 @@
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
-}
-
-/* Modal Content/Box */
-.modal-content {
+ }
+ 
+ 
+ /* Modal Content/Box */
+ .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 1px 10px 20px 20px;
   border: 1px solid #888;
   width: 50%;
   height: 200px;
-}
-
-/* The Close Button */
-.close {
+ }
+ 
+ 
+ /* The Close Button */
+ .close {
   color: #aaa;
   float: right;
   line-height: 42px;
   font-size: 35px;
   font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
+ }
+ 
+ 
+ .close:hover,
+ .close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
-
-.chat {
+ }
+ 
+ 
+ .chat {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.chat__main {
+ }
+ 
+ 
+ .chat__main {
   flex: 0.6;
-}
-
-.message__container {
+ }
+ 
+ 
+ .message__container {
   width: 100%;
   height: 60vh;
   background-color: purple;
   padding: 20px;
   overflow-y: scroll;
-}
-
-.chat__footer {
+ }
+ 
+ 
+ .chat__footer {
   padding: 20px;
   background-color: black;
   width: 100%;
-}
-
-.form {
+ }
+ 
+ 
+ .form {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-between;
-}
-
-.message {
+ }
+ 
+ 
+ .message {
   width: 80%;
   height: 100%;
   border: 1px solid #ddd;
   outline: none;
   padding: 12px;
-}
-
-.messageIcon {
+ }
+ 
+ 
+ .messageIcon {
   width: 40px;
   height: 40px;
   transition: transform 0.3s ease;
-}
-
-.messageIcon:hover {
+ }
+ 
+ 
+ .messageIcon:hover {
   transform: scale(1.1);
   cursor: pointer;
-}
-
-.sendBtn {
+ }
+ 
+ 
+ .sendBtn {
   width: 150px;
   background-color: green;
   padding: 10px;
@@ -333,9 +392,10 @@
   outline: none;
   color: yellow;
   cursor: pointer;
-}
-
-.message__recipient {
+ }
+ 
+ 
+ .message__recipient {
   background-color: #000;
   width: 300px;
   padding: 8px;
@@ -343,50 +403,55 @@
   text-align: start;
   color: #fff;
   width: fit-content;
-}
-
-.message__sender {
+ }
+ 
+ 
+ .message__sender {
   background-color: blue;
   max-width: 400px;
   padding: 8px;
   margin-left: auto;
   font-size: 15px;
   width: fit-content;
-}
-
-.message__sender {
   text-align: right;
-}
-
-.recipient__name {
+ }
+ 
+ 
+ .recipient__name {
   text-align: left;
   color: #000;
   font-size: 13px;
-}
-
-.sender__name {
+ }
+ 
+ 
+ .sender__name {
   font-size: 13px;
   color: #000;
   text-align: right;
-}
-
-/* NEW STYLES FOR SEPARATE LIKE/DISLIKE SECTIONS */
-.like-dislike-buttons {
+ }
+ 
+ 
+ /* For Like/Dislike layout (same as before) */
+ .like-dislike-buttons {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 110px; /* enough space for 2 icons + counters */
+  width: 110px;
   margin-top: 6px;
-}
-
-.like-box, .dislike-box {
+ }
+ 
+ 
+ .like-box,
+ .dislike-box {
   display: flex;
   align-items: center;
-  gap: 4px; /* space between icon and count */
-}
-
-.reaction-count {
+  gap: 4px;
+ }
+ 
+ 
+ .reaction-count {
   font-weight: bold;
   font-size: 14px;
   color: #333;
-}
+ }
+ 
