@@ -1,6 +1,7 @@
 import React, { useEffect, useState , useRef} from "react";
 import {Link, useParams} from "react-router-dom";
 import "../RecipeDetails.css";
+import CookbookManager from "./CookbookManager";
 
 const RecipeDetails = () => {
     const { id } = useParams();
@@ -12,7 +13,7 @@ const RecipeDetails = () => {
     const [commentText, setCommentText] = useState("");
     const [reviews, setReviews] = useState([]);
     const reviewsRef = useRef(null);
-
+    const [authorInfo, setAuthorInfo] = useState(null);
 
 
 
@@ -30,7 +31,24 @@ const RecipeDetails = () => {
                 setIsLoading(false);
             });
     }, [id]);
-    
+
+    useEffect(() => {
+        if (!recipe?.authorID) return;
+
+        fetch(`${process.env.REACT_APP_API_PATH}/users/${recipe.authorID}`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data && data.attributes) {
+                    setAuthorInfo(data.attributes);
+                }
+            })
+            .catch((err) => console.error("Error fetching author info:", err));
+    }, [recipe]);
+
 
     // Load reviews from local storage
     useEffect(() => {
@@ -206,6 +224,7 @@ const RecipeDetails = () => {
             </div>
 
             <div className="recipe-sidebar">
+
                 <div className="sidebar-section">
                     <h4>Total Time</h4>
                     <div className="total-time-display">
@@ -238,6 +257,17 @@ const RecipeDetails = () => {
                                 </div>
                             ))
                             : <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>}
+                    </div>
+
+                </div>
+                <div className="sidebar-section">
+                    <h4>Created By</h4>
+                    <div className="created-by">
+                        {authorInfo ? (
+                            <span>{authorInfo.username}</span>
+                        ) : (
+                            <span>Loading user...</span>
+                        )}
                     </div>
                 </div>
 
