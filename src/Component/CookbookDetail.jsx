@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "../RecipeListing.css";
-import"../CookbookDetail.css";
+
 
 const CookbookDetail = () => {
     const { cookbookName } = useParams();
