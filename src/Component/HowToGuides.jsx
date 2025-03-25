@@ -6,7 +6,7 @@ import grillChickenIcon from "../assets/grill-chicken.png";
 import knifeIcon from "../assets/knife-skills.png";
 import pastaIcon from "../assets/pasta-guide.png";
 import pancakeIcon from "../assets/pancake-guide.png";
-import commentIcon from "../assets/comment-icon.png";  
+
 import cupcakeRecipe from "../assets/cupcake-recipe.png";  
 import grillChickenRecipe from "../assets/grill-chicken-recipe.png";  
 import knifeSkillsRecipe from "../assets/knife-skills-recipe.png";
@@ -81,10 +81,6 @@ const HowToGuides = () => {
               <span className="icon guide" onClick={() => openFullScreen(guide.recipeImage)}>
                 <img src={guide.guideIcon} alt="Guide Poster" />
                 <p>Guide Poster</p>
-              </span>
-              <span className="icon comment">
-                <img src={commentIcon} alt="Comments Section" />
-                <p>Comments Section</p>
               </span>
             </div>
           </div>
