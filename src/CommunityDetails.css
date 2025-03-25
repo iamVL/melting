@@ -1,0 +1,145 @@
+/* Main container for the community details page */
+.community-details {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Main heading */
+.community-details h2 {
+  font-size: 35px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 70px;
+  margin-bottom: 10px;
+}
+
+/* Subheading for posts section */
+.community-details h3 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Styling for individual posts */
+.post {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.post p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Button to view comments */
+.view-comments-btn {
+  padding: 10px 15px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-comments-btn:hover {
+  background-color: #555;
+}
+
+/* Comments section */
+.comments {
+  margin-top: 20px;
+  padding-left: 20px;
+}
+
+.comments h4 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.comment {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.comment p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Comment Form */
+.comment-form {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.comment-form button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.comment-form button:hover {
+  background-color: #555;
+}
+
+/* Post Form */
+.post-form {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.post-form input,
+.post-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.post-form button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.post-form button:hover {
+  background-color: #555;
+}
+
+  

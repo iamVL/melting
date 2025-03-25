@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import blockIcon from "../assets/block_white_216x216.png";
 import unblockIcon from "../assets/thumbsup.png";
 import deleteIcon from "../assets/delete.png";
+import { Link } from 'react-router-dom';
 
 const GroupList = () => {
   const userid = sessionStorage.getItem("token");
@@ -15,6 +16,8 @@ const GroupList = () => {
   useEffect(() => {
     loadGroups();
   }, []); // Empty dependency array ensures this effect runs once after the initial render
+
+  const currentUserID = sessionStorage.getItem("user");
 
   // this will load all available groups
   const loadGroups = () => {
@@ -254,12 +257,19 @@ const GroupList = () => {
                   className="sidenav-icon deleteIcon"
                   alt="Delete Group"
                   title="Delete Group"
-                  onClick={(e) => deleteGroup(group.id)}
+                  onClick={() => deleteGroup(group.id)}
                 />
-                <button className="comment-button" onClick={() => console.log('Comment clicked')}>
+                {/* <button className="comment-button" onClick={() => console.log('Comment clicked')}>
                 Comment
-                </button>
+                </button> */}
               </div>
+              <div className="comment-section">
+              <Link to={`/community-details/${group.id}`}>
+              <button className="comment-button" onClick={() => console.log(`Comment on ${group.name}`)}>
+                Comments
+              </button>
+              </Link>
+            </div>
             </div>
           ))}
         </ul>
