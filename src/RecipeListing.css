@@ -10,13 +10,101 @@
 .recipe-header {
   font-size: 32px;
   font-weight: bold;
-  margin-bottom: 10px;
   color: #333;
 }
 
-.recipe-subheader {
+.recipe-subheader { 
+  display: flex;
+  align-items: flex-start;
   color: #777;
+  margin-top: 0px;
   margin-bottom: 30px;
+}
+
+.recipe-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Ensure <select> styled like .search-bar */
+.search-bar-1 select,
+select.search-bar-1 {
+  width: 330px; /* ✅ Match input width */
+  height: 48px; /* Match .search-bar padding */
+  background-color: white;
+  color: black;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  appearance: none; /* Remove native dropdown styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.cuisine-filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* ✅ Changed from center */
+  max-width: 650px; /* ✅ Better control for larger screens */
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.cuisine-filter-tags label {
+  display: flex;
+  align-items: center;
+  background-color: #fff3e0;
+  border: 1px solid #ff7043;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5d4037;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cuisine-filter-tags label:hover {
+  background-color: #ffe0b2;
+}
+
+.cuisine-filter-tags input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+.sort-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.sort-dropdown {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+
+.sort-dropdown label {
+  color: black;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.sort-dropdown select {
+  padding: 4px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
 }
 
 /* Grid for the cards */
@@ -55,15 +143,36 @@
 }
 
 /* Content inside each card */
-.recipe-content-1 {
+.recipe-card-1  .recipe-content-1 {
   padding: 20px;
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
 .recipe-title-1 {
+  margin-top: 0px;
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 8px;
   color: #333;
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.recipe-card-1 .average-rating-value {
+  font-size: 20px;
+}
+
+.recipe-card-1 .average-rating-display {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-left: 20px;
 }
 
 .recipe-description-1 {
@@ -124,4 +233,17 @@
   margin-top: 20px;
   font-size: 16px;
   color: #999;
+}
+
+.favorite-button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.favorite-button.favorited {
+  color: gold;
 }

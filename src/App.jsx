@@ -36,6 +36,7 @@ import RecipeDetails from "./Component/RecipeDetails";
 import Posts from "./Component/Posts";
 import RecipeList from "./Component/RecipeList";
 import CommunityDetails from "./Component/CommunityDetails";
+import FavoritedRecipes from "./Component/FavoritedRecipes";
 
 import { io } from "socket.io-client";
 
@@ -101,7 +102,7 @@ function App() {
               <Route path="/upload" element={<UploadRecipe />} />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
               <Route path="/community-details/:communityId" element={<CommunityDetails />} />
-
+              <Route path="/favorites" element={<FavoritedRecipes />} />
 
               {/* Home Page */}
               <Route
