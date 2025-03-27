@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../RecipeListing.css"; // <-- Make sure this file exists and is imported
 
-const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
+const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOption = false,selectedRecipes = [],
+                       toggleRecipeSelection = null
+                       }) => {
   const currentUserID = JSON.parse(sessionStorage.getItem("user"));
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const userID = user.id || user.userID; // Ensure correct user ID format
+  const [sortOption, setSortOption] = useState("rating");
 
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
 
@@ -173,16 +176,62 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
     }
   };
 
+  const getAverageRating = (postID) => {
+    const storedReviews = localStorage.getItem(`reviews-${postID}`);
+    if (!storedReviews) return 0;
+    const reviews = JSON.parse(storedReviews);
+    if (reviews.length === 0) return 0;
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    return (totalRating / reviews.length).toFixed(1);
+  };
+    let sortedPosts = [...posts].map((post) => ({
+        ...post,
+        averageRating: getAverageRating(post.id),
+    }));
+
+    if (sortOption === "created") {
+        //  Only show posts where you're the author
+        sortedPosts = sortedPosts.filter(
+            (post) => String(post.authorID) === String(currentUserID)
+        );
+    } else if (sortOption === "rating") {
+        sortedPosts.sort((a, b) => b.averageRating - a.averageRating);
+    } else if (sortOption === "title") {
+        sortedPosts.sort((a, b) =>
+            (a.attributes?.title || "").localeCompare(b.attributes?.title || "")
+        );
+    } else if (sortOption === "likes") {
+        sortedPosts.sort(
+            (a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0)
+        );
+    }
+
+
   return (
     <div className="recipe-container">
-      <h2 className="recipe-header">Browse Recipes</h2>
+      <div className="recipe-header-container">
+         <h2 className="recipe-header">Browse Recipes</h2>
+         <div className="sort-dropdown">
+           <label htmlFor="sort">Sort by: </label>
+           <select
+             id="sort"
+             value={sortOption}
+             onChange={(e) => setSortOption(e.target.value)}
+           >
+             <option value="rating">Rating</option>
+             <option value="title">Title</option>
+             <option value="likes">Likes</option>
+               {showCreatedByYouOption && <option value="created">Created by You</option>}
+           </select>
+         </div>
+       </div>
       <p className="recipe-subheader">
         Explore our community’s shared recipes. Click any card to see details!
       </p>
 
-      {posts.length > 0 ? (
+      {sortedPosts.length > 0 ? (
         <div className="recipe-grid">
-          {posts.map((post) => {
+          {sortedPosts.map((post) => {
             const authorID = post.authorID;
             // For safety, handle if attributes is null/undefined
             const attrs = post.attributes || {};
@@ -191,13 +240,46 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts }) => {
             const description = attrs.description || "No description available";
             const recipeID = post.id;
             const isFavorited = favoritedRecipes.includes(recipeID);
+            
+            const shortDescription =
+             description.length > 100 ? description.substring(0, 100) + "..." : description;
+             const averageRating = post.averageRating;
 
             return (
               <div key={post.id} className="recipe-card-1">
                 {mainImage && <img src={mainImage} alt={title} className="recipe-image-1" />}
+
+                <div className="average-rating-display">
+                   <div className="stars">
+                     {Array.from({ length: 5 }, (_, i) => {
+                       const fullStar = i + 1 <= averageRating;
+                       const halfStar = i < averageRating && i + 1 > averageRating;
+                       return (
+                         <span key={i} className={`star ${fullStar ? "active" : halfStar ? "half-active" : ""}`}>
+                           ★
+                         </span>
+                       );
+                     })}
+                   </div>
+                   <span className="average-rating-value"> {averageRating}</span>
+                 </div>
+ 
+
                 <div className="recipe-content-1">
+
                   <h3 className="recipe-title-1">{title}</h3>
-                  <p className="recipe-description-1">{description}</p>
+                    {toggleRecipeSelection && (
+                        <label className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={selectedRecipes.includes(recipeID)}
+                                onChange={() => toggleRecipeSelection(recipeID)}
+                            />
+                            Add to Cookbook
+                        </label>
+                    )}
+
+                    <p className="recipe-description-1">{description}</p>
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
                   </Link>

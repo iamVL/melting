@@ -277,10 +277,10 @@ const Profile = (props) => {
               </recipebutton>
             </Link>
 
-            <Link to="/my_recipes" class = "recipeButtons">
+            <Link to="/cookbooks" class = "recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={My_recipes} alt="My_recipes"></img>
-                <a>My Recipes</a>
+                <a>Cookbooks</a>
               </recipebutton>
             </Link>
 

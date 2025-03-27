@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "../UploadRecipe.css";
 
 const UploadRecipe = () => {
@@ -90,9 +90,10 @@ const UploadRecipe = () => {
     const uploadImage = async () => {
         if (!imageFile) return null;
 
+        const userID = sessionStorage.getItem("user");
         const formData = new FormData();
-        formData.append("uploaderID", sessionStorage.getItem("user")); // ✅ Set uploader ID
-        formData.append("attributes", JSON.stringify({})); // ✅ Empty attributes object
+        formData.append("uploaderID", userID); 
+        formData.append("attributes", JSON.stringify({}));
         formData.append("file", imageFile);
 
         try {
@@ -147,6 +148,7 @@ const UploadRecipe = () => {
                 authorID: sessionStorage.getItem("user"),
                 content: recipe.description,
                 attributes: {
+                    postType: "recipe",
                     title: recipe.title,
                     totalTime: `${recipe.timeHours}hours ${recipe.timeMinutes}minutes`,
                     servingSize: parseInt(recipe.servingSize) || 1,
@@ -154,7 +156,7 @@ const UploadRecipe = () => {
                     ingredients: recipe.ingredients.length ? recipe.ingredients : ["Unknown"],
                     steps: recipe.steps,
                     cuisine: recipe.cuisine,
-                    image: uploadedImageUrl, // ✅ Attach uploaded image URL
+                    mainImage: uploadedImageUrl,
                 },
             }),
         })
@@ -183,7 +185,7 @@ const UploadRecipe = () => {
     }, []);
 
     //options for cuisine toggle
-    const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese"];
+    const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
 
     return (
         <div className="page-container">
@@ -263,7 +265,12 @@ const UploadRecipe = () => {
                             ))}
                         </div>
 
-                        <button type="button" className="submit-btn" onClick={handleSubmit}>Serve</button>
+
+
+                        <button type="button" className="submit-btn"
+                                onClick={handleSubmit}>Serve
+                        </button>
+
                     </div>
                     <div className="upload-recipe-image">
                         <label>Upload an Image *</label>
