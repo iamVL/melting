@@ -356,3 +356,37 @@
     gap: 10px;
 }
 
+.review-reactions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .reaction-button {
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.2s;
+  }
+  
+  .reaction-button.active {
+    background-color: #cc5500;
+  }
+  
+  .reaction-button:hover {
+    background-color: #d35400;
+  }
+
+  .delete-button {
+    background-color: #e67e22;
+    color: white;
+    margin-left: 8px;
+  }
+  
+  .delete-button:hover {
+    background-color: #e67e22;
+  }
