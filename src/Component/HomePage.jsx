@@ -8,13 +8,9 @@ import Homephoto from "../assets/Homephoto.jpeg";
 const shuffle = (array) => {
   let currentIndex = array.length, randomIndex;
 
-  // While there remain elements to shuffle.
   while (currentIndex !== 0) {
-    // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-
-    // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex], array[currentIndex]];
   }
@@ -27,6 +23,9 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
   const [randomTips, setRandomTips] = useState([]);
   const [randomRecipes, setRandomRecipes] = useState([]);
 
+  // 🔥 NEW STATE FOR LEVEL FILTERING
+  const [selectedLevel, setSelectedLevel] = useState("easy");
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -39,11 +38,33 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    if (randomRecipes.length > 0) {
+      filterRecipesByLevel(selectedLevel);
+    }
+  }, [randomRecipes, selectedLevel]);
+
+  // 🔥 FILTER FUNCTION FOR RECIPE LEVEL
+  const filterRecipesByLevel = (level) => {
+    console.log("Selected Level:", level);
+    console.log("All recipes:", randomRecipes);
+  
+    const levelFiltered = randomRecipes
+      .filter(recipe => {
+        console.log("Full recipe attributes:", recipe.attributes);
+        return recipe.attributes?.difficulty?.toLowerCase() === level.toLowerCase();
+      })
+      .sort((a, b) => b.attributes?.rating - a.attributes?.rating)
+      .slice(0, 4);
+  
+    console.log("Filtered Recipes:", levelFiltered);
+    setFilteredRecipes(levelFiltered);
+  };
+  
   const fetchRandomRecipes = async (token) => {
     try {
-      // Increase the limit if needed to get a larger pool of recipes
       const response = await fetch(
-        `${process.env.REACT_APP_API_PATH}/posts?limit=50`, 
+        `${process.env.REACT_APP_API_PATH}/posts?limit=50`,
         {
           method: "GET",
           headers: {
@@ -52,21 +73,18 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
           },
         }
       );
-  
+
       if (response.ok) {
         const data = await response.json();
-        console.log("Fetched data:", data);
         let recipes = [];
-  
-        // Check if the API returns an array or an object with a "posts" property
+
         if (Array.isArray(data)) {
           recipes = data[0].filter((post) => post.attributes?.postType === "recipe");
         } else if (data.posts) {
           recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
         }
-  
-        // Shuffle and select 5 random recipes
-        const randomRecipesSelected = shuffle([...recipes]).slice(0, 4);
+
+        const randomRecipesSelected = shuffle([...recipes]).slice(0, 10);
         setRandomRecipes(randomRecipesSelected);
       } else {
         console.error("Failed to fetch recipes, status:", response.status);
@@ -78,7 +96,6 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
 
   const fetchRandomTips = async (token) => {
     try {
-      // Increase the limit if you need more tips in the pool for randomness
       const response = await fetch(
         `${process.env.REACT_APP_API_PATH}/posts?limit=10`,
         {
@@ -91,16 +108,14 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log("Fetched data:", data);
         let tips = [];
 
-        // Check if the API returns an array (as in the cooking page) or an object with a "posts" property
         if (Array.isArray(data)) {
           tips = data[0].filter((post) => post.attributes?.postType === "tip");
         } else if (data.posts) {
           tips = data.posts.filter((post) => post.attributes?.postType === "tip");
         }
-        // Shuffle and select 3 random tips
+
         const randomTipsSelected = shuffle([...tips]).slice(0, 4);
         setRandomTips(randomTipsSelected);
       } else {
@@ -121,9 +136,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
           <section className="hero">
             <div className="hero-text">
               <h1>Discover our New Recipes</h1>
-              <p>
-                Learn, cook, and share yummy recipes with our  community of foodies.
-              </p>
+              <p>Learn, cook, and share yummy recipes with our  community of foodies.</p>
               <div className="hero-buttons">
                 <Link to="/upload"><button className="btn primary">Post Your Own</button></Link>
                 <Link to="/recipes"><button className="btn secondary">Browse Recipes</button></Link>
@@ -158,20 +171,20 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
             <section className="choose-level">
               <h2>Recommended Recipes based on Cooking Level!</h2>
               <div className="levels">
-                <div className="level">
+                <div className="level" onClick={() => setSelectedLevel("easy")}>
                   <leveltext>Easy</leveltext>
                 </div>
-                <div className="level">
+                <div className="level" onClick={() => setSelectedLevel("medium")}>
                   <leveltext>Medium</leveltext>
                 </div>
-                <div className="level">
+                <div className="level" onClick={() => setSelectedLevel("hard")}>
                   <leveltext>Hard</leveltext>
                 </div>
               </div>
             </section>
             <div className="recipes-grid">
-              {randomRecipes.length > 0 ? (
-                randomRecipes.map((recipe) => (
+              {filteredRecipes.length > 0 ? (
+                filteredRecipes.map((recipe) => (
                   <div key={recipe.id} className="recipe-card">
                     <img src={recipe.attributes?.mainImage} alt="recipe pic" className="recipe-image" />
                     <h3>{recipe.content}</h3>
@@ -188,11 +201,10 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                   </div>
                 ))
               ) : (
-                <p>Loading recipes...</p>
+                <p>No recipes found for this level.</p>
               )}
             </div>
           </section>
-
 
           {/* Featured Cooking Tips */}
           <section className="featured-tips">
@@ -257,17 +269,17 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
             <h2>Try Joining or Making a Cooking Community!</h2>
             <p>Connect with fellow food lovers, share recipes, and get inspired!</p>
             <div className="community-buttons">
-            <Link to="/community"><button className="btn primary">Join Now</button></Link>
+              <Link to="/community"><button className="btn primary">Join Now</button></Link>
             </div>
           </section>
         </>
       )}
       <section className="contact">
         <h2>Contact Us</h2>
-          <p>
-            We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-          </p>
-        </section>
+        <p>
+          We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
+        </p>
+      </section>
     </div>
   );
 };
