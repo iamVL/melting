@@ -9,9 +9,8 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOpti
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const userID = user.id || user.userID; // Ensure correct user ID format
-  const [sortOption, setSortOption] = useState("rating");
 
-  const [favoritedRecipes, setFavoritedRecipes] = useState([]);
+  const [sortOption, setSortOption] = useState("rating");
 
   // ✅ Fetch recipes and extract favorite status
   useEffect(() => {

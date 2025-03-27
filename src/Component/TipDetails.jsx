@@ -9,6 +9,7 @@ const TipDetails = () => {
   const [reviews, setReviews] = useState([]);
   const [reviewsLoaded, setReviewsLoaded] = useState(false); // 🌟 Important flag
 
+  
   // ✅ Fetch tip
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
