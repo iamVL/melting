@@ -282,5 +282,4 @@ const RecipeListing = ({
   );
 };
 
-
 export default RecipeListing;
