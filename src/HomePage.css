@@ -469,3 +469,10 @@ html, body {
 .recipe-card .read-more:active {
   transform: scale(1);
 }
+
+.level.active {
+  background-color: #ff8c42;
+  color: white;
+  box-shadow: 0 0 12px rgba(255, 140, 66, 0.7);
+  transform: scale(1.05);
+}
