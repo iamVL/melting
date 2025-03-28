@@ -261,7 +261,7 @@ const GroupList = () => {
                 {group.group.attributes?.ownerID == userID ? <button onClick={() => deleteGroup(group.groupID)}>Delete</button> :               
                 <button onClick={() => updateConnection(group.groupID, "inactive")}>Leave</button>
                 }
-                <a href={`/community-details/${group.groupID}/${group.group.name}`} onClick={() => console.log(`Viewing ${group.name}`)}>
+                <a href={`/hci/teams/melting/community-details/${group.groupID}/${group.group.name}`} onClick={() => console.log(`Viewing ${group.name}`)}>
                   View Community
                 </a>
               </div>
