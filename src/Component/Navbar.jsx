@@ -21,6 +21,7 @@ const Navbar = () => {
               <li><Link to="/recipes">Recipes</Link></li>
               <li><Link to="/tips">Cooking Tips</Link></li>
               <li><Link to="/how-to-guides">How To Guides</Link></li>
+              <li><Link to="/community">Communities</Link></li>
             </ut>
           )}
         </li>
@@ -31,8 +32,8 @@ const Navbar = () => {
           <span className="dropdown-title">Upload ▼</span>
           {dropdownOpen && (
             <ut className="dropdown-menu">
-              <li><Link to="/tip-upload">Cooking Tip</Link></li>
               <li><Link to="/upload">Recipe</Link></li>
+              <li><Link to="/tip-upload">Cooking Tip</Link></li>
             </ut>
           )}
         </li>
