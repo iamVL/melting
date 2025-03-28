@@ -18,6 +18,7 @@ const RecipeListing = ({
 
   const [sortOption, setSortOption] = useState("rating");
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
+  const [searchTitle, setSearchTitle] = useState("");
 
   useEffect(() => {
     if (!token || !userID) return;
@@ -147,7 +148,12 @@ const RecipeListing = ({
   let sortedPosts = [...posts].map((post) => ({
     ...post,
     averageRating: getAverageRating(post.id),
-  }));
+  }))
+  .filter((post) =>
+    (post.attributes?.title || post.content || "")
+      .toLowerCase()
+      .includes(searchTitle.toLowerCase())
+  );
 
   if (sortOption === "created") {
     sortedPosts = sortedPosts.filter(
@@ -189,8 +195,18 @@ const RecipeListing = ({
       <p className="recipe-subheader">
         Explore our community’s shared recipes. Click any card to see details!
       </p>
+      <div className="search-container">
+  <input
+    type="text"
+    placeholder="Search by title..."
+    className="search-bar"
+    value={searchTitle}
+    onChange={(e) => setSearchTitle(e.target.value)}
+  />
+</div>
 
       {sortedPosts.length > 0 ? (
+        
         <div className="recipe-grid">
           {sortedPosts.map((post) => {
             const attrs = post.attributes || {};

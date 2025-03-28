@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RecipeListing from "./RecipeListing";
 import FavoritedRecipes from "./FavoritedRecipes";
+import FilterPage from "./FilterPage";
 
 const RecipeCollection = () => {
   const [posts, setPosts] = useState([]);

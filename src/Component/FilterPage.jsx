@@ -4,7 +4,7 @@ import "../RecipeListing.css";
 
 const FilterPage = () => {
   const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [favoritedRecipes, setFavoritedRecipes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [descriptionQuery, setDescriptionQuery] = useState("");
   const [ingredientInput, setIngredientInput] = useState("");
@@ -13,9 +13,10 @@ const FilterPage = () => {
   const [difficultyFilter, setDifficultyFilter] = useState("");
   const [minServingSize, setMinServingSize] = useState("");
   const [maxTotalTime, setMaxTotalTime] = useState("");
-  const [advancedSearch, setAdvancedSearch] = useState(false);
 
   const token = sessionStorage.getItem("token");
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const userID = user.id || user.userID;
 
   useEffect(() => {
     if (!token) return;
@@ -36,62 +37,145 @@ const FilterPage = () => {
   }, [token]);
 
   useEffect(() => {
-    const filtered = posts.filter((post) => {
-      const attrs = post.attributes || {};
-      const title = attrs.title || "";
-      const description = attrs.description || "";
-      const ingredients = attrs.ingredients || [];
-      const cuisine = attrs.cuisine || "";
-      const difficulty = attrs.difficulty || "";
-      const servingSize = parseInt(attrs.servingSize || 0);
-      const totalTimeStr = attrs.totalTime || "";
+    if (!token || !userID) return;
+    fetch(`${process.env.REACT_APP_API_PATH}/post-reactions?userID=${userID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const favorited = data.map((reaction) => reaction.postID);
+        setFavoritedRecipes(favorited);
+      })
+      .catch((err) => console.error("Error fetching favorites:", err));
+  }, [token, userID]);
 
-      const matchesTitle = title.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesDescription = description.toLowerCase().includes(descriptionQuery.toLowerCase());
-      const matchesIngredient = ingredientFilters.length
-        ? ingredientFilters.every(filter =>
-            ingredients.some(ing => ing.toLowerCase().includes(filter.toLowerCase()))
-          )
-        : true;
-      const matchesCuisine = selectedCuisines.length
-        ? selectedCuisines.includes(cuisine)
-        : true;
-      const matchesDifficulty = difficultyFilter
-        ? difficulty === difficultyFilter
-        : true;
-      const matchesServingSize = minServingSize
-        ? servingSize >= parseInt(minServingSize)
-        : true;
+  const handleFavorite = async (recipeID) => {
+    if (!token) return;
+  
+    let user = JSON.parse(sessionStorage.getItem("user"));
+    if (typeof user === "number") user = { id: user };
+    const reactorID = user?.id || user?.userID;
+  
+    const isFavorited = favoritedRecipes.includes(recipeID);
+    const apiUrl = `${process.env.REACT_APP_API_PATH}/post-reactions`;
+  
+    if (isFavorited) {
+      try {
+        const fetchUrl = `${apiUrl}?postID=${recipeID}&reactorID=${reactorID}`;
+        const response = await fetch(fetchUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (!data.length || !data[0].id) return;
+        const deleteUrl = `${apiUrl}/${data[0].id}`;
+        const deleteResponse = await fetch(deleteUrl, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (deleteResponse.ok) {
+          setFavoritedRecipes((prev) => prev.filter((id) => id !== recipeID));
+        }
+      } catch (error) {
+        console.error("Failed to remove favorite:", error);
+      }
+    } else {
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            postID: recipeID,
+            reactorID: reactorID, // <-- FIXED
+            reactionType: "like",
+            name: "favorite",
+          }),
+        });
+  
+        if (response.ok) {
+          setFavoritedRecipes((prev) => [...prev, recipeID]);
+        } else {
+          const errorText = await response.text();
+          console.error("Favorite failed:", errorText);
+        }
+      } catch (error) {
+        console.error("Failed to favorite:", error);
+      }
+    }
+  };  
 
-      const matchesMaxTime = maxTotalTime
-        ? (() => {
-            const timeParts = totalTimeStr.match(/(\d+)\s*hours?\s*(\d+)?\s*minutes?/i);
-            if (!timeParts) return true;
-            const hours = parseInt(timeParts[1] || "0");
-            const minutes = parseInt(timeParts[2] || "0");
-            const totalMinutes = hours * 60 + minutes;
-            return totalMinutes <= parseInt(maxTotalTime);
-          })()
-        : true;
+  const filteredPosts = posts.filter((post) => {
+    const attrs = post.attributes || {};
+    const title = attrs.title || "";
+    const description = attrs.description || "";
+    const ingredients = attrs.ingredients || [];
+    const cuisine = attrs.cuisine || "";
+    const difficulty = attrs.difficulty || "";
+    const servingSize = parseInt(attrs.servingSize || 0);
+    const totalTimeStr = attrs.totalTime || "";
 
-      return advancedSearch
-        ? matchesTitle &&
-            matchesDescription &&
-            matchesIngredient &&
-            matchesCuisine &&
-            matchesDifficulty &&
-            matchesServingSize &&
-            matchesMaxTime
-        : matchesTitle;
-    });
+    const matchesTitle = title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesDescription = description.toLowerCase().includes(descriptionQuery.toLowerCase());
+    const matchesIngredient = ingredientFilters.length
+      ? ingredientFilters.every(filter =>
+          ingredients.some(ing => ing.toLowerCase().includes(filter.toLowerCase()))
+        )
+      : true;
+    const matchesCuisine = selectedCuisines.length
+    ? selectedCuisines.some((selected) =>
+        String(cuisine || "").toLowerCase().includes(selected.toLowerCase())
+      )
+    : true;
+    const matchesDifficulty = difficultyFilter
+      ? difficulty === difficultyFilter
+      : true;
+    const matchesServingSize = minServingSize
+      ? servingSize >= parseInt(minServingSize)
+      : true;
 
-    setFilteredPosts(filtered);
-  }, [searchQuery, descriptionQuery, ingredientFilters, selectedCuisines, difficultyFilter, minServingSize, maxTotalTime, posts, advancedSearch]);
+    const matchesMaxTime = maxTotalTime
+      ? (() => {
+          const timeParts = totalTimeStr.match(/(\d+)\s*hours?\s*(\d+)?\s*minutes?/i);
+          if (!timeParts) return true;
+          const hours = parseInt(timeParts[1] || "0");
+          const minutes = parseInt(timeParts[2] || "0");
+          const totalMinutes = hours * 60 + minutes;
+          return totalMinutes <= parseInt(maxTotalTime);
+        })()
+      : true;
+
+    return (
+      matchesTitle &&
+      matchesDescription &&
+      matchesIngredient &&
+      matchesCuisine &&
+      matchesDifficulty &&
+      matchesServingSize &&
+      matchesMaxTime
+    );
+  });
 
   return (
     <div className="recipe-container">
       <h2 className="recipe-header">Filter Recipes</h2>
-      <div className="search-container">
+      <p className="recipe-subheader">
+        Use the advanced filters below to narrow down your recipe search.
+      </p>
+
+      <div className="advanced-search-container">
         <input
           type="text"
           placeholder="Search by title..."
@@ -99,130 +183,121 @@ const FilterPage = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button
-          className="toggle-advanced-btn"
-          onClick={() => setAdvancedSearch(!advancedSearch)}
-        >
-          {advancedSearch ? "Hide Advanced Search" : "Show Advanced Search"}
-        </button>
-      </div>
 
-      {advancedSearch && (
-        <div className="advanced-search-container">
+        <input
+          type="text"
+          placeholder="Search by description..."
+          className="search-bar"
+          value={descriptionQuery}
+          onChange={(e) => setDescriptionQuery(e.target.value)}
+        />
+
+        <div className="ingredient-input-wrapper">
           <input
             type="text"
-            placeholder="Search by description..."
+            placeholder="Type an ingredient and press Enter"
             className="search-bar"
-            value={descriptionQuery}
-            onChange={(e) => setDescriptionQuery(e.target.value)}
-          />
-
-          <div className="ingredient-input-wrapper">
-            <input
-              type="text"
-              placeholder="Type an ingredient and press Enter"
-              className="search-bar"
-              value={ingredientInput}
-              onChange={(e) => setIngredientInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && ingredientInput.trim()) {
-                  e.preventDefault();
-                  const input = ingredientInput.trim().toLowerCase();
-                  if (!ingredientFilters.includes(input)) {
-                    setIngredientFilters((prev) => [...prev, input]);
-                  }
-                  setIngredientInput("");
+            value={ingredientInput}
+            onChange={(e) => setIngredientInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && ingredientInput.trim()) {
+                e.preventDefault();
+                const input = ingredientInput.trim().toLowerCase();
+                if (!ingredientFilters.includes(input)) {
+                  setIngredientFilters((prev) => [...prev, input]);
                 }
-              }}
-            />
-            <div className="ingredient-tags" style={{ marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {ingredientFilters.map((ingredient, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    backgroundColor: "#ffe0b2",
-                    border: "1px solid #ff7043",
-                    borderRadius: "20px",
-                    padding: "6px 12px",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    color: "#5d4037",
-                  }}
-                >
-                  {ingredient}
-                  <button
-                    onClick={() =>
-                      setIngredientFilters((prev) =>
-                        prev.filter((ing) => ing !== ingredient)
-                      )
-                    }
-                    style={{
-                      background: "none",
-                      border: "none",
-                      marginLeft: "8px",
-                      fontWeight: "bold",
-                      color: "#d32f2f",
-                      cursor: "pointer",
-                    }}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <select
-            className="search-bar-1"
-            value={difficultyFilter}
-            onChange={(e) => setDifficultyFilter(e.target.value)}
-          >
-            <option value="">All Difficulties</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-          </select>
-
-          <input
-            type="number"
-            className="search-bar"
-            placeholder="Min Serving Size"
-            value={minServingSize}
-            onChange={(e) => setMinServingSize(e.target.value)}
-            min={1}
+                setIngredientInput("");
+              }
+            }}
           />
 
-          <input
-            type="number"
-            className="search-bar"
-            placeholder="Max Total Time (in minutes)"
-            value={maxTotalTime}
-            onChange={(e) => setMaxTotalTime(e.target.value)}
-            min={1}
-          />
-
-          <div className="cuisine-filter-tags">
-            {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map((cuisine) => (
-              <label key={cuisine}>
-                <input
-                  type="checkbox"
-                  checked={selectedCuisines.includes(cuisine)}
-                  onChange={() =>
-                    setSelectedCuisines((prev) =>
-                      prev.includes(cuisine)
-                        ? prev.filter((c) => c !== cuisine)
-                        : [...prev, cuisine]
+          <div className="ingredient-tags" style={{ marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            {ingredientFilters.map((ingredient, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#ffe0b2",
+                  border: "1px solid #ff7043",
+                  borderRadius: "20px",
+                  padding: "6px 12px",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#5d4037",
+                }}
+              >
+                {ingredient}
+                <button
+                  onClick={() =>
+                    setIngredientFilters((prev) =>
+                      prev.filter((ing) => ing !== ingredient)
                     )
                   }
-                />
-                {cuisine}
-              </label>
+                  style={{
+                    background: "none",
+                    border: "none",
+                    marginLeft: "8px",
+                    fontWeight: "bold",
+                    color: "#d32f2f",
+                    cursor: "pointer",
+                  }}
+                >
+                  ×
+                </button>
+              </div>
             ))}
           </div>
         </div>
-      )}
+
+        <select
+          className="search-bar-1"
+          value={difficultyFilter}
+          onChange={(e) => setDifficultyFilter(e.target.value)}
+        >
+          <option value="">All Difficulties</option>
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+
+        <input
+          type="number"
+          className="search-bar"
+          placeholder="Min Serving Size"
+          value={minServingSize}
+          onChange={(e) => setMinServingSize(e.target.value)}
+          min={1}
+        />
+
+        <input
+          type="number"
+          className="search-bar"
+          placeholder="Max Total Time (in minutes)"
+          value={maxTotalTime}
+          onChange={(e) => setMaxTotalTime(e.target.value)}
+          min={1}
+        />
+
+        <div className="cuisine-filter-tags">
+          {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map((cuisine) => (
+            <label key={cuisine}>
+              <input
+                type="checkbox"
+                checked={selectedCuisines.includes(cuisine)}
+                onChange={() => {
+                  setSelectedCuisines((prev) =>
+                    prev.includes(cuisine)
+                      ? prev.filter((c) => c !== cuisine)
+                      : [...prev, cuisine]
+                  );
+                }}
+              />
+              {cuisine}
+            </label>
+          ))}
+        </div>
+      </div>
 
       {filteredPosts.length > 0 ? (
         <div className="recipe-grid">
@@ -231,6 +306,8 @@ const FilterPage = () => {
             const title = attrs.title || post.content || "Untitled";
             const description = attrs.description?.substring(0, 100) || "No description";
             const mainImage = attrs.mainImage || "/default-recipe-image.jpg";
+            const recipeID = post.id;
+            const isFavorited = favoritedRecipes.includes(recipeID);
 
             return (
               <div key={post.id} className="recipe-card-1">
@@ -244,8 +321,14 @@ const FilterPage = () => {
                   <h3 className="recipe-title-1">{title}</h3>
                   <p className="recipe-description-1">{description}</p>
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
-                    View Recipe →
+                    Read More →
                   </Link>
+                  <button
+                    className={`favorite-button ${isFavorited ? "favorited" : ""}`}
+                    onClick={() => handleFavorite(recipeID)}
+                  >
+                    {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                  </button>
                 </div>
               </div>
             );
