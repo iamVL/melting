@@ -13,6 +13,8 @@ const FilterPage = () => {
   const [difficultyFilter, setDifficultyFilter] = useState("");
   const [minServingSize, setMinServingSize] = useState("");
   const [maxTotalTime, setMaxTotalTime] = useState("");
+  const [allergyFilters, setAllergyFilters] = useState([]);
+  const [dietFilters, setDietFilters] = useState([]);
 
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -134,6 +136,20 @@ const FilterPage = () => {
           ingredients.some(ing => ing.toLowerCase().includes(filter.toLowerCase()))
         )
       : true;
+      const matchesAllergy = allergyFilters.length
+      ? allergyFilters.every(allergy =>
+          !ingredients.some(ing =>
+            ing.toLowerCase().includes(allergy.toLowerCase())
+          )
+        )
+      : true;
+    
+    const dietTags = (attrs.diet || []).map(d => d.toLowerCase()); // assuming diet is an array
+    const matchesDiet = dietFilters.length
+      ? dietFilters.every(diet =>
+          dietTags.includes(diet.toLowerCase())
+        )
+      : true;    
     const matchesCuisine = selectedCuisines.length
     ? selectedCuisines.some((selected) =>
         String(cuisine || "").toLowerCase().includes(selected.toLowerCase())
@@ -164,7 +180,9 @@ const FilterPage = () => {
       matchesCuisine &&
       matchesDifficulty &&
       matchesServingSize &&
-      matchesMaxTime
+      matchesMaxTime &&
+      matchesAllergy &&
+      matchesDiet
     );
   });
 
@@ -297,6 +315,47 @@ const FilterPage = () => {
             </label>
           ))}
         </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", marginTop: "16px" }}>
+        <div className="allergy-filter-tags">
+  <h4>Allergies (Exclude ingredients):</h4>
+  {["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"].map((allergy) => (
+    <label key={allergy}>
+      <input
+        type="checkbox"
+        checked={allergyFilters.includes(allergy)}
+        onChange={() =>
+          setAllergyFilters((prev) =>
+            prev.includes(allergy)
+              ? prev.filter((a) => a !== allergy)
+              : [...prev, allergy]
+          )
+        }
+      />
+      {allergy}
+    </label>
+  ))}
+</div>
+
+<div className="diet-filter-tags">
+  <h4>Religious Diets:</h4>
+  {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
+    <label key={diet}>
+      <input
+        type="checkbox"
+        checked={dietFilters.includes(diet)}
+        onChange={() =>
+          setDietFilters((prev) =>
+            prev.includes(diet)
+              ? prev.filter((d) => d !== diet)
+              : [...prev, diet]
+          )
+        }
+      />
+      {diet}
+    </label>
+  ))}
+</div>
+</div>
       </div>
 
       {filteredPosts.length > 0 ? (

@@ -253,3 +253,38 @@ select.search-bar-1 {
   font-size: 14px;
 }
 
+.allergy-filter-tags,
+.diet-filter-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  background-color: #fffbe6;
+  border: 1px solid #ffcc80;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  max-width: 650px;
+}
+
+.allergy-filter-tags h4,
+.diet-filter-tags h4 {
+  margin: 0 0 8px 0;
+  color: #ff7043;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.allergy-filter-tags label,
+.diet-filter-tags label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.allergy-filter-tags input[type="checkbox"],
+.diet-filter-tags input[type="checkbox"] {
+  margin-right: 8px;
+}
