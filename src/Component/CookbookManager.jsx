@@ -15,23 +15,6 @@ const CookbookManager = () => {
     const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
     const currentUserID = currentUser.id || currentUser.userID;
 
-    useEffect(() => {
-        if (!token) return;
-        const apiUrl = `${process.env.REACT_APP_API_PATH}/posts?limit=100`;
-        fetch(apiUrl, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                const recipePosts = Array.isArray(data) && data[0]
-                    ? data[0].filter((p) => p.attributes?.postType === "recipe")
-                    : data.posts?.filter((p) => p.attributes?.postType === "recipe") || [];
-                setRecipes(recipePosts);
-            });
-    }, [token]);
 
     useEffect(() => {
         if (!token || !currentUserID) return;
@@ -139,9 +122,7 @@ const CookbookManager = () => {
                                 {cb.name}
                             </Link>
                             <div>
-                                <button onClick={() => addToCookbook(cb.name)}>
-                                    Add Selected Recipes
-                                </button>
+
                                 <button
                                     className="delete-cookbook-btn"
                                     onClick={() => handleDeleteCookbook(cb.name)}
@@ -156,17 +137,7 @@ const CookbookManager = () => {
 
 
             {/* Recipe Grid Listing */}
-            <RecipeListing
-                posts={recipes}
-                error={null}
-                isLoaded={true}
-                loadPosts={() => {}}
-                favoritedRecipes={favoritedRecipes}
-                handleFavorite={() => {}}
-                selectedRecipes={selectedRecipes}
-                toggleRecipeSelection={toggleRecipeSelection}
-                showCreatedByYouOption={true}
-            />
+
         </div>
     );
 };

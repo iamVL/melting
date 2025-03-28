@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../RecipeListing.css"; // <-- Make sure this file exists and is imported
 
-const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOption = false,selectedRecipes = [],
+const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOption =true,
+                           selectedRecipes = [],
                        toggleRecipeSelection = null
                        }) => {
+
   const currentUserID = JSON.parse(sessionStorage.getItem("user"));
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const userID = user.id || user.userID; // Ensure correct user ID format
   const [sortOption, setSortOption] = useState("rating");
+    const [userCookbooks, setUserCookbooks] = useState([]);
 
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
 
@@ -36,6 +39,15 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOpti
       })
       .catch((err) => console.error("Error fetching favorites:", err));
   }, [token, userID]);
+
+    useEffect(() => {
+        const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+        const currentUserID = currentUser.id || currentUser.userID;
+
+        const all = JSON.parse(localStorage.getItem("cookbooks")) || [];
+        const mine = all.filter((cb) => cb.ownerID === currentUserID);
+        setUserCookbooks(mine);
+    }, []);
 
   // ✅ Function to toggle favorite status
   const handleFavorite = async (recipeID) => {
@@ -144,6 +156,22 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOpti
     }
 };
 
+    const addToCookbook = (recipeID, cookbookName) => {
+        const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+        const currentUserID = currentUser.id || currentUser.userID;
+
+        const all = JSON.parse(localStorage.getItem("cookbooks")) || [];
+        const updated = all.map((cb) => {
+            if (cb.name === cookbookName && cb.ownerID === currentUserID) {
+                const merged = Array.from(new Set([...cb.recipes, recipeID]));
+                return { ...cb, recipes: merged };
+            }
+            return cb;
+        });
+
+        localStorage.setItem("cookbooks", JSON.stringify(updated));
+        alert(`Recipe added to ${cookbookName}`);
+    };
 
   // Handler for deleting a recipe
   const handleDelete = async (postID) => {
@@ -289,6 +317,26 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts ,showCreatedByYouOpti
                   >
                     {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
                   </button>
+                    {String(authorID) === String(currentUserID) && userCookbooks.length > 0 && (
+                        <div style={{ marginTop: "0.5rem" }}>
+                            <select
+                                defaultValue=""
+                                onChange={(e) => {
+                                    if (e.target.value) {
+                                        addToCookbook(recipeID, e.target.value);
+                                        e.target.value = ""; // Reset dropdown
+                                    }
+                                }}
+                            >
+                                <option value="" disabled>Add to Cookbook</option>
+                                {userCookbooks.map((cb) => (
+                                    <option key={cb.name} value={cb.name}>
+                                        {cb.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
 
                   {/* Only show "Delete" if the post belongs to the current user */}
                   {String(authorID) === String(currentUserID) && (

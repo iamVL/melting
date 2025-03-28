@@ -12,6 +12,9 @@ const RegisterForm = ({ setLoggedIn }) => {
   const [country, setCountry] = useState("");
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
+  const [allergyOptions, setAllergyOptions] = useState([]);
+  const [dietOptions, setDietOptions] = useState([]);
+
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -22,7 +25,29 @@ const RegisterForm = ({ setLoggedIn }) => {
   useEffect (() => {
     window.scrollTo(0, document.body.scrollHeight);
   }, []);
-  
+
+  const handleAllergyChange = (value) => {
+    if (value === "None") {
+      setAllergyOptions(["None"]);
+    } else {
+      const newOptions = allergyOptions.includes(value)
+          ? allergyOptions.filter((item) => item !== value)
+          : [...allergyOptions.filter((item) => item !== "None"), value];
+      setAllergyOptions(newOptions);
+    }
+  };
+
+  const handleDietChange = (value) => {
+    if (value === "None") {
+      setDietOptions(["None"]);
+    } else {
+      const newOptions = dietOptions.includes(value)
+          ? dietOptions.filter((item) => item !== value)
+          : [...dietOptions.filter((item) => item !== "None"), value];
+      setDietOptions(newOptions);
+    }
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
   
@@ -58,6 +83,8 @@ const RegisterForm = ({ setLoggedIn }) => {
                 phone: phone,
                 password: password,
                 country: country,
+                allergies: allergyOptions,
+                dietRegimes: dietOptions,
               },
             }),
           }
@@ -88,42 +115,121 @@ const RegisterForm = ({ setLoggedIn }) => {
         <img src={meltingLogo} alt="Melting" className="logo-login" />
           <h1 className="title">Registration</h1>
           <form onSubmit={submitHandler} className="register-form">
+            <form onSubmit={submitHandler} className="register-form">
+              <div className="input-row">
+                <div className="input-group">
+                  <label>Full Name</label>
+                  <input
+                      type="text"
+                      name="fullName"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Username</label>
+                  <input
+                      type="text"
+                      name="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="input-row">
+                <div className="input-group">
+                  <label>Email address</label>
+                  <input
+                      type="email"
+                      name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Phone Number</label>
+                  <input
+                      type="tel"
+                      name="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="input-row">
+                <div className="input-group">
+                  <label>Password</label>
+                  <input
+                      type="password"
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Country</label>
+                  <input
+                      type="text"
+                      name="country"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="input-row">
+                <div className="input-group">
+                  <label>Confirm Password</label>
+                  <input
+                      type="password"
+                      name="confirmPassword"
+                      // Optional: confirmPassword state if you want to validate it later
+                  />
+                </div>
+                <div className="input-group" style={{visibility: "hidden"}}>
+                  <label>&nbsp;</label>
+                  <input disabled/>
+                </div>
+              </div>
+
+              {/* Allergy & Diet remain the same */}
+              ...
+            </form>
+
             <div className="input-group">
-              <label>Full Name</label>
-              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-            </div>
-
-            <div className="input-row">
-              <div className="input-group">
-                <label>Email address</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              </div>
-              <div className="input-group">
-                <label>Phone Number</label>
-                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-              </div>
-            </div>
-
-            <div className="input-row">
-              <div className="input-group">
-                <label>Username</label>
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-              </div>
-              <div className="input-group">
-                <label>Country</label>
-                <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} required />
+              <label>Allergies</label>
+              <div className="option-group">
+                {["Peanut", "Gluten", "Dairy", "Shellfish","Tree nuts", "None"].map((item) => (
+                    <button
+                        type="button"
+                        key={item}
+                        className={allergyOptions.includes(item) ? "selected" : ""}
+                        onClick={() => handleAllergyChange(item)}
+                    >
+                      {item}
+                    </button>
+                ))}
               </div>
             </div>
 
             <div className="input-group">
-              <label>Password</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <label>Diet Regimes</label>
+              <div className="option-group">
+                {["Kosher", "Halal", "Vegetarian", "Vegan","Pescitarian", "None"].map((item) => (
+                    <button
+                        type="button"
+                        key={item}
+                        className={dietOptions.includes(item) ? "selected" : ""}
+                        onClick={() => handleDietChange(item)}
+                    >
+                      {item}
+                    </button>
+                ))}
+              </div>
             </div>
 
-            <div className="input-group">
-              <label>Confirm Password</label>
-              <input type="password" required />
-            </div>
 
             <button type="submit" className="signup-btn">Sign Up</button>
 

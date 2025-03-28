@@ -82,3 +82,25 @@
 .recipe-subheader{
     font-size: 1rem;
 }
+.cookbook-list {
+    margin-bottom: 2rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 👈 key fix */
+    gap: 1rem;
+}
+.cookbook-list h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.cookbook-subtext {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+
