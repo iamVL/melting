@@ -105,7 +105,7 @@ function App() {
               <Route path="/about_joshua" element={<AboutJoshua />} />
               <Route path="/upload" element={<UploadRecipe />} />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
-              <Route path="/community-details/:communityId" element={<CommunityDetails />} />
+              <Route path="/community-details/:communityId/:communityName" element={<CommunityDetails />} />
               <Route path="/favorites" element={<FavoritedRecipes />} />
               <Route path="/filter" element={<FilterPage />} /> {/* New filter page */}
 
