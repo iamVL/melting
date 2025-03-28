@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 import "../Profile.css";
+import "./RegisterForm";
 import Favorites from "../Account_Buttons/Favorites.png"
 import Stars from "../Account_Buttons/Stars.png"
 import My_recipes from "../Account_Buttons/My_recipes.png"
 import { Link } from "react-router-dom";
+
+
 
 
 
@@ -24,16 +27,17 @@ const Profile = (props) => {
   const [phone, setPhone] = useState(false);
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
   const token = sessionStorage.getItem("token");
+  const [allergies, setAllergies] = useState("");
+  const [dietRegimes, setDietRegimes] = useState("");
 
-  
 
   useEffect(() => {
     if (!token) return;
-  
+
     const apiUrl = `${process.env.REACT_APP_API_PATH}/posts?postType=favorite`;
-  
+
     console.log("Fetching favorites from:", apiUrl);
-  
+
     fetch(apiUrl, {
       method: "GET",  // ✅ Corrected method (was "POST" before)
       headers: { Authorization: `Bearer ${token}` },
@@ -47,7 +51,7 @@ const Profile = (props) => {
       })
       .catch((err) => console.error("Error fetching favorites:", err));
   }, [token]);
-  
+
 
 
   // Replace componentDidMount for fetching data
@@ -76,6 +80,10 @@ const Profile = (props) => {
           setPassword(result.attributes.password || "");
           setPicture(result.attributes.picture || "");
           setCountry(result.attributes.country || "");
+          setAllergies(result.attributes.allergies || []);
+          setDietRegimes(result.attributes.dietRegimes || []);
+
+
         }
       })
       .catch((error) => {
@@ -110,6 +118,8 @@ const Profile = (props) => {
             password: password,
             picture: picture,
             country: country,
+            allergies: allergyOptions,
+            dietRegimes: dietOptions,
           },
         }),
       }
@@ -164,6 +174,10 @@ const Profile = (props) => {
     // reloads the window, so we get back to the login form
     window.location.reload();
   };
+
+  const allergyOptions = ["Peanut", "Gluten", "Tree nuts","Dairy", "Shellfish", "None"];
+  const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan","Pescitarian", "None"];
+
 
   // This is the function that draws the component to the screen.  It will get called every time the
   // state changes, automatically.  This is why you see the username and firstname change on the screen
@@ -229,27 +243,28 @@ const Profile = (props) => {
                   maxlength="15"
                 />
             </div> */}
-            <div class ="countrybuttons">
-            <a> Country</a>
-            <form>
+            <div class="countrybuttons">
+              <a> Country</a>
+              <form>
                 <country>
-                  <input 
-                    type="button"
-                    value="USA"
-                    class={country === "USA" ? "selected_country" : "countrybutton"}
+                  <input
+                      type="button"
+                      value="USA"
+                      class={country === "USA" ? "selected_country" : "countrybutton"}
                   />
-                  <input 
-                    type="button"
-                    value="Canada"
-                    class={country === "Canada" ? "selected_country" : "countrybutton"}
+                  <input
+                      type="button"
+                      value="Canada"
+                      class={country === "Canada" ? "selected_country" : "countrybutton"}
                   />
-                  <input 
-                    type="button"
-                    value="UK"
-                    class={country === "UK" ? "selected_country" : "countrybutton"}
+                  <input
+                      type="button"
+                      value="UK"
+                      class={country === "UK" ? "selected_country" : "countrybutton"}
                   />
                 </country>
               </form>
+
               {/* <input
                   type="text"
                   onChange={(e) => setCountry(e.target.value)}
@@ -262,22 +277,22 @@ const Profile = (props) => {
         </div>
 
         <div class="accountActions">
-          <div class = "recipeButtons"> 
-            <Link to="/favorites" class = "recipeButtons">
+          <div class="recipeButtons">
+            <Link to="/favorites" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={Favorites} alt="favorites"></img>
                 <a>Favorite Recipes</a>
               </recipebutton>
             </Link>
 
-            <Link to="/likes" class = "recipeButtons">
-              <recipebutton >
+            <Link to="/likes" class="recipeButtons">
+              <recipebutton>
                 <img class="recipeimage" src={Stars} alt="Stars"></img>
                 <a> Recipes above 3 Stars</a>
               </recipebutton>
             </Link>
 
-            <Link to="/cookbooks" class = "recipeButtons">
+            <Link to="/cookbooks" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={My_recipes} alt="My_recipes"></img>
                 <a>Cookbooks</a>
@@ -286,12 +301,47 @@ const Profile = (props) => {
 
           </div>
 
-          <profile-header>What recipes are you searching for?</profile-header>
+          <h2>Dietary Restrictions</h2>
+
+          <div className="inputs">
+            <a>Allergies</a>
+            <div className="dietary-group">
+              {["Peanut", "Gluten", "Dairy", "Shellfish","Tree nuts", "None"].map((item) => (
+                  <button
+                      type="button"
+                      key={item}
+                      className={`dietary-button ${allergies.includes(item) ? "selected" : ""}`}
+
+                  >
+                    {item}
+                  </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="inputs">
+            <a>Diet Regimes</a>
+            <div className="dietary-group">
+              {["Kosher", "Halal", "Vegetarian", "Vegan","Pescitarian", "None"].map((item) => (
+                  <button
+                      type="button"
+                      key={item}
+                      className={`dietary-button ${dietRegimes.includes(item) ? "selected" : ""}`}
+
+                  >
+                    {item}
+                  </button>
+              ))}
+            </div>
+          </div>
+
         </div>
-      </div>
+
+    </div>
     </form>
-    </>
-  );
+</>
+)
+  ;
 };
 
 export default Profile;
