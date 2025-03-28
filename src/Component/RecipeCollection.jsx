@@ -159,10 +159,6 @@ const RecipeCollection = () => {
         favoritedRecipes={favoritedRecipes}
         handleFavorite={handleFavorite} // Pass Favorite Handler
       />
-      <FavoritedRecipes
-        favoritedRecipes={favoritedRecipes}
-        handleFavorite={handleFavorite} // Pass Favorite Handler
-      />
     </>
   );
 };
