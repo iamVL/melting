@@ -2,7 +2,7 @@
   font-size: 35px;
   font-weight: bold;
   color: #333;
-  margin-top: 70px;
+  margin-top: 30px;
   margin-bottom: 10px;
   }
 
@@ -84,14 +84,55 @@
     margin: 15px 20px;  
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);  
     display: flex;  
-    justify-content: space-between;  
+    flex-direction: column;
+    justify-content: center;  
     align-items: center;  
     width: 350px;
-    height: 250px;
+    height: 150px;
     color: #333;
     font-weight: bold;
-    display: inline-block;
-  }
+    gap: 20px;
+}
+
+.userlist button, .userlist a {
+  width: 130px;
+  height: 30px;
+  font-size: 12px;
+  background-color: rgb(255, 171, 140);
+  border: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: black;
+  font-weight: 100;
+  transition: .3s;
+  filter: drop-shadow(0px 5px 4px rgba(0, 0, 0, 0.439));
+}
+
+.userlist button:hover, .userlist a:hover {
+  background-color: rgb(247, 154, 121);
+  transform: scale(1.02);
+}
+
+.userlist button:active, .userlist a:active {
+  transform: scale(.98);
+}
+
+.group-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.community-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
   .userlist h4 {
     font-weight: bold;
@@ -127,11 +168,8 @@
     background-color: #555;
   }
   
-  
-
-  
-  
-
-  
-  
-
+  .deletePost {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+  }

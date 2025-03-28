@@ -3,7 +3,7 @@
 
 .register-container {
   width: 100vw; /* Full width of screen */
-  height: 100vh; /* Full height of screen */
+  height: 110vh; /* Full height of screen */
   background-color: #E8775B; /* Orange background */
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
   width: 80vw; /* 80% of screen width */
   max-width: 1152px; /* Ensuring it doesn't go too big */
   height: auto/*80vh*/; /* 80% of screen height */
-  max-height: 720px; /* Ensuring it doesn't go too tall */
+   /* Ensuring it doesn't go too tall */
   border-radius: 0px; /* Slight rounded corners */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   display: flex;
@@ -156,4 +156,32 @@
 .login-text a {
   color: #43A32D;
   font-weight: bold;
+}
+
+.option-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.option-group button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
+  font-family: 'Itim', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-group button:hover {
+  background-color: #ddd;
+}
+
+.option-group button.selected {
+  background-color: #43A32D;
+  color: white;
+  border-color: #43A32D;
 }
