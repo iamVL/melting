@@ -20,7 +20,7 @@ const Profile = () => {
 
   const allergyOptions = ["Peanut", "Gluten", "Dairy",
     "Tree nuts", "Shellfish", "None"];
-  const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan","Pescitarian" ,"None"];
+  const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian" ,"None"];
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
