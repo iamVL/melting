@@ -15,6 +15,8 @@ const UploadRecipe = () => {
         steps: [""],
         image: null,
         cuisine:[],
+        allergy:[],
+        diet:[],
     });
    //Additional states for handling user input
     const [newIngredient, setNewIngredient] = useState("");
@@ -84,6 +86,26 @@ const UploadRecipe = () => {
                 ? prevRecipe.cuisine.filter((c) => c!== cuisine)
                 : [...prevRecipe.cuisine, cuisine];
             return {...prevRecipe, cuisine: updatedCuisines };
+        });
+    };
+
+    //adding or removing allergy
+    const handleAllergyToggle = (allergy) => {
+        setRecipe((prevRecipe) => {
+            const updatedAllergies = prevRecipe.allergy.includes(allergy)
+                ? prevRecipe.allergy.filter((c) => c!== allergy)
+                : [...prevRecipe.allergy, allergy];
+            return {...prevRecipe, allergy: updatedAllergies };
+        });
+    };
+
+    //adding or removing diet
+    const handleDietToggle = (diet) => {
+        setRecipe((prevRecipe) => {
+            const updatedDiets = prevRecipe.diet.includes(diet)
+                ? prevRecipe.diet.filter((c) => c!== diet)
+                : [...prevRecipe.diet, diet];
+            return {...prevRecipe, diet: updatedDiets };
         });
     };
     //uploads the selected image to the API and returns the image URL
@@ -156,6 +178,8 @@ const UploadRecipe = () => {
                     ingredients: recipe.ingredients.length ? recipe.ingredients : ["Unknown"],
                     steps: recipe.steps,
                     cuisine: recipe.cuisine,
+                    allergy: recipe.allergy,
+                    diet: recipe.diet,
                     mainImage: uploadedImageUrl,
                 },
             }),
@@ -186,6 +210,9 @@ const UploadRecipe = () => {
 
     //options for cuisine toggle
     const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
+    const allergyOptions = ["Peanut", "Gluten", "Diary", "Shellfish", "Tree nuts"];
+    const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian"];
+
 
     return (
         <div className="page-container">
@@ -261,6 +288,28 @@ const UploadRecipe = () => {
                                      className={`cuisine-tag ${recipe.cuisine.includes(cuisine) ? "selected" : ""}`}
                                      onClick={() => handleCuisineToggle(cuisine)}>
                                     {cuisine}
+                                </div>
+                            ))}
+                        </div>
+
+                        <label>Allergy Tags</label>
+                        <div className="cuisine-tags">
+                            {allergyOptions.map((allergy) => (
+                                <div key={allergy}
+                                     className={`cuisine-tag ${recipe.allergy.includes(allergy) ? "selected" : ""}`}
+                                     onClick={() => handleAllergyToggle(allergy)}>
+                                    {allergy}
+                                </div>
+                            ))}
+                        </div>
+
+                        <label>Diet Tags</label>
+                        <div className="cuisine-tags">
+                            {dietOptions.map((diet) => (
+                                <div key={diet}
+                                     className={`cuisine-tag ${recipe.diet.includes(diet) ? "selected" : ""}`}
+                                     onClick={() => handleDietToggle(diet)}>
+                                    {diet}
                                 </div>
                             ))}
                         </div>
