@@ -283,6 +283,11 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
                  <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                    Read More →
                  </Link>
+                 {String(authorID) === String(currentUserID) && (
+                   <button className="delete-recipe-button-1" onClick={() => handleDelete(post.id)}>
+                     🗑 Delete
+                   </button>
+                 )}
                  <button
                    className={`favorite-button ${isFavorited ? "favorited" : ""}`}
                    onClick={() => handleFavorite(recipeID)}
@@ -310,11 +315,6 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
                        ))}
                      </select>
                    </div>
-                 )}
-                 {String(authorID) === String(currentUserID) && (
-                   <button className="delete-recipe-button-1" onClick={() => handleDelete(post.id)}>
-                     🗑 Delete
-                   </button>
                  )}
                </div>
              </div>

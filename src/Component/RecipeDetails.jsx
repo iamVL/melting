@@ -155,8 +155,8 @@ const RecipeDetails = () => {
             <h2 className="recipe-title">{recipe.attributes?.title}</h2>
             <p className="recipe-description">{recipe.content}</p>
           </div>
-          {recipe.attributes?.image && (
-            <img src={recipe.attributes.image} alt={recipe.attributes.title} className="recipe-image-top" />
+          {recipe.attributes?.mainImage && (
+            <img src={recipe.attributes.mainImage} alt={recipe.attributes.title} className="recipe-image-top" />
           )}
         </div>
 
@@ -258,7 +258,7 @@ const RecipeDetails = () => {
           </div>
         </div>
         <div className="sidebar-section">
-          <h4>Cuisine</h4>
+          <h4 style={{marginBottom:"0px"}}>Cuisine</h4>
           <div className="cuisine-tags">
             {Array.isArray(recipe.attributes?.cuisine)
               ? recipe.attributes.cuisine.map((cuisine, index) => (
@@ -267,6 +267,30 @@ const RecipeDetails = () => {
                   </div>
                 ))
               : <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>}
+          </div>
+        </div>
+        <div className="sidebar-section">
+          <h4 style={{margin:"0px"}}>Allergy</h4>
+          <div className="cuisine-tags">
+            {Array.isArray(recipe.attributes?.allergy)
+              ? recipe.attributes.allergy.map((allergy, index) => (
+                  <div key={index} className="cuisine-tag">
+                    {allergy}
+                  </div>
+                ))
+              : <div className="cuisine-tag">None</div>}
+          </div>
+        </div>
+        <div className="sidebar-section">
+          <h4 style={{margin:"0px"}}>Diet</h4>
+          <div className="cuisine-tags">
+            {Array.isArray(recipe.attributes?.diet)
+              ? recipe.attributes.diet.map((diet, index) => (
+                  <div key={index} className="cuisine-tag">
+                    {diet}
+                  </div>
+                ))
+              : <div className="cuisine-tag">None</div>}
           </div>
         </div>
       </div>
