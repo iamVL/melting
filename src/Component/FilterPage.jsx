@@ -136,20 +136,19 @@ const FilterPage = () => {
           ingredients.some(ing => ing.toLowerCase().includes(filter.toLowerCase()))
         )
       : true;
-      const matchesAllergy = allergyFilters.length
-      ? allergyFilters.every(allergy =>
-          !ingredients.some(ing =>
-            ing.toLowerCase().includes(allergy.toLowerCase())
-          )
-        )
-      : true;
+      const allergyTags = (attrs.allergy || []).map(a => a.toLowerCase());
+const matchesAllergy = allergyFilters.length
+  ? allergyFilters.every(allergy =>
+      allergyTags.includes(allergy.toLowerCase())
+    )
+  : true;
     
     const dietTags = (attrs.diet || []).map(d => d.toLowerCase()); // assuming diet is an array
     const matchesDiet = dietFilters.length
-      ? dietFilters.every(diet =>
-          dietTags.includes(diet.toLowerCase())
-        )
-      : true;    
+  ? dietFilters.every(diet =>
+      dietTags.includes(diet.toLowerCase())
+    )
+  : true;
     const matchesCuisine = selectedCuisines.length
     ? selectedCuisines.some((selected) =>
         String(cuisine || "").toLowerCase().includes(selected.toLowerCase())
