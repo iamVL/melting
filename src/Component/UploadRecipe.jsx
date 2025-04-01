@@ -210,7 +210,7 @@ const UploadRecipe = () => {
 
     //options for cuisine toggle
     const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
-    const allergyOptions = ["Peanut", "Gluten", "Diary", "Shellfish", "Tree nuts"];
+    const allergyOptions = ["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"]
     const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian"];
 
 
