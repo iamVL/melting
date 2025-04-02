@@ -139,7 +139,7 @@ const FilterPage = () => {
       const allergyTags = (attrs.allergy || []).map(a => a.toLowerCase());
 const matchesAllergy = allergyFilters.length
   ? allergyFilters.every(allergy =>
-      allergyTags.includes(allergy.toLowerCase())
+      !allergyTags.includes(allergy.toLowerCase())
     )
   : true;
     
@@ -362,7 +362,12 @@ const matchesAllergy = allergyFilters.length
           {filteredPosts.map((post) => {
             const attrs = post.attributes || {};
             const title = attrs.title || post.content || "Untitled";
-            const description = attrs.description?.substring(0, 100) || "No description";
+            const rawDescription = attrs.description;
+            const description =
+  rawDescription && rawDescription.trim() !== "undefined"
+    ? rawDescription.trim().substring(0, 100) + (rawDescription.length > 100 ? "..." : "")
+    : post.content?.trim().substring(0, 100) + (post.content?.length > 100 ? "..." : "") || "No description available";
+
             const mainImage = attrs.mainImage || "/default-recipe-image.jpg";
             const recipeID = post.id;
             const isFavorited = favoritedRecipes.includes(recipeID);
