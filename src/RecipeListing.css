@@ -288,3 +288,36 @@ select.search-bar-1 {
 .diet-filter-tags input[type="checkbox"] {
   margin-right: 8px;
 }
+
+@media (max-width: 768px) {
+  .recipe-grid {
+    grid-template-columns: 1fr; /* Stack cards vertically */
+    gap: 16px;
+  }
+
+  .recipe-header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sort-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .search-bar-1 select,
+  select.search-bar-1 {
+    width: 100%; /* Full width dropdown */
+  }
+
+  .recipe-card-1 {
+    max-width: 100%; /* Use available screen width */
+  }
+
+  .recipe-card-1 .average-rating-display {
+    padding-left: 0;
+    justify-content: center;
+  }
+}

@@ -262,7 +262,7 @@ const StyleGuide = () => {
         )}
 
 <pre>
-          <codes>
+          <code>
             {`{isModalOpen && (
   <div className="modal-overlay">
     <div className="modal-content">
@@ -275,7 +275,7 @@ const StyleGuide = () => {
     </div>
   </div>
         )}`}
-          </codes>
+          </code>
         </pre>
       </div>
 
@@ -287,7 +287,7 @@ const StyleGuide = () => {
           <div className="alert error">Error Message: Something went wrong!</div>
         </div>
         <pre>
-          <codes>
+          <code>
             {`.alert {
     padding: 1rem;
     border-radius: 50px;
@@ -298,7 +298,7 @@ const StyleGuide = () => {
     font-size: 20px;
     border: 1px solid black;
 }`}
-          </codes>
+          </code>
         </pre>
       </div>
 
@@ -309,13 +309,13 @@ const StyleGuide = () => {
         <p> Buttons change appearance when hovered, ex. different colors or sizes</p>
         </div>
         <pre>
-          <codes>
+          <code>
             {`.column img:hover {
     transform: scale(1.03);
   }
   
   `}
-          </codes>
+          </code>
         </pre>
       </div>
     </div>

@@ -1,19 +1,17 @@
 .recipe-details-container {
     max-width: 1200px;
-    min-width :1200px;
+    width: 100%;
     margin: 40px auto;
     padding: 20px;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 30px;
-    min-height: 600px; /* Ensure a consistent minimum height */
-    display: grid; /* Use flexbox to align children properly */
-    flex-direction: column;
-
+    min-height: 600px;
+    box-sizing: border-box;
 }
-
 .recipe-content {
     grid-column: 1;
 }
@@ -390,3 +388,59 @@
   .delete-button:hover {
     background-color: #e67e22;
   }
+
+  @media (max-width: 768px) {
+.recipe-details-container {
+  max-width: 100%;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+  
+    .recipe-sidebar {
+      width: 100%;
+      max-width: 100%;
+      padding: 20px;
+    }
+  
+    .recipe-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .recipe-header .recipe-content {
+      align-items: center;
+    }
+  
+    .recipe-image-top {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .reviews-list {
+      display: flex;
+      flex-direction: column; /* Stack reviews vertically */
+      width: 100%;            /* Take full container width */
+      overflow-x: hidden;     /* Remove horizontal scroll */
+      white-space: normal;    /* Allow line breaks */
+      max-width: 100%;        /* Don't exceed parent width */
+    }
+  
+    .review-item {
+      width: 100%;            /* Each review stretches full width */
+      box-sizing: border-box;
+      margin-right: 0;        /* No horizontal spacing */
+    }
+  
+    .scroll-buttons {
+      display: none; /* Hide scroll buttons on mobile */
+    }
+  }
+  
