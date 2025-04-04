@@ -560,11 +560,11 @@
     .review-item {
       width: 100%;            /* Each review stretches full width */
       box-sizing: border-box;
-      margin-right: 0;        /* No horizontal spacing */
+      margin-right: 0;
     }
   
     .scroll-buttons {
-      display: none; /* Hide scroll buttons on mobile */
+      display: none;
     }
   }
 

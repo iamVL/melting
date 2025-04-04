@@ -15,7 +15,7 @@ const RecipeDetails = () => {
   const [followMessage, setFollowMessage] = useState("");
   const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
-
+//AI was used to create this site
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
         .then((res) => res.json())
