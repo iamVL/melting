@@ -27,7 +27,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 350px;
-    max-height: 750px;
+    max-height: 850px;
     width: 320px;
     height: auto;
     word-wrap: break-word; /* Forces long words to wrap */
@@ -483,17 +483,7 @@
     overflow-y: auto;
     padding-right: 5px; /* So scroll bar doesn't overlap text */
 }
-.author-link {
-    color: orange; /* base purple-blue */
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.2s ease-in-out;
-}
 
-.author-link:hover {
-    color: #00b894; /* teal-green on hover */
-    text-decoration: underline;
-}
 .follow-link {
     color: #007bff;
     text-decoration: none;
@@ -570,11 +560,25 @@
     .review-item {
       width: 100%;            /* Each review stretches full width */
       box-sizing: border-box;
-      margin-right: 0;        /* No horizontal spacing */
+      margin-right: 0;
     }
   
     .scroll-buttons {
-      display: none; /* Hide scroll buttons on mobile */
+      display: none;
     }
   }
-  
+
+.orange-follow-button {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.orange-follow-button:hover {
+    background-color: grey;
+}
