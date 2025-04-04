@@ -272,7 +272,7 @@ const RecipeDetails = () => {
         <div className="sidebar-section">
           <h4 style={{margin:"0px"}}>Allergy</h4>
           <div className="cuisine-tags">
-            {Array.isArray(recipe.attributes?.allergy)
+            {recipe.attributes.allergy === 0
               ? recipe.attributes.allergy.map((allergy, index) => (
                   <div key={index} className="cuisine-tag">
                     {allergy}
@@ -284,7 +284,7 @@ const RecipeDetails = () => {
         <div className="sidebar-section">
           <h4 style={{margin:"0px"}}>Diet</h4>
           <div className="cuisine-tags">
-            {Array.isArray(recipe.attributes?.diet)
+            {recipe.attributes.diet === 0
               ? recipe.attributes.diet.map((diet, index) => (
                   <div key={index} className="cuisine-tag">
                     {diet}
