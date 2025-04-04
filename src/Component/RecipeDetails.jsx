@@ -259,22 +259,25 @@ const RecipeDetails = () => {
                             : <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>}
                     </div>
 
-                </div>
-                <div className="sidebar-section">
-                    <h4>Created By</h4>
-                    <div className="created-by">
-                        {authorInfo ? (
-                            <span>{authorInfo.username}</span>
-                        ) : (
-                            <span>Loading user...</span>
-                        )}
+                    <div className="sidebar-section">
+                        <h4>Created By</h4>
+                        <div className="created-by">
+                            {authorInfo ? (
+                                <>
+                                    <span>{authorInfo.username}</span>
+                                    <br/>
+                                    <Link to="/friends" className="follow-link">Follow this user?</Link>
+                                </>
+                            ) : (
+                                <span>Loading user...</span>
+                            )}
+                        </div>
                     </div>
                 </div>
 
-
+                </div>
             </div>
-        </div>
-    );
-};
+            );
+            };
 
-export default RecipeDetails;
+            export default RecipeDetails;

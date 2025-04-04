@@ -355,4 +355,15 @@
     align-items: center;
     gap: 10px;
 }
+.follow-link {
+    display: inline-block;
+    margin-top: 5px;
+    color: #ff7f50;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.follow-link:hover {
+    text-decoration: underline;
+}
 
