@@ -27,7 +27,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 350px;
-    max-height: 600px;
+    max-height: 750px;
     width: 320px;
     height: auto;
     word-wrap: break-word; /* Forces long words to wrap */
@@ -198,7 +198,7 @@
 }
 .scroll-button {
 
-     /* Adjust position as needed */
+    /* Adjust position as needed */
     padding: 5px 15px;
     background-color: #e67e22;
     color: white;
@@ -229,10 +229,15 @@
 }
 
 .review-text {
-    font-size: 0.7em;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.5;
     color: #333;
-    line-height: 1.6;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
 }
+
 
 .comment-form {
     margin-top: 20px;
@@ -342,7 +347,7 @@
 }
 
 
-.average-rating-value{ 
+.average-rating-value{
     color:black;
 }
 
@@ -359,7 +364,8 @@
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
-  }
+}
+
   .reaction-button {
     background-color: #e67e22;
     color: white;
@@ -369,6 +375,136 @@
     cursor: pointer;
     font-size: 0.8em;
     transition: background-color 0.2s;
+}
+
+.reaction-button.active {
+    background-color: #cc5500;
+}
+
+.reaction-button:hover {
+    background-color: #d35400;
+}
+
+.delete-button {
+    background-color: #e67e22;
+    color: white;
+    margin-left: 8px;
+}
+
+.delete-button:hover {
+    background-color: #e67e22;
+}
+
+.show-more-button {
+    margin-left: 5px;
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 0.75em;
+    padding: 0;
+}
+.review-item {
+    flex: 0 0 auto;
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    height: 220px; /* ✅ Standard height */
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: height 0.3s ease;
+}
+
+.review-item.expanded {
+    height: auto; /* ✅ Only when expanded */
+}
+
+/* Controls inside the review text */
+.review-text {
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-word;
+    color: #333;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    transition: max-height 0.3s ease;
+}
+
+/* Hidden long text by default */
+.review-text.collapsed {
+    max-height: 55px;
+}
+
+/* Expand text only when showMore is active */
+.review-text.expanded {
+    max-height: none;
+}
+.review-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+/* The horizontal container */
+.reviews-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    scroll-behavior: smooth;
+    align-items: flex-start; /* Keep tops aligned */
+}
+.review-text {
+    white-space: normal;
+    word-break: break-word;
+    color: #333;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+/* Truncated view */
+.review-text.collapsed {
+    max-height: 55px;
+    overflow: hidden;
+}
+
+
+.review-text.expanded {
+    max-height: 120px; /* Or whatever works well */
+    overflow-y: auto;
+    padding-right: 5px; /* So scroll bar doesn't overlap text */
+}
+.author-link {
+    color: orange; /* base purple-blue */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease-in-out;
+}
+
+.author-link:hover {
+    color: #00b894; /* teal-green on hover */
+    text-decoration: underline;
+}
+.follow-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.follow-link:hover,
+.follow-link:focus,
+.follow-link:active {
+    text-decoration: underline;
+}
+=======
   }
   
   .reaction-button.active {
