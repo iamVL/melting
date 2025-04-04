@@ -8,16 +8,16 @@
 
 /* Main Container - Two Column Layout */
 .tip-container {
-  width: 1200px;
-  margin: 40px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: row;
   gap: 30px;
   align-items: flex-start;
+  padding: 30px;
+  margin: 40px auto;
+  max-width: 1200px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* Left Column - Form */
@@ -219,4 +219,15 @@
 .tip-submit-btn:hover {
   transform: scale(1.01);
   background: #c74c32;
+}
+
+@media (max-width: 768px) {
+  .tip-container {
+    flex-direction: column;
+  }
+
+  .tip-image-upload {
+    width: 100%;
+    margin-top: 20px;
+  }
 }

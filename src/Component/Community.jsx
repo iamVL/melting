@@ -75,7 +75,7 @@ function CommunityPage() {
     }
 
     setErrorMessage("");
-    const groupData = { name: newGroupName, description: "New group created" };
+    const groupData = { name: newGroupName, description: "New group created", attributes: {ownerID: sessionStorage.getItem("user")}};
 
     fetch(process.env.REACT_APP_API_PATH + "/groups", {
       method: "POST",
@@ -88,8 +88,30 @@ function CommunityPage() {
       .then((res) => res.json())
       .then((data) => {
         console.log("Group Created:", data);
-        fetchGroups(); // Refresh the list of groups
-        setNewGroupName(""); // Clear the input field
+        fetchGroups();
+        setNewGroupName(""); 
+
+        // automatically make user a member when creating the group
+        fetch(process.env.REACT_APP_API_PATH + "/group-members", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            userID: sessionStorage.getItem("user"),
+            groupID: data.id,
+          }),
+        })
+          .then((res) => res.json())
+          .then(
+            (result) => {
+              console.log("result:",result);
+            },
+            (error) => {
+              alert("error!");
+            }
+          );
       })
       .catch((error) => {
         console.error("Error creating group:", error);
@@ -140,7 +162,6 @@ function CommunityPage() {
 
       {/* Group list section */}
       <div className="GroupListSection">
-        <h3>Communities</h3>
         {isLoaded ? (
           <GroupList groups={groups} onGroupClick={handleGroupClick} />
         ) : (

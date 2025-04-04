@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
+import ABProfile from "./Component/ProfileAB"
 import Edit from "./Component/Edit";
 import ViewTip from "./Component/CookingTipPage";
 import TipForm from "./Component/Tip";
@@ -21,9 +22,19 @@ import CommunityPage from './Component/Community';
 import HowToGuides from "./Component/HowToGuides"; 
 import BakingBasics from "./Component/BakingBasics"; 
 import GrillingTechniques from "./Component/GrillingTechniques";
-import KnifeSkills from "./Component/KnifeSkills"; // New
-import PastaGuide from "./Component/PastaCooking"; // New
-import PancakeSecrets from "./Component/PancakeRecipe"; // New
+import KnifeSkills from "./Component/KnifeSkills"; 
+import PastaGuide from "./Component/PastaCooking"; 
+import PancakeSecrets from "./Component/PancakeRecipe"; 
+import HomemadeBread from "./Component/HowtoHomemadeBread"; // 1
+import CaramelizingOnions from "./Component/HowtoCaramelizeOnions"; // 2
+import StirFrying from "./Component/HowtoStirFry"; // 3
+import BakingCake from "./Component/HowtoBakeCake"; // 4
+import CookEggs from "./Component/HowtoCookEggs"; // 5
+import CookSteak from "./Component/HowtoCookSteak"; // 6
+import CookRice from "./Component/HowtoCookRice"; // 7
+import FilletFish from "./Component/HowtoFilletFish"; // 8
+import SharpenKnives from "./Component/HowtoSharpenKnives"; // 9
+import SeasoningFood from "./Component/HowtoSeasoning"; // 10
 import Navbar from "./Component/Navbar";
 import Friends from "./Component/Friends";
 import Groups from "./Component/Groups";
@@ -37,11 +48,12 @@ import Posts from "./Component/Posts";
 import RecipeList from "./Component/RecipeList";
 import CommunityDetails from "./Component/CommunityDetails";
 import FavoritedRecipes from "./Component/FavoritedRecipes";
-
+import FilterPage from "./Component/FilterPage"
 
 import { io } from "socket.io-client";
 import CookbookManager from "./Component/CookbookManager";
 import CookbookDetail from "./Component/CookbookDetail";
+
 
 
 // Initialize socket connection
@@ -93,6 +105,8 @@ function App() {
               <Route path="/recipes" element={<RecipeListContainer />} />
               <Route path="/tip/:id" element={<TipDetails />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/ab-profile" element={<ABProfile />} />
+              <Route path="/ab-settings" element={<Edit />} />
               <Route path="/edit-profile" element={<Edit  />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Login" element={<Login />} />
@@ -104,8 +118,9 @@ function App() {
               <Route path="/about_joshua" element={<AboutJoshua />} />
               <Route path="/upload" element={<UploadRecipe />} />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
-              <Route path="/community-details/:communityId" element={<CommunityDetails />} />
+              <Route path="/community-details/:communityId/:communityName" element={<CommunityDetails />} />
               <Route path="/favorites" element={<FavoritedRecipes />} />
+              <Route path="/filter" element={<FilterPage />} /> {/* New filter page */}
 
               {/* Home Page */}
               <Route
@@ -129,6 +144,16 @@ function App() {
               <Route path="/knife-skills" element={<KnifeSkills />} /> 
               <Route path="/perfect-pasta" element={<PastaGuide />} /> 
               <Route path="/fluffy-pancakes" element={<PancakeSecrets />} /> 
+              <Route path="/homemade-bread" element={<HomemadeBread />} />
+              <Route path="/caramelized-onions" element={<CaramelizingOnions />} />
+              <Route path="/stirfry" element={<StirFrying />} />
+              <Route path="/baking-cake" element={<BakingCake />} />
+              <Route path="/cooking-eggs" element={<CookEggs />} />
+              <Route path="/cooking-steak" element={<CookSteak />} />
+              <Route path="/cooking-rice" element={<CookRice />} />
+              <Route path="/fillet-fish" element={<FilletFish />} />
+              <Route path="/sharpen-knife" element={<SharpenKnives />} />
+              <Route path="/seasoning" element={<SeasoningFood />} />
 
               {/* Other Pages */}
               <Route path="/register" element={<RegisterForm setLoggedIn={setLoggedIn} />} />

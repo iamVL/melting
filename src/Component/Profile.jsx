@@ -5,6 +5,7 @@ import "./RegisterForm";
 import Favorites from "../Account_Buttons/Favorites.png"
 import Stars from "../Account_Buttons/Stars.png"
 import My_recipes from "../Account_Buttons/My_recipes.png"
+import GearIcon from "../assets/gear-icon.png"
 import { Link } from "react-router-dom";
 
 
@@ -285,10 +286,10 @@ const Profile = (props) => {
               </recipebutton>
             </Link>
 
-            <Link to="/likes" class="recipeButtons">
+            <Link to="/friends" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={Stars} alt="Stars"></img>
-                <a> Recipes above 3 Stars</a>
+                <a> Follow List</a>
               </recipebutton>
             </Link>
 
@@ -298,7 +299,12 @@ const Profile = (props) => {
                 <a>Cookbooks</a>
               </recipebutton>
             </Link>
-
+            <Link to="/ab-profile" class="recipeButtons">
+              <recipebutton>
+                <img class="recipeimage" src={GearIcon} alt="ABSettings"></img>
+                <a>A/B Settings</a>
+              </recipebutton>
+            </Link>
           </div>
 
           <h2>Dietary Restrictions</h2>
