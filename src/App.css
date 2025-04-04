@@ -62,20 +62,28 @@
 }
 
 .autocomplete {
-  min-height: 165px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 170px;
+  width: 350px;
+  background-color: white;
+  border: 1px solid black;
 }
 
 .suggestions {
-  border: 1px solid #999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   border-top-width: 0;
   list-style: none;
-  margin-top: 0;
-  max-height: 143px;
+  height: 100%;
   overflow-y: auto;
   padding-left: 0;
-  width: calc(300px + 1rem);
-  display: inline-block;
+  width: 100%;
   position: relative;
+  background-color: white;
 }
 
 .suggestions li {
@@ -84,8 +92,8 @@
 
 .suggestion-active,
 .suggestions li:hover {
-  background-color: #008f68;
-  color: #fae042;
+  background-color: #ff8e42;
+  color: #ffffff;
   cursor: pointer;
   font-weight: 700;
 }
