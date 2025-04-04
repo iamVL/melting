@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 
 const Autocomplete = ({ suggestions, selectAutocomplete }) => {
@@ -10,7 +10,8 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   // input from the user
   const [userInput, setUserInput] = useState("");
-  const [suggestList, setSuggestList] = useState(false);
+  const [showBox, setShowBox] = useState(false);
+  const boxRef = useRef(null);
 
   // Event fired when the input value is changed
   const onChange = (e) => {
@@ -41,7 +42,7 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
     setFilteredSuggestions([]);
     setShowSuggestions(false);
     setUserInput(e.currentTarget.innerText);
-    setSuggestList(false);
+    setShowBox(false);
     let selectedId = e.currentTarget.id;
     selectAutocomplete(selectedId);
     console.log("Friend selected is " + selectedId);
@@ -76,7 +77,7 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
   if (showSuggestions && userInput) {
     if (filteredSuggestions.length) {
       suggestionsListComponent = (
-        <div className="autocomplete">
+        <div className="autocomplete" ref={boxRef}>
           <ul className="suggestions">
             {filteredSuggestions.map((suggestion, index) => {
               let className =
@@ -97,37 +98,45 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
       );
     } else {
       suggestionsListComponent = (
-        <div className="autocomplete">
+        <div className="autocomplete" ref={boxRef}>
           <em>No suggestions, you're on your own!</em>
         </div>
       );
     }
   } else {
     suggestionsListComponent = (
-      <div className="autocomplete">
-        <em>Enter a friend's user</em>
+      <div className="autocomplete" ref={boxRef}>
+        <em>No User Found</em>
       </div>
     );
   }
-  
-  const toggleList = (val) => {
-    console.log(1);
-    setShowSuggestions(val);
-  }
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (boxRef.current && !boxRef.current.contains(event.target)) {
+        setShowBox(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
       <div className="suggestions-list">
       <input
         type="text"
+        placeholder="Enter User..."
         onChange={onChange}
         onKeyDown={onKeyDown}
-        onFocus={() => {setSuggestList(true);}}
+        onFocus={() => setShowBox(true)}
         value={userInput}
       />
       <br />
       
-      { (suggestList === true) && (suggestionsListComponent)}
+      { (showBox === true) && (suggestionsListComponent)}
       </div>
     </>
   );

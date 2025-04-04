@@ -42,6 +42,23 @@ const FriendList = (props) => {
       );
   };
 
+  const deleteConnection = (id, status) => {
+    console.log(`Attempting to delete connection ${id} to status ${status}`);
+
+    //make the api call to the user controller with a PATCH request for updating a connection with another user
+    fetch(process.env.REACT_APP_API_PATH + "/connections/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        props.setConnections([]);
+        props.loadFriends();
+      });
+  };
+
   // If the user is not blocked, show the block icon
   // Otherwise, show the unblock icon and update the connection
   // with the updateConnection function
@@ -49,23 +66,11 @@ const FriendList = (props) => {
     console.log(`Rendering action based on status: ${status} for connection ${id}`);
     if (status === "active") {
       return (
-        <img
-          src={blockIcon}
-          className="sidenav-icon deleteIcon"
-          alt="Block User"
-          title="Block User"
-          onClick={() => updateConnection(id, "blocked")}
-        />
+        <button type="button" onClick={() => updateConnection(id, "blocked")}> Block </button>
       );
     } else {
       return (
-        <img
-          src={unblockIcon}
-          className="sidenav-icon deleteIcon"
-          alt="Unblock User"
-          title="Unblock User"
-          onClick={() => updateConnection(id, "active")}
-        />
+        <button type="button" onClick={() => updateConnection(id, "active")}> Unblock </button>
       );
     }
   };
@@ -140,40 +145,57 @@ const FriendList = (props) => {
     return (
       <div className="friend-posts">
           {/* the list comes back in oldest first order, reverse so newest shows at the top */}
-          {props.connections.reverse().map((connection) => (
-            <div key={connection.id} className="user-list">
-              <div className="friend-info">
-                { connection.toUser.attributes.picture !== undefined ? 
-                  <>
-                    <img src={connection.toUser.attributes.picture} alt="user picture" width={100}/>
-                  </>
-                 :  
-                 <>
-                    <img src={Default} alt="user picture" width={100}/>
+          <h3>{props.title}</h3>
+          <div className="friend-listing">
+            {props.connections.reverse().map((connection) => (
+              <div key={connection.id} className="user-list">
+                <div className="friend-info">
+                { (props.title === "Your Following") ? 
+                <>
+                { connection.toUser.attributes.picture !== undefined  && connection.toUser.attributes.picture !== "" ? 
+                    <>
+                      <img src={connection.toUser.attributes.picture} alt="user picture"/>
                     </>
-                }
-                {connection.toUser.attributes.username} -{" "}+{console.log(connection.toUser.attributes.username)} {connection.attributes.status}
-              </div>
-              <div className="friends-icons-container deletePost">
-              <div className="deletePost">
-                <img
-                  src={messageIcon}
-                  className="sidenav-icon messageIcon" // Updated class name here
-                  alt="Message User"
-                  title="Message User"
-                  onClick={() => handleMessageClick(connection.toUser)}
-                />
-                   {/* Set the id param dynamically to the user's id you want to specifically want to get */}
+                  :  
+                  <>
+                      <img src={Default} alt="user picture" width={60}/>
+                      </>
+                  }
+                  <div className="friend-information">
+                    <p>
+                      {connection.toUser.attributes.username}
+                    </p>
+                    <div className="friend-buttons">
+                      <button type="button" onClick={() => handleMessageClick(connection.toUser)}> Message </button>
+                      {conditionalAction(
+                          connection.attributes.status,
+                          connection.id
+                        )}          
+                      <button type="button" onClick={() => deleteConnection(connection.id, connection.attributes.status)}> Remove </button>
+                    </div>
+                  </div></> : <>
+                  { connection.fromUser.attributes.picture !== undefined  && connection.fromUser.attributes.picture !== "" ? 
+                    <>
+                      <img src={connection.fromUser.attributes.picture} alt="user picture"/>
+                    </>
+                  :  
+                  <>
+                      <img src={Default} alt="user picture" width={60}/>
+                      </>
+                  }
+                  <div className="friend-information">
+                    <p>
+                      {connection.fromUser.attributes.username}
+                    </p>
+                    <div className="friend-buttons">
+                      <button type="button" onClick={() => handleMessageClick(connection.fromUser)}> Message </button>  
+                      <button type="button" onClick={() => deleteConnection(connection.id, connection.attributes.status)}> Remove </button>      
+                    </div>
+                  </div></>}
                 </div>
-                <div>
-                  {conditionalAction(
-                    connection.attributes.status,
-                    connection.id
-                  )}
-                </div>
-              </div>
             </div>
-          ))}
+            ))}
+          </div>
       </div>
     );
   }
