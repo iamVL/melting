@@ -285,10 +285,10 @@ const Profile = (props) => {
               </recipebutton>
             </Link>
 
-            <Link to="/likes" class="recipeButtons">
+            <Link to="/friends" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={Stars} alt="Stars"></img>
-                <a> Recipes above 3 Stars</a>
+                <a> Follow List</a>
               </recipebutton>
             </Link>
 
