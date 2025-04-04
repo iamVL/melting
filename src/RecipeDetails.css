@@ -495,7 +495,7 @@
     text-decoration: underline;
 }
 .follow-link {
-    color: inherit;
+    color: #007bff;
     text-decoration: none;
 }
 
@@ -503,8 +503,6 @@
 .follow-link:focus,
 .follow-link:active {
     text-decoration: underline;
-}
-=======
   }
   
   .reaction-button.active {
