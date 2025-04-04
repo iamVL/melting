@@ -7,6 +7,7 @@
   }
   
   .navbar {
+    align-items: center;
     width: 100%;
     background-color: #d46a4c;
     display: flex;
@@ -115,13 +116,15 @@
   @media (max-width: 768px) {
     .navbar {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      text-align: center; /* optional: aligns the text of the links */
+      width: 100%;
     }
   
     .nav-links {
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
     }
   
     .header-section h1 {
@@ -144,3 +147,29 @@
   team:hover {
     text-decoration: underline;
   }
+
+  .about-page {
+    overflow-x: hidden;
+  }
+  
+  /* Global box-sizing fix */
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Make sure content section fits inside small screens */
+  .content-section {
+    width: 90%;
+    margin: 20px auto;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  
+  /* Ensure text wraps and no long lines overflow */
+  .content-section p,
+  .content-section ul li,
+  .content-section a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  

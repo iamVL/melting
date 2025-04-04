@@ -5,7 +5,9 @@ import deleteIcon from "../assets/delete.png";
 import { Link } from 'react-router-dom';
 
 const GroupList = () => {
-  const userid = sessionStorage.getItem("token");
+  const userID = parseInt(sessionStorage.getItem("user"));
+  const groupID = useState("");
+
   const [groups, setGroups] = useState([]);
   const [mygroups, setMygroups] = useState([]);
   const [mygroupIDs, setMygroupIDs] = useState([]);
@@ -182,6 +184,10 @@ const GroupList = () => {
         loadGroups();
       });
     } else {
+      if (getGroupMemberId(id) != -1) {
+        console.log("Member is already in the group");
+        return;
+      }
       fetch(process.env.REACT_APP_API_PATH + "/group-members", {
         method: "POST",
         headers: {
@@ -246,33 +252,31 @@ const GroupList = () => {
   } else {
     return (
       <div>
-        <ul>
+        <p style={{color:"black", marginBottom:"0px"}}> My Communities</p>
+        <div className="community-box"> 
+          {mygroups.map((group) => (
+            <div key={group.groupID} className="userlist">
+              <h4>{group.group.name}</h4>
+              <div className="group-buttons">
+                {group.group.attributes?.ownerID == userID ? <button onClick={() => deleteGroup(group.groupID)}>Delete</button> :               
+                <button onClick={() => updateConnection(group.groupID, "inactive")}>Leave</button>
+                }
+                <a href={`/hci/teams/melting/community-details/${group.groupID}/${group.group.name}`} onClick={() => console.log(`Viewing ${group.name}`)}>
+                  View Community
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p style={{color:"black", marginBottom:"0px"}}> All Communities</p>
+        <div className="community-box">
           {groups.map((group) => (
             <div key={group.id} className="userlist">
               <h4>{group.name}</h4>
-              <div className="deletePost">
-                {conditionalAction(group.id)}
-                <img
-                  src={deleteIcon}
-                  className="sidenav-icon deleteIcon"
-                  alt="Delete Group"
-                  title="Delete Group"
-                  onClick={() => deleteGroup(group.id)}
-                />
-                {/* <button className="comment-button" onClick={() => console.log('Comment clicked')}>
-                Comment
-                </button> */}
-              </div>
-              <div className="comment-section">
-              <Link to={`/community-details/${group.id}`}>
-              <button className="comment-button" onClick={() => console.log(`Comment on ${group.name}`)}>
-                Comments
-              </button>
-              </Link>
-            </div>
+              <button onClick={() => updateConnection(group.id, "active")}>Join</button>
             </div>
           ))}
-        </ul>
+        </div>
         {/*<button onClick={testGroupUpdate}>Test Update</button>*/}
         {/*<button onClick={testGroupAdd}>Test Add</button>*/}
       </div>

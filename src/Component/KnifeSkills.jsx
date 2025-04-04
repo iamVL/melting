@@ -4,13 +4,13 @@ import "../KnifeSkills.css";  // Import CSS
 import knifePoster from "../assets/knife-skills-recipe.png";  // Image file
 
 const KnifeSkills = () => {
-  return (
+  return ( 
     <div className="knife-container">
       <div className="back-link">
         <Link to="/how-to-guides">← Back to How-To Guides</Link>
       </div>
 
-      <h1 className="title">Knife Skills 101</h1>
+      <h1 className="title">Knife Skills 101</h1> 
 
       <div className="poster-container">
         <img src={knifePoster} alt="Knife Skills Poster" className="poster" />
