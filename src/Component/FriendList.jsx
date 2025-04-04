@@ -158,7 +158,7 @@ const FriendList = (props) => {
                     </>
                   :  
                   <>
-                      <img src={Default} alt="user picture" width={60}/>
+                      <img src={Default} alt="user picture"/>
                       </>
                   }
                   <div className="friend-information">
@@ -180,7 +180,7 @@ const FriendList = (props) => {
                     </>
                   :  
                   <>
-                      <img src={Default} alt="user picture" width={60}/>
+                      <img src={Default} alt="user picture" />
                       </>
                   }
                   <div className="friend-information">

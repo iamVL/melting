@@ -73,8 +73,9 @@
 .friend-info img {
     width: 60px;
     height: 60px;
-    object-fit: cover;
     border-radius: 5px;
+    object-fit: cover;
+    object-position: center; 
 }
 
 .user-list {
@@ -166,4 +167,61 @@
 .friend-posts h3 {
     margin: 0px;
     align-self: flex-start;
+}
+
+/* Responsive for Laptop Small  */
+@media (max-width: 1024px) {
+    .user-list {
+        width: 45%;
+    }
+
+    .add-a-friend {
+        height: auto;
+    }
+
+    .friend-form {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* Responsive for Tablet and below  */
+@media (max-width: 768px) {
+    .user-list {
+        width: 100%;
+    }
+
+    .add-a-friend {
+        height: auto;
+    }
+
+    .suggestions-list {
+        width: 100%;
+    }
+
+    .friend-form {
+        flex-direction: column;
+        width: 85%;
+        gap: 20px;
+    }
+
+    .friend-form input {
+        width: 60%;
+    }
+}
+
+/* Responsive for Mobile L and below  */
+@media (max-width: 425px) {
+
+    .friend-form input {
+        width: 100%;
+    }
+
+    .friend-buttons button {
+        font-size: 8px;
+    }
+
+    .friend-information p {
+        font-size: 10px;
+    }
 }
