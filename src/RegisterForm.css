@@ -1,90 +1,83 @@
-/* General Page Styling */
 @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
 .register-container {
-  width: 100vw; /* Full width of screen */
-  height: 110vh; /* Full height of screen */
-  background-color: #E8775B; /* Orange background */
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f26b3a;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-/* White Layer (Centered Card) */
+
 .content-wrapper {
   background-color: white;
-  width: 80vw; /* 80% of screen width */
-  max-width: 1152px; /* Ensuring it doesn't go too big */
-  height: auto/*80vh*/; /* 80% of screen height */
-   /* Ensuring it doesn't go too tall */
-  border-radius: 0px; /* Slight rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  width: 80vw;
+  max-width: 1152px;
+  border-radius: 0px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   padding: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
-
-/* Left Side: Image */
+/* Image Side */
 .image-container {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: -10px;
 }
 
-/* Food Image */
 .food-image {
-  width: 480px;  /* Exact width from Figma */
-  max-width: 800px; /* Restricts to prevent excessive size */
-  height: auto/*600px*/; /* Exact height from Figma */
-  object-fit: cover; /* Ensures it fills the area without distortion */
-  border-radius: 0px;
+  width: 100%;
+  max-width: 480px;
+  object-fit: cover;
 }
 
-/* Right Side: Form */
+/* Form Side */
 .form-container {
   flex: 1;
   background: white;
   padding: 2rem;
-  border-radius: 0px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  text-align: center;
   position: relative;
+  text-align: left;
 }
 
-/* Logo Styling */
-
+/* Desktop Logo */
 .logo-login {
-  width: 125px;  /* Increase size */
-  height: 75px;  /* Maintain aspect ratio */
+  width: 125px;
+  height: 75px;
   position: absolute;
   top: 5px;
   right: 10px;
 }
 
-.title {
-  font-family: 'Itim', cursive; /* Apply the Itim font */
-  font-weight: bold;
-  font-size: 45px; /* Set the correct font size */
-  font-weight: 400; /* Regular weight */
-  color: #4A2E1F;
-  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-  text-align: left;
-  margin-left: -1px;
-  margin-top: -10px; /* Moves the title up */
+.back-arrow {
+  display: none;
+  font-size: 28px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
 }
 
-/* Form Styling */
+/* Title */
+.title {
+  font-family: 'Itim', cursive;
+  font-size: 45px;
+  color: #4A2E1F;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+/* Form layout */
 .register-form {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
-/* Label & Input */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -93,26 +86,19 @@
 
 .input-group label {
   font-weight: bold;
-  margin-bottom: 2px; /* Move label closer */
-  font-size: 1.5rem; /* Make it larger */
+  margin-bottom: 5px;
+  font-size: 1.2rem;
   color: #4a2c2a;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  font-family: 'Itim', cursive; /* Match Registration Font */
+  font-family: 'Itim', cursive;
 }
 
 .input-group input {
-  width: 100%;
-  max-width: 800px;
   padding: 8px;
-  height: 30px;
   border: 1px solid #ccc;
-  border-radius: 0px;
-  background-color: #d3d3d3; /* Light grey input box */
+  background-color: #d3d3d3;
   font-size: 1rem;
-  box-sizing: border-box;
 }
 
-/* Two-Column Layout */
 .input-row {
   display: flex;
   gap: 10px;
@@ -121,36 +107,26 @@
 
 .input-row .input-group {
   flex: 1 1 48%;
-  min-width: 200px;
+  min-width: 0px;
 }
 
-/* Sign Up Button */
+/* Buttons */
 .signup-btn {
-  font-family: 'Itim', cursive; /* Match the form's font */
-  font-size: 1.5rem; /* Increase font size for better visibility */
+  font-family: 'Itim', cursive;
+  font-size: 20px;
   background: #43A32D;
   color: white;
-  padding: 10px 30px; /* Keeps a nice button size */
+  padding: 10px 30px;
   border: none;
-  border-radius: 0px;
-  font-size: 20px;
   cursor: pointer;
-  width: fit-content; /* Makes the button as wide as its text */
-  min-width: 150px; /* Ensures it's not too small */
-  display: block; /* Prevents stretching inside flex containers */
-  margin: 0 auto; /* Centers it */
-  text-align: center;
+  margin: 0 auto;
+  display: block;
 }
 
-.signup-btn:hover {
-  background: #43A32D;
-}
-
-/* Login Text */
 .login-text {
   margin-top: 10px;
-  text-align: left;
   font-size: 18px;
+  text-align: center;
 }
 
 .login-text a {
@@ -173,15 +149,108 @@
   font-family: 'Itim', cursive;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.option-group button:hover {
-  background-color: #ddd;
 }
 
 .option-group button.selected {
   background-color: #43A32D;
   color: white;
   border-color: #43A32D;
+}
+
+/* MOBILE VIEW */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+    width: 95vw;
+    padding: 20px;
+  }
+
+  .image-container {
+    display: none;
+  }
+
+  .form-container {
+    padding: 20px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .logo-login {
+    display: none;
+  }
+
+  .back-arrow {
+    display: block;
+  }
+
+  .title {
+    text-align: center;
+    font-size: 32px;
+  }
+
+  .input-row {
+    flex-direction: column;
+  }
+
+  .input-row .input-group {
+    width: 100%;
+  }
+
+  .input-group input {
+    width: 100%;
+  }
+
+  .signup-btn {
+    margin: 20px auto 10px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .hidden-on-mobile {
+    display: none !important;
+  }
+}
+
+/* 🔥 Fix for "in-between" screen sizes (tablet/responsive mode) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .content-wrapper {
+    flex-direction: column;
+    width: 95vw;
+    padding: 20px;
+  }
+
+  .image-container {
+    display: none;
+  }
+
+  .form-container {
+    padding: 20px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .logo-login {
+    display: none;
+  }
+
+  .title {
+    text-align: center;
+    font-size: 32px;
+  }
+
+  .input-row {
+    flex-direction: column;
+  }
+
+  .input-row .input-group {
+    width: 100%;
+  }
+
+  .input-group input {
+    width: 100%;
+  }
+
+  .signup-btn {
+    margin: 20px auto 10px auto;
+  }
 }

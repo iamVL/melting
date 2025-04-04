@@ -1,5 +1,5 @@
 /************************************
-  NAVBAR LAYOUT (Desktop)
+ NAVBAR LAYOUT (Desktop)
 *************************************/
 .navbar {
   display: flex;
@@ -8,12 +8,13 @@
   background-color: #f26b3a;
   padding: 0.5rem 1rem;
   position: relative;
+  z-index: 100;
 }
 
 .nav-left {}
 
 .logo {
-  width: 120px;
+  width: 100px;
 }
 
 .nav-links-container {
@@ -39,7 +40,7 @@
 }
 
 /************************************
-  DESKTOP DROPDOWN
+ DESKTOP DROPDOWN
 *************************************/
 .dropdown {
   position: relative;
@@ -79,7 +80,7 @@
 }
 
 /************************************
-  HAMBURGER / CLOSE (Mobile Only)
+ HAMBURGER / CLOSE (Mobile Only)
 *************************************/
 .hamburger {
   display: none;
@@ -92,9 +93,9 @@
 }
 
 /************************************
-  MOBILE STYLES
+ RESPONSIVE & MOBILE LAYOUT
 *************************************/
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .hamburger {
     display: block;
   }
@@ -103,12 +104,18 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 70%;
+    width: 75%;
+    max-width: 300px;
     height: 100vh;
-    background-color: #fff;
+    background-color: #d3d3d3;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     z-index: 9999;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .nav-links-container.open {
@@ -118,15 +125,19 @@
   .nav-links {
     flex-direction: column;
     align-items: flex-start;
-    padding: 2rem 1rem;
+    padding: 2rem 1.5rem;
+    width: 100%;
   }
 
   .nav-links li {
     margin: 1rem 0;
+    width: 100%;
   }
 
   .nav-links a {
     color: #333;
+    width: 100%;
+    display: block;
   }
 
   .dropdown-menu {
@@ -134,19 +145,39 @@
     background-color: #f9f9f9;
     box-shadow: none;
     margin-top: 0.2rem;
-    margin-left: 1.2rem;
+    margin-left: 1rem;
     padding: 0.4rem;
     border-radius: 5px;
   }
 
-  .nav-links-container .dropdown-menu li {
+  .dropdown-menu li {
     padding: 0.2rem 0.8rem !important;
-    margin: 0 !important;
-    line-height: 1.2;
     font-size: 0.9rem;
   }
 
   .dropdown-menu li a {
+    color: #333;
+  }
+
+  /* Profile icon in mobile menu */
+  .mobile-profile {
+    margin-top: auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid #aaa;
+  }
+
+  .mobile-profile img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: white;
+  }
+
+  .mobile-profile span {
+    font-weight: bold;
     color: #333;
   }
 }
