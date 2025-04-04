@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import FriendForm from "./FriendForm";
 import FriendList from "./FriendList";
 import { useNavigate } from "react-router-dom";
+import "../Friend.css";
 
 const Friends = () => {
   const [connections, setConnections] = useState([]);
+  const [followers, setFollowers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -52,18 +54,60 @@ const Friends = () => {
       );
   };
 
+  const loadFollowers = () => {
+    fetch(
+      process.env.REACT_APP_API_PATH +
+        "/connections?toUserID=" +
+        sessionStorage.getItem("user"),
+      {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          console.log("Result", result[0]);
+          setIsLoaded(true);
+          setFollowers(result[0]);
+          console.log(result[0]);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      );
+  };
+
   return (
-    <div>
-      <p>Friends</p>
+    <div className="friends-page-container">
+      <div className="add-a-friend"> 
       <FriendForm
         userid={sessionStorage.getItem("user")}
         loadFriends={loadFriends}
+        connections={connections}
       />
+      </div>
+      
       <FriendList
+        title="Your Following"
         userid={sessionStorage.getItem("user")}
         loadFriends={loadFriends}
         connections={connections}
         setConnections={setConnections}
+        isLoaded={isLoaded}
+        error={error}
+      />
+
+      <FriendList
+        title="People Who Follow You"
+        userid={sessionStorage.getItem("user")}
+        loadFriends={loadFollowers}
+        connections={followers}
+        setConnections={setFollowers}
         isLoaded={isLoaded}
         error={error}
       />
