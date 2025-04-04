@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Autocomplete from "./Autocomplete.jsx";
+import "../Friend.css";
 
 const FriendForm = ({ userid, loadFriends }) => {
   const [friendname, setFriendname] = useState("");
@@ -74,19 +75,17 @@ const FriendForm = ({ userid, loadFriends }) => {
   };
 
   return (
-    <form onSubmit={submitHandler} className="profileform">
+    <form onSubmit={submitHandler} className="friend-form">
       <label>
-        Find a Friend!
-        <br />
-        <div className="autocomplete">
-          <Autocomplete
-            suggestions={users}
-            selectAutocomplete={(e) => selectAutocomplete(e)}
-          />
-        </div>
+        Add a Friend!
       </label>
-      <input type="submit" value="submit" />
+      <Autocomplete
+        suggestions={users}
+        selectAutocomplete={(e) => selectAutocomplete(e)}
+      />
       {responseMessage}
+      <input type="submit" value="submit" />
+
     </form>
   );
 };

@@ -4,6 +4,8 @@ import unblockIcon from "../assets/thumbsup.png";
 import messageIcon from "../assets/comment.svg";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../App";
+import "../Friend.css";
+import Default from "../assets/Default-Avatar.jpg"
 
 const FriendList = (props) => {
   const navigate = useNavigate();
@@ -136,12 +138,20 @@ const FriendList = (props) => {
     return <div> Loading... </div>;
   } else {
     return (
-      <div className="post">
-        <ul>
+      <div className="friend-posts">
           {/* the list comes back in oldest first order, reverse so newest shows at the top */}
           {props.connections.reverse().map((connection) => (
-            <div key={connection.id} className="userlist">
-              <div>
+            <div key={connection.id} className="user-list">
+              <div className="friend-info">
+                { connection.toUser.attributes.picture !== undefined ? 
+                  <>
+                    <img src={connection.toUser.attributes.picture} alt="user picture" width={100}/>
+                  </>
+                 :  
+                 <>
+                    <img src={Default} alt="user picture" width={100}/>
+                    </>
+                }
                 {connection.toUser.attributes.username} -{" "}+{console.log(connection.toUser.attributes.username)} {connection.attributes.status}
               </div>
               <div className="friends-icons-container deletePost">
@@ -164,7 +174,6 @@ const FriendList = (props) => {
               </div>
             </div>
           ))}
-        </ul>
       </div>
     );
   }

@@ -10,6 +10,7 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   // input from the user
   const [userInput, setUserInput] = useState("");
+  const [suggestList, setSuggestList] = useState(false);
 
   // Event fired when the input value is changed
   const onChange = (e) => {
@@ -40,6 +41,7 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
     setFilteredSuggestions([]);
     setShowSuggestions(false);
     setUserInput(e.currentTarget.innerText);
+    setSuggestList(false);
     let selectedId = e.currentTarget.id;
     selectAutocomplete(selectedId);
     console.log("Friend selected is " + selectedId);
@@ -101,19 +103,32 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
       );
     }
   } else {
-    suggestionsListComponent = <div className="autocomplete" />;
+    suggestionsListComponent = (
+      <div className="autocomplete">
+        <em>Enter a friend's user</em>
+      </div>
+    );
+  }
+  
+  const toggleList = (val) => {
+    console.log(1);
+    setShowSuggestions(val);
   }
 
   return (
     <>
+      <div className="suggestions-list">
       <input
         type="text"
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onFocus={() => {setSuggestList(true);}}
         value={userInput}
       />
       <br />
-      {suggestionsListComponent}
+      
+      { (suggestList === true) && (suggestionsListComponent)}
+      </div>
     </>
   );
 };

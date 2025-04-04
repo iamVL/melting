@@ -62,20 +62,28 @@
 }
 
 .autocomplete {
-  min-height: 165px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  width: calc(300px + 1rem);
+  background-color: white;
+  border: 1px solid black;
 }
 
 .suggestions {
-  border: 1px solid #999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   border-top-width: 0;
   list-style: none;
-  margin-top: 0;
-  max-height: 143px;
+  height: 100%;
   overflow-y: auto;
   padding-left: 0;
   width: calc(300px + 1rem);
-  display: inline-block;
   position: relative;
+  background-color: white;
 }
 
 .suggestions li {

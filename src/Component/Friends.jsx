@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import FriendForm from "./FriendForm";
 import FriendList from "./FriendList";
 import { useNavigate } from "react-router-dom";
+import "../Friend.css";
 
 const Friends = () => {
   const [connections, setConnections] = useState([]);
@@ -53,12 +54,15 @@ const Friends = () => {
   };
 
   return (
-    <div>
-      <p>Friends</p>
+    <div className="friends-page-container">
+      <div className="add-a-friend"> 
+        <p>Friends</p>
       <FriendForm
         userid={sessionStorage.getItem("user")}
         loadFriends={loadFriends}
       />
+      </div>
+      
       <FriendList
         userid={sessionStorage.getItem("user")}
         loadFriends={loadFriends}
