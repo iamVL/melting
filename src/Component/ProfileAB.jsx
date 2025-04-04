@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
-import "../Profile.css";
+import "../ProfileAB.css";
 import "./RegisterForm";
 import Favorites from "../Account_Buttons/Favorites.png"
 import Stars from "../Account_Buttons/Stars.png"
 import My_recipes from "../Account_Buttons/My_recipes.png"
-import GearIcon from "../assets/gear-icon.png"
 import { Link } from "react-router-dom";
 
 
@@ -187,124 +186,51 @@ const Profile = (props) => {
     <>
       {/* profile info */}
     <form onSubmit={submitHandler} className="profileform">
-      <div class="userContainer">
-        <div class="containerInfo">
+      <div class="ABuserContainer">
+        <div class="ABcontainerInfo">
           <img class ="userPic" src={picture} alt="profile"></img>
 
           {/* user info */}
-          <div class="userInfo">
-            <a>{fullName}</a><br />
-            <a>User: {username}</a>
+          <div class="ABuserInfo">
+            <a>Name: {fullName}</a><br />
+            <a>Username: {username}</a>
           </div>
         </div>
 
         {/* profile buttons */}
         <div class ="editUser">
-          <button onClick={logout} class="logout">Log out</button><br />
-          <Link to="/edit-profile"><a onClick="toggleInputs()" class="editprofile">Edit Profile</a><br /></Link>
+          {/* <button onClick={logout} class="ABlogout">Log out</button><br /> */}
+          <Link to="/ab-settings"><a onClick="toggleInputs()" class="editprofile">Settings</a><br /></Link>
         </div>
       </div>
       <div class ="bottonProfileSection">
-        <div class ="accountSettings" >
-          <div class="accountHeaders">
-            <profile-header>Account Settings</profile-header>
-            <a>Update your personal information</a>
-          </div>
-          <div class="allinputs">
-            <div class ="inputs">
-              <a> Email</a>
-              <div class="display">
-                  {email}
-              </div>
-            </div>
-            <div class ="inputs">
-              <a> Username</a>
-              <div class="display">
-                  {username}
-              </div>
-            </div>
-            <div class ="inputs">
-              <a> Full Name</a>
-              <div class="display">
-                  {fullName}
-              </div>
-            </div>
-            <div class ="inputs">
-              <a> Phone Number</a>
-              <div class="display">
-                  {phone}
-              </div>
-            </div>
-            {/* <div class ="inputs">
-              <a> Favorite Color</a>
-              <input
-                  type="text"
-                  onChange={(e) => setFavoriteColor(e.target.value)}
-                  value={favoriteColor}
-                  maxlength="15"
-                />
-            </div> */}
-            <div class="countrybuttons">
-              <a> Country</a>
-              <form>
-                <country>
-                  <input
-                      type="button"
-                      value="USA"
-                      class={country === "USA" ? "selected_country" : "countrybutton"}
-                  />
-                  <input
-                      type="button"
-                      value="Canada"
-                      class={country === "Canada" ? "selected_country" : "countrybutton"}
-                  />
-                  <input
-                      type="button"
-                      value="UK"
-                      class={country === "UK" ? "selected_country" : "countrybutton"}
-                  />
-                </country>
-              </form>
-
-              {/* <input
-                  type="text"
-                  onChange={(e) => setCountry(e.target.value)}
-                  value={country}
-                  maxlength="15"
-                /> */}
-            </div>
-            {responseMessage}
-          </div>
-        </div>
+    
+        
+        
 
         <div class="accountActions">
           <div class="recipeButtons">
             <Link to="/favorites" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={Favorites} alt="favorites"></img>
-                <a>Favorite Recipes</a>
+                <a>Favorited Recipes</a>
               </recipebutton>
             </Link>
 
             <Link to="/likes" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={Stars} alt="Stars"></img>
-                <a> Recipes above 3 Stars</a>
+                <a> Followers </a>
               </recipebutton>
             </Link>
 
             <Link to="/cookbooks" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={My_recipes} alt="My_recipes"></img>
-                <a>Cookbooks</a>
+                <a>Your Cookbooks</a>
               </recipebutton>
             </Link>
-            <Link to="/ab-profile" class="recipeButtons">
-              <recipebutton>
-                <img class="recipeimage" src={GearIcon} alt="ABSettings"></img>
-                <a>A/B Settings</a>
-              </recipebutton>
-            </Link>
+
           </div>
 
           <h2>Dietary Restrictions</h2>

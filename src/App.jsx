@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Settings from "./Component/Settings";
+import ABProfile from "./Component/ProfileAB"
 import Edit from "./Component/Edit";
 import ViewTip from "./Component/CookingTipPage";
 import TipForm from "./Component/Tip";
@@ -104,6 +105,8 @@ function App() {
               <Route path="/recipes" element={<RecipeListContainer />} />
               <Route path="/tip/:id" element={<TipDetails />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/ab-profile" element={<ABProfile />} />
+              <Route path="/ab-settings" element={<Edit />} />
               <Route path="/edit-profile" element={<Edit  />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Login" element={<Login />} />
