@@ -12,6 +12,7 @@ const RecipeDetails = () => {
   const [commentText, setCommentText] = useState("");
   const [reviews, setReviews] = useState([]);
   const [authorInfo, setAuthorInfo] = useState(null);
+  const [followMessage, setFollowMessage] = useState("");
   const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
 
@@ -30,6 +31,7 @@ const RecipeDetails = () => {
 
   useEffect(() => {
     if (!recipe?.authorID) return;
+
     fetch(`${process.env.REACT_APP_API_PATH}/users/${recipe.authorID}`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -37,7 +39,9 @@ const RecipeDetails = () => {
     })
         .then((res) => res.json())
         .then((data) => {
-          if (data && data.attributes) setAuthorInfo(data.attributes);
+          if (data && data.attributes) {
+            setAuthorInfo({ ...data.attributes, id: data.id }); // ⬅️ Fix: keep ID!
+          }
         })
         .catch((err) => console.error("Error fetching author info:", err));
   }, [recipe]);
@@ -94,11 +98,72 @@ const RecipeDetails = () => {
     setExpandedReview(expandedReview === index ? null : index);
   };
 
+  const handleFollowUser = () => {
+    const currentUser = sessionStorage.getItem("user");
+    const token = sessionStorage.getItem("token");
+
+    if (!currentUser || !authorInfo?.id) {
+      setFollowMessage("❌ Something went wrong. Please try again later.");
+      return;
+    }
+
+    if (currentUser === authorInfo.id.toString()) {
+      setFollowMessage("❌ You can't follow yourself.");
+      return;
+    }
+
+    fetch(`${process.env.REACT_APP_API_PATH}/connections?fromUserID=${currentUser}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+        .then((res) => res.json())
+        .then((data) => {
+          const alreadyFollowing = data[0]?.some(
+              (conn) =>
+                  conn.toUser.id === authorInfo.id &&
+                  conn.attributes.status !== "blocked"
+          );
+
+          if (alreadyFollowing) {
+            setFollowMessage("❌ You are already following this user.");
+          } else {
+            fetch(`${process.env.REACT_APP_API_PATH}/connections`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                attributes: {
+                  status: "active",
+                  type: "friend",
+                },
+                fromUserID: currentUser,
+                toUserID: authorInfo.id,
+              }),
+            })
+                .then((res) => res.json())
+                .then(() => {
+                  setFollowMessage("✅ You are now following this user!");
+                })
+                .catch((err) => {
+                  console.error("Error creating connection:", err);
+                  setFollowMessage("❌ Failed to follow user. Try again.");
+                });
+          }
+        })
+        .catch((err) => {
+          console.error("Error checking follow status:", err);
+          setFollowMessage("❌ Unable to check follow status.");
+        });
+  };
+
   const ReviewItem = ({ review, index }) => {
     const [like, setLike] = useState(0);
     const [dislike, setDislike] = useState(0);
     const [reaction, setReaction] = useState(null);
-    const [showFull, setShowFull] = useState(false); // local toggle state
+    const [showFull, setShowFull] = useState(false);
 
     const toggleReaction = (type) => {
       if (reaction === type) {
@@ -128,33 +193,19 @@ const RecipeDetails = () => {
           </div>
 
           {review.text.length > 100 && (
-              <button
-                  className="show-more-button"
-                  onClick={() => setShowFull(!showFull)}
-              >
+              <button className="show-more-button" onClick={() => setShowFull(!showFull)}>
                 {showFull ? "Show Less" : "Show More"}
               </button>
           )}
 
           <div className="review-reactions">
-            <button
-                className={`reaction-button ${reaction === "like" ? "active" : ""}`}
-                onClick={() => toggleReaction("like")}
-            >👍 {like}</button>
-            <button
-                className={`reaction-button ${reaction === "dislike" ? "active" : ""}`}
-                onClick={() => toggleReaction("dislike")}
-            >👎 {dislike}</button>
-            <button
-                className="reaction-button delete-button"
-                onClick={() => handleDeleteReview(index)}
-                title="Delete this review"
-            >🗑️</button>
+            <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like")}>👍 {like}</button>
+            <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike")}>👎 {dislike}</button>
+            <button className="reaction-button delete-button" onClick={() => handleDeleteReview(index)}>🗑️</button>
           </div>
         </div>
     );
   };
-
 
   if (isLoading) return <p>Loading recipe details...</p>;
   if (error) return <p>Error loading recipe: {error.message}</p>;
@@ -253,61 +304,67 @@ const RecipeDetails = () => {
             <div className="serving-size-display">{recipe.attributes?.servingSize}</div>
           </div>
           <div className="sidebar-section">
-            <h4 style={{marginBottom: 0}}>Cuisine</h4>
+            <h4>Cuisine</h4>
             <div className="cuisine-tags">
-              {Array.isArray(recipe.attributes?.cuisine) ? (
-                  recipe.attributes.cuisine.map((cuisine, index) => (
+              {Array.isArray(recipe.attributes?.cuisine)
+                  ? recipe.attributes.cuisine.map((cuisine, index) => (
                       <div key={index} className="cuisine-tag">{cuisine}</div>
                   ))
-              ) : (
-                  <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>
-              )}
+                  : <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>}
             </div>
           </div>
           <div className="sidebar-section">
-            <h4 style={{margin: 0}}>Allergy</h4>
+            <h4>Allergy</h4>
             <div className="cuisine-tags">
-              {Array.isArray(recipe.attributes?.allergy) ? (
-                  recipe.attributes.allergy.map((allergy, index) => (
-                      <div key={index} className="cuisine-tag">{allergy}</div>
+              {Array.isArray(recipe.attributes?.allergy)
+                  ? recipe.attributes.allergy.map((a, index) => (
+                      <div key={index} className="cuisine-tag">{a}</div>
                   ))
-              ) : (
-                  <div className="cuisine-tag">None</div>
-              )}
+                  : <div className="cuisine-tag">None</div>}
             </div>
           </div>
           <div className="sidebar-section">
-            <h4 style={{margin: 0}}>Diet</h4>
+            <h4>Diet</h4>
             <div className="cuisine-tags">
-              {Array.isArray(recipe.attributes?.diet) ? (
-                  recipe.attributes.diet.map((diet, index) => (
-                      <div key={index} className="cuisine-tag">{diet}</div>
+              {Array.isArray(recipe.attributes?.diet)
+                  ? recipe.attributes.diet.map((d, index) => (
+                      <div key={index} className="cuisine-tag">{d}</div>
                   ))
-              ) : (
-                  <div className="cuisine-tag">None</div>
-              )}
+                  : <div className="cuisine-tag">None</div>}
             </div>
           </div>
+
+
           <div className="sidebar-section">
-            <h4>Created By</h4>
+            <h4>Recipe Created By</h4>
+
             <div className="created-by">
               {authorInfo ? (
                   <>
                     <span>{authorInfo.username}</span>
                     <br/>
-                    <Link to="/friends" className="follow-link">
-                      Follow this user?
-                    </Link>
+                    <button onClick={handleFollowUser} className="orange-follow-button">
+                      ➕ Follow this user
+                    </button>
+
+                    {followMessage && (
+                        <p style={{
+                          color: followMessage.includes("❌") ? "red" : "green",
+                          marginTop: "5px",
+                          fontWeight: "bold"
+                        }}>
+                          {followMessage}
+                        </p>
+                    )}
                   </>
               ) : (
                   <span>Loading user...</span>
               )}
             </div>
           </div>
-      </div>
-</div>
-)
-  ;
-};
+        </div>
+        </div>
+        );
+        };
 
-export default RecipeDetails;
+        export default RecipeDetails;
