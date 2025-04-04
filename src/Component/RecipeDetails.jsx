@@ -307,35 +307,43 @@ const RecipeDetails = () => {
             <h4>Cuisine</h4>
             <div className="cuisine-tags">
               {Array.isArray(recipe.attributes?.cuisine)
-                  ? recipe.attributes.cuisine.map((cuisine, index) => (
+                  ? ( recipe.attributes?.cuisine.length !== 0 ? (
+                    recipe.attributes.cuisine.map((cuisine, index) => (
                       <div key={index} className="cuisine-tag">{cuisine}</div>
                   ))
-                  : <div className="cuisine-tag">{recipe.attributes?.cuisine}</div>}
+                  ): ( 
+                    <div className="cuisine-tag">None</div>
+                  ))
+                  : <div className="cuisine-tag">None</div>}
             </div>
           </div>
         <div className="sidebar-section">
           <h4 style={{margin:"0px"}}>Allergy</h4>
           <div className="cuisine-tags">
-            {recipe.attributes.allergy === 0
-              ? recipe.attributes.allergy.map((allergy, index) => (
-                  <div key={index} className="cuisine-tag">
-                    {allergy}
-                  </div>
+            {Array.isArray(recipe.attributes?.allergy)
+                ? ( recipe.attributes?.allergy.length !== 0 ? (
+                  recipe.attributes.allergy.map((allergy, index) => (
+                    <div key={index} className="cuisine-tag">{allergy}</div>
                 ))
-              : <div className="cuisine-tag">None</div>}
+                ): ( 
+                  <div className="cuisine-tag">None</div>
+                ))
+                : <div className="cuisine-tag">None</div>}
           </div>
         </div>
         <div className="sidebar-section">
           <h4 style={{margin:"0px"}}>Diet</h4>
           <div className="cuisine-tags">
-            {recipe.attributes.diet === 0
-              ? recipe.attributes.diet.map((diet, index) => (
-                  <div key={index} className="cuisine-tag">
-                    {diet}
-                  </div>
-                ))
-              : <div className="cuisine-tag">None</div>}
-              </div>
+              {Array.isArray(recipe.attributes?.diet)
+                  ? ( recipe.attributes?.diet.length !== 0 ? (
+                    recipe.attributes.diet.map((diet, index) => (
+                      <div key={index} className="cuisine-tag">{diet}</div>
+                  ))
+                  ): ( 
+                    <div className="cuisine-tag">None</div>
+                  ))
+                  : <div className="cuisine-tag">None</div>}
+            </div>
           </div>
 
 
