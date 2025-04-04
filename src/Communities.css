@@ -2,16 +2,16 @@
   font-size: 35px;
   font-weight: bold;
   color: #333;
-  margin-top: 30px;
+  margin-top: 40px;
   margin-bottom: 10px;
-  }
+  text-align: center;
+}
 
 .SubHeading {
-    text-align: center;      
-    margin-top: 50px;        
-    color: #727272;
-    margin-top: 20px;
-    font-size: 18px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #727272;
+  font-size: 18px;
 }
 .error-message {
   color: red;
@@ -71,24 +71,27 @@
 
   .GroupListSection h3 {
     font-size: 24px;
-    color: #333;  
-    text-align: center;  
+    color: #333;
+    text-align: center;
     margin-bottom: 15px;
+    text-transform: uppercase; /* 💥 This does the magic */
+    letter-spacing: 1px; /* Optional: adds nice spacing between letters */
   }
   
 /* Style for the individual groups */
 .userlist {
     background-color: #ffffff;  
     border-radius: 10px;  
-    padding: 15px;  
+    padding: 20px;  
     margin: 15px 20px;  
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);  
     display: flex;  
     flex-direction: column;
     justify-content: center;  
     align-items: center;  
-    width: 350px;
-    height: 150px;
+    width: 100%;
+    height: auto;
+    min-height: 150px;
     color: #333;
     font-weight: bold;
     gap: 20px;
@@ -129,9 +132,11 @@
 
 .community-box {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
+  padding: 20px 10px;
 }
 
   .userlist h4 {
@@ -173,3 +178,30 @@
     height: 50px;
     background-color: red;
   }
+
+  @media (max-width: 768px) {
+    .userlist {
+      width: 90%;
+    }
+  
+    .group-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .search-input, .create-group-input {
+      width: 90%;
+    }
+  }
+  
+
+  @media (min-width: 768px) {
+    .community-box {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 4 columns */
+      gap: 30px 20px;
+      justify-content: center;
+      padding: 30px;
+    }
+  }
+  

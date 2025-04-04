@@ -218,15 +218,31 @@
     transform: scale(1.5);
   }
 
-  .profilepic{
-    transition: transform .4s;
+  .profilepic {
+    transition: transform 0.4s;
     padding-top: 20px;
     clip-path: circle(140px at 50% 55%);
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+    display: block;
+    margin: auto;
   }
 
   .Justin {
     padding-bottom: 20px;
-    width: 1000px;
+    width: 90%;
+    max-width: 1000px;
     margin: auto;
-    color:#333;
+    color: #333;
+  }
+
+  @media (max-width: 480px) {
+    .header-section h1 {
+      font-size: 1.7em;
+    }
+  
+    .Justin {
+      font-size: 1em;
+    }
   }
