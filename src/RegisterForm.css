@@ -210,3 +210,47 @@
     display: none !important;
   }
 }
+
+/* 🔥 Fix for "in-between" screen sizes (tablet/responsive mode) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .content-wrapper {
+    flex-direction: column;
+    width: 95vw;
+    padding: 20px;
+  }
+
+  .image-container {
+    display: none;
+  }
+
+  .form-container {
+    padding: 20px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .logo-login {
+    display: none;
+  }
+
+  .title {
+    text-align: center;
+    font-size: 32px;
+  }
+
+  .input-row {
+    flex-direction: column;
+  }
+
+  .input-row .input-group {
+    width: 100%;
+  }
+
+  .input-group input {
+    width: 100%;
+  }
+
+  .signup-btn {
+    margin: 20px auto 10px auto;
+  }
+}
