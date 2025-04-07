@@ -120,6 +120,10 @@
     cursor: pointer;
 }
 
+.cookbook-recipe:active {
+    transform: scale(.98);
+}
+
 .cookbook-recipe img {
     height: 70px;
     margin-bottom: 10px;
