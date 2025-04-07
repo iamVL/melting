@@ -15,6 +15,10 @@ const CookbookManager = () => {
     const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
     const currentUserID = currentUser.id || currentUser.userID;
 
+    const [posts, setPosts] = useState([]);
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+
 
     useEffect(() => {
         if (!token || !currentUserID) return;
@@ -41,6 +45,53 @@ const CookbookManager = () => {
         localStorage.setItem("cookbooks", JSON.stringify(updated));
         setCookbooks(updated);
     };
+
+    const loadPosts = () => {
+        if (!token) {
+          setError(new Error("No token found. Please log in."));
+          return;
+        }
+    
+        fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setIsLoaded(true);
+            if (Array.isArray(data) && data[0]) {
+              const recipePosts = data[0].filter(
+                (p) => p.attributes?.postType === "recipe"
+              );
+              setPosts(recipePosts);
+            } else if (data.posts) {
+              const recipePosts = data.posts.filter(
+                (p) => p.attributes?.postType === "recipe"
+              );
+              setPosts(recipePosts);
+            }
+          })
+          .catch((err) => {
+            setIsLoaded(true);
+            setError(err);
+            console.error("Error fetching recipes:", err);
+          });
+      };
+
+    useEffect(() => {
+    loadPosts();
+    }, []);
+
+    let sortedPosts = posts
+        .filter((post) => String(post.authorID) === String(sessionStorage.getItem("user")))
+        .map((post) => ({
+        ...post,
+  }));
+    console.log(posts);
+    console.log(sortedPosts);
 
     const handleCreateCookbook = () => {
         if (!newCookbookName.trim()) return;
@@ -88,6 +139,26 @@ const CookbookManager = () => {
 
     return (
         <div className="cookbook-manager">
+            <h2 className="recipe-header">My Recipes</h2>
+            <p className="recipe-subheader">
+                Click to view/edit your own recipe!
+            </p>
+            <p className="cookbook-recipe-manager">
+                {sortedPosts.map( (recipe) => {
+                    return (
+                        <div className="cookbook-recipe">
+                            <Link to={`/my_recipe/${recipe.id}`}>
+                                <img src={recipe.attributes?.mainImage} alt="recipe" />
+                                {/* title */}
+                                <p id="cookbook-recipe-title">{recipe.attributes.title}</p>
+                                {/* description */}
+                                <p id="cookbook-recipe-desc">{recipe.content}</p> 
+                            </Link>
+                        </div>
+                    )
+                })}
+            </p>
+
             <h2 className="recipe-header">Cookbook Manager</h2>
             <p className="recipe-subheader">
                 Browse all recipes and add them to your own cookbooks!
