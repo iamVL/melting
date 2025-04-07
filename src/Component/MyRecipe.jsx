@@ -175,6 +175,8 @@ const RecipeDetails = () => {
                 <img src={recipe.attributes.mainImage} alt={recipe.attributes.title} className="recipe-image-top" />
             )}
           </div>
+          
+          <button type="submit" id="save-my-recipe"> Save Changes </button>
 
           <div className="recipe-section">
             <h3 className="ingredients">Ingredients</h3>
@@ -197,9 +199,6 @@ const RecipeDetails = () => {
               ))}
             </div>
           </div>
-
-          <button type="submit" id="save-my-recipe"> Save Changes </button>
-
         </div>
 
         <div className="recipe-sidebar">
@@ -293,6 +292,11 @@ const RecipeDetails = () => {
             )}
           </div>
 
+          <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+            <button type="button" onClick={() => setEditMode(true)} id="edit-my-recipe"> Edit Recipe </button>
+            <button type="button" onClick={() => handleDelete()} id="edit-my-recipe" style={{backgroundColor:"#ffa0a0"}}> Delete </button>
+          </div>
+
           <div className="recipe-section">
             <h3 className="ingredients">Ingredients</h3>
             <ul className="recipe-ingredients-list">
@@ -312,10 +316,6 @@ const RecipeDetails = () => {
                   </div>
               ))}
             </div>
-          </div>
-          <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
-            <button type="button" onClick={() => setEditMode(true)} id="edit-my-recipe"> Edit Recipe </button>
-            <button type="button" onClick={() => handleDelete()} id="edit-my-recipe" style={{backgroundColor:"#ffa0a0"}}> Delete </button>
           </div>
         </div>
 

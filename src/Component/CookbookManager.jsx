@@ -150,9 +150,19 @@ const CookbookManager = () => {
                             <Link to={`/my_recipe/${recipe.id}`}>
                                 <img src={recipe.attributes?.mainImage} alt="recipe" />
                                 {/* title */}
-                                <p id="cookbook-recipe-title">{recipe.attributes.title}</p>
+                                <p id="cookbook-recipe-title">{recipe.attributes.title
+                                    ? recipe.attributes.title.length > 20
+                                    ? `${recipe.attributes.title.substring(0, 35)}...`
+                                    : recipe.attributes.title
+                                    : "No title available"}
+                                </p>   
                                 {/* description */}
-                                <p id="cookbook-recipe-desc">{recipe.content}</p> 
+                                <p id="cookbook-recipe-desc">{recipe.content
+                                    ? recipe.content.length > 80
+                                    ? `${recipe.content.substring(0, 80)}...`
+                                    : recipe.content
+                                    : "No description available"}
+                                </p>    
                             </Link>
                         </div>
                     )

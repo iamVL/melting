@@ -106,6 +106,7 @@
 .cookbook-recipe {
     border-radius: 10px;
     padding-bottom: 20px;
+    max-width: 200px;
     transition: .3s;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.332);
     background-color: white;
@@ -141,13 +142,18 @@
 }
 
 #cookbook-recipe-title {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 1000;
-    margin: 0px;
+    margin: 10px;
+    margin-top: 0px;
     color: black;
 }
 
 #cookbook-recipe-desc {
-    font-size: 14px;
+    font-size: 12px;
     color: black;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    margin: 10px;
 }
