@@ -1,0 +1,636 @@
+.recipe-details-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    min-height: 600px;
+    box-sizing: border-box;
+}
+.recipe-content {
+    grid-column: 1;
+}
+
+.recipe-sidebar {
+    grid-column: 2;
+    background-color: #f3f3f3;
+    color: black;
+    padding: 30px;
+    border-radius: 8px;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 350px;
+    max-height: 850px;
+    width: 320px;
+    height: auto;
+    word-wrap: break-word; /* Forces long words to wrap */
+    overflow: hidden;
+
+}
+
+.recipe-header {
+    display: flex;
+    align-items: center; /* Aligns items vertically */
+    gap: 10%;
+}
+.recipe-header .recipe-content {
+    flex: 1;
+    display: flex; /* Use flexbox to stack title and description */
+    flex-direction: column;/* Title and description on the left */
+}
+.recipe-header .recipe-image-top {
+    width: 200px; /* Set a fixed width */
+    height: 200px; /* Set a fixed height */
+    object-fit: cover;
+    border-radius: 12px;/* Remove bottom margin */
+}
+.recipe-title {
+    font-size: 1em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.recipe-description {
+    font-size: .7em;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+.step-title {
+    font-weight: bold;
+    color: black; /* Step title in black */
+}
+
+.step-instruction {
+    color: grey; /* Instruction text in grey */
+}
+
+.recipe-image-top {
+    width: 100%;
+    max-height: 300px; /* Reduced max-height */
+    object-fit: contain; /* Changed to 'contain' */
+
+    display: block; /* Ensures it's treated as a block element */
+    margin: 20px auto; /* Adds space and centers the image */
+    max-width: 100%; /* Prevents overflow */
+    border-radius: 8px;
+}
+
+.recipe-section {
+    margin-bottom: 40px;
+}
+
+.recipe-section h3 {
+    font-size: 1em;
+    color: #e67e22;
+    border-bottom: 2px solid #e67e22;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+
+.recipe-section .recipe-ingredients-list { /* Increased specificity */
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.recipe-section .recipe-ingredients-list li { /* Increased specificity */
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 0.7em;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.steps-container {
+    padding-left: 20px;
+}
+
+.step-card {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: .6em;
+    color:black;
+
+}
+
+.step-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.sidebar-section h4 {
+    font-size: 1.3em;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.cooking-level-display,
+.serving-size-display {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+
+}
+
+.cuisine-tag {
+    background-color: #e67e22; /* Orange background */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+
+}
+.cuisine-tags2 {
+    display: flex;
+    flex-direction: column; /* Stack cuisines */
+    gap: 5px; /* Add spacing */
+}
+.star {
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: gold;
+}
+.reviews-list {
+    margin-top: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth; /* Hide horizontal scrollbar */
+    white-space: nowrap;
+    width: fit-content; /* Adjust width to fit two reviews */
+    max-width: 700px;  /* Prevent reviews from wrapping */
+}
+
+.review-item {
+    background-color: #f9f9f9;
+    flex: 0 0 auto;
+    color: lightgrey;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Make reviews inline-block */
+    width: 300px; /* Adjust width as needed */
+    margin-right: 15px;
+    font-size: .7em;
+    /* Add spacing between reviews */
+}
+.scroll-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.scroll-button {
+
+    /* Adjust position as needed */
+    padding: 5px 15px;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: .7em;
+}
+.scroll-button:hover {
+    background-color: #cc5500;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.review-name {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.review-rating .star {
+    color: gold;
+    font-size: .7em;
+}
+
+.review-text {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.5;
+    color: #333;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+}
+
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment-form input[type="text"],
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: .6em;
+    box-sizing: border-box;
+}
+
+.comment-form textarea {
+    resize: vertical;
+}
+
+.rating-stars {
+    margin-bottom: 10px;
+}
+
+.star {
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: gold;
+}
+
+.comment-form button {
+    background-color: #e67e22;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: .7em;
+}
+.back-to-recipes {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.back-button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: grey;
+}
+.cooking-level-display,
+.serving-size-display,
+.total-time-display {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.average-rating {
+    font-size: .8em;
+
+    color: #e67e22;
+    margin-bottom: 15px;
+    text-align: center;
+}
+@media (max-width: 768px) {
+    .recipe-page {
+        flex-direction: column; /* Stack content and sidebar */
+        align-items: center;
+        gap: 20px;
+    }
+
+    .recipe-content-container {
+        max-width: 100%; /* Allow recipe content to take full width */
+    }
+
+    .recipe-sidebar-container {
+        max-width: 100%; /* Sidebar should take full width */
+        display: flex; /* Ensure it doesn't collapse */
+        justify-content: center;
+    }
+
+    .recipe-sidebar {
+        width: 90%; /* Ensure it appears properly */
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+.average-rating-value{
+    color:black;
+}
+
+.average-rating-display {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.review-reactions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+  .reaction-button {
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.2s;
+}
+
+.reaction-button.active {
+    background-color: #cc5500;
+}
+
+.reaction-button:hover {
+    background-color: #d35400;
+}
+
+.delete-button {
+    background-color: #e67e22;
+    color: white;
+    margin-left: 8px;
+}
+
+.delete-button:hover {
+    background-color: #e67e22;
+}
+
+.show-more-button {
+    margin-left: 5px;
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 0.75em;
+    padding: 0;
+}
+.review-item {
+    flex: 0 0 auto;
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    height: 220px; /* ✅ Standard height */
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: height 0.3s ease;
+}
+
+.review-item.expanded {
+    height: auto; /* ✅ Only when expanded */
+}
+
+/* Controls inside the review text */
+.review-text {
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-word;
+    color: #333;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    transition: max-height 0.3s ease;
+}
+
+/* Hidden long text by default */
+.review-text.collapsed {
+    max-height: 55px;
+}
+
+/* Expand text only when showMore is active */
+.review-text.expanded {
+    max-height: none;
+}
+.review-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+/* The horizontal container */
+.reviews-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    scroll-behavior: smooth;
+    align-items: flex-start; /* Keep tops aligned */
+}
+.review-text {
+    white-space: normal;
+    word-break: break-word;
+    color: #333;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+/* Truncated view */
+.review-text.collapsed {
+    max-height: 55px;
+    overflow: hidden;
+}
+
+
+.review-text.expanded {
+    max-height: 120px; /* Or whatever works well */
+    overflow-y: auto;
+    padding-right: 5px; /* So scroll bar doesn't overlap text */
+}
+
+.follow-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.follow-link:hover,
+.follow-link:focus,
+.follow-link:active {
+    text-decoration: underline;
+  }
+  
+  .reaction-button.active {
+    background-color: #cc5500;
+  }
+  
+  .reaction-button:hover {
+    background-color: #d35400;
+  }
+
+  .delete-button {
+    background-color: #e67e22;
+    color: white;
+    margin-left: 8px;
+  }
+  
+  .delete-button:hover {
+    background-color: #e67e22;
+  }
+
+  @media (max-width: 768px) {
+.recipe-details-container {
+  max-width: 100%;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+  
+    .recipe-sidebar {
+      width: 100%;
+      max-width: 100%;
+      padding: 20px;
+    }
+  
+    .recipe-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .recipe-header .recipe-content {
+      align-items: center;
+    }
+  
+    .recipe-image-top {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .reviews-list {
+      display: flex;
+      flex-direction: column; /* Stack reviews vertically */
+      width: 100%;            /* Take full container width */
+      overflow-x: hidden;     /* Remove horizontal scroll */
+      white-space: normal;    /* Allow line breaks */
+      max-width: 100%;        /* Don't exceed parent width */
+    }
+  
+    .review-item {
+      width: 100%;            /* Each review stretches full width */
+      box-sizing: border-box;
+      margin-right: 0;
+    }
+  
+    .scroll-buttons {
+      display: none;
+    }
+  }
+
+.orange-follow-button {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.orange-follow-button:hover {
+    background-color: grey;
+}
+
+.ingredient-point {
+    align-items: center;
+    justify-content: center;
+}
+
+#save-my-recipe {
+    background-color: rgb(157, 233, 157);
+    color: black;
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 50px;
+    border: 0px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.332);
+    transition: .3s;
+}
+
+#save-my-recipe:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.432);
+    background-color: rgb(116, 229, 116);
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+#save-my-recipe:active {
+    transform: scale(.98);
+}
+
+#edit-my-recipe {
+    background-color: rgb(215, 215, 215);
+    color: black;
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 50px;
+    border: 0px;
+    width: 140px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.332);
+    transition: .3s;
+}
+
+#edit-my-recipe:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    background-color: rgb(199, 199, 199);
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+#edit-my-recipe:active {
+    transform: scale(.98);
+}
