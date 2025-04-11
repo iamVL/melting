@@ -84,6 +84,9 @@ const RecipeDetails = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data && data.attributes) {
+            if (sessionStorage.getItem("user") != data.id) {
+              navigate('/cookbooks');
+            }
             setAuthorInfo({ ...data.attributes, id: data.id }); // ⬅️ Fix: keep ID!
           }
         })
