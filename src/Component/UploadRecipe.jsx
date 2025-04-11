@@ -17,6 +17,7 @@ const UploadRecipe = () => {
         cuisine:[],
         allergy:[],
         diet:[],
+        visibility: 'Public',
     });
    //Additional states for handling user input
     const [newIngredient, setNewIngredient] = useState("");
@@ -108,6 +109,14 @@ const UploadRecipe = () => {
             return {...prevRecipe, diet: updatedDiets };
         });
     };
+
+    const handleVisibility = (visibility) => {
+        setRecipe((prev) => ({
+            ...prev,
+            visibility: visibility
+        }));
+    };
+
     //uploads the selected image to the API and returns the image URL
     const uploadImage = async () => {
         if (!imageFile) return null;
@@ -181,6 +190,7 @@ const UploadRecipe = () => {
                     allergy: recipe.allergy,
                     diet: recipe.diet,
                     mainImage: uploadedImageUrl,
+                    visibility: recipe.visibility,
                 },
             }),
         })
@@ -212,7 +222,7 @@ const UploadRecipe = () => {
     const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
     const allergyOptions = ["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"]
     const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian"];
-
+    const visibilityOptions = ["Public", "Followers Only"];
 
     return (
         <div className="page-container">
@@ -314,7 +324,16 @@ const UploadRecipe = () => {
                             ))}
                         </div>
 
-
+                        <label>Visibility</label>
+                        <div className="cuisine-tags">
+                        {visibilityOptions.map((option) => (
+                                <div key={option}
+                                    className={`cuisine-tag ${recipe.visibility === option ? "selected" : ""}`}
+                                    onClick={() => handleVisibility(option)}>
+                                    {option}
+                                </div>
+                            ))}
+                        </div>
 
                         <button type="button" className="submit-btn"
                                 onClick={handleSubmit}>Serve
