@@ -90,7 +90,7 @@ const Profile = (props) => {
       .catch((error) => {
         alert("error!");
       });
-  }, []);
+  }, []); 
 
   // This is the function that will get called the first time that the component gets rendered.  This is where we load the current
   // values from the database via the API, and put them in the state so that they can be rendered to the screen.
@@ -199,10 +199,47 @@ const Profile = (props) => {
         </div>
 
         {/* profile buttons */}
-        <div class ="editUser">
-          <button onClick={logout} class="logout">Log out</button><br />
-          <Link to="/edit-profile"><a onClick="toggleInputs()" class="editprofile">Edit Profile</a><br /></Link>
-        </div>
+       
+        <div className="editUser">
+  <button onClick={logout} className="account-button logout-button">Log out</button>
+
+  <Link to="/edit-profile">
+    <button className="account-button editprofile-button">Edit Profile</button>
+  </Link>
+
+  <button
+    className="account-button delete-button"
+    onClick={() => {
+      const confirmed = window.confirm(
+        "Are you sure you want to permanently delete your account and all your data?"
+      );
+      if (confirmed) {
+        fetch(`${process.env.REACT_APP_API_PATH}/users/${sessionStorage.getItem("user")}?relatedObjectsAction=delete`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+          .then((res) => {
+            if (res.status === 204) {
+              sessionStorage.clear();
+              window.location.href = "/";
+            } else {
+              alert("Something went wrong deleting your account.");
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            alert("Error deleting account.");
+          });
+      }
+    }}
+  >
+    🗑️ Delete Account
+  </button>
+</div>
+
+
       </div>
       <div class ="bottonProfileSection">
         <div class ="accountSettings" >
@@ -340,7 +377,7 @@ const Profile = (props) => {
               ))}
             </div>
           </div>
-
+              
         </div>
 
     </div>

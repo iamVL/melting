@@ -345,6 +345,16 @@ const RecipeDetails = () => {
                   : <div className="cuisine-tag">None</div>}
             </div>
           </div>
+        <div className="sidebar-section">
+           <h4 style={{ margin: "0px" }}>Visible To</h4>
+            {recipe.attributes?.visibility && (
+            <div className="cuisine-tags">
+              <div className="cuisine-tag">
+                {recipe.attributes.visibility === "Followers Only" ? "Followers Only" : "Public"}
+              </div>
+            </div>
+              )}
+        </div>
 
 
           <div className="sidebar-section">
