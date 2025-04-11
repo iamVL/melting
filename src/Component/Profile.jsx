@@ -223,7 +223,7 @@ const Profile = (props) => {
           .then((res) => {
             if (res.status === 204) {
               sessionStorage.clear();
-              window.location.href = "/";
+              window.location.href = process.env.PUBLIC_URL || "/hci/teams/melting/";
             } else {
               alert("Something went wrong deleting your account.");
             }
