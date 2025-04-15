@@ -47,7 +47,7 @@ const AboutUs = () => {
           <li><strong>Swipe Feature:</strong> Like Tinder for recipes—swipe through meal ideas and save your favorites to your cookbook.</li>
         </ul>
 
-        <h2>Team behind Melting Pot</h2>
+        <h2>Meet the Team Members</h2>
         <ul>
           <li><Link to="/about_rudy">Rudy Karthick</Link></li>
           <li><Link to="/about_yessica">Quinonez Yessica</Link></li>

@@ -9,6 +9,7 @@ const LoginForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [sessionToken, setSessionToken] = useState("");
 
@@ -24,6 +25,20 @@ const LoginForm = ({ setLoggedIn }) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    setErrorMessage(""); // clear previous error
+
+    if (!email || !password) {
+      setErrorMessage("Please fill in both Email Address and Password.");
+      return;
+    }
+
+    // Manual email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Please enter a valid Email Address.");
+      return;
+    }
+
     fetch(process.env.REACT_APP_API_PATH + "/auth/login", {
       method: "POST",
       headers: {
@@ -40,9 +55,14 @@ const LoginForm = ({ setLoggedIn }) => {
           setSessionToken(result.token);
           navigate("/");
           window.location.reload();
+        } else {
+          setErrorMessage("Invalid Email or Password.");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.error(err);
+        setErrorMessage("Invalid Email Address or Password.");
+      });
   };
 
   return (
@@ -57,16 +77,18 @@ const LoginForm = ({ setLoggedIn }) => {
         {/* Left Column - Form */}
         <div className="left-column">
           <h1 className="title">WELCOME BACK</h1>
-          <p className="subtitle">Sign in with your Email address and Password</p>
+          <p className="subtitle">Sign in with your Email Address and Password</p>
+
+          {/* Error Message */}
+          {errorMessage && <div className="alert error">{errorMessage}</div>}
 
           <form onSubmit={submitHandler} className="register-form">
             <div className="input-groupp">
               <label>Email Address</label>
               <input
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
             </div>
 
@@ -76,7 +98,6 @@ const LoginForm = ({ setLoggedIn }) => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
             </div>
 
