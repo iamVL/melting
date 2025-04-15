@@ -13,12 +13,17 @@ const CommunityDetails = () => {
   const [error, setError] = useState(null);
   const [group, setGroup] = useState(null);
 
+  const [editPostTitle, setEditPostTitle] = useState(""); 
+  const [editPostDesc, setEditPostDesc] = useState(""); 
+  const [editPost, setEditPost] = useState(0); 
   const [editMode, setEditMode] = useState(false); 
   const [ownerMode, setOwnerMode] = useState(false);
   const navigate = useNavigate();
   const [groupName,  setGroupName] = useState("");
   const [groupDesc,  setGroupDesc] = useState("None");
 
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   const [title, setTitle] = useState(""); 
   const [mainImage, setMainImage] = useState(null); 
@@ -76,6 +81,41 @@ const CommunityDetails = () => {
           setError(err);
           console.error("ERROR loading com  munity posts:", err);
         });
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) return null;
+    const formData = new FormData();
+    formData.append("uploaderID", sessionStorage.getItem("user"));
+    formData.append("attributes", JSON.stringify({}));
+    formData.append("file", imageFile);
+ 
+ 
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_PATH}/file-uploads`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+ 
+ 
+      if (!response.ok) throw new Error(await response.text());
+      const data = await response.json();
+      return `https://webdev.cse.buffalo.edu${data.path}`;
+    } catch (err) {
+      console.error("Image upload error:", err);
+      return null;
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setSelectedImage(URL.createObjectURL(file));
     }
   };
 
@@ -252,6 +292,53 @@ const CommunityDetails = () => {
     });
   }
 
+  const updatePost = async (post, event) => {
+    event.preventDefault(); 
+    console.log("Test", post);
+
+    let uploadedImageUrl = null;
+    if (imageFile) {
+      uploadedImageUrl = await uploadImage();
+      if (!uploadedImageUrl) {
+        alert("Image upload failed.");
+        return;
+      }
+    } else {
+      uploadedImageUrl = post.attributes.mainImage;
+    }
+
+    let url = `${process.env.REACT_APP_API_PATH}/posts/${post.id}`;
+
+    fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        content: editPostTitle,
+        created: post.created,
+        author: post.author,
+        authorID: post.authorID,
+        attributes: {
+          postType: "community",
+          description: editPostDesc,
+          mainImage: uploadedImageUrl,
+          groupID: communityId,
+        }
+      }),
+    }) .then((res) => res.json())
+    .then((result) => { 
+      setEditMode(false);
+      window.location.reload();
+      console.log("Updated post:", result);
+    });
+
+
+
+
+  }
+
 
   return (
     (editMode ? ( <> <div className="community-container">
@@ -310,9 +397,6 @@ const CommunityDetails = () => {
                       <p id="post-user">Posted by {getUsername(post.author)}</p>
                       <span style={{ fontWeight: "normal", marginBottom:"10px" }}> ({post.created})</span>
                     </div>
-                    {post.authorID === parseInt(sessionStorage.getItem("user")) &&
-                      <button onClick={() => handleDelete(post.id)}>🗑 Delete</button>
-                    }
                   </div>
 
                   <p id="post-title">{post.content}</p>
@@ -398,16 +482,43 @@ const CommunityDetails = () => {
                       <p id="post-user">Posted by {getUsername(post.author)}</p>
                       <span style={{ fontWeight: "normal", marginBottom:"10px" }}> ({post.created})</span>
                     </div>
-                    {post.authorID === parseInt(sessionStorage.getItem("user")) &&
-                      <button onClick={() => handleDelete(post.id)}>🗑 Delete</button>
+                    {post.authorID === parseInt(sessionStorage.getItem("user")) && 
+                      (post.id !== editPost ? ( 
+                        <div className="community-post-buttons">
+                          <button onClick={() => handleDelete(post.id)}>🗑 Delete</button>
+                          <button style={{backgroundColor:"#ffc492"}} onClick={() => {setEditPost(post.id); setEditPostTitle(post.content); setEditPostDesc(post.attributes.description); setSelectedImage(post.attributes.mainImage);}}> Edit</button>
+                        </div>
+                      ) : (
+                        <form onSubmit={(e) => updatePost(post, e)}>
+                          <div className="community-post-buttons">
+                            <button style={{backgroundColor:"rgb(172 176 173)"}} onClick={() => setEditPost(0)}>Cancel</button>
+                            <button style={{backgroundColor:"rgb(146 255 160)"}} > Save </button>
+                          </div>
+                        </form>
+                      ))
                     }
                   </div>
-
-                  <p id="post-title">{post.content}</p>
-                  <p id="post-description">{post.attributes?.description}</p>
+                  {post.id !== editPost ? ( <>
+                    <p id="post-title">{post.content}</p>
+                    <p id="post-description">{post.attributes?.description}</p></>
+                  ) : ( <>
+                    <input type="text" placeholder="Enter post desc..." value={editPostTitle} onChange={(e) => setEditPostTitle(e.target.value)}/>
+                    <input type="text" placeholder="Enter post desc..." value={editPostDesc} onChange={(e) => setEditPostDesc(e.target.value)}/>
+                  </>
+                  )}
                 </div>
                 {/* <button onClick={() => loadComments(post.id)}>View Comments</button> */}
-                {postImage && <img src={postImage} alt ="post"/> }
+                {post.id === editPost ? ( <>
+                  <div className="upload-recipe-image">
+                    <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>
+                      <input name="tip-pic" type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} hidden />
+                      {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
+                      </div>
+                  </div>
+                </>) : (<>
+                    {postImage && <img src={postImage} alt ="post"/> }
+                  </>
+                )}
               </div>
               </>
               
