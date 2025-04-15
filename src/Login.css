@@ -106,8 +106,8 @@
 .remember-me {
   display: flex;
   /* align-items: center; */
-  font-weight: bold;
-}
+  font-weight: bold;}
+   
 
 .remember-me input[type="checkbox"] {
   width: 16px;
