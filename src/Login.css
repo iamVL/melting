@@ -105,7 +105,7 @@
 
 .remember-me {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   font-weight: bold;
 }
 
