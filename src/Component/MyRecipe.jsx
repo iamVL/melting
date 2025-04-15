@@ -27,7 +27,7 @@ const RecipeDetails = () => {
   const [diet, setDiet] = useState([]);
 
   const [selectedImage, setSelectedImage] = useState(null);
- const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   const [diffDrop, setDiffDrop] = useState(false);
   const [cuisineDrop, setCuisineDrop] = useState(false);
@@ -122,8 +122,6 @@ const RecipeDetails = () => {
         content: desc, // changed description
         attributes: {
           postType: "recipe",
-          diet: recipe.attributes.diet,
-          mainImage: recipe.attributes.mainImage,
 
           // changed the following below
           mainImage: uploadedImageUrl,
@@ -405,8 +403,8 @@ const RecipeDetails = () => {
         <div className="recipe-content">
           <div className="recipe-header">
             <div className="recipe-text-content">
-            <input name ="title" style={{color:"#555555"}} value={title} onChange={(e) => setTitle(e.target.value)}/>
-            <input name ="desc" style={{color:"#555555"}} value={desc} onChange={(e) => setDesc(e.target.value)}/>
+              <input name ="title" style={{color:"#555555"}} value={title} onChange={(e) => setTitle(e.target.value)}/>
+              <input name ="desc" style={{color:"#555555"}} value={desc} onChange={(e) => setDesc(e.target.value)}/>
             </div>
             <div className="upload-recipe-image">
               <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>

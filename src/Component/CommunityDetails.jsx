@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, use } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import PostForm from "./PostForm";
 import CommentForm from "./CommentForm";
 import "../CommunityDetails.css";  // Ensure this file exists
@@ -11,6 +11,14 @@ const CommunityDetails = () => {
   const [comments, setComments] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [group, setGroup] = useState(null);
+
+  const [editMode, setEditMode] = useState(false); 
+  const [ownerMode, setOwnerMode] = useState(false);
+  const navigate = useNavigate();
+  const [groupName,  setGroupName] = useState("");
+  const [groupDesc,  setGroupDesc] = useState("None");
+
 
   const [title, setTitle] = useState(""); 
   const [mainImage, setMainImage] = useState(null); 
@@ -18,7 +26,25 @@ const CommunityDetails = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    loadPosts();
+    let url = `${process.env.REACT_APP_API_PATH}/groups/${communityId}`;
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    }) .then((res) => res.json())
+    .then((result) => { 
+      loadPosts();
+      setGroupDesc(result.attributes.description ?? "");
+      setGroup(result);
+      setGroupName(result.name);
+      if (result.attributes.ownerID === sessionStorage.getItem("user")) {
+        setOwnerMode(true);
+      }
+      console.log("Result:", result);
+      })
   }, [communityId]);
 
   const loadPosts = () => {
@@ -195,7 +221,129 @@ const CommunityDetails = () => {
     return "";
   };
 
+  const cancelCommunity = () => {
+    setEditMode(false);
+    setGroupDesc(group.attributes.description || "None");
+    setGroupName(group.name)
+  }
+
+  const updateCommunity = (event) => { 
+    event.preventDefault(); 
+    let url = `${process.env.REACT_APP_API_PATH}/groups/${communityId}`;
+
+    fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        name: groupName,
+        attributes: {
+          description: groupDesc,
+          ownerID: sessionStorage.getItem("user")
+        }
+      }),
+    }) .then((res) => res.json())
+    .then((result) => { 
+      setEditMode(false);
+      window.location.reload();
+      console.log("Updated result:", result);
+    });
+  }
+
+
   return (
+    (editMode ? ( <> <div className="community-container">
+      {/* Display error message if any */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {/* Post Form */}
+      <div className="community-headers">
+        <form onSubmit={updateCommunity}>
+          <div className="community-information">
+            <h4 style={{marginBottom:"10px", fontSize:"36px"}}>Welcome to</h4>
+            <input type="text" placeholder="Enter Group Name..." value={groupName} onChange={(e) => setGroupName(e.target.value)}/>
+
+            { group === null ? (<p> None </p>) : (
+              <input type="text" placeholder="Enter Group Desc..." value={groupDesc} onChange={(e) => setGroupDesc(e.target.value)}/>
+            )}
+            <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+              <button type="button" onClick={cancelCommunity} id="edit-my-recipe"> Cancel </button>
+              <button type="submit" id="save-my-recipe"> Save Changes </button>
+            </div>
+          </div>
+        </form>
+
+        <div className="community-post-display">
+          <div className="make-community-post">
+            <h4 style={{marginBottom:"10px"}}>Share with Others</h4>
+            <form onSubmit={handleSubmit}>
+              <input type="text" placeholder="Enter post title..." value={title} onChange={(e) => setTitle(e.target.value)}/>
+              <input type="text" placeholder="Enter post desc..." value={description} onChange={(e) => setDescription(e.target.value)}/>
+              <input type="file" accept="image/*" onChange={handleMainImageUpload} />
+              <button type="submit" >Make Post</button>
+            </form>
+          </div>
+          <p id="picture-preview"> 
+            <img
+                  src={mainImage  }
+                  alt="Picture Preview"
+                  className="tip-image-preview"
+                />
+          </p>
+        </div>
+      </div>
+
+      {/* Community Posts */}
+      <h4> See what others are talking about:</h4>
+      <div className="community-posts">
+        {posts.length > 0 ? (
+          posts.map((post) => {
+            const postImage = post.attributes?.mainImage;
+            const postGroupID = post.attributes?.groupID;
+            return (
+            ( postGroupID === communityId && <>
+              <div key={post.id} className="community-post">
+                <div className="cpost-info">
+                  <div className="post-headers">
+                    <div className="headers-user">
+                      <p id="post-user">Posted by {getUsername(post.author)}</p>
+                      <span style={{ fontWeight: "normal", marginBottom:"10px" }}> ({post.created})</span>
+                    </div>
+                    {post.authorID === parseInt(sessionStorage.getItem("user")) &&
+                      <button onClick={() => handleDelete(post.id)}>🗑 Delete</button>
+                    }
+                  </div>
+
+                  <p id="post-title">{post.content}</p>
+                  <p id="post-description">{post.attributes?.description}</p>
+                </div>
+                {/* <button onClick={() => loadComments(post.id)}>View Comments</button> */}
+                {postImage && <img src={postImage} alt ="post"/> }
+              </div>
+              </>
+              
+            )
+          )})
+        ) : (
+          <p>No posts in this community yet. Be the first to post!</p>
+        )}
+      </div>
+
+      {/* {selectedPostId && (
+        <div className="tip-comments-container">
+          <h3 className="comments-title">Comments</h3>
+          <CommentForm 
+            parent={selectedPostId} 
+            loadPosts={() => loadComments(selectedPostId)}
+            loadComments={() => loadComments(selectedPostId)}
+          />
+        </div>
+      )} */}
+    </div>
+
+    </>
+    ) : ( <>
     <div className="community-container">
       {/* Display error message if any */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -203,8 +351,15 @@ const CommunityDetails = () => {
       {/* Post Form */}
       <div className="community-headers">
         <div className="community-information">
-          <h4 style={{marginBottom:"10px", fontSize:"36px"}}>Welcome to {communityName}!</h4>
-          <p> Description Placeholder</p>
+          <h4 style={{marginBottom:"10px", fontSize:"36px"}}>Welcome to {groupName}!</h4>
+          { group === null ? (<p> None </p>) : (
+            <p>{groupDesc|| "None"}</p>
+          )}
+          { ownerMode && (
+            <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+              <button type="button" onClick={() => setEditMode(true)} id="edit-my-recipe"> Edit </button>
+            </div>
+          )}
         </div>
 
         <div className="community-post-display">
@@ -274,6 +429,8 @@ const CommunityDetails = () => {
         </div>
       )} */}
     </div>
+    </>
+    ))
   );
 };
 
