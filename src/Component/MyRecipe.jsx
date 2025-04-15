@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import "../MyRecipe.css";
-import { all } from "axios";
+//import { all } from "axios";
 
 const RecipeDetails = () => {
   const { id } = useParams();

@@ -8,9 +8,12 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
  const token = sessionStorage.getItem("token");
  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
  const userID = user.id || user.userID;
+ const savedAllergies = user.allergy || [];
+ const savedDiets = user.diet || [];
  const [sortOption, setSortOption] = useState("rating");
  const [userCookbooks, setUserCookbooks] = useState([]);
  const [favoritedRecipes, setFavoritedRecipes] = useState([]);
+ const [applyPreferences, setApplyPreferences] = useState(false);
 
 
  useEffect(() => {
@@ -207,6 +210,22 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
    sortedPosts.sort((a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0));
  }
 
+   // ✅ Apply user preferences filter if checkbox is selected
+  if (applyPreferences) {
+    sortedPosts = sortedPosts.filter((post) => {
+      const attrs = post.attributes || {};
+      const allergyTags = (attrs.allergy || []).map((a) => a.toLowerCase());
+      const dietTags = (attrs.diet || []).map((d) => d.toLowerCase());
+
+      const matchesAllergy = savedAllergies.every(
+        (allergy) => !allergyTags.includes(allergy.toLowerCase())
+      );
+      const matchesDiet = savedDiets.every((diet) => dietTags.includes(diet.toLowerCase()));
+
+      return matchesAllergy && matchesDiet;
+    });
+  }
+
 
  return (
    <div className="recipe-container">
@@ -221,6 +240,15 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
            {showCreatedByYouOption && <option value="created">Created by You</option>}
          </select>
        </div>
+       {/* ✅ NEW checkbox for applying profile preferences */}
+       <label style={{ marginLeft: "16px" }}>
+          <input
+            type="checkbox"
+            checked={applyPreferences}
+            onChange={(e) => setApplyPreferences(e.target.checked)}
+          />{" "}
+          Apply my dietary and allergy preferences
+        </label>
      </div>
      <p className="recipe-subheader">
        Explore our community’s shared recipes. Click any card to see details!
