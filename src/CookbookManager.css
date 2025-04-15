@@ -162,3 +162,28 @@
     white-space: normal;
     margin: 10px;
 }
+
+.cookbook-categories {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    gap:1px;
+    margin-bottom: 10px;
+}
+
+.cookbook-categories button {
+    padding: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 150px;
+    font-size: 20px;
+    background-color: #fff4e6;
+    border: 1px solid black;
+    transition: .3s;
+    border-radius: 5px;
+}
+
+.cookbook-categories button:hover {
+    cursor: pointer;
+    background-color: #ffc587;
+}

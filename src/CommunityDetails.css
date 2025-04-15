@@ -282,6 +282,7 @@
 
 .community-post button:hover {
   transform: scale(1.02);
+  cursor: pointer;
   background-color: rgb(250, 127, 127);
 }
 
@@ -427,3 +428,22 @@
   }
 }
 
+.community-information input {
+  width: 500px;
+}
+ 
+.community-post-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.file-upload-box {
+  width: calc(60% - 4px);
+  max-height: 100px;
+  border: 2px dashed #000000;
+}
+
+.file-upload-box img {
+  max-height: 90px;
+}
