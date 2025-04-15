@@ -97,12 +97,17 @@
 
 .recipe-section .recipe-ingredients-list { /* Increased specificity */
     list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     padding: 0;
     margin-bottom: 20px;
 }
 
 .recipe-section .recipe-ingredients-list li { /* Increased specificity */
     padding: 8px 12px;
+    width: 100%;
     border-radius: 4px;
     margin-bottom: 5px;
     font-size: 0.7em;
@@ -633,4 +638,194 @@
 
 #edit-my-recipe:active {
     transform: scale(.98);
+}
+
+.instruction-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.instruction-flex input {
+    margin: 0px;
+    width: 600px;
+}
+
+.sidebar-section input {
+    width: 125px;
+    background-color: #f49746ab;
+    color: black;
+}
+
+#edit-cooking-level {
+    background-color: #f49746ab;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 15px;
+    transition: .3s;
+    position: relative;
+}
+
+#edit-cooking-level:hover {
+    background-color: #f9a459ab;
+    cursor: pointer;
+}
+
+.difficulty-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    overflow: hidden;
+    border-radius: 10px;
+    left: 10%;
+    top: 98%;;
+    z-index: 3;
+}
+
+.difficulty-menu button {
+    width: 100px;
+    border: 0px;
+}
+
+.difficulty-menu button:hover {
+    cursor: pointer;
+    background-color: #f9ba83;
+}
+
+#edit-cuisine-menu {
+    background-color: #f49746ab;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 15px;
+    transition: .3s;
+    position: relative;
+}
+
+#edit-cuisine-menu:hover {
+    background-color: #f9a459ab;
+    cursor: pointer;
+}
+
+.cuisine-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    overflow: hidden;
+    border-radius: 10px;
+    top: 90%;;
+    z-index: 3;
+}
+
+.cuisine-menu button {
+    width: 100px;
+    border: 0px;
+}
+
+.cuisine-menu button:hover {
+    cursor: pointer;
+    background-color: #f9ba83;
+}
+
+.sidebar-section {
+    position:relative
+}
+
+.delete-button-recipe {
+    background-color: rgb(241, 182, 182);
+    color: black;
+    border-radius: 20px;
+    border: 0px;
+    font-size: 12px;
+    padding: 0px;
+    width: 120px;
+    height: 30px;
+    margin: 0px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.332);
+    transition: .3s;
+}
+
+.delete-button-recipe:hover {
+    background-color: rgb(238, 149, 149);
+    cursor: pointer;
+    transform: scale(1.02);
+}
+
+.add-recipe-button:hover {
+    background-color: rgb(207, 207, 207);
+    cursor: pointer;
+    transform: scale(1.02);
+}
+
+.delete-button-recipe:active, .add-recipe-button:active{
+    transform: scale(.98);
+}
+
+.add-recipe-button {
+    background-color: rgb(235, 235, 235);
+    color: black;
+    border-radius: 20px;
+    border: 0px;
+    font-size: 12px;
+    padding: 0px;
+    width: 320px;
+    height: 30px;
+    margin: 0px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.332);
+    transition: .3s;
+}
+
+.cuisine-tags {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.cuisine-tags button {
+    border: 0px;
+    border-radius: 10px;
+    background-color: #ddd;
+    padding: 10px;
+    transition: .3s;
+}
+
+.cuisine-tags button:hover {
+    background-color: #fedfc1;
+    cursor: pointer;
+}
+
+.file-upload-box {
+    width: calc(100% - 4px);
+    height: auto;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 40px;
+}
+
+.preview-img {
+    max-width: 100%;
+    max-height: 200px;
+    margin-top: 0px;
+    border-radius: 8px;
 }
