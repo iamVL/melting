@@ -107,6 +107,8 @@ const RecipeDetails = () => {
         alert("Image upload failed.");
         return;
       }
+    } else {
+      uploadedImageUrl = recipe.attributes.mainImage;
     }
 
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`, {
@@ -408,7 +410,7 @@ const RecipeDetails = () => {
             </div>
             <div className="upload-recipe-image">
               <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>
-                <input name="recipe-pic" type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} required hidden />
+                <input name="recipe-pic" type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} hidden />
                 {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
                 </div>
             </div>
