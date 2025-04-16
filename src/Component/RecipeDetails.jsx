@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+
 import "../RecipeDetails.css";
 
 const RecipeDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // ⬅️ NEW
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +17,52 @@ const RecipeDetails = () => {
   const [followMessage, setFollowMessage] = useState("");
   const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
-//AI was used to create this site
+
+  useEffect(() => {
+    const fetchRecipeWithVisibilityCheck = async () => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`);
+        const data = await res.json();
+
+        // ⛔ Protect "Followers Only" posts
+        if (data.attributes?.visibility === "Followers Only") {
+          const currentUser = sessionStorage.getItem("user");
+          const token = sessionStorage.getItem("token");
+
+          if (!token || !currentUser) {
+            navigate("/unauthorized");
+            return;
+          }
+
+          const response = await fetch(`${process.env.REACT_APP_API_PATH}/connections?fromUserID=${currentUser}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const connections = await response.json();
+          const isFollowing = connections[0]?.some((conn) => conn.toUser.id == data.authorID);
+
+          const isOwner = String(currentUser) === String(data.authorID);
+
+          if (!isFollowing && !isOwner) {
+            navigate("/unauthorized");
+            return;
+          }
+        }
+
+        setRecipe(data);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err);
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecipeWithVisibilityCheck();
+  }, [id, navigate]);
+
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
         .then((res) => res.json())
