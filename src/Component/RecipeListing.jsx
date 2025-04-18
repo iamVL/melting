@@ -369,22 +369,22 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
                           Read More →
                         </Link>
                         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "0.5rem" }}>
-                        <button
-                            className={`favorite-button ${
-                                isFavorited ? "favorited" : ""
-                            }`}
-                            onClick={() => handleFavorite(recipeID)}
-                        >
-                          {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
-                        </button>
-                        {String(authorID) === String(currentUserID) && (
-                            <button
-                                className="delete-recipe-btn"
-                                onClick={() => setDeleteTargetId(recipeID)}
-                            >
-                              🗑️ Delete Recipe
-                            </button>
-                        )}
+                          <button
+                              className={`favorite-button ${
+                                  isFavorited ? "favorited" : ""
+                              }`}
+                              onClick={() => handleFavorite(recipeID)}
+                          >
+                            {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                          </button>
+                          {String(authorID) === String(currentUserID) && (
+                              <button
+                                  className="delete-recipe-btn"
+                                  onClick={() => setDeleteTargetId(recipeID)}
+                              >
+                                🗑️ Delete Recipe
+                              </button>
+                          )}
                         </div>
 
                         {String(authorID) === String(currentUserID) &&
@@ -449,6 +449,6 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
 };
 
 
-  export default RecipeListing;
+export default RecipeListing;
 
 

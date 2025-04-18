@@ -13,6 +13,7 @@ const CookbookManager = () => {
     const [favoritedRecipes, setFavoritedRecipes] = useState([]);
     const [selectedRecipes, setSelectedRecipes] = useState([]);
 
+    const [category, setCategory] = useState("");
 
     const token = sessionStorage.getItem("token");
     const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
