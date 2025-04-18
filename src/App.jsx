@@ -45,6 +45,7 @@ import ResetPassword from "./Component/ResetPassword";
 import Messaging from "./Component/Messaging";
 import RecipeDetails from "./Component/RecipeDetails";
 import MyRecipe from "./Component/MyRecipe";
+import MyTip from "./Component/MyTip";
 import Posts from "./Component/Posts";
 import RecipeList from "./Component/RecipeList";
 import CommunityDetails from "./Component/CommunityDetails";
@@ -120,6 +121,7 @@ function App() {
               <Route path="/upload" element={<UploadRecipe />} />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
               <Route path="/my_recipe/:id" element={<MyRecipe />} />
+              <Route path="/my_tip/:id" element={<MyTip />} />
               <Route path="/community-details/:communityId/:communityName" element={<CommunityDetails />} />
               <Route path="/favorites" element={<FavoritedRecipes />} />
               <Route path="/filter" element={<FilterPage />} /> {/* New filter page */}

@@ -11,12 +11,14 @@ const CookbookManager = () => {
     const [newCookbookName, setNewCookbookName] = useState("");
     const [recipes, setRecipes] = useState([]);
     const [favoritedRecipes, setFavoritedRecipes] = useState([]);
+    const [selectedRecipes, setSelectedRecipes] = useState([]);
 
 
     const token = sessionStorage.getItem("token");
     const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
     const currentUserID = currentUser.id || currentUser.userID;
 
+    const [tips, setTips] = useState([]);
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -95,8 +97,51 @@ const CookbookManager = () => {
         .map((post) => ({
         ...post,
   }));
-    console.log(posts);
-    console.log(sortedPosts);
+
+  const loadTips = () => {
+        if (!token) {
+          setError(new Error("No token found. Please log in."));
+          return;
+        }
+    
+        fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setIsLoaded(true);
+            if (Array.isArray(data) && data[0]) {
+              const cookingTips = data[0].filter(
+                (p) => p.attributes?.postType === "tip"
+              );
+              setTips(cookingTips);
+            } else if (data.posts) {
+              const cookingTips = data.posts.filter(
+                (p) => p.attributes?.postType === "tip"
+              );
+              setTips(cookingTips);
+            }
+          })
+          .catch((err) => {
+            setIsLoaded(true);
+            setError(err);
+            console.error("Error fetching tips:", err);
+          });
+      };
+
+    useEffect(() => {
+    loadTips();
+    }, []);
+
+    let sortedTips = tips
+        .filter((tip) => String(tip.authorID) === String(sessionStorage.getItem("user")))
+        .map((tip) => ({
+        ...tip,
+  }));
 
     const handleCreateCookbook = () => {
         if (!newCookbookName.trim()) return;
@@ -125,34 +170,66 @@ const CookbookManager = () => {
 
     return (
         <div className="cookbook-manager">
-            <h2 className="recipe-header">My Recipes</h2>
+            <h2 className="recipe-header">Melting Pot Editor</h2>
+            <div className="cookbook-categories">
+                <button type="button" onClick={(e) => setCategory(e.target.value)} value="Recipes"> Recipes </button>
+                <button type="button" onClick={(e) => setCategory(e.target.value)} value="Tips"> Tips </button>
+            </div>
             <p className="recipe-subheader">
-                Click to view/edit your own recipe!
+                Click to view/edit your own listings!
             </p>
             <p className="cookbook-recipe-manager">
-                {sortedPosts.map( (recipe) => {
-                    return (
-                        <div className="cookbook-recipe">
-                            <Link to={`/my_recipe/${recipe.id}`}>
-                                <img src={recipe.attributes?.mainImage} alt="recipe" />
-                                {/* title */}
-                                <p id="cookbook-recipe-title">{recipe.attributes.title
-                                    ? recipe.attributes.title.length > 20
-                                    ? `${recipe.attributes.title.substring(0, 35)}...`
-                                    : recipe.attributes.title
-                                    : "No title available"}
-                                </p>   
-                                {/* description */}
-                                <p id="cookbook-recipe-desc">{recipe.content
-                                    ? recipe.content.length > 80
-                                    ? `${recipe.content.substring(0, 80)}...`
-                                    : recipe.content
-                                    : "No description available"}
-                                </p>    
-                            </Link>
-                        </div>
-                    )
-                })}
+                {category === "Recipes" && <>
+                    {sortedPosts.map( (recipe) => {
+                        return (
+                            <div className="cookbook-recipe">
+                                <Link to={`/my_recipe/${recipe.id}`}>
+                                    <img src={recipe.attributes?.mainImage} alt="recipe" />
+                                    {/* title */}
+                                    <p id="cookbook-recipe-title">{recipe.attributes.title
+                                        ? recipe.attributes.title.length > 20
+                                        ? `${recipe.attributes.title.substring(0, 35)}...`
+                                        : recipe.attributes.title
+                                        : "No title available"}
+                                    </p>   
+                                    {/* description */}
+                                    <p id="cookbook-recipe-desc">{recipe.content
+                                        ? recipe.content.length > 80
+                                        ? `${recipe.content.substring(0, 80)}...`
+                                        : recipe.content
+                                        : "No description available"}
+                                    </p>    
+                                </Link>
+                            </div>
+                        )
+                    })}
+                </>}
+
+                {category === "Tips" && <>
+                    {sortedTips.map( (tip) => {
+                        return (
+                            <div className="cookbook-recipe">
+                                <Link to={`/my_tip/${tip.id}`}>
+                                    <img src={tip.attributes?.mainImage} alt="tip" />
+                                    {/* title */}
+                                    <p id="cookbook-recipe-title">{tip.content
+                                        ? tip.content.length > 20
+                                        ? `${tip.content.substring(0, 35)}...`
+                                        : tip.content
+                                        : "No title available"}
+                                    </p>   
+                                    {/* description */}
+                                    <p id="cookbook-recipe-desc">{tip.attributes.description
+                                        ? tip.attributes.description.length > 80
+                                        ? `${tip.attributes.description.substring(0, 80)}...`
+                                        : tip.attributes.description
+                                        : "No description available"}
+                                    </p>    
+                                </Link>
+                            </div>
+                        )
+                    })}
+                </>}
             </p>
 
             <h2 className="recipe-header">Cookbook Manager</h2>

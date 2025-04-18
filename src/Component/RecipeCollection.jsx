@@ -12,6 +12,34 @@ const RecipeCollection = () => {
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const userID = user.id || user.userID; // Ensure correct user ID format
+  const [connections, setConnections] = useState([]); // Followers
+
+useEffect(() => {
+  loadPosts();
+  loadFavorites();
+  loadConnections();
+}, []);
+
+const loadConnections = () => {
+  if (!token || !userID) return;
+
+  fetch(`${process.env.REACT_APP_API_PATH}/connections?fromUserID=${userID}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then(
+      (result) => {
+        setConnections(result[0]);
+      },
+      (error) => {
+        console.error("Error loading connections:", error);
+      }
+    );
+};
 
   // ✅ Fetch all recipes
   const loadPosts = () => {
@@ -153,12 +181,14 @@ const RecipeCollection = () => {
   return (
     <>
       <RecipeListing
-        posts={posts}
-        error={error}
-        isLoaded={isLoaded}
-        loadPosts={loadPosts}
-        favoritedRecipes={favoritedRecipes}
-        handleFavorite={handleFavorite} // Pass Favorite Handler
+  posts={posts}
+  error={error}
+  isLoaded={isLoaded}
+  loadPosts={loadPosts}
+  favoritedRecipes={favoritedRecipes}
+  handleFavorite={handleFavorite}
+  connections={connections}
+  loadConnections={loadConnections}
       />
     </>
   );

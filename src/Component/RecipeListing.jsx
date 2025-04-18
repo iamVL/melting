@@ -5,13 +5,25 @@ import ConfirmModal from "../Component/ConfirmModal";
 
 
 
-const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOption = true, selectedRecipes = [], toggleRecipeSelection = null }) => {
+const RecipeListing = ({
+  posts,
+  error,
+  isLoaded,
+  loadPosts,
+  connections,
+  loadConnections,
+  showCreatedByYouOption = true,
+  selectedRecipes = [],
+  toggleRecipeSelection = null,
+}) => {
+
   const currentUserID = JSON.parse(sessionStorage.getItem("user"));
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const userID = user.id || user.userID;
   const savedAllergies = user.allergy || [];
   const savedDiets = user.diet || [];
+
   const [sortOption, setSortOption] = useState("rating");
   const [userCookbooks, setUserCookbooks] = useState([]);
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
@@ -19,24 +31,30 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
   const [applyPreferences, setApplyPreferences] = useState(false);
   const [showFavoriteModal, setShowFavoriteModal] = useState(false);
   const [showCookbookModal, setShowCookbookModal] = useState(false);
+  const [localConnections, setLocalConnections] = useState([]);
+  const [postRatings, setPostRatings] = useState({});
 
-
+  /* ---------- load favorites ---------- */
 
   useEffect(() => {
     if (!token || !userID) return;
     const apiUrl = `${process.env.REACT_APP_API_PATH}/post-reactions?userID=${userID}`;
     fetch(apiUrl, {
       method: "GET",
-      headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`},
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
-        .then((res) => res.json())
-        .then((data) => {
-          const favorited = data.map((reaction) => reaction.postID);
-          setFavoritedRecipes(favorited);
-        })
-        .catch((err) => console.error("Error fetching favorites:", err));
+      .then((res) => res.json())
+      .then((data) => {
+        const favorited = data.map((reaction) => reaction.postID);
+        setFavoritedRecipes(favorited);
+      })
+      .catch((err) => console.error("Error fetching favorites:", err));
   }, [token, userID]);
 
+  /* ---------- load cookbooks ---------- */
 
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -47,29 +65,69 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
   }, []);
 
 
+  /* ---------- always fetch connections once + watch reload flags ---------- */
+  useEffect(() => {
+    if (typeof loadConnections === "function") loadConnections();
+
+    const shouldReloadConnections = sessionStorage.getItem("refreshConnections");
+    const shouldReloadPosts = sessionStorage.getItem("refreshPosts");
+
+    if (shouldReloadConnections === "true" && typeof loadConnections === "function") {
+      loadConnections();
+      sessionStorage.removeItem("refreshConnections");
+    }
+
+    if (shouldReloadPosts === "true" && typeof loadPosts === "function") {
+      loadPosts();
+      sessionStorage.removeItem("refreshPosts");
+    }
+  }, [loadConnections, loadPosts]);
+
+  /* ---------- debug ---------- */
+  useEffect(() => {
+    console.log("🔍 connections passed into RecipeListing:", connections);
+  }, [connections]);
+
+  useEffect(() => {
+    if (connections && connections.length > 0) return;           // prop already good
+  
+    const fetchCons = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_API_PATH}/connections?fromUserID=${currentUserID}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const data = await res.json();
+        // API returns [array, meta]
+        const list = Array.isArray(data[0]) ? data[0] : data;
+        setLocalConnections(list);
+      } catch (err) {
+        console.warn("Could not fetch fallback connections", err);
+      }
+    };
+  
+    if (currentUserID && token) fetchCons();
+  }, [connections, currentUserID, token]);
+
+  /* ---------- helper: favorite ---------- */
+
   const handleFavorite = async (recipeID) => {
     if (!token) {
       alert("You must be logged in to favorite recipes.");
       return;
     }
-
-
+    
     const rawUser = sessionStorage.getItem("user");
-    let user;
+    let userObj;
     try {
-      user = JSON.parse(rawUser);
-      if (typeof user === "number") user = {id: user};
+      userObj = JSON.parse(rawUser);
+      if (typeof userObj === "number") userObj = { id: userObj };
     } catch (e) {
-      user = {id: rawUser};
+      userObj = { id: rawUser };
     }
 
-
-    const reactorID = user?.id || user?.userID || user?.ID || user?.userid;
-    if (!reactorID) {
-      alert("Your session has expired. Please log in again.");
-      return;
-    }
-
+    const reactorID =
+      userObj?.id || userObj?.userID || userObj?.ID || userObj?.userid;
 
     const isFavorited = favoritedRecipes.includes(recipeID);
     const apiUrl = `${process.env.REACT_APP_API_PATH}/post-reactions`;
@@ -80,7 +138,10 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
         const fetchUrl = `${apiUrl}?postID=${recipeID}&reactorID=${reactorID}`;
         const response = await fetch(fetchUrl, {
           method: "GET",
-          headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`},
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
 
 
@@ -104,6 +165,22 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
 
         if (deleteResponse.ok) {
           setFavoritedRecipes((prevFavorites) => prevFavorites.filter((id) => id !== recipeID));
+
+        const reactionID = data[0].id;
+        const deleteUrl = `${apiUrl}/${reactionID}`;
+
+        const deleteResponse = await fetch(deleteUrl, {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (deleteResponse.ok) {
+          setFavoritedRecipes((prev) => prev.filter((id) => id !== recipeID));
+
         } else {
           const errorMessage = await deleteResponse.text();
           alert("Error removing favorite: " + errorMessage);
@@ -116,7 +193,9 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
         const response = await fetch(apiUrl, {
           method: "POST",
           mode: "cors",
+
           headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`},
+
           body: JSON.stringify({
             postID: recipeID,
             reactorID: reactorID,
@@ -125,12 +204,12 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
           }),
         });
 
-
         if (response.ok) {
           setFavoritedRecipes((prevFavorites) => [...prevFavorites, recipeID]);
           setShowFavoriteModal(true);
           setTimeout(() => setShowFavoriteModal(false), 2000); // Auto-close after 2 seconds
         }
+
 
       } catch (error) {
         console.error("Failed to update favorite:", error);
@@ -142,17 +221,19 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
   const addToCookbook = (recipeID, cookbookName) => {
     const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
     const currentUserID = currentUser.id || currentUser.userID;
-
-
     const all = JSON.parse(localStorage.getItem("cookbooks")) || [];
     const updated = all.map((cb) => {
       if (cb.name === cookbookName && cb.ownerID === currentUserID) {
         const merged = Array.from(new Set([...cb.recipes, recipeID]));
+
         return {...cb, recipes: merged};
+
+
       }
       return cb;
     });
 
+=
 
     localStorage.setItem("cookbooks", JSON.stringify(updated));
     setShowCookbookModal(true);
@@ -160,7 +241,7 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
 
   };
 
-  const deleteRecipe = async (postID) => {
+const deleteRecipe = async (postID) => {
     const token = sessionStorage.getItem("token");
 
     try {
@@ -174,7 +255,7 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
       if (res.ok) {
         setDeleteTargetId(null);
 
-        window.location.href = "/recipes"; // or use navigate()
+        window.location.href = "/recipes"; 
       } else {
         const errorText = await res.text();
         console.error("Delete failed:", errorText);
@@ -185,7 +266,8 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
   };
 
 
-  const handleDelete = async (postID) => {
+  /* ---------- helper: delete ---------- */
+const handleDelete = async (postID) => {
     if (!token) {
       alert("You must be logged in to delete a recipe.");
       return;
@@ -216,6 +298,8 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
   };
 
 
+
+
   const getAverageRating = (postID) => {
     const storedReviews = localStorage.getItem(`reviews-${postID}`);
     if (!storedReviews) return 0;
@@ -243,6 +327,60 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
   }
 
   // ✅ Apply user preferences filter if checkbox is selected
+
+  /* ---------- ratings helper ---------- */
+  useEffect(() => {
+    const fetchAllRatings = async () => {
+      const ratings = {};
+  
+      for (let post of posts) {
+        try {
+          const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts?parentID=${post.id}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const result = await res.json();
+          const reviews = result[0] || [];
+          const total = reviews.reduce((sum, r) => sum + (r.attributes?.rating || 0), 0);
+          const avg = reviews.length > 0 ? (total / reviews.length).toFixed(1) : "0.0";
+          ratings[post.id] = avg;
+        } catch (err) {
+          console.warn(`Could not fetch rating for post ${post.id}`);
+          ratings[post.id] = "0.0";
+        }
+      }
+  
+      setPostRatings(ratings);
+    };
+  
+    if (posts.length > 0) fetchAllRatings();
+  }, [posts, token]);
+  
+
+  /* ---------- sort & preference filters ---------- */
+  let sortedPosts = [...posts].map((post) => ({
+    ...post,
+    averageRating: postRatings[post.id],
+  }));
+
+  if (sortOption === "created") {
+    sortedPosts = sortedPosts.filter(
+      (post) => String(post.authorID) === String(currentUserID)
+    );
+  } else if (sortOption === "rating") {
+    sortedPosts.sort((a, b) => b.averageRating - a.averageRating);
+  } else if (sortOption === "title") {
+    sortedPosts.sort((a, b) =>
+      (a.attributes?.title || "").localeCompare(b.attributes?.title || "")
+    );
+  } else if (sortOption === "likes") {
+    sortedPosts.sort(
+      (a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0)
+    );
+  }
+
   if (applyPreferences) {
     sortedPosts = sortedPosts.filter((post) => {
       const attrs = post.attributes || {};
@@ -250,9 +388,12 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
       const dietTags = (attrs.diet || []).map((d) => d.toLowerCase());
 
       const matchesAllergy = savedAllergies.every(
-          (allergy) => !allergyTags.includes(allergy.toLowerCase())
+        (allergy) => !allergyTags.includes(allergy.toLowerCase())
       );
-      const matchesDiet = savedDiets.every((diet) => dietTags.includes(diet.toLowerCase()));
+      const matchesDiet = savedDiets.every((diet) =>
+        dietTags.includes(diet.toLowerCase())
+      );
+
 
       return matchesAllergy && matchesDiet;
     });
@@ -449,5 +590,3 @@ const RecipeListing = ({ posts, error, isLoaded, loadPosts, showCreatedByYouOpti
 
 
   export default RecipeListing;
-
-

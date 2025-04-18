@@ -4,7 +4,7 @@ import "../RecipeList.css"; // ✅ Ensure CSS is imported
 import Recipe from "../Component/RecipeDetails"; // Assuming a Recipe component exists
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const RecipeList = ({ refresh, recipes, error, isLoaded, type, loadRecipes }) => {
+const RecipeList = ({ refresh, recipes, error, isLoaded, type, loadRecipes, followers, connections }) => {
     const currentUserID = sessionStorage.getItem("user"); // ✅ Get logged-in user ID
 
     if (!sessionStorage.getItem("token")) {
@@ -61,6 +61,13 @@ const RecipeList = ({ refresh, recipes, error, isLoaded, type, loadRecipes }) =>
                         const authorID = recipe.authorID;
                         const mainImage = recipe.attributes?.mainImage;
                         const description = recipe.attributes?.description || "No description available";
+
+                        const isFollowersOnly = recipe.attributes?.visibility === "Followers Only";
+                        const isFollowingAuthor = connections.some(connection => String(connection.id) === String(authorID));
+                        
+                        if (isFollowersOnly && !isFollowingAuthor && String(authorID) !== String(currentUserID)) {
+                            return null; // Hide the recipe if it's followers-only, and you're not the author or following them
+                        }
 
                         return (
                             <div key={recipe.id} className="recipe-card">

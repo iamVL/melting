@@ -164,18 +164,6 @@ const TipForm = () => {
           {steps.map((step) => (
             <div key={step.id} className="tip-step-wrapper">
               <textarea className="tip-step-textarea" placeholder={`Step ${step.id} description`} value={step.description} onChange={(e) => handleStepChange(step.id, e)} required />
-              <div className="tip-upload-box tip-step-upload">
-                <input type="file" accept="image/*" onChange={(e) => handleStepImageUpload(step.id, e)} />
-                {step.image && (
-                  <img
-                    src={URL.createObjectURL(step.image)}
-                    alt={`Step ${step.id}`}
-                    className="tip-step-image-preview"
-                    onClick={() => setFullscreenImage(URL.createObjectURL(step.image))}
-                    style={{ cursor: "pointer" }}
-                  />
-                )}
-              </div>
               <button
                 type="button"
                 className="tip-delete-step-btn"

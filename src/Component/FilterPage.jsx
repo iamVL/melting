@@ -26,6 +26,29 @@ const FilterPage = () => {
   const userID = user.id || user.userID;
 
   useEffect(() => {
+    const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
+    const savedAllergies = userProfile.allergy || []; // example: ["Peanuts", "Dairy"]
+    const savedDiets = userProfile.diet || []; // example: ["Halal", "Vegetarian"]
+    
+    setAllergyFilters(savedAllergies);
+    setDietFilters(savedDiets);
+  }, []);  
+
+  useEffect(() => {
+    let user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    if (typeof user === "number") user = { id: user };
+    user.allergy = allergyFilters;
+    sessionStorage.setItem("user", JSON.stringify(user));
+  }, [allergyFilters]);  
+  
+  useEffect(() => {
+    let user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    if (typeof user === "number") user = { id: user };
+    user.diet = dietFilters;
+    sessionStorage.setItem("user", JSON.stringify(user));
+  }, [dietFilters]);  
+
+  useEffect(() => {
     if (!token) return;
     fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
       headers: {
