@@ -25,28 +25,28 @@ const FilterPage = () => {
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const userID = user.id || user.userID;
 
-  useEffect(() => {
-    const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const savedAllergies = userProfile.allergy || []; // example: ["Peanuts", "Dairy"]
-    const savedDiets = userProfile.diet || []; // example: ["Halal", "Vegetarian"]
+  // useEffect(() => {
+  //   const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
+  //   const savedAllergies = userProfile.allergy || []; // example: ["Peanuts", "Dairy"]
+  //   const savedDiets = userProfile.diet || []; // example: ["Halal", "Vegetarian"]
     
-    setAllergyFilters(savedAllergies);
-    setDietFilters(savedDiets);
-  }, []);  
+  //   setAllergyFilters(savedAllergies);
+  //   setDietFilters(savedDiets);
+  // }, []);  
 
-  useEffect(() => {
-    let user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    if (typeof user === "number") user = { id: user };
-    user.allergy = allergyFilters;
-    sessionStorage.setItem("user", JSON.stringify(user));
-  }, [allergyFilters]);  
+  // useEffect(() => {
+  //   let user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  //   if (typeof user === "number") user = { id: user };
+  //   user.allergy = allergyFilters;
+  //   sessionStorage.setItem("user", JSON.stringify(user));
+  // }, [allergyFilters]);  
   
-  useEffect(() => {
-    let user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    if (typeof user === "number") user = { id: user };
-    user.diet = dietFilters;
-    sessionStorage.setItem("user", JSON.stringify(user));
-  }, [dietFilters]);  
+  // useEffect(() => {
+  //   let user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  //   if (typeof user === "number") user = { id: user };
+  //   user.diet = dietFilters;
+  //   sessionStorage.setItem("user", JSON.stringify(user));
+  // }, [dietFilters]);  
 
   useEffect(() => {
     if (!token) return;
