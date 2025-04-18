@@ -62,7 +62,7 @@ import CookbookDetail from "./Component/CookbookDetail";
 const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
   path: "/hci/api/realtime-socket/socket.io",
   query: {
-    tenantID: "example",
+    tenantID: "melting",
   },
 });
 export { socket };
@@ -125,6 +125,8 @@ function App() {
               <Route path="/community-details/:communityId/:communityName" element={<CommunityDetails />} />
               <Route path="/favorites" element={<FavoritedRecipes />} />
               <Route path="/filter" element={<FilterPage />} /> {/* New filter page */}
+
+
 
               {/* Home Page */}
               <Route

@@ -1,0 +1,511 @@
+.filter-page {
+    padding: 1.5rem 2rem;
+    background-color: #fafafa;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.filter-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.filter-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+    color: #333;
+}
+
+.filter-header p {
+    font-size: 0.95rem;
+    color: #666;
+}
+
+/* Filters */
+.filters-section {
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.search-inputs,
+.dropdown-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.search-inputs input,
+.dropdown-filters input,
+.dropdown-filters select,
+.ingredient-filter input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Ingredient Tags */
+.ingredient-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0.5rem;
+}
+
+.tag {
+    background-color: #ffe0b2;
+    color: #5d4037;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+.tag button {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    margin-left: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Checkbox Filter Sections */
+.checkbox-filters {
+    color: orange;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.checkbox-filters > div {
+    min-width: 160px;
+}
+
+.checkbox-filters h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    color: #444;
+}
+
+.checkbox-filters label {
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+/* Recipes Grid */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.2rem;
+}
+
+.recipe-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    height: 360px;
+    width: 240px;
+    margin: auto;
+    transition: transform 0.2s;
+}
+
+.recipe-card:hover {
+    transform: translateY(-3px);
+}
+
+.recipe-image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.recipe-content {
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.recipe-content h3 {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+    color: #333;
+}
+
+.recipe-content p {
+    font-size: 0.85rem;
+    color: #666;
+    flex-grow: 1;
+    margin-bottom: 0.5rem;
+}
+
+.read-more {
+    font-size: 0.85rem;
+    color: #1976d2;
+    text-decoration: none;
+    margin-bottom: 0.4rem;
+}
+
+.favorite-button {
+    background-color: transparent;
+    border: 1px solid #ff7043;
+    border-radius: 4px;
+    color: #ff7043;
+    padding: 0.35rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.favorite-button.favorited {
+    background-color: #ff7043;
+    color: #fff;
+}
+
+/* Empty State */
+.no-recipes {
+    text-align: center;
+    font-size: 1rem;
+    color: #999;
+    padding: 2rem;
+}
+/* Layout */
+.filter-layout {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.filter-sidebar {
+    width: 280px;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    height: fit-content;
+    position: sticky;
+    top: 1rem;
+}
+
+.sidebar-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.recipe-listing {
+    flex-grow: 1;
+}
+
+/* Recipe Card Fixes */
+.recipe-card {
+    height: 360px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.recipe-content h3 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.4rem;
+    height: 2.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipe-content p {
+    font-size: 0.85rem;
+    color: #555;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    max-height: 4rem;
+}
+.recipe-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    height: auto; /* allow it to grow if needed */
+    min-height: 360px;
+    justify-content: space-between;
+    transition: transform 0.2s;
+}
+
+.recipe-card:hover {
+    transform: translateY(-3px);
+}
+
+.recipe-image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.recipe-content {
+    padding: 0.9rem 0.9rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.recipe-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+    line-height: 1.2;
+}
+
+.recipe-content p {
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.3;
+    margin: 0;
+    flex-grow: 1;
+    max-height: 3.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.read-more {
+    font-size: 0.85rem;
+    color: #1976d2;
+    text-decoration: none;
+}
+
+.favorite-button {
+    background-color: transparent;
+    border: 1px solid #ff7043;
+    border-radius: 4px;
+    color: #ff7043;
+    padding: 0.35rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    align-self: flex-start;
+    margin-top: 0.3rem;
+}
+
+.favorite-button.favorited {
+    background-color: #ff7043;
+    color: #fff;
+}
+.recipe-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.recipe-content p {
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.3;
+    margin: 0;
+    flex-grow: 1;
+
+    max-height: 4rem;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+
+.recipe-content p::-webkit-scrollbar {
+    width: 6px;
+}
+
+.recipe-content p::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+
+/* Checkbox Groups (Cuisines, Allergies, Diets) */
+.checkbox-group {
+    margin-bottom: 1.2rem;
+}
+
+.checkbox-group label {
+    font-size: 0.78rem;
+    display: block;
+    margin: 0.2rem 0;
+    line-height: 1.2;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 6px;
+    transform: scale(0.85);
+}
+.dropdown-group {
+    margin-bottom: 1rem;
+}
+
+.dropdown-header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+}
+
+.checkbox-group {
+    padding-left: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+.checkbox-group label {
+    font-size: 0.78rem;
+    display: block;
+    margin: 0.25rem 0;
+}
+
+.checkbox-group input {
+    margin-right: 6px;
+    transform: scale(0.85);
+}
+.filter-sidebar select {
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.85rem;
+    background-color: #fff;
+    color: #333;
+    margin-bottom: 0.75rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 8px 10px;
+}
+
+.filter-sidebar select:focus {
+    border-color: #888;
+    outline: none;
+}
+.checkbox-group label {
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 0.3rem 0;
+    cursor: pointer;
+    line-height: 1.4;
+    padding-left: 2px;
+}
+
+.recipe-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+    line-height: 1.3;
+    overflow: visible;
+    white-space: normal;
+    height: auto;
+}
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-size: 0.78rem;
+    color: #333;
+    gap: 8px;
+    line-height: 1.4;
+    margin: 0.25rem 0;
+    cursor: pointer;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.6rem;
+}
+
+
+
+.recipe-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.75rem;
+    color: #666;
+    text-align: right;
+    gap: 2px;
+}
+/* Neutral sidebar buttons */
+.filter-sidebar button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    color: #333;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.filter-sidebar button:hover {
+    background-color: #e0e0e0;
+}
+.dropdown-group,
+.checkbox-group {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 150px; /* Equalize height */
+}
+.filter-sidebar {
+    width: 280px; /* already set */
+}
+
+.dropdown-group {
+    width: 100%;
+}
+
+.checkbox-group {
+    width: 100%;
+}
+.checkbox-group input[type="checkbox"] {
+    accent-color: #ff7043; /* This gives the orange checkbox */
+    margin-right: 6px;
+    transform: scale(0.85);
+    color: white;
+}
+.filter-sidebar .dropdown-group,
+.filter-sidebar .ingredient-filter,
+.filter-sidebar select,
+.filter-sidebar input[type="number"],
+.filter-sidebar input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+}
+.dropdown-group {
+    min-height: 180px; /* or 150px depending on your needs */
+}

@@ -54,12 +54,11 @@ const FriendForm = ({ userid, loadFriends, connections }) => {
       alert("Already follow this person!");
       return;
     }
-
+  
     event.preventDefault();
     console.log("friend is ");
     console.log(friendid);
-
-    // Make the API call to the user controller
+  
     fetch(process.env.REACT_APP_API_PATH + "/connections", {
       method: "POST",
       headers: {
@@ -76,13 +75,16 @@ const FriendForm = ({ userid, loadFriends, connections }) => {
       .then(
         (result) => {
           setResponseMessage(result.Status);
-          loadFriends(); // call loadFriends that is being passed in from props in Friends.jsx to display the friends without reloading
+          loadFriends(); // update friend list
+          sessionStorage.setItem("refreshConnections", "true"); // 🧠 ← This tells RecipeListing to reload!
+          sessionStorage.setItem("refreshPosts", "true");
         },
         (error) => {
           alert("error!");
         }
       );
   };
+  
 
   return (
     <form onSubmit={submitHandler} className="friend-form">
