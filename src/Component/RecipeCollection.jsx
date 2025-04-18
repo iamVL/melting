@@ -181,13 +181,14 @@ const loadConnections = () => {
   return (
     <>
       <RecipeListing
-        posts={posts}
-        error={error}
-        isLoaded={isLoaded}
-        loadPosts={loadPosts}
-        favoritedRecipes={favoritedRecipes}
-        handleFavorite={handleFavorite} // Pass Favorite Handler
-        connections={connections}
+  posts={posts}
+  error={error}
+  isLoaded={isLoaded}
+  loadPosts={loadPosts}
+  favoritedRecipes={favoritedRecipes}
+  handleFavorite={handleFavorite}
+  connections={connections}
+  loadConnections={loadConnections}
       />
     </>
   );

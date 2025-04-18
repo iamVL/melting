@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../App.css";
 import "../Login.css";
 import meltingLogo from "../assets/melting-pot-logo.jpeg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import foodImage from "../food-image.jpeg";
 
 const LoginForm = ({ setLoggedIn }) => {
@@ -10,8 +10,12 @@ const LoginForm = ({ setLoggedIn }) => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
   const [sessionToken, setSessionToken] = useState("");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const accountCreated = location.state?.accountCreated;
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -78,6 +82,11 @@ const LoginForm = ({ setLoggedIn }) => {
         <div className="left-column">
           <h1 className="title">WELCOME BACK</h1>
           <p className="subtitle">Sign in with your Email Address and Password</p>
+
+          {/* Success Message */}
+          {accountCreated && (
+            <div className="alert success">Account created successfully! Please log in.</div>
+          )}
 
           {/* Error Message */}
           {errorMessage && <div className="alert error">{errorMessage}</div>}

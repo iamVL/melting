@@ -62,7 +62,7 @@ const RecipeList = ({ refresh, recipes, error, isLoaded, type, loadRecipes, foll
                         const mainImage = recipe.attributes?.mainImage;
                         const description = recipe.attributes?.description || "No description available";
 
-                        const isFollowersOnly = recipe.followersOnly;
+                        const isFollowersOnly = recipe.attributes?.visibility === "Followers Only";
                         const isFollowingAuthor = connections.some(connection => String(connection.id) === String(authorID));
                         
                         if (isFollowersOnly && !isFollowingAuthor && String(authorID) !== String(currentUserID)) {
