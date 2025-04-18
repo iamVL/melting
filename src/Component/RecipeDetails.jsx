@@ -124,7 +124,14 @@ const RecipeDetails = () => {
 
   const handleCommentSubmit = (event) => {
     event.preventDefault();
-    
+    if (rating === 0) {
+      alert("Choose a rating 1-5!");
+      return;
+    } else if (commentText === "") {
+      alert("Fill in a review!");
+      return;
+    }
+
     fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
       method: "POST",
       headers: {
@@ -149,10 +156,43 @@ const RecipeDetails = () => {
         console.log(result);
       })
       .catch((error) => {
-        console.log("Upload error:", error);
+        console.log("Review Submit error:", error);
       });
 
   };
+
+  const handleCommentUpdate = (review, editComment, editRating) => {
+    if (editComment === "") {
+      alert("Review cannot be blank!");
+      return;
+    }
+    fetch(`${process.env.REACT_APP_API_PATH}/posts/${review.id}`, {
+        method:"PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          authorID: sessionStorage.getItem("user"),
+          content: editComment,
+          parentID: review.parentID,
+          attributes: {
+            postType: "review",
+            rating: editRating,
+            likes: review.attributes.likes || 0,
+            dislikes: review.attributes.dislikes || 0,
+          },
+        })
+      })
+      .then(async (res) => {
+        const result = await res.json();
+        window.location.reload()
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log("Review Update error:", error);
+      });
+    }
 
   const handleDeleteReview = (reviewID) => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${reviewID}`, {
@@ -231,15 +271,15 @@ const RecipeDetails = () => {
         });
   };
 
-  const handleEditReview = () => {
-
-  };
-
   const ReviewItem = ({ review, index }) => {
     const [like, setLike] = useState(0);
     const [dislike, setDislike] = useState(0);
     const [reaction, setReaction] = useState(null);
     const [showFull, setShowFull] = useState(false);
+
+    const [editReview, setEditReview] = useState(null);
+    const [editComment, setEditComment] = useState(review.content);
+    const [editRating, setEditRating] = useState(review.attributes?.rating);
 
     const toggleReaction = (type) => {
       if (reaction === type) {
@@ -255,11 +295,16 @@ const RecipeDetails = () => {
 
     return (
         <div className={`review-item ${showFull ? "expanded" : ""}`}>
+          { editReview !== review.id ? (<>
+
           <div className="review-header">
             <strong>{review.author.attributes?.username}</strong>
             <div className="review-rating">
               {Array.from({ length: review.attributes?.rating }, (_, i) => (
                   <span key={i} className="star">★</span>
+              ))}
+              {Array.from({ length: 5 - review.attributes?.rating }, (_, i) => (
+                  <span key={i} className="empty-stars">★</span>
               ))}
             </div>
           </div>
@@ -273,17 +318,38 @@ const RecipeDetails = () => {
                 {showFull ? "Show Less" : "Show More"}
               </button>
           )}
+            <div className="review-reactions">
+              <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like")}>👍 {like}</button>
+              <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike")}>👎 {dislike}</button>
+              {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && 
+                <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button> 
+              }
+            </div>
+            </> ) : ( <>
+              <div className="review-header">
+                <strong>{review.author.attributes?.username}</strong>
+                <div className="empty-stars-background">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                          key={star}
+                          className={`star ${star <= editRating ? "edit-active" : "edit"}`}
+                          onClick={() => setEditRating(star)}
+                      >★</span>
+                  ))}
+                </div>
+                <div className="rating-stars">
+              </div>
+              </div>
 
-          <div className="review-reactions">
-            <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like")}>👍 {like}</button>
-            <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike")}>👎 {dislike}</button>
-            {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && <>
-              <button className="reaction-button delete-button" onClick={() => handleDeleteReview(review.id)}>🗑️</button>
-              </>
-            }
-          </div>
-          {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && 
-            <button className="reaction-button delete-button" onClick={() => handleEditReview(review.id)}>Edit ✏️</button> 
+              <textarea id="review-textarea" placeholder="Enter review text" value={editComment} onChange={(e) => setEditComment(e.target.value)} />
+
+              <div className="review-reactions">
+                <button className="reaction-button delete-button" onClick={() => handleDeleteReview(review.id)}>🗑️</button>
+                <button className="reaction-button delete-button" onClick={() => handleCommentUpdate(review, editComment, editRating)}>Save</button>
+                <button className="reaction-button delete-button" onClick={() => setEditReview(null)}>Cancel</button>
+              </div>
+            </>
+            )
           }
         </div>
     );
