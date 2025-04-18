@@ -352,4 +352,22 @@ display: block;
 }
 
 
+.btn-danger {
+    background-color: var(--color-error);
+    color: white;
+    transition: .3s;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    transform: scale(1.03);
+}
+
+.btn-danger:active {
+    transform: scale(1);
+}
 
