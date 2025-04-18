@@ -214,7 +214,8 @@ const RecipeListing = ({
     });
 
     localStorage.setItem("cookbooks", JSON.stringify(updated));
-    alert(`Recipe added to ${cookbookName}`);
+    setShowCookbookModal(true);
+    setTimeout(() => setShowCookbookModal(false), 2000); // Auto-close after 2 seconds
   };
 
   /* ---------- helper: delete ---------- */
@@ -470,15 +471,7 @@ const RecipeListing = ({
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
                   </Link>
-
-                  {String(authorID) === String(currentUserID) && (
-                    <button
-                      className="delete-recipe-button-1"
-                      onClick={() => handleDelete(post.id)}
-                    >
-                      🗑 Delete
-                    </button>
-                  )}
+                  
 
                   <button
                     className={`favorite-button ${
@@ -488,6 +481,15 @@ const RecipeListing = ({
                   >
                     {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
                   </button>
+
+                  {String(authorID) === String(currentUserID) && (
+                              <button
+                                  className="delete-recipe-btn"
+                                  onClick={() => setDeleteTargetId(recipeID)}
+                              >
+                                🗑️ Delete Recipe
+                              </button>
+                          )}
 
                   {String(authorID) === String(currentUserID) &&
                     userCookbooks.length > 0 && (
