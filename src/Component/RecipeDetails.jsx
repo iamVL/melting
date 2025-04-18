@@ -1,21 +1,67 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+
 import "../RecipeDetails.css";
 
 const RecipeDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // ⬅️ NEW
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [rating, setRating] = useState(0);
-  const [commentName, setCommentName] = useState("");
   const [commentText, setCommentText] = useState("");
   const [reviews, setReviews] = useState([]);
   const [authorInfo, setAuthorInfo] = useState(null);
   const [followMessage, setFollowMessage] = useState("");
   const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
-//AI was used to create this site
+
+  useEffect(() => {
+    const fetchRecipeWithVisibilityCheck = async () => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`);
+        const data = await res.json();
+
+        // ⛔ Protect "Followers Only" posts
+        if (data.attributes?.visibility === "Followers Only") {
+          const currentUser = sessionStorage.getItem("user");
+          const token = sessionStorage.getItem("token");
+
+          if (!token || !currentUser) {
+            navigate("/unauthorized");
+            return;
+          }
+
+          const response = await fetch(`${process.env.REACT_APP_API_PATH}/connections?fromUserID=${currentUser}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const connections = await response.json();
+          const isFollowing = connections[0]?.some((conn) => conn.toUser.id == data.authorID);
+
+          const isOwner = String(currentUser) === String(data.authorID);
+
+          if (!isFollowing && !isOwner) {
+            navigate("/unauthorized");
+            return;
+          }
+        }
+
+        setRecipe(data);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err);
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecipeWithVisibilityCheck();
+  }, [id, navigate]);
+
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
         .then((res) => res.json())
@@ -47,10 +93,13 @@ const RecipeDetails = () => {
   }, [recipe]);
 
   useEffect(() => {
-    const storedReviews = localStorage.getItem(`reviews-${id}`);
-    if (storedReviews) {
-      setReviews(JSON.parse(storedReviews));
-    }
+    const findReviews = async () => {
+      const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts?parentID=${id}`);
+      const data = await res.json();
+      setReviews(data[0]);
+    };
+    
+    findReviews();
   }, [id]);
 
   const scrollLeft = () => {
@@ -67,31 +116,54 @@ const RecipeDetails = () => {
 
   const getAverageRating = () => {
     if (reviews.length === 0) return 0;
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const totalRating = reviews.reduce((sum, review) => sum + review.attributes.rating, 0);
     return (totalRating / reviews.length).toFixed(1);
   };
 
   const getRatingPercentage = () => ((getAverageRating() / 5) * 100).toFixed(0);
 
-  const handleCommentSubmit = () => {
-    if (commentName && commentText && rating > 0) {
-      const newReview = { name: commentName, text: commentText, rating };
-      const updatedReviews = [...reviews, newReview];
-      setReviews(updatedReviews);
-      localStorage.setItem(`reviews-${id}`, JSON.stringify(updatedReviews));
-      setCommentName("");
-      setCommentText("");
-      setRating(0);
-    } else {
-      alert("Please fill in all fields for the review.");
-    }
+  const handleCommentSubmit = (event) => {
+    event.preventDefault();
+    
+    fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        authorID: sessionStorage.getItem("user"),
+        content: commentText,
+        parentID: id,
+        attributes: {
+          postType: "review",
+          rating: rating,
+          likes: 0,
+          dislikes: 0,
+        },
+      }),
+    })
+      .then(async (res) => {
+        const result = await res.json();
+        window.location.reload()
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log("Upload error:", error);
+      });
+
   };
 
-  const handleDeleteReview = (index) => {
-    const updatedReviews = [...reviews];
-    updatedReviews.splice(index, 1);
-    setReviews(updatedReviews);
-    localStorage.setItem(`reviews-${id}`, JSON.stringify(updatedReviews));
+  const handleDeleteReview = (reviewID) => {
+    fetch(`${process.env.REACT_APP_API_PATH}/posts/${reviewID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    }) .then((res) => {
+      window.location.reload();
+    })
   };
 
   const toggleExpand = (index) => {
@@ -159,6 +231,10 @@ const RecipeDetails = () => {
         });
   };
 
+  const handleEditReview = () => {
+
+  };
+
   const ReviewItem = ({ review, index }) => {
     const [like, setLike] = useState(0);
     const [dislike, setDislike] = useState(0);
@@ -180,19 +256,19 @@ const RecipeDetails = () => {
     return (
         <div className={`review-item ${showFull ? "expanded" : ""}`}>
           <div className="review-header">
-            <strong>{review.name}</strong>
+            <strong>{review.author.attributes?.username}</strong>
             <div className="review-rating">
-              {Array.from({ length: review.rating }, (_, i) => (
+              {Array.from({ length: review.attributes?.rating }, (_, i) => (
                   <span key={i} className="star">★</span>
               ))}
             </div>
           </div>
 
           <div className={`review-text ${showFull ? "expanded" : "collapsed"}`}>
-            {review.text}
+            {review.content}
           </div>
 
-          {review.text.length > 100 && (
+          {review.content.length > 100 && (
               <button className="show-more-button" onClick={() => setShowFull(!showFull)}>
                 {showFull ? "Show Less" : "Show More"}
               </button>
@@ -201,8 +277,14 @@ const RecipeDetails = () => {
           <div className="review-reactions">
             <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like")}>👍 {like}</button>
             <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike")}>👎 {dislike}</button>
-            <button className="reaction-button delete-button" onClick={() => handleDeleteReview(index)}>🗑️</button>
+            {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && <>
+              <button className="reaction-button delete-button" onClick={() => handleDeleteReview(review.id)}>🗑️</button>
+              </>
+            }
           </div>
+          {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && 
+            <button className="reaction-button delete-button" onClick={() => handleEditReview(review.id)}>Edit ✏️</button> 
+          }
         </div>
     );
   };
@@ -283,7 +365,6 @@ const RecipeDetails = () => {
                     >★</span>
                 ))}
               </div>
-              <input type="text" placeholder="Your Name" value={commentName} onChange={(e) => setCommentName(e.target.value)} />
               <textarea placeholder="Your Review" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
               <button onClick={handleCommentSubmit}>Post Review</button>
             </div>
@@ -390,3 +471,4 @@ const RecipeDetails = () => {
         };
 
         export default RecipeDetails;
+
