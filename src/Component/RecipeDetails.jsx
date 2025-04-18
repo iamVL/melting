@@ -145,20 +145,21 @@ const RecipeDetails = () => {
         attributes: {
           postType: "review",
           rating: rating,
-          likes: 0,
-          dislikes: 0,
+          likes: [],
+          dislikes: [],
         },
       }),
     })
       .then(async (res) => {
         const result = await res.json();
-        window.location.reload()
+        setReviews((prev) => [result, ...prev]);
+        setCommentText("");
+        setRating(0);   
         console.log(result);
       })
       .catch((error) => {
         console.log("Review Submit error:", error);
       });
-
   };
 
   const handleCommentUpdate = (review, editComment, editRating) => {
@@ -179,15 +180,17 @@ const RecipeDetails = () => {
           attributes: {
             postType: "review",
             rating: editRating,
-            likes: review.attributes.likes || 0,
-            dislikes: review.attributes.dislikes || 0,
+            likes: review.attributes.likes || [],
+            dislikes: review.attributes.dislikes || [],
           },
         })
       })
       .then(async (res) => {
         const result = await res.json();
-        window.location.reload()
-        console.log(result);
+        setReviews((prev) =>
+          prev.map((r) => (r.id === result.id ? result : r))
+        );        
+        console.log("Edited Review:", result);
       })
       .catch((error) => {
         console.log("Review Update error:", error);
@@ -202,7 +205,7 @@ const RecipeDetails = () => {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     }) .then((res) => {
-      window.location.reload();
+      setReviews((prev) => prev.filter((r) => r.id !== reviewID));
     })
   };
 
@@ -271,7 +274,7 @@ const RecipeDetails = () => {
         });
   };
 
-  const ReviewItem = ({ review, index }) => {
+  const ReviewItem = ({ review, index, setReviews}) => {
     const [like, setLike] = useState(0);
     const [dislike, setDislike] = useState(0);
     const [reaction, setReaction] = useState(null);
@@ -281,15 +284,91 @@ const RecipeDetails = () => {
     const [editComment, setEditComment] = useState(review.content);
     const [editRating, setEditRating] = useState(review.attributes?.rating);
 
-    const toggleReaction = (type) => {
-      if (reaction === type) {
-        setReaction(null);
-        type === "like" ? setLike(like - 1) : setDislike(dislike - 1);
-      } else {
-        if (reaction === "like") setLike(like - 1);
-        if (reaction === "dislike") setDislike(dislike - 1);
-        type === "like" ? setLike(like + 1) : setDislike(dislike + 1);
-        setReaction(type);
+    const toggleReaction = (type, review) => {
+      if (type === "like") {
+        let new_likes = [...review.attributes.likes];
+
+        if (new_likes.some(like => like.userID === sessionStorage.getItem("user"))) {
+          for (let i = 0; i <new_likes.length; i++) {
+            if (new_likes[i].userID === sessionStorage.getItem("user")) {
+              new_likes.splice(i, 1);
+              break;
+            }
+          }
+        } else {
+          new_likes.push({userID: sessionStorage.getItem("user")});
+        }
+
+        fetch(`${process.env.REACT_APP_API_PATH}/posts/${review.id}`, {
+          method:"PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            authorID: review.authorID,
+            content: review.content,
+            parentID: review.parentID,
+            attributes: {
+              postType: "review",
+              rating: review.attributes.rating,
+              likes: new_likes || [],
+              dislikes: review.attributes.dislikes || [],
+            },
+          })
+        })
+        .then(async (res) => {
+          const result = await res.json();
+          setReviews(prev =>
+            prev.map(r => (r.id === result.id ? result : r))
+          );
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log("Review Update error:", error);
+        })
+      } else if (type === "dislike") {
+        let new_dislikes = [...review.attributes.dislikes];
+
+        if (new_dislikes.some(dislike => dislike.userID === sessionStorage.getItem("user"))) {
+          for (let i = 0; i <new_dislikes.length; i++) {
+            if (new_dislikes[i].userID === sessionStorage.getItem("user")) {
+              new_dislikes.splice(i, 1);
+              break;
+            }
+          }
+        } else {
+          new_dislikes.push({userID: sessionStorage.getItem("user")});
+        }
+
+        fetch(`${process.env.REACT_APP_API_PATH}/posts/${review.id}`, {
+          method:"PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            authorID: review.authorID,
+            content: review.content,
+            parentID: review.parentID,
+            attributes: {
+              postType: "review",
+              rating: review.attributes.rating,
+              likes: review.attributes.likes || [],
+              dislikes: new_dislikes || [],
+            },
+          })
+        })
+        .then(async (res) => {
+          const result = await res.json();
+          setReviews(prev =>
+            prev.map(r => (r.id === result.id ? result : r))
+          );
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log("Review Update error:", error);
+        })
       }
     };
 
@@ -319,8 +398,8 @@ const RecipeDetails = () => {
               </button>
           )}
             <div className="review-reactions">
-              <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like")}>👍 {like}</button>
-              <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike")}>👎 {dislike}</button>
+              <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like", review)}>👍 {review.attributes.likes.length}</button>
+              <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike", review)}>👎 {review.attributes.dislikes.length}</button>
               {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && 
                 <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button> 
               }
@@ -414,7 +493,7 @@ const RecipeDetails = () => {
 
             <div className="reviews-list" ref={reviewsRef}>
               {reviews.map((review, index) => (
-                  <ReviewItem key={index} review={review} index={index} />
+                  <ReviewItem key={index} review={review} index={index} setReviews={setReviews}/>
               ))}
             </div>
           </div>
