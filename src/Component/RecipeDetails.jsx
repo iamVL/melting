@@ -18,6 +18,8 @@ const RecipeDetails = () => {
   const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
+  const [commentName, setCommentName] = useState("");
+
 
 //AI was used to create this site
 

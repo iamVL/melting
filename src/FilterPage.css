@@ -334,13 +334,7 @@
     background-color: #ccc;
     border-radius: 4px;
 }
-/* Reduce header sizes inside sidebar */
-.sidebar-section h2,
-.checkbox-group h4 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-}
+
 
 /* Checkbox Groups (Cuisines, Allergies, Diets) */
 .checkbox-group {
@@ -419,12 +413,6 @@
     line-height: 1.4;
     padding-left: 2px;
 }
-.checkbox-group input[type="checkbox"] {
-    margin: 0;
-    transform: translateY(1px) scale(0.9);
-    appearance: auto;
-    accent-color: #ff7043;
-}
 
 .recipe-content h3 {
     font-size: 1rem;
@@ -465,4 +453,19 @@
     color: #666;
     text-align: right;
     gap: 2px;
+}
+/* Neutral sidebar buttons */
+.filter-sidebar button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    color: #333;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.filter-sidebar button:hover {
+    background-color: #e0e0e0;
 }
