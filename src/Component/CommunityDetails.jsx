@@ -24,6 +24,7 @@ const CommunityDetails = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [removePostPic, setRemovePostPic] = useState(false);
 
   const [title, setTitle] = useState(""); 
   const [mainImage, setMainImage] = useState(null); 
@@ -307,6 +308,10 @@ const CommunityDetails = () => {
       uploadedImageUrl = post.attributes.mainImage;
     }
 
+    if (removePostPic) {
+      uploadedImageUrl = null;
+    }
+
     let url = `${process.env.REACT_APP_API_PATH}/posts/${post.id}`;
 
     fetch(url, {
@@ -491,7 +496,7 @@ const CommunityDetails = () => {
                       ) : (
                         <form onSubmit={(e) => updatePost(post, e)}>
                           <div className="community-post-buttons">
-                            <button style={{backgroundColor:"rgb(172 176 173)"}} onClick={() => setEditPost(0)}>Cancel</button>
+                            <button type="button" style={{backgroundColor:"rgb(172 176 173)"}} onClick={() => setEditPost(0)}>Cancel</button>
                             <button style={{backgroundColor:"rgb(146 255 160)"}} > Save </button>
                           </div>
                         </form>
@@ -513,7 +518,8 @@ const CommunityDetails = () => {
                     <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>
                       <input name="tip-pic" type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} hidden />
                       {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
-                      </div>
+                    </div>
+                    <button type="button" style={{backgroundColor:"rgb(255, 146, 146)"}} onClick={()=> {setRemovePostPic(true); setSelectedImage(null);}} > Remove </button>
                   </div>
                 </>) : (<>
                     {postImage && <img src={postImage} alt ="post"/> }
