@@ -1,7 +1,4 @@
 import React, { useEffect } from "react";
-import blockIcon from "../assets/block_white_216x216.png";
-import unblockIcon from "../assets/thumbsup.png";
-import messageIcon from "../assets/comment.svg";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../App";
 import "../Friend.css";
@@ -29,7 +26,7 @@ const FriendList = (props) => {
       }
       ),
     })
-    
+
       .then((res) => res.json())
       .then(
         (result) => {
@@ -58,6 +55,31 @@ const FriendList = (props) => {
         props.loadFriends();
       });
   };
+  const handleMessageClick = async (connectionUser) => {
+    const fromUserID = sessionStorage.getItem("user");
+    const toUserID = connectionUser.id;
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_PATH}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify({ fromUserID, toUserID }),
+      });
+
+      const data = await res.json();
+      const roomID = data.roomID;
+      sessionStorage.setItem("roomID", roomID);
+      sessionStorage.setItem("toUserID", toUserID);
+      sessionStorage.setItem("toUsername", connectionUser.attributes.username);
+
+      navigate(`/messages/${roomID}`);
+    } catch (error) {
+      console.error("Failed to get or create room:", error);
+    }
+  };
 
   // If the user is not blocked, show the block icon
   // Otherwise, show the unblock icon and update the connection
@@ -76,12 +98,11 @@ const FriendList = (props) => {
   };
 
   useEffect(() => {
-    // function for creating a room
     const handleCreateRoom = (data) => {
       console.log("Received data on /room-created event:", data);
       if (data && data.roomID) {
         console.log("Navigating to room:", data.roomID);
-        // console.log("Room created:", data.roomID);
+
         navigate(`/messages/${data.roomID}`);
         sessionStorage.setItem("toUserID", props.userId);
       }
@@ -102,40 +123,7 @@ const FriendList = (props) => {
     };
   }, [navigate, props.userId]);
 
-  const handleMessageClick = (connectionUser) => {
-    // console.log("Message Clicked");
-    console.log("Attempting to message user with ID:", connectionUser.id);
-    console.log("Attempting to message user:", connectionUser);
-    console.log("Session user ID:", sessionStorage.getItem("user"));
-    console.log("Session token:", sessionStorage.getItem("token"));
-    
-    // Emit an event to create a room with the provided user IDs
-    // socket.emit is used to send events from the client to the server.
-    // it's used to create a room if it doesn't exist or join a room if one is already established
-    socket.emit("/chat/join-room", {
-      fromUserID: sessionStorage.getItem("user"),
-      toUserID: connectionUser.id,
-    });
-    console.log("Join room event emitted for user ID:", connectionUser.id);
 
-    console.log("Called join room");
-
-
-    // Do stuff to join the room once it's actually created
-    // before the effect hits the socket.once => 
-    socket.once("/room-created", (data) => {
-      console.log("Navigating to room with ID:", data.roomID);
-
-      if (data && data.roomID) {
-        console.log("Navigating to room with ID:", data.roomID);
-        sessionStorage.setItem("toUserID", connectionUser.id);
-        sessionStorage.setItem("roomID", data.roomID);
-        navigate(`/messages/${data.roomID}`);
-      }else {
-        console.error("Room creation failed, no roomID received.");
-      }
-    });
-  };
 
   if (props.error) {
     return <div> Error: {props.error.message} </div>;
@@ -150,13 +138,13 @@ const FriendList = (props) => {
             {props.connections.reverse().map((connection) => (
               <div key={connection.id} className="user-list">
                 <div className="friend-info">
-                { (props.title === "Your Following") ? 
+                { (props.title === "Your Following") ?
                 <>
-                { connection.toUser.attributes.picture !== undefined  && connection.toUser.attributes.picture !== "" ? 
+                { connection.toUser.attributes.picture !== undefined  && connection.toUser.attributes.picture !== "" ?
                     <>
                       <img src={connection.toUser.attributes.picture} alt="user picture"/>
                     </>
-                  :  
+                  :
                   <>
                       <img src={Default} alt="user picture"/>
                       </>
@@ -170,15 +158,15 @@ const FriendList = (props) => {
                       {conditionalAction(
                           connection.attributes.status,
                           connection.id
-                        )}          
+                        )}
                       <button type="button" onClick={() => deleteConnection(connection.id, connection.attributes.status)}> Remove </button>
                     </div>
                   </div></> : <>
-                  { connection.fromUser.attributes.picture !== undefined  && connection.fromUser.attributes.picture !== "" ? 
+                  { connection.fromUser.attributes.picture !== undefined  && connection.fromUser.attributes.picture !== "" ?
                     <>
                       <img src={connection.fromUser.attributes.picture} alt="user picture"/>
                     </>
-                  :  
+                  :
                   <>
                       <img src={Default} alt="user picture" />
                       </>
@@ -188,8 +176,8 @@ const FriendList = (props) => {
                       {connection.fromUser.attributes.username}
                     </p>
                     <div className="friend-buttons">
-                      <button type="button" onClick={() => handleMessageClick(connection.fromUser)}> Message </button>  
-                      <button type="button" onClick={() => deleteConnection(connection.id, connection.attributes.status)}> Remove </button>      
+                      <button type="button" onClick={() => handleMessageClick(connection.fromUser)}> Message </button>
+                      <button type="button" onClick={() => deleteConnection(connection.id, connection.attributes.status)}> Remove </button>
                     </div>
                   </div></>}
                 </div>

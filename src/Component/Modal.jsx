@@ -1,9 +1,11 @@
 import React from 'react';
 import "../App.css";
 import PropTypes from 'prop-types';
+import "../Modal.css"
 
 // This component is an example of a modal dialog.  The content can be swapped out for different uses, and
 // should be passed in from the parent class.
+
 const Modal = ({ onClose, show, children }) => {
 
   // Function to handle close event
@@ -18,14 +20,14 @@ const Modal = ({ onClose, show, children }) => {
   }
 
   return (
-    <div id="myModal" className="modal">
-      <div className="modal-content">
+      <div className="modal-overlay">
+        <div className="modal-content">
         <span className="close" onClick={handleClose}>
           &times;
         </span>
-        <div id="modalcontent">{children}</div>
+          <div id="modalcontent">{children}</div>
+        </div>
       </div>
-    </div>
   );
 };
 

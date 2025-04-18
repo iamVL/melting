@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../RecipeListing.css";
+import "../FilterPage.css";
 
 const FilterPage = () => {
   const [posts, setPosts] = useState([]);
@@ -15,6 +16,10 @@ const FilterPage = () => {
   const [maxTotalTime, setMaxTotalTime] = useState("");
   const [allergyFilters, setAllergyFilters] = useState([]);
   const [dietFilters, setDietFilters] = useState([]);
+  const [showCuisines, setShowCuisines] = useState(true);
+  const [showAllergies, setShowAllergies] = useState(true);
+  const [showDiets, setShowDiets] = useState(true);
+
 
   const token = sessionStorage.getItem("token");
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -209,222 +214,232 @@ const matchesAllergy = allergyFilters.length
   });
 
   return (
-    <div className="recipe-container">
-      <h2 className="recipe-header">Filter Recipes</h2>
-      <p className="recipe-subheader">
-        Use the advanced filters below to narrow down your recipe search.
-      </p>
+      <div className="filter-layout">
+        {/* Sidebar Filters */}
+        <aside className="filter-sidebar">
+          <div className="sidebar-section">
+            <h2>Filters</h2>
 
-      <div className="advanced-search-container">
-        <input
-          type="text"
-          placeholder="Search by title..."
-          className="search-bar"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+            {/* Search */}
+            <input
+                type="text"
+                placeholder="Search by title..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+            />
 
-        <input
-          type="text"
-          placeholder="Search by description..."
-          className="search-bar"
-          value={descriptionQuery}
-          onChange={(e) => setDescriptionQuery(e.target.value)}
-        />
+            <input
+                type="text"
+                placeholder="Search by description..."
+                value={descriptionQuery}
+                onChange={(e) => setDescriptionQuery(e.target.value)}
+            />
 
-        <div className="ingredient-input-wrapper">
-          <input
-            type="text"
-            placeholder="Type an ingredient and press Enter"
-            className="search-bar"
-            value={ingredientInput}
-            onChange={(e) => setIngredientInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && ingredientInput.trim()) {
-                e.preventDefault();
-                const input = ingredientInput.trim().toLowerCase();
-                if (!ingredientFilters.includes(input)) {
-                  setIngredientFilters((prev) => [...prev, input]);
-                }
-                setIngredientInput("");
-              }
-            }}
-          />
-
-          <div className="ingredient-tags" style={{ marginTop: "10px", display: "flex", flexWrap: "wrap", gap: "8px" }}>
-            {ingredientFilters.map((ingredient, index) => (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "#ffe0b2",
-                  border: "1px solid #ff7043",
-                  borderRadius: "20px",
-                  padding: "6px 12px",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  color: "#5d4037",
-                }}
-              >
-                {ingredient}
-                <button
-                  onClick={() =>
-                    setIngredientFilters((prev) =>
-                      prev.filter((ing) => ing !== ingredient)
-                    )
-                  }
-                  style={{
-                    background: "none",
-                    border: "none",
-                    marginLeft: "8px",
-                    fontWeight: "bold",
-                    color: "#d32f2f",
-                    cursor: "pointer",
+            {/* Ingredient Input */}
+            <div className="ingredient-filter">
+              <input
+                  type="text"
+                  placeholder="Add ingredient and press Enter"
+                  value={ingredientInput}
+                  onChange={(e) => setIngredientInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && ingredientInput.trim()) {
+                      e.preventDefault();
+                      const input = ingredientInput.trim().toLowerCase();
+                      if (!ingredientFilters.includes(input)) {
+                        setIngredientFilters((prev) => [...prev, input]);
+                      }
+                      setIngredientInput("");
+                    }
                   }}
-                >
+              />
+              <div className="ingredient-tags">
+                {ingredientFilters.map((ingredient, index) => (
+                    <span key={index} className="tag">
+                {ingredient}
+                      <button
+                          onClick={() =>
+                              setIngredientFilters((prev) =>
+                                  prev.filter((ing) => ing !== ingredient)
+                              )
+                          }
+                      >
                   ×
                 </button>
+              </span>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Difficulty / Serving / Time */}
+            <select
+                value={difficultyFilter}
+                onChange={(e) => setDifficultyFilter(e.target.value)}
+            >
+              <option value="">All Difficulties</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+
+            <input
+                type="number"
+                placeholder="Min Serving Size"
+                value={minServingSize}
+                onChange={(e) => setMinServingSize(e.target.value)}
+            />
+
+            <input
+                type="number"
+                placeholder="Max Total Time (minutes)"
+                value={maxTotalTime}
+                onChange={(e) => setMaxTotalTime(e.target.value)}
+            />
+
+            {/* Cuisines Dropdown */}
+            <div className="dropdown-group">
+              <div className="dropdown-header" onClick={() => setShowCuisines(!showCuisines)}>
+                <h4>Cuisines {showCuisines ? "▲" : "▼"}</h4>
+              </div>
+              {showCuisines && (
+                  <div className="checkbox-group">
+                    {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map(
+                        (cuisine) => (
+                            <label key={cuisine}>
+                              <input
+                                  type="checkbox"
+                                  checked={selectedCuisines.includes(cuisine)}
+                                  onChange={() =>
+                                      setSelectedCuisines((prev) =>
+                                          prev.includes(cuisine)
+                                              ? prev.filter((c) => c !== cuisine)
+                                              : [...prev, cuisine]
+                                      )
+                                  }
+                              />
+                              {cuisine}
+                            </label>
+                        )
+                    )}
+                  </div>
+              )}
+            </div>
+
+            {/* Allergies Dropdown */}
+            <div className="dropdown-group">
+              <div className="dropdown-header" onClick={() => setShowAllergies(!showAllergies)}>
+                <h4>Allergies {showAllergies ? "▲" : "▼"}</h4>
+              </div>
+              {showAllergies && (
+                  <div className="checkbox-group">
+                    {["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"].map(
+                        (allergy) => (
+                            <label key={allergy}>
+                              <input
+                                  type="checkbox"
+                                  checked={allergyFilters.includes(allergy)}
+                                  onChange={() =>
+                                      setAllergyFilters((prev) =>
+                                          prev.includes(allergy)
+                                              ? prev.filter((a) => a !== allergy)
+                                              : [...prev, allergy]
+                                      )
+                                  }
+                              />
+                              {allergy}
+                            </label>
+                        )
+                    )}
+                  </div>
+              )}
+            </div>
+
+            {/* Dietary Preferences Dropdown */}
+            <div className="dropdown-group">
+              <div className="dropdown-header" onClick={() => setShowDiets(!showDiets)}>
+                <h4>Dietary Preferences {showDiets ? "▲" : "▼"}</h4>
+              </div>
+              {showDiets && (
+                  <div className="checkbox-group">
+                    {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
+                        <label key={diet}>
+                          <input
+                              type="checkbox"
+                              checked={dietFilters.includes(diet)}
+                              onChange={() =>
+                                  setDietFilters((prev) =>
+                                      prev.includes(diet)
+                                          ? prev.filter((d) => d !== diet)
+                                          : [...prev, diet]
+                                  )
+                              }
+                          />
+                          {diet}
+                        </label>
+                    ))}
+                  </div>
+              )}
+            </div>
           </div>
-        </div>
+        </aside>
 
-        <select
-          className="search-bar-1"
-          value={difficultyFilter}
-          onChange={(e) => setDifficultyFilter(e.target.value)}
-        >
-          <option value="">All Difficulties</option>
-          <option value="Easy">Easy</option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
-        </select>
 
-        <input
-          type="number"
-          className="search-bar"
-          placeholder="Min Serving Size"
-          value={minServingSize}
-          onChange={(e) => setMinServingSize(e.target.value)}
-          min={1}
-        />
+            {/* Recipe Grid */}
+        <main className="recipe-listing">
+          <h2 className="results-header">Recipes</h2>
+          {filteredPosts.length > 0 ? (
+              <div className="recipe-grid">
+                {filteredPosts.map((post) => {
+                  const attrs = post.attributes || {};
+                  const title = attrs.title || post.content || "Untitled";
+                  const rawDescription = attrs.description || post.content || "";
+                  const description =
+                      rawDescription && rawDescription.trim() !== "undefined"
+                          ? rawDescription.trim().substring(0, 120) +
+                          (rawDescription.length > 120 ? "..." : "")
+                          : "No description available";
+                  const mainImage = attrs.mainImage || "/default-recipe-image.jpg";
+                  const recipeID = post.id;
+                  const isFavorited = favoritedRecipes.includes(recipeID);
 
-        <input
-          type="number"
-          className="search-bar"
-          placeholder="Max Total Time (in minutes)"
-          value={maxTotalTime}
-          onChange={(e) => setMaxTotalTime(e.target.value)}
-          min={1}
-        />
+                  return (
+                      <div key={post.id} className="recipe-card">
+                        <img
+                            src={mainImage}
+                            alt={title}
+                            className="recipe-image"
+                            onError={(e) => (e.target.src = "/default-recipe-image.jpg")}
+                        />
+                        <div className="recipe-content">
+                          <h3>{title}</h3>
+                          <p>{description}</p>
+                          <Link to={`/recipe/${post.id}`} className="read-more">
+                            Read More →
+                          </Link>
+                          <div className="card-footer">
+                            <button
+                                className={`favorite-button ${isFavorited ? "favorited" : ""}`}
+                                onClick={() => handleFavorite(recipeID)}
+                            >
+                              {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                            </button>
+                            <div className="recipe-meta">
+                              <span>{attrs.cuisine || "N/A"}</span>
+                              <span>{attrs.totalTime || "⏱ Unknown"}</span>
+                            </div>
+                          </div>
 
-        <div className="cuisine-filter-tags">
-          {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map((cuisine) => (
-            <label key={cuisine}>
-              <input
-                type="checkbox"
-                checked={selectedCuisines.includes(cuisine)}
-                onChange={() => {
-                  setSelectedCuisines((prev) =>
-                    prev.includes(cuisine)
-                      ? prev.filter((c) => c !== cuisine)
-                      : [...prev, cuisine]
+                        </div>
+                      </div>
                   );
-                }}
-              />
-              {cuisine}
-            </label>
-          ))}
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", marginTop: "16px" }}>
-        <div className="allergy-filter-tags">
-  <h4>Allergies (Exclude ingredients):</h4>
-  {["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"].map((allergy) => (
-    <label key={allergy}>
-      <input
-        type="checkbox"
-        checked={allergyFilters.includes(allergy)}
-        onChange={() =>
-          setAllergyFilters((prev) =>
-            prev.includes(allergy)
-              ? prev.filter((a) => a !== allergy)
-              : [...prev, allergy]
-          )
-        }
-      />
-      {allergy}
-    </label>
-  ))}
-</div>
-
-<div className="diet-filter-tags">
-  <h4>Religious Diets:</h4>
-  {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
-    <label key={diet}>
-      <input
-        type="checkbox"
-        checked={dietFilters.includes(diet)}
-        onChange={() =>
-          setDietFilters((prev) =>
-            prev.includes(diet)
-              ? prev.filter((d) => d !== diet)
-              : [...prev, diet]
-          )
-        }
-      />
-      {diet}
-    </label>
-  ))}
-</div>
-</div>
+                })}
+              </div>
+          ) : (
+              <p className="no-recipes">No recipes found matching filters.</p>
+          )}
+        </main>
       </div>
 
-      {filteredPosts.length > 0 ? (
-        <div className="recipe-grid">
-          {filteredPosts.map((post) => {
-            const attrs = post.attributes || {};
-            const title = attrs.title || post.content || "Untitled";
-            const rawDescription = attrs.description;
-            const description =
-  rawDescription && rawDescription.trim() !== "undefined"
-    ? rawDescription.trim().substring(0, 100) + (rawDescription.length > 100 ? "..." : "")
-    : post.content?.trim().substring(0, 100) + (post.content?.length > 100 ? "..." : "") || "No description available";
-
-            const mainImage = attrs.mainImage || "/default-recipe-image.jpg";
-            const recipeID = post.id;
-            const isFavorited = favoritedRecipes.includes(recipeID);
-
-            return (
-              <div key={post.id} className="recipe-card-1">
-                <img
-                  src={mainImage}
-                  alt={title}
-                  className="recipe-image-1"
-                  onError={(e) => (e.target.src = "/default-recipe-image.jpg")}
-                />
-                <div className="recipe-content-1">
-                  <h3 className="recipe-title-1">{title}</h3>
-                  <p className="recipe-description-1">{description}</p>
-                  <Link to={`/recipe/${post.id}`} className="read-more-button-1">
-                    Read More →
-                  </Link>
-                  <button
-                    className={`favorite-button ${isFavorited ? "favorited" : ""}`}
-                    onClick={() => handleFavorite(recipeID)}
-                  >
-                    {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <p className="no-recipes-found">No recipes found matching filters.</p>
-      )}
-    </div>
   );
 };
-
 export default FilterPage;
