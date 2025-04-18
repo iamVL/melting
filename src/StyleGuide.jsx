@@ -241,27 +241,52 @@ const StyleGuide = () => {
       </div>
 
       {/* Popups / Modals */}
-      <div className="column">
-        <div className = "snip-box">
-        <h2>5. Popups / Modals</h2>
-        <p>This modal centers itself and dims the background.</p>
-        <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
-          Show Modal
-        </button>
-        </div>
-
-        {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <button className="close-btn" onClick={() => setIsModalOpen(false)}>
-                &times;
-              </button>
-              <p>This is a modal example!</p>
+        <div className="column">
+            <div className="snip-box">
+                <h2>5. Popups / Modals</h2>
+                <p>This modal centers itself and dims the background.</p>
+                <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
+                    Show Modal
+                </button>
             </div>
-          </div>
-        )}
 
-<pre>
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button className="close-btn" onClick={() => setIsModalOpen(false)}>
+                            &times;
+                        </button>
+                        <p>This is a modal example!</p>
+                    </div>
+                </div>
+            )}
+            {/* Delete Confirmation Modal Demo */}
+            <div className="snip-box">
+                <h2>5.2 Delete Confirmation Modal</h2>
+                <p>This modal asks the user to confirm an action.</p>
+                <button className="btn btn-primary" onClick={() => setIsModalOpen("delete")}>
+                    Show Delete Modal
+                </button>
+            </div>
+
+            {isModalOpen === "delete" && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <p>Are you sure you want to delete this recipe?</p>
+                        <div className="button-container" style={{marginTop: "20px"}}>
+                            <button className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>
+                                Cancel
+                            </button>
+                            <button className="btn btn-danger" onClick={() => setIsModalOpen(false)}>
+                                Yes, Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+            <pre>
           <code>
             {`{isModalOpen && (
   <div className="modal-overlay">
@@ -277,16 +302,30 @@ const StyleGuide = () => {
         )}`}
           </code>
         </pre>
-      </div>
+            <pre>
+  <code>
+{`<div className="modal-overlay">
+  <div className="modal-content">
+    <p>Are you sure you want to delete this recipe?</p>
+    <div className="button-container">
+      <button className="btn btn-secondary">Cancel</button>
+      <button className="btn btn-danger">Yes, Delete</button>
+    </div>
+  </div>
+</div>`}
+  </code>
+</pre>
 
-      {/* Feedback Messages */}
-      <div className="column">
-        <div className = "snip-box">
-          <h2>6. Feedback Messages</h2>
-          <div className="alert success">Success Message: Action completed!</div>
-          <div className="alert error">Error Message: Something went wrong!</div>
         </div>
-        <pre>
+
+        {/* Feedback Messages */}
+        <div className="column">
+            <div className="snip-box">
+                <h2>6. Feedback Messages</h2>
+                <div className="alert success">Success Message: Action completed!</div>
+                <div className="alert error">Error Message: Something went wrong!</div>
+            </div>
+            <pre>
           <code>
             {`.alert {
     padding: 1rem;
