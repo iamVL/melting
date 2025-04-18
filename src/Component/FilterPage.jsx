@@ -272,15 +272,6 @@ const matchesAllergy = allergyFilters.length
             </div>
 
             {/* Difficulty / Serving / Time */}
-            <select
-                value={difficultyFilter}
-                onChange={(e) => setDifficultyFilter(e.target.value)}
-            >
-              <option value="">All Difficulties</option>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
 
             <input
                 type="number"
@@ -295,6 +286,15 @@ const matchesAllergy = allergyFilters.length
                 value={maxTotalTime}
                 onChange={(e) => setMaxTotalTime(e.target.value)}
             />
+            <select
+                value={difficultyFilter}
+                onChange={(e) => setDifficultyFilter(e.target.value)}
+            >
+              <option value="">All Difficulties</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
 
             {/* Cuisines Dropdown */}
             <div className="dropdown-group">
@@ -384,7 +384,7 @@ const matchesAllergy = allergyFilters.length
         </aside>
 
 
-            {/* Recipe Grid */}
+        {/* Recipe Grid */}
         <main className="recipe-listing">
           <h2 className="results-header">Recipes</h2>
           {filteredPosts.length > 0 ? (

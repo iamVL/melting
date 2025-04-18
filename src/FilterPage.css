@@ -79,6 +79,7 @@
 
 /* Checkbox Filter Sections */
 .checkbox-filters {
+    color: orange;
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
@@ -468,4 +469,43 @@
 
 .filter-sidebar button:hover {
     background-color: #e0e0e0;
+}
+.dropdown-group,
+.checkbox-group {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 150px; /* Equalize height */
+}
+.filter-sidebar {
+    width: 280px; /* already set */
+}
+
+.dropdown-group {
+    width: 100%;
+}
+
+.checkbox-group {
+    width: 100%;
+}
+.checkbox-group input[type="checkbox"] {
+    accent-color: #ff7043; /* This gives the orange checkbox */
+    margin-right: 6px;
+    transform: scale(0.85);
+    color: white;
+}
+.filter-sidebar .dropdown-group,
+.filter-sidebar .ingredient-filter,
+.filter-sidebar select,
+.filter-sidebar input[type="number"],
+.filter-sidebar input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+}
+.dropdown-group {
+    min-height: 180px; /* or 150px depending on your needs */
 }
