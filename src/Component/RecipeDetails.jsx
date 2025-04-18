@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import "../RecipeDetails.css";
 import Modal from "../Component/Modal";
 
+
 const RecipeDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate(); // ⬅️ NEW
@@ -19,11 +20,6 @@ const RecipeDetails = () => {
   const [expandedReview, setExpandedReview] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
   const [commentName, setCommentName] = useState("");
-
-
-//AI was used to create this site
-
-
   const [connections, setConnections] = useState([]);
   const [followClick, setFollowClick] = useState(false);
 
@@ -70,7 +66,6 @@ const RecipeDetails = () => {
 
     fetchRecipeWithVisibilityCheck();
   }, [id, navigate]);
-
 
 
   useEffect(() => {
@@ -159,20 +154,14 @@ const RecipeDetails = () => {
 
   const getRatingPercentage = () => ((getAverageRating() / 5) * 100).toFixed(0);
 
-
-  const handleCommentSubmit = () => {
-    if (commentName && commentText && rating > 0) {
-      const newReview = { name: commentName, text: commentText, rating };
-      const updatedReviews = [...reviews, newReview];
-      setReviews(updatedReviews);
-      localStorage.setItem(`reviews-${id}`, JSON.stringify(updatedReviews));
-      setCommentName("");
-      setCommentText("");
-      setRating(0);
-      setModalMessage("✅ Review submitted!");
-    } else {
-      setModalMessage("⚠️ Please fill in all fields before submitting.");
-
+  const handleCommentSubmit = (event) => {
+    event.preventDefault();
+    if (rating === 0) {
+      alert("Choose a rating 1-5!");
+      return;
+    } else if (commentText === "") {
+      alert("Fill in a review!");
+      return;
     }
 
     fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
@@ -250,7 +239,6 @@ const RecipeDetails = () => {
     }) .then((res) => {
       setReviews((prev) => prev.filter((r) => r.id !== reviewID));
     })
-
   };
 
   const toggleExpand = (index) => {
@@ -617,10 +605,16 @@ const RecipeDetails = () => {
           </div>
         <div className="sidebar-section">
            <h4 style={{ margin: "0px" }}>Visible To</h4>
-            {recipe.attributes?.visibility && (
+            {recipe.attributes?.visibility ? (
             <div className="cuisine-tags">
               <div className="cuisine-tag">
                 {recipe.attributes.visibility === "Followers Only" ? "Followers Only" : "Public"}
+              </div>
+            </div>
+              ) : ( 
+                <div className="cuisine-tags">
+              <div className="cuisine-tag">
+                {"Public"}
               </div>
             </div>
               )}
@@ -663,7 +657,7 @@ const RecipeDetails = () => {
         </div>
         {modalMessage && <Modal message={modalMessage} onClose={() => setModalMessage("")} />}
 
-      </div>
+        </div>
         );
         };
 
