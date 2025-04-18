@@ -17,6 +17,9 @@ const RecipeDetails = () => {
   const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
 
+  const [connections, setConnections] = useState([]);
+  const [followClick, setFollowClick] = useState(false);
+
   useEffect(() => {
     const fetchRecipeWithVisibilityCheck = async () => {
       try {
@@ -98,7 +101,33 @@ const RecipeDetails = () => {
       const data = await res.json();
       setReviews(data[0]);
     };
-    
+
+    const loadFriends = () => {
+      fetch(
+        process.env.REACT_APP_API_PATH +
+          "/connections?fromUserID=" +
+          sessionStorage.getItem("user"),
+        {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setConnections(result[0]);
+            console.log("Following", result[0]);
+          },
+          (error) => {
+            setError(error);
+          }
+        );
+    };
+
+    loadFriends();
     findReviews();
   }, [id]);
 
@@ -591,14 +620,20 @@ const RecipeDetails = () => {
                   <>
                     <span>{authorInfo.username}</span>
                     <br/>
-                    <button onClick={handleFollowUser} className="orange-follow-button">
-                      ➕ Follow this user
-                    </button>
+                    { ( parseInt(authorInfo.id) !== parseInt(sessionStorage.getItem("user")) && connections.some(conn => conn.toUserID === authorInfo.id) == false && !followClick) && 
+                      <button onClick={() => {handleFollowUser(); setFollowClick(true);}} className="orange-follow-button">
+                        ➕ Follow this user
+                      </button>
+                    }
+
+                    {connections.some(conn => conn.toUserID === authorInfo.id) === true && <>
+                    <p style={{marginTop:"35px", color:"#e67e22", fontWeight:"1000"}}> You are following this user!</p>
+                    </>}
 
                     {followMessage && (
                         <p style={{
                           color: followMessage.includes("❌") ? "red" : "green",
-                          marginTop: "5px",
+                          marginTop: "35px",
                           fontWeight: "bold"
                         }}>
                           {followMessage}
