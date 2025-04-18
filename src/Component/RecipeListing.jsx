@@ -25,6 +25,7 @@ const RecipeListing = ({
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
   const [applyPreferences, setApplyPreferences] = useState(false);
   const [localConnections, setLocalConnections] = useState([]);
+  const [postRatings, setPostRatings] = useState({});
 
   /* ---------- load favorites ---------- */
   useEffect(() => {
@@ -243,19 +244,40 @@ const RecipeListing = ({
   };
 
   /* ---------- ratings helper ---------- */
-  const getAverageRating = (postID) => {
-    const storedReviews = localStorage.getItem(`reviews-${postID}`);
-    if (!storedReviews) return 0;
-    const reviews = JSON.parse(storedReviews);
-    if (reviews.length === 0) return 0;
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return (totalRating / reviews.length).toFixed(1);
-  };
+  useEffect(() => {
+    const fetchAllRatings = async () => {
+      const ratings = {};
+  
+      for (let post of posts) {
+        try {
+          const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts?parentID=${post.id}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const result = await res.json();
+          const reviews = result[0] || [];
+          const total = reviews.reduce((sum, r) => sum + (r.attributes?.rating || 0), 0);
+          const avg = reviews.length > 0 ? (total / reviews.length).toFixed(1) : "0.0";
+          ratings[post.id] = avg;
+        } catch (err) {
+          console.warn(`Could not fetch rating for post ${post.id}`);
+          ratings[post.id] = "0.0";
+        }
+      }
+  
+      setPostRatings(ratings);
+    };
+  
+    if (posts.length > 0) fetchAllRatings();
+  }, [posts, token]);
+  
 
   /* ---------- sort & preference filters ---------- */
   let sortedPosts = [...posts].map((post) => ({
     ...post,
-    averageRating: getAverageRating(post.id),
+    averageRating: postRatings[post.id],
   }));
 
   if (sortOption === "created") {
@@ -367,7 +389,7 @@ const RecipeListing = ({
                 : description;
             const recipeID = post.id;
             const isFavorited = favoritedRecipes.includes(recipeID);
-            const averageRating = post.averageRating;
+            const averageRating = postRatings[post.id] || "0.0";
 
             return (
               <div key={post.id} className="recipe-card-1">
@@ -473,3 +495,4 @@ const RecipeListing = ({
 };
 
 export default RecipeListing;
+
