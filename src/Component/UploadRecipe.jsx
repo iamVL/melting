@@ -1,9 +1,9 @@
+// UploadRecipe.jsx
 import React, { useState, useEffect } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../UploadRecipe.css";
 
 const UploadRecipe = () => {
-    //storing recipe details
     const [recipe, setRecipe] = useState({
         title: "",
         description: "",
@@ -11,52 +11,48 @@ const UploadRecipe = () => {
         timeMinutes: "",
         servingSize: "",
         difficulty: "",
-        ingredients:[],
+        ingredients: [],
         steps: [""],
         image: null,
-        cuisine:[],
-        allergy:[],
-        diet:[],
+        cuisine: [],
+        allergy: [],
+        diet: [],
     });
-   //Additional states for handling user input
+
     const [newIngredient, setNewIngredient] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const navigate = useNavigate();
-    //changes in text input fields and updates the recipe
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setRecipe((prev) => ({...prev, [name]: value }));
+        setRecipe((prev) => ({ ...prev, [name]: value }));
     };
-    //adds a new ingredient to the list if it's not empty.
+
     const handleAddIngredient = () => {
         if (newIngredient.trim()) {
             setRecipe((prev) => ({
                 ...prev,
-                //trim whitespace
                 ingredients: [...prev.ingredients, newIngredient.trim()],
             }));
             setNewIngredient("");
         }
     };
-    //Deletes an ingredient from the list based on the given index.
+
     const handleDeleteIngredient = (index) => {
         setRecipe((prev) => {
             const updatedIngredients = [...prev.ingredients];
             updatedIngredients.splice(index, 1);
-            return {...prev, ingredients: updatedIngredients };
+            return { ...prev, ingredients: updatedIngredients };
         });
     };
-    //adds a step
+
     const handleAddStep = () => {
-        setRecipe((prev) => ({
-            ...prev,
-            steps: [...prev.steps, ""],
-        }));
+        setRecipe((prev) => ({ ...prev, steps: [...prev.steps, ""] }));
     };
-    //deletes a step
+
     const handleDeleteStep = (index) => {
         setRecipe((prev) => {
             const updatedSteps = [...prev.steps];
@@ -64,159 +60,138 @@ const UploadRecipe = () => {
             return { ...prev, steps: updatedSteps };
         });
     };
-    //updtes given index when the user modifies the input
+
     const handleStepChange = (index, value) => {
         const newSteps = [...recipe.steps];
         newSteps[index] = value;
-        setRecipe((prev) => ({...prev, steps: newSteps }));
+        setRecipe((prev) => ({ ...prev, steps: newSteps }));
     };
-    //file selection for image upload
+
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
             setImageFile(file);
-            //allows you to preview image
             setSelectedImage(URL.createObjectURL(file));
         }
     };
-    //adding or removing cuisine
+
     const handleCuisineToggle = (cuisine) => {
-        setRecipe((prevRecipe) => {
-            const updatedCuisines = prevRecipe.cuisine.includes(cuisine)
-                ? prevRecipe.cuisine.filter((c) => c!== cuisine)
-                : [...prevRecipe.cuisine, cuisine];
-            return {...prevRecipe, cuisine: updatedCuisines };
+        setRecipe((prev) => {
+            const updated = prev.cuisine.includes(cuisine)
+                ? prev.cuisine.filter((c) => c !== cuisine)
+                : [...prev.cuisine, cuisine];
+            return { ...prev, cuisine: updated };
         });
     };
 
-    //adding or removing allergy
     const handleAllergyToggle = (allergy) => {
-        setRecipe((prevRecipe) => {
-            const updatedAllergies = prevRecipe.allergy.includes(allergy)
-                ? prevRecipe.allergy.filter((c) => c!== allergy)
-                : [...prevRecipe.allergy, allergy];
-            return {...prevRecipe, allergy: updatedAllergies };
+        setRecipe((prev) => {
+            const updated = prev.allergy.includes(allergy)
+                ? prev.allergy.filter((a) => a !== allergy)
+                : [...prev.allergy, allergy];
+            return { ...prev, allergy: updated };
         });
     };
 
-    //adding or removing diet
     const handleDietToggle = (diet) => {
-        setRecipe((prevRecipe) => {
-            const updatedDiets = prevRecipe.diet.includes(diet)
-                ? prevRecipe.diet.filter((c) => c!== diet)
-                : [...prevRecipe.diet, diet];
-            return {...prevRecipe, diet: updatedDiets };
+        setRecipe((prev) => {
+            const updated = prev.diet.includes(diet)
+                ? prev.diet.filter((d) => d !== diet)
+                : [...prev.diet, diet];
+            return { ...prev, diet: updated };
         });
     };
-    //uploads the selected image to the API and returns the image URL
+
     const uploadImage = async () => {
         if (!imageFile) return null;
-
-        const userID = sessionStorage.getItem("user");
         const formData = new FormData();
-        formData.append("uploaderID", userID); 
+        formData.append("uploaderID", sessionStorage.getItem("user"));
         formData.append("attributes", JSON.stringify({}));
         formData.append("file", imageFile);
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_PATH}/file-uploads`, {
+            const res = await fetch(`${process.env.REACT_APP_API_PATH}/file-uploads`, {
                 method: "POST",
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-                },
+                headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
                 body: formData,
             });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error("Image upload failed:", errorText);
-                throw new Error(errorText);
+            if (!res.ok) {
+                setError("Image upload failed. Try JPG, PNG, or smaller file size.");
+                return null;
             }
 
-            const data = await response.json();
-            console.log("Image uploaded successfully:", data);
-            //// return full image URL
+            const data = await res.json();
             return `https://webdev.cse.buffalo.edu${data.path}`;
-        } catch (error) {
-            console.error("Image upload error:", error);
+        } catch (err) {
+            setError("Image upload error. Please try again.");
             return null;
         }
     };
-    //submits the recipe to the API
+
     const handleSubmit = async () => {
         if (!recipe.title || !recipe.description || !recipe.servingSize || !recipe.difficulty || recipe.ingredients.length === 0 || recipe.steps.length === 0) {
-            alert("Please fill in all required fields.");
+            setError("Please fill in all required fields before submitting.");
             return;
         }
 
         setIsLoaded(false);
+        setError(null);
 
         let uploadedImageUrl = null;
         if (imageFile) {
             uploadedImageUrl = await uploadImage();
-            if (!uploadedImageUrl) {
-                alert("Image upload failed. Please try different images such as .heic");
-                return;
-            }
+            if (!uploadedImageUrl) return;
         }
 
-        fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-                authorID: sessionStorage.getItem("user"),
-                content: recipe.description,
-                attributes: {
-                    postType: "recipe",
-                    title: recipe.title,
-                    totalTime: `${recipe.timeHours}hours ${recipe.timeMinutes}minutes`,
-                    servingSize: parseInt(recipe.servingSize) || 1,
-                    difficulty: recipe.difficulty || "Easy",
-                    ingredients: recipe.ingredients.length ? recipe.ingredients : ["Unknown"],
-                    steps: recipe.steps,
-                    cuisine: recipe.cuisine,
-                    allergy: recipe.allergy,
-                    diet: recipe.diet,
-                    mainImage: uploadedImageUrl,
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
                 },
-            }),
-        })
-            .then(async (res) => {
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || "Failed to upload recipe.");
-
-                setIsLoaded(true);
-                console.log("Recipe uploaded successfully:", data);
-
-                // ✅ Remove the state object from navigate
-                navigate(`/recipe/${data.id}`);
-            })
-            .catch((error) => {
-                setIsLoaded(true);
-                setError(error);
-                console.log("Error uploading recipe:", error);
+                body: JSON.stringify({
+                    authorID: sessionStorage.getItem("user"),
+                    content: recipe.description,
+                    attributes: {
+                        postType: "recipe",
+                        title: recipe.title,
+                        totalTime: `${recipe.timeHours}hours ${recipe.timeMinutes}minutes`,
+                        servingSize: parseInt(recipe.servingSize) || 1,
+                        difficulty: recipe.difficulty || "Easy",
+                        ingredients: recipe.ingredients,
+                        steps: recipe.steps,
+                        cuisine: recipe.cuisine,
+                        allergy: recipe.allergy,
+                        diet: recipe.diet,
+                        mainImage: uploadedImageUrl,
+                    },
+                }),
             });
 
-    };
-    //check if the user is logged in.
-    useEffect(() => {
-        if (sessionStorage.getItem("token")) {
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message);
             setIsLoaded(true);
+            navigate(`/recipe/${data.id}`);
+        } catch (err) {
+            setIsLoaded(true);
+            setError("Something went wrong while submitting your recipe. Please try again.");
         }
+    };
+
+    useEffect(() => {
+        if (sessionStorage.getItem("token")) setIsLoaded(true);
     }, []);
 
-    //options for cuisine toggle
     const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
-    const allergyOptions = ["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"]
+    const allergyOptions = ["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"];
     const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian"];
-
 
     return (
         <div className="page-container">
             <div className="upload-recipe-header">Upload Recipe</div>
+            {error && <div className="error-message">{error}</div>}
             {isLoaded? (
                 <div className="upload-recipe-container">
                     <div className="upload-recipe-form">

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import RecipeListing from "./RecipeListing";
+
 import "../RecipeListing.css"; // For shared recipe styles
-import "../CookbookManager.css"; // 🆕 This is your custom cookbook CSS
+import "../CookbookManager.css";
+import Modal from "../Component/Modal";
+
 
 const CookbookManager = () => {
     const [cookbooks, setCookbooks] = useState([]);
     const [newCookbookName, setNewCookbookName] = useState("");
     const [recipes, setRecipes] = useState([]);
     const [favoritedRecipes, setFavoritedRecipes] = useState([]);
-    const [selectedRecipes, setSelectedRecipes] = useState([]);
+
 
     const token = sessionStorage.getItem("token");
     const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -18,6 +20,9 @@ const CookbookManager = () => {
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [cookbookToDelete, setCookbookToDelete] = useState(null);
+
 
 
     useEffect(() => {
@@ -110,25 +115,6 @@ const CookbookManager = () => {
         setNewCookbookName("");
     };
 
-    const toggleRecipeSelection = (id) => {
-        setSelectedRecipes((prev) =>
-            prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
-        );
-    };
-
-    const addToCookbook = (cookbookName) => {
-        const updated = cookbooks.map((cb) => {
-            if (cb.name === cookbookName && cb.ownerID === currentUserID) {
-                const merged = Array.from(new Set([...cb.recipes, ...selectedRecipes]));
-                return { ...cb, recipes: merged };
-            }
-            return cb;
-        });
-        saveCookbooks(updated);
-        alert("Recipes added to cookbook ✅");
-        setSelectedRecipes([]);
-    };
-
     const handleDeleteCookbook = (cookbookName) => {
         const confirm = window.confirm(`Delete cookbook "${cookbookName}"?`);
         if (!confirm) return;
@@ -174,7 +160,7 @@ const CookbookManager = () => {
                 Browse all recipes and add them to your own cookbooks!
             </p>
 
-            {/* Create new cookbook */}
+
             <div className="create-cookbook-form">
                 <input
                     type="text"
@@ -185,11 +171,11 @@ const CookbookManager = () => {
                 <button onClick={handleCreateCookbook}>➕ Create</button>
             </div>
 
-            {/* List of user's cookbooks */}
+
             <div className="cookbook-list">
                 <h3 style={{marginBottom: "1rem"}}>Your Cookbooks</h3>
                 <p className="recipe-subheader">
-                   Here are the cookbooks you've created! Select on any recipe below and once you see that they are selected click add selected recipes!
+                   Here are the cookbooks you've created!
                 </p>
                 {cookbooks.length === 0 ? (
                     <p>You haven't created any cookbooks yet.</p>
@@ -206,18 +192,37 @@ const CookbookManager = () => {
 
                                 <button
                                     className="delete-cookbook-btn"
-                                    onClick={() => handleDeleteCookbook(cb.name)}
+                                    onClick={() => {
+                                        setCookbookToDelete(cb.name);
+                                        setOpenDeleteModal(true);
+                                    }}
                                 >
                                     🗑
                                 </button>
+
                             </div>
                         </div>
                     ))
                 )}
             </div>
+            <Modal show={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
+                <p>Are you sure you want to delete the cookbook "<strong>{cookbookToDelete}</strong>"?</p>
+                <div className="modal-buttons">
+                    <button className="cancel-btn" onClick={() => setOpenDeleteModal(false)}>Cancel</button>
+                    <button
+                        className="delete-btn"
+                        onClick={() => {
+                            const updated = cookbooks.filter((cb) => cb.name !== cookbookToDelete);
+                            saveCookbooks(updated);
+                            setOpenDeleteModal(false);
+                            setCookbookToDelete(null);
+                        }}
+                    >
+                        Yes, Delete
+                    </button>
+                </div>
+            </Modal>
 
-
-            {/* Recipe Grid Listing */}
 
         </div>
     );

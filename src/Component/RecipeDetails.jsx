@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../RecipeDetails.css";
+import Modal from "../Component/Modal";
 
 const RecipeDetails = () => {
   const { id } = useParams();
@@ -15,6 +16,8 @@ const RecipeDetails = () => {
   const [followMessage, setFollowMessage] = useState("");
   const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
+  const [modalMessage, setModalMessage] = useState("");
+
 //AI was used to create this site
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
@@ -82,10 +85,12 @@ const RecipeDetails = () => {
       setCommentName("");
       setCommentText("");
       setRating(0);
+      setModalMessage("✅ Review submitted!");
     } else {
-      alert("Please fill in all fields for the review.");
+      setModalMessage("⚠️ Please fill in all fields before submitting.");
     }
   };
+
 
   const handleDeleteReview = (index) => {
     const updatedReviews = [...reviews];
@@ -375,7 +380,9 @@ const RecipeDetails = () => {
             </div>
           </div>
         </div>
-        </div>
+        {modalMessage && <Modal message={modalMessage} onClose={() => setModalMessage("")} />}
+
+      </div>
         );
         };
 
