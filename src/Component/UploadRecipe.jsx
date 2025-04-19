@@ -188,8 +188,8 @@ const UploadRecipe = () => {
          postType: "recipe",
          title: recipe.title,
          totalTime: `${recipe.timeHours}hours ${recipe.timeMinutes}minutes`,
-         servingSize: parseInt(recipe.servingSize),
-         difficulty: recipe.difficulty,
+         servingSize: parseInt(recipe.servingSize) || 1,
+         difficulty: recipe.difficulty || "Easy",
          ingredients: recipe.ingredients,
          steps: recipe.steps,
          cuisine: recipe.cuisine,
@@ -202,13 +202,13 @@ const UploadRecipe = () => {
    })
      .then(async (res) => {
        const data = await res.json();
-       if (!res.ok) throw new Error(data.message || "Upload failed.");
+       if (!res.ok) throw new Error(data.message);
        setIsLoaded(true);
        navigate(`/recipe/${data.id}`);
      })
      .catch((error) => {
        setIsLoaded(true);
-       setError(error);
+       setError("Something went wrong while submitting your recipe. Please try again.");
        console.log("Upload error:", error);
      });
  };

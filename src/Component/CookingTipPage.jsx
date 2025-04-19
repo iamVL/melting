@@ -6,7 +6,7 @@ const Posts = ({ doRefreshPosts, appRefresh }) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // load all the posts in the database to display on the screen in the home page
+
   const loadPosts = () => {
     if (sessionStorage.getItem("token")) {
       let url = process.env.REACT_APP_API_PATH + "/posts?parentID="; // Remove attributes filter

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../RecipeListing.css";
+import ConfirmModal from "../Component/ConfirmModal";
+
 
 const RecipeListing = ({
   posts,
@@ -25,6 +27,12 @@ const RecipeListing = ({
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
   const [applyPreferences, setApplyPreferences] = useState(false);
   const [localConnections, setLocalConnections] = useState([]);
+  const [postRatings, setPostRatings] = useState({});
+
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
+  const [showFavoriteModal, setShowFavoriteModal] = useState(false);
+  const [showCookbookModal, setShowCookbookModal] = useState(false);
+
 
   /* ---------- load favorites ---------- */
   useEffect(() => {
@@ -182,8 +190,8 @@ const RecipeListing = ({
         if (response.ok) {
           setFavoritedRecipes((prev) => [...prev, recipeID]);
         } else {
-          const errorMessage = await response.text();
-          alert("Error updating favorite status: " + errorMessage);
+          setShowFavoriteModal(true);
+          setTimeout(() => setShowFavoriteModal(false), 2000);
         }
       } catch (error) {
         console.error("Failed to update favorite:", error);
@@ -206,10 +214,34 @@ const RecipeListing = ({
     });
 
     localStorage.setItem("cookbooks", JSON.stringify(updated));
-    alert(`Recipe added to ${cookbookName}`);
+    setShowCookbookModal(true);
+    setTimeout(() => setShowCookbookModal(false), 2000); // Auto-close after 2 seconds
   };
 
   /* ---------- helper: delete ---------- */
+  const deleteRecipe = async (postID) => {
+    const token = sessionStorage.getItem("token");
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${postID}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        setDeleteTargetId(null);
+
+        window.location.href = "/recipes"; // or use navigate()
+      } else {
+        const errorText = await res.text();
+        console.error("Delete failed:", errorText);
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
   const handleDelete = async (postID) => {
     if (!token) {
       alert("You must be logged in to delete a recipe.");
@@ -243,19 +275,40 @@ const RecipeListing = ({
   };
 
   /* ---------- ratings helper ---------- */
-  const getAverageRating = (postID) => {
-    const storedReviews = localStorage.getItem(`reviews-${postID}`);
-    if (!storedReviews) return 0;
-    const reviews = JSON.parse(storedReviews);
-    if (reviews.length === 0) return 0;
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return (totalRating / reviews.length).toFixed(1);
-  };
+  useEffect(() => {
+    const fetchAllRatings = async () => {
+      const ratings = {};
+  
+      for (let post of posts) {
+        try {
+          const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts?parentID=${post.id}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const result = await res.json();
+          const reviews = result[0] || [];
+          const total = reviews.reduce((sum, r) => sum + (r.attributes?.rating || 0), 0);
+          const avg = reviews.length > 0 ? (total / reviews.length).toFixed(1) : "0.0";
+          ratings[post.id] = avg;
+        } catch (err) {
+          console.warn(`Could not fetch rating for post ${post.id}`);
+          ratings[post.id] = "0.0";
+        }
+      }
+  
+      setPostRatings(ratings);
+    };
+  
+    if (posts.length > 0) fetchAllRatings();
+  }, [posts, token]);
+  
 
   /* ---------- sort & preference filters ---------- */
   let sortedPosts = [...posts].map((post) => ({
     ...post,
-    averageRating: getAverageRating(post.id),
+    averageRating: postRatings[post.id],
   }));
 
   if (sortOption === "created") {
@@ -367,7 +420,7 @@ const RecipeListing = ({
                 : description;
             const recipeID = post.id;
             const isFavorited = favoritedRecipes.includes(recipeID);
-            const averageRating = post.averageRating;
+            const averageRating = postRatings[post.id] || "0.0";
 
             return (
               <div key={post.id} className="recipe-card-1">
@@ -418,15 +471,7 @@ const RecipeListing = ({
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
                     Read More →
                   </Link>
-
-                  {String(authorID) === String(currentUserID) && (
-                    <button
-                      className="delete-recipe-button-1"
-                      onClick={() => handleDelete(post.id)}
-                    >
-                      🗑 Delete
-                    </button>
-                  )}
+                  
 
                   <button
                     className={`favorite-button ${
@@ -436,6 +481,15 @@ const RecipeListing = ({
                   >
                     {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
                   </button>
+
+                  {String(authorID) === String(currentUserID) && (
+                              <button
+                                  className="delete-recipe-btn"
+                                  onClick={() => setDeleteTargetId(recipeID)}
+                              >
+                                🗑️ Delete Recipe
+                              </button>
+                          )}
 
                   {String(authorID) === String(currentUserID) &&
                     userCookbooks.length > 0 && (
@@ -468,8 +522,34 @@ const RecipeListing = ({
       ) : (
         <div className="no-recipes-found">No Recipes Found</div>
       )}
+
+      {deleteTargetId && (
+            <ConfirmModal
+                message="Are you sure you want to delete this recipe?"
+                onConfirm={() => {
+                  deleteRecipe(deleteTargetId);
+                }}
+                onCancel={() => setDeleteTargetId(null)}
+            />
+        )}
+        {showFavoriteModal && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <p>Recipe favorited!</p>
+              </div>
+            </div>
+        )}
+
+        {showCookbookModal && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <p>Recipe added to cookbook!</p>
+              </div>
+            </div>
+        )}
     </div>
   );
 };
 
 export default RecipeListing;
+
