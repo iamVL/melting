@@ -187,13 +187,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
            <section className="choose-level">
              <h2>Recommended Recipes based on Cooking Level!</h2>
              <div className="levels">
-               <div className="level" onClick={() => setSelectedLevel("easy")}>
+               <div style={{ backgroundColor: selectedLevel === "easy" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("easy")}>
                  <leveltext>Easy</leveltext>
                </div>
-               <div className="level" onClick={() => setSelectedLevel("medium")}>
+               <div style={{ backgroundColor: selectedLevel === "medium" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("medium")}>
                  <leveltext>Medium</leveltext>
                </div>
-               <div className="level" onClick={() => setSelectedLevel("hard")}>
+               <div style={{ backgroundColor: selectedLevel === "hard" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("hard")}>
                  <leveltext>Hard</leveltext>
                </div>
              </div>
@@ -203,14 +203,20 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                filteredRecipes.map((recipe) => (
                  <div key={recipe.id} className="recipe-card">
                    <img src={recipe.attributes?.mainImage} alt="recipe pic" className="recipe-image-cover" />
-                   <h3>{recipe.attributes?.title || "Untitled Recipe"}</h3>
+                   <h3>
+                    {recipe.attributes?.title?.trim()
+                      ? recipe.attributes.title.length > 30
+                        ? `${recipe.attributes.title.substring(0, 30)}...`
+                        : recipe.attributes.title
+                      : "Untitled Recipe"}
+                  </h3>                   
                    <p>
- {recipe.content?.trim()
-   ? recipe.content.length > 120
-     ? `${recipe.content.substring(0, 120)}...`
-     : recipe.content
-   : "No description available"}
-</p>
+                    {recipe.content?.trim()
+                      ? recipe.content.length > 120
+                        ? `${recipe.content.substring(0, 120)}...`
+                        : recipe.content
+                      : "No description available"}
+                    </p>
                    <Link to={`/recipe/${recipe.id}`} className="read-more">
                      View Recipe →
                    </Link>
@@ -293,12 +299,12 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          </section>
        </>
      )}
-     <section className="contact">
-       <h2>Contact Us</h2>
-       <p>
-         We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-       </p>
-     </section>
+    {sessionStorage.getItem("token") && <section className="contact">
+      <h2>Contact Us</h2>
+      <p>
+        We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
+      </p>
+    </section>}
    </div>
  );
 };
