@@ -166,13 +166,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          <section className="cuisine-section">
            <div className="cuisine-grid">
              {[
-               { name: "American" },
+               { name: "Italian" },
                { name: "Chinese" },
-               { name: "Filipino"},
-               { name: "Italian"},
+               { name: "American"},
                { name: "Indian"},
-               { name: "Mexican" },
-               { name: "Vietnamese"},
+               { name: "Mexican"},
+               { name: "Japanese" },
+               { name: "Spanish"},
              ].map((cuisine, index) => (
                <div key={index} className="cuisine-card">
                  <p>{cuisine.name}</p>

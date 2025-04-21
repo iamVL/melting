@@ -21,7 +21,7 @@ const RecipeListing = ({
   const [savedAllergies, setSavedAllergies] = useState([]);
   const [savedDiets, setSavedDiets] = useState([]);
 
-  const [sortOption, setSortOption] = useState("rating");
+  const [sortOption, setSortOption] = useState("rating-h-l");
   const [userCookbooks, setUserCookbooks] = useState([]);
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
   const [applyPreferences, setApplyPreferences] = useState(false);
