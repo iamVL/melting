@@ -438,13 +438,18 @@ const RecipeListing = ({
             /* ------------ card content ------------ */
             const mainImage = attrs.mainImage;
             const title = attrs.title || post.content;
+            const shortTitle =
+                  title.length > 35
+                ? title.substring(0, 35) + "..."
+                : title;
+            
             const description =
               attrs.description?.trim() && attrs.description !== "undefined"
                 ? attrs.description
                 : post.content?.trim() || "No description available";
             const shortDescription =
-              description.length > 200
-                ? description.substring(0, 200) + "..."
+              description.length > 100
+                ? description.substring(0, 90) + "..."
                 : description;
             const recipeID = post.id;
             const isFavorited = favoritedRecipes.includes(recipeID);
@@ -481,7 +486,7 @@ const RecipeListing = ({
                 </div>
 
                 <div className="recipe-content-1">
-                  <h3 className="recipe-title-1">{title}</h3>
+                  <h3 className="recipe-title-1">{shortTitle}</h3>
 
                   {toggleRecipeSelection && (
                     <label className="checkbox-label">
@@ -500,24 +505,26 @@ const RecipeListing = ({
                     Read More →
                   </Link>
                   
+                  <div style={{display:"flex", gap:"10px"}}>
+                    <button
+                      style={{width: String(authorID) === String(currentUserID) ? "40%" : "100%"}}
+                      className={`favorite-button-btn ${
+                        isFavorited ? "favorited" : ""
+                      }`}
+                      onClick={() => handleFavorite(recipeID)}
+                    >
+                      {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                    </button>
 
-                  <button
-                    className={`favorite-button ${
-                      isFavorited ? "favorited" : ""
-                    }`}
-                    onClick={() => handleFavorite(recipeID)}
-                  >
-                    {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
-                  </button>
-
-                  {String(authorID) === String(currentUserID) && (
-                              <button
-                                  className="delete-recipe-btn"
-                                  onClick={() => setDeleteTargetId(recipeID)}
-                              >
-                                🗑️ Delete Recipe
-                              </button>
-                          )}
+                    {String(authorID) === String(currentUserID) && (
+                                <button
+                                    className="delete-recipe-btn"
+                                    onClick={() => setDeleteTargetId(recipeID)}
+                                >
+                                  🗑️ Delete Recipe
+                                </button>
+                            )}
+                  </div>
 
                   {String(authorID) === String(currentUserID) &&
                     userCookbooks.length > 0 && (

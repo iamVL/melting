@@ -128,6 +128,7 @@ select.search-bar-1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
+  height: 480px;
 }
 
 .recipe-card-1:hover {
@@ -146,14 +147,16 @@ select.search-bar-1 {
   padding: 20px;
   padding-top: 0px;
   margin-top: 0px;
+  height: 100%;
 }
 
 .recipe-title-1 {
   margin-top: 0px;
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
   color: #333;
+  height: 10%;
 }
 
 .stars {
@@ -178,6 +181,8 @@ select.search-bar-1 {
   font-size: 14px;
   color: #666;
   margin-bottom: 12px;
+  margin-top: 5px;
+  height: 10%;
 }
 
 /* Buttons */
@@ -210,7 +215,6 @@ select.search-bar-1 {
 .read-more-button-1 {
   background-color: #ff7043;
   color: #fff;
-  margin-bottom: 10px;
 }
 
 .read-more-button-1:hover {
@@ -319,4 +323,50 @@ select.search-bar-1 {
     padding-left: 0;
     justify-content: center;
   }
+}
+
+.delete-recipe-btn {
+  background-color: transparent;
+  border: 1px solid #ff4343;
+  border-radius: 4px;
+  color: #ff4343;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  align-self: flex-start;
+  margin-top: 0.3rem;
+  width: 60%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .3s;
+}
+
+.delete-recipe-btn:hover {
+  background-color: #fd9494;
+  color: black;
+}
+
+.favorite-button-btn {
+  background-color: transparent;
+  border: 1px solid #ff7043;
+  border-radius: 4px;
+  color: #ff7043;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  align-self: flex-start;
+  margin-top: 0.3rem;
+  width: 40%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .3s;
+}
+
+.favorite-button-btn:hover {
+  background-color: #fcbfac;
+  color: black;
 }
