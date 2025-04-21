@@ -239,7 +239,7 @@ const RegisterForm = ({ setLoggedIn }) => {
             <div className="input-group">
               <label>Allergies</label>
               <div className="option-group">
-                {["Peanut", "Gluten", "Dairy", "Shellfish", "Tree nuts", "None"].map((item) => (
+                {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs", "None"].map((item) => (
                   <button
                     type="button"
                     key={item}
