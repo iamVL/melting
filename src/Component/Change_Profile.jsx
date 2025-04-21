@@ -19,7 +19,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const allergyOptions = ["Peanuts", "Gluten", "Dairy",
-    "TreeNuts", "Shellfish", "None"];
+    "TreeNuts", "Shellfish", "Eggs", "None"];
   const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian" ,"None"];
 
   useEffect(() => {

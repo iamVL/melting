@@ -65,21 +65,41 @@ const FilterPage = () => {
   // }, [dietFilters]);  
 
   useEffect(() => {
-    if (!token) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        const recipes = Array.isArray(data[0])
-          ? data[0].filter(p => p.attributes?.postType === "recipe")
-          : data.posts?.filter(p => p.attributes?.postType === "recipe") || [];
+    const fetchRandomRecipes = async (token) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_PATH}/posts`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+   
+   
+        if (response.ok) {
+          const data = await response.json();
+          let recipes = [];
+   
+   
+          if (Array.isArray(data)) {
+            recipes = data[0].filter((post) => post.attributes?.postType === "recipe");
+          } else if (data.posts) {
+            recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
+          }
+        console.log(recipes);
         setPosts(recipes);
-      })
-      .catch(err => console.error("Error fetching recipes:", err));
+        } else {
+          console.error("Failed to fetch recipes, status:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    };
+
+    fetchRandomRecipes(token);
   }, [token]);
 
   useEffect(() => {
@@ -180,12 +200,12 @@ const FilterPage = () => {
           ingredients.some(ing => ing.toLowerCase().includes(filter.toLowerCase()))
         )
       : true;
-      const allergyTags = (attrs.allergy || []).map(a => a.toLowerCase());
-const matchesAllergy = allergyFilters.length
-  ? allergyFilters.every(allergy =>
-      !allergyTags.includes(allergy.toLowerCase())
-    )
-  : true;
+    const allergyTags = (attrs.allergy || []).map(a => a.toLowerCase());
+    const matchesAllergy = allergyFilters.length
+      ? allergyFilters.every(allergy =>
+          !allergyTags.includes(allergy.toLowerCase())
+        )
+      : true;
     
     const dietTags = (attrs.diet || []).map(d => d.toLowerCase()); // assuming diet is an array
     const matchesDiet = dietFilters.length
@@ -348,7 +368,7 @@ const matchesAllergy = allergyFilters.length
               </div>
               {showAllergies && (
                   <div className="checkbox-group">
-                    {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts"].map(
+                    {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs"].map(
                         (allergy) => (
                             <label key={allergy}>
                               <input

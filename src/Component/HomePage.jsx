@@ -70,7 +70,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
   const fetchRandomRecipes = async (token) => {
    try {
      const response = await fetch(
-       `${process.env.REACT_APP_API_PATH}/posts?limit=50`,
+       `${process.env.REACT_APP_API_PATH}/posts`,
        {
          method: "GET",
          headers: {
@@ -92,8 +92,8 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
        }
 
-
-       const randomRecipesSelected = shuffle([...recipes]).slice(0, 10);
+       console.log(recipes.length);
+       const randomRecipesSelected = shuffle([...recipes]);
        setRandomRecipes(randomRecipesSelected);
      } else {
        console.error("Failed to fetch recipes, status:", response.status);
