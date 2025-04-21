@@ -202,7 +202,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
              {filteredRecipes.length > 0 ? (
                filteredRecipes.map((recipe) => (
                  <div key={recipe.id} className="recipe-card">
-                   <img src={recipe.attributes?.mainImage} alt="recipe pic" className="recipe-image" />
+                   <img src={recipe.attributes?.mainImage} alt="recipe pic" className="recipe-image-cover" />
                    <h3>{recipe.attributes?.title || "Untitled Recipe"}</h3>
                    <p>
  {recipe.content?.trim()

@@ -22,8 +22,24 @@ const FilterPage = () => {
 
 
   const token = sessionStorage.getItem("token");
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  const userID = user.id || user.userID;
+  const userID = sessionStorage.getItem("user");
+  const [user, setUser] = useState({});
+
+  useEffect( () => {
+    fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then((result) => {
+        console.log("User grabbed:", result);
+        setUser(result);
+        setDietFilters(result.attributes.dietRegimes);
+        setAllergyFilters(result.attributes.allergies);
+      })
+  },[]);
 
   // useEffect(() => {
   //   const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -217,7 +233,7 @@ const matchesAllergy = allergyFilters.length
       <div className="filter-layout">
         {/* Sidebar Filters */}
         <aside className="filter-sidebar">
-          <div className="sidebar-section">
+          <div className="sidebar-navigation">
             <h2>Filters</h2>
 
             {/* Search */}
@@ -332,7 +348,7 @@ const matchesAllergy = allergyFilters.length
               </div>
               {showAllergies && (
                   <div className="checkbox-group">
-                    {["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"].map(
+                    {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts"].map(
                         (allergy) => (
                             <label key={allergy}>
                               <input
@@ -361,7 +377,7 @@ const matchesAllergy = allergyFilters.length
               </div>
               {showDiets && (
                   <div className="checkbox-group">
-                    {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
+                    {["Halal", "Kosher", "Vegetarian", "Vegan", "Pescitarian"].map((diet) => (
                         <label key={diet}>
                           <input
                               type="checkbox"

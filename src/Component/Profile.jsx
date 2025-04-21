@@ -349,7 +349,7 @@ const Profile = (props) => {
           <div className="inputs">
             <a>Allergies</a>
             <div className="dietary-group">
-              {["Peanut", "Gluten", "Dairy", "Shellfish","Tree nuts", "None"].map((item) => (
+              {["Peanuts", "Gluten", "Dairy", "Shellfish","TreeNuts", "None"].map((item) => (
                   <button
                       type="button"
                       key={item}

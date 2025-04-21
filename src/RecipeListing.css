@@ -15,10 +15,9 @@
 
 .recipe-subheader { 
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   color: #777;
   margin-top: 0px;
-  margin-bottom: 30px;
 }
 
 .recipe-header-container {

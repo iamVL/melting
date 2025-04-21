@@ -17,10 +17,9 @@ const RecipeListing = ({
 }) => {
   const currentUserID = JSON.parse(sessionStorage.getItem("user"));
   const token = sessionStorage.getItem("token");
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  const userID = user.id || user.userID;
-  const savedAllergies = user.allergy || [];
-  const savedDiets = user.diet || [];
+  const userID = sessionStorage.getItem("user");
+  const [savedAllergies, setSavedAllergies] = useState([]);
+  const [savedDiets, setSavedDiets] = useState([]);
 
   const [sortOption, setSortOption] = useState("rating");
   const [userCookbooks, setUserCookbooks] = useState([]);
@@ -33,6 +32,21 @@ const RecipeListing = ({
   const [showFavoriteModal, setShowFavoriteModal] = useState(false);
   const [showCookbookModal, setShowCookbookModal] = useState(false);
 
+
+  useEffect( () => {
+    fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then((result) => {
+        console.log("User grabbed:", result);
+        setSavedDiets(result.attributes.dietRegimes);
+        setSavedAllergies(result.attributes.allergies);
+      })
+  },[]);
 
   /* ---------- load favorites ---------- */
   useEffect(() => {
@@ -275,34 +289,39 @@ const RecipeListing = ({
   };
 
   /* ---------- ratings helper ---------- */
-  useEffect(() => {
-    const fetchAllRatings = async () => {
-      const ratings = {};
-  
-      for (let post of posts) {
-        try {
-          const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts?parentID=${post.id}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const result = await res.json();
-          const reviews = result[0] || [];
-          const total = reviews.reduce((sum, r) => sum + (r.attributes?.rating || 0), 0);
-          const avg = reviews.length > 0 ? (total / reviews.length).toFixed(1) : "0.0";
-          ratings[post.id] = avg;
-        } catch (err) {
-          console.warn(`Could not fetch rating for post ${post.id}`);
-          ratings[post.id] = "0.0";
-        }
+ useEffect(() => {
+  const fetchAllRatings = async () => {
+    const promises = posts.map(async (post) => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_PATH}/posts?parentID=${post.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await res.json();
+        const reviews = result[0] || [];
+        const total = reviews.reduce((sum, r) => sum + (r.attributes?.rating || 0), 0);
+        const avg = reviews.length > 0 ? (total / reviews.length).toFixed(1) : "0.0";
+        return { postID: post.id, avg };
+      } catch (err) {
+        console.warn(`Could not fetch rating for post ${post.id}`);
+        return { postID: post.id, avg: "0.0" };
       }
-  
-      setPostRatings(ratings);
-    };
-  
-    if (posts.length > 0) fetchAllRatings();
-  }, [posts, token]);
+    });
+
+    const results = await Promise.all(promises);
+
+    const ratings = {};
+    results.forEach(({ postID, avg }) => {
+      ratings[postID] = avg;
+    });
+
+    setPostRatings(ratings);
+  };
+
+  if (posts.length > 0) fetchAllRatings();
+}, [posts, token]);
   
 
   /* ---------- sort & preference filters ---------- */
@@ -315,16 +334,18 @@ const RecipeListing = ({
     sortedPosts = sortedPosts.filter(
       (post) => String(post.authorID) === String(currentUserID)
     );
-  } else if (sortOption === "rating") {
+  } else if (sortOption === "rating-h-l") {
     sortedPosts.sort((a, b) => b.averageRating - a.averageRating);
-  } else if (sortOption === "title") {
+  } else if (sortOption === "title-a-z") {
     sortedPosts.sort((a, b) =>
-      (a.attributes?.title || "").localeCompare(b.attributes?.title || "")
-    );
-  } else if (sortOption === "likes") {
-    sortedPosts.sort(
-      (a, b) => (b.attributes?.likes || 0) - (a.attributes?.likes || 0)
-    );
+      (a.attributes?.title || "").trim().localeCompare((b.attributes?.title || "").trim())
+  );
+  } else if (sortOption === "rating-l-h") {
+    sortedPosts.sort((a, b) => a.averageRating - b.averageRating);
+  } else if (sortOption === "title-z-a") {
+    sortedPosts.sort((a, b) =>
+      (b.attributes?.title || "").trim().localeCompare((a.attributes?.title || "").trim())
+  );
   }
 
   if (applyPreferences) {
@@ -357,28 +378,35 @@ const RecipeListing = ({
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
-            <option value="rating">Rating</option>
-            <option value="title">Title</option>
-            <option value="likes">Likes</option>
+            <option value="rating-h-l">Rating (High to Low)</option>
+            <option value="rating-l-h">Rating (Low to High)</option>
+            <option value="title-a-z">Title (A to Z)</option>
+            <option value="title-z-a">Title (Z to A)</option>
             {showCreatedByYouOption && (
               <option value="created">Created by You</option>
             )}
           </select>
         </div>
 
-        <label style={{ marginLeft: "16px" }}>
+      </div>
+      
+      <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+        <p className="recipe-subheader" style={{margin:"0px"}}>
+          Explore our community’s shared recipes. Click any card to see details!
+        </p>
+        
+        <label style={{ marginLeft: "16px", display:"flex", flexDirection:"row", height:"50px", alignItems:"center", gap:"10px"}}>
           <input
+            style={{width:"20px", height:"20px", margin:"0px"}}
             type="checkbox"
             checked={applyPreferences}
             onChange={(e) => setApplyPreferences(e.target.checked)}
           />{" "}
-          Apply my dietary and allergy preferences
+          <p className="recipe-subheader" style={{margin:"0px"}}>
+            Apply my dietary and allergy preferences
+          </p>
         </label>
       </div>
-
-      <p className="recipe-subheader">
-        Explore our community’s shared recipes. Click any card to see details!
-      </p>
 
       {sortedPosts.length > 0 ? (
         <div className="recipe-grid">

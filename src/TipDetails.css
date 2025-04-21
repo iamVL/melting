@@ -247,3 +247,19 @@
 .review-form button:hover {
   background-color: #a64000;
 }
+
+.reviews-list-tips {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  scroll-behavior: smooth;
+  align-items: flex-start;
+  margin-top: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+}

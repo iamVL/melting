@@ -18,8 +18,8 @@ const Profile = () => {
   const [dietRegimes, setDietRegimes] = useState([]);
   const navigate = useNavigate();
 
-  const allergyOptions = ["Peanut", "Gluten", "Dairy",
-    "Tree nuts", "Shellfish", "None"];
+  const allergyOptions = ["Peanuts", "Gluten", "Dairy", "Shellfish",
+    "TreeNuts", "None"];
   const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian" ,"None"];
 
   useEffect(() => {
