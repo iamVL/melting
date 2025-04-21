@@ -151,9 +151,9 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
              <h1>Discover our New Recipes</h1>
              <p>Learn, cook, and share yummy recipes with our  community of foodies.</p>
              <div className="hero-buttons">
-               <Link to="/upload"><button className="btn primary">Upload Recipes</button></Link>
-               <Link to="/recipes"><button className="btn primary">Browse Recipes</button></Link>
-               <Link to="/filter"><button className="btn primary">Filter Recipes</button></Link>
+               <Link to="/upload"><button className="btn primary">Upload</button></Link>
+               <Link to="/recipes"><button className="btn primary">Browse</button></Link>
+               <Link to="/filter"><button className="btn primary">Filter</button></Link>
              </div>
            </div>
            <div className="hero-image">
