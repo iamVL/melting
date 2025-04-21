@@ -336,12 +336,12 @@ const Profile = (props) => {
                 <a>Cookbooks</a>
               </recipebutton>
             </Link>
-            <Link to="/ab-profile" class="recipeButtons">
+            {/* <Link to="/ab-profile" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={GearIcon} alt="ABSettings"></img>
                 <a>A/B Settings</a>
               </recipebutton>
-            </Link>
+            </Link> */}
           </div>
 
           <h2>Dietary Restrictions</h2>

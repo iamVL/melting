@@ -244,7 +244,7 @@
     display: flex;
     flex-direction: column;
     width: 240px;
-    height: auto; /* allow it to grow if needed */
+    height: 500px;
     min-height: 360px;
     justify-content: space-between;
     transition: transform 0.2s;
@@ -522,3 +522,6 @@
     overflow: visible;
 }
 
+.recipe-card .read-more {
+    min-width: 80%;
+}

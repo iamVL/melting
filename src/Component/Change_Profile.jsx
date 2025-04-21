@@ -192,8 +192,8 @@ const Profile = () => {
             <div className="accountActions">
               <div className="recipeButtons">
                 {[{path: "/favorites", img: Favorites, text: "Favorite Recipes"},
-                  {path: "/likes", img: Stars, text: "Recipes above 3 Stars"},
-                  {path: "/my_recipes", img: My_recipes, text: "My Recipes"}].map(({path, img, text}) => (
+                  {path: "/friends", img: Stars, text: "Follow List"},
+                  {path: "/cookbooks", img: My_recipes, text: "Cookbooks"}].map(({path, img, text}) => (
                     <Link key={path} to={path} className="recipeButtons">
                       <recipebutton>
                         <img className="recipeimage" src={img} alt={text}/>

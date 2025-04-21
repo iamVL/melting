@@ -25,7 +25,8 @@
   gap: 75px;
 }
  .nav-links li a {
-  color: black;
+  color: white;
+  font-weight: 1000;
   font-size: 1.1em;
   transition: .3s;
 }
@@ -51,14 +52,13 @@ padding: 10px;
 font-size: 16px;
 color: #fff;
 padding: 10px;
-background-color: #e8775b;
 border-radius: 5px;
-transition: background-color 0.3s ease;
+transition: .3s;
 }
 
 
 .dropdown-title:hover {
-background-color: #e8775b;
+  opacity: 60%;
 }
 
 
