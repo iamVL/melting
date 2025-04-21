@@ -665,6 +665,7 @@ profile-header {
 
 .account-button.delete-button {
   background-color: #ff4d4f;
+  margin-left: 0px;
 }
 
 .account-button.delete-button:hover {
