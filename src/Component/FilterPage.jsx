@@ -19,6 +19,7 @@ const FilterPage = () => {
   const [showCuisines, setShowCuisines] = useState(true);
   const [showAllergies, setShowAllergies] = useState(true);
   const [showDiets, setShowDiets] = useState(true);
+  const [connections, setConnections] = useState([]);
 
 
   const token = sessionStorage.getItem("token");
@@ -82,6 +83,23 @@ const FilterPage = () => {
       })
       .catch((err) => console.error("Error fetching favorites:", err));
   }, [token, userID]);
+
+  useEffect(() => {
+    if (!token || !userID) return;
+    fetch(`${process.env.REACT_APP_API_PATH}/connections?userID=${userID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setConnections(data || []);
+      })
+      .catch((err) => console.error("Error fetching connections:", err));
+  }, [token, userID]);
+  
 
   const handleFavorite = async (recipeID) => {
     if (!token) return;
@@ -149,14 +167,22 @@ const FilterPage = () => {
 
   const filteredPosts = posts.filter((post) => {
     const attrs = post.attributes || {};
-    const title = attrs.title || "";
-    const description = attrs.description || "";
+    const title = attrs.title || post.content || "";
+    const description = attrs.description || post.content || "";
     const ingredients = attrs.ingredients || [];
     const cuisine = attrs.cuisine || "";
     const difficulty = attrs.difficulty || "";
     const servingSize = parseInt(attrs.servingSize || 0);
     const totalTimeStr = attrs.totalTime || "";
-
+    const authorID = post.authorID;
+  
+    // ⛔ Visibility check must go here:
+    const isFollowersOnly = attrs?.visibility === "Followers Only";
+    const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.targetUserID) === String(authorID) );
+    const isCreator = String(authorID) === String(userID);
+  
+    if (isFollowersOnly && !isFollowingAuthor && !isCreator) return false;
+  
     const matchesTitle = title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesDescription = description.toLowerCase().includes(descriptionQuery.toLowerCase());
     const matchesIngredient = ingredientFilters.length
@@ -164,31 +190,29 @@ const FilterPage = () => {
           ingredients.some(ing => ing.toLowerCase().includes(filter.toLowerCase()))
         )
       : true;
-      const allergyTags = (attrs.allergy || []).map(a => a.toLowerCase());
-const matchesAllergy = allergyFilters.length
-  ? allergyFilters.every(allergy =>
-      !allergyTags.includes(allergy.toLowerCase())
-    )
-  : true;
-    
-    const dietTags = (attrs.diet || []).map(d => d.toLowerCase()); // assuming diet is an array
+    const allergyTags = (attrs.allergy || []).map(a => a.toLowerCase());
+    const matchesAllergy = allergyFilters.length
+      ? allergyFilters.every(allergy =>
+          !allergyTags.includes(allergy.toLowerCase())
+        )
+      : true;
+    const dietTags = (attrs.diet || []).map(d => d.toLowerCase());
     const matchesDiet = dietFilters.length
-  ? dietFilters.every(diet =>
-      dietTags.includes(diet.toLowerCase())
-    )
-  : true;
+      ? dietFilters.every(diet =>
+          dietTags.includes(diet.toLowerCase())
+        )
+      : true;
     const matchesCuisine = selectedCuisines.length
-    ? selectedCuisines.some((selected) =>
-        String(cuisine || "").toLowerCase().includes(selected.toLowerCase())
-      )
-    : true;
+      ? selectedCuisines.some((selected) =>
+          String(cuisine || "").toLowerCase().includes(selected.toLowerCase())
+        )
+      : true;
     const matchesDifficulty = difficultyFilter
       ? difficulty === difficultyFilter
       : true;
     const matchesServingSize = minServingSize
       ? servingSize >= parseInt(minServingSize)
       : true;
-
     const matchesMaxTime = maxTotalTime
       ? (() => {
           const timeParts = totalTimeStr.match(/(\d+)\s*hours?\s*(\d+)?\s*minutes?/i);
@@ -199,7 +223,7 @@ const matchesAllergy = allergyFilters.length
           return totalMinutes <= parseInt(maxTotalTime);
         })()
       : true;
-
+  
     return (
       matchesTitle &&
       matchesDescription &&
@@ -212,6 +236,8 @@ const matchesAllergy = allergyFilters.length
       matchesDiet
     );
   });
+  
+
 
   return (
       <div className="filter-layout">
@@ -401,6 +427,16 @@ const matchesAllergy = allergyFilters.length
                   const mainImage = attrs.mainImage || "/default-recipe-image.jpg";
                   const recipeID = post.id;
                   const isFavorited = favoritedRecipes.includes(recipeID);
+
+                  const authorID = post.authorID;
+const isFollowersOnly = attrs?.visibility === "Followers Only";
+const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.id) === String(authorID));
+const isCreator = String(authorID) === String(userID);
+
+if (isFollowersOnly && !isFollowingAuthor && !isCreator) {
+  return null; // Don't show card
+}
+
 
                   return (
                       <div key={post.id} className="recipe-card">
