@@ -213,11 +213,15 @@ const FilterPage = () => {
     const authorID = post.authorID;
   
     // ⛔ Visibility check must go here:
-    const isFollowersOnly = attrs?.visibility === "Followers Only";
-    const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.targetUserID) === String(authorID) );
-    const isCreator = String(authorID) === String(userID);
-  
-    if (isFollowersOnly && !isFollowingAuthor && !isCreator) return false;
+    const isFollowersOnly = attrs.visibility === "Followers Only";
+    const isCreator       = String(authorID) === String(userID);
+    const isFollowingAuthor = connections.some(conn =>
+      String(conn.toUser?.id ?? conn.toUserID) === String(authorID)
+    );
+    
+    if (isFollowersOnly && !isCreator && !isFollowingAuthor) {
+      return false;   // hide it
+    }
   
     const matchesTitle = title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesDescription = description.toLowerCase().includes(descriptionQuery.toLowerCase());
@@ -467,7 +471,7 @@ const FilterPage = () => {
 
                   const authorID = post.authorID;
 const isFollowersOnly = attrs?.visibility === "Followers Only";
-const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.id) === String(authorID));
+const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.toUser?.id ?? connection.toUserID) === String(authorID) );
 const isCreator = String(authorID) === String(userID);
 
 if (isFollowersOnly && !isFollowingAuthor && !isCreator) {
