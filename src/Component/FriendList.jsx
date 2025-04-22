@@ -6,14 +6,10 @@ import Default from "../assets/Default-Avatar.jpg";
 const FriendList = (props) => {
   const navigate = useNavigate();
 
-  /* -------------------------------------------------
-     Helpers
-  ------------------------------------------------- */
-
   // 1 × per mount → refresh the list
   useEffect(() => {
     props.loadFriends();
-  }, []);                   // eslint‑disable‑line react-hooks/exhaustive-deps
+  }, []);                   
 
   const updateConnection = (id, status) => {
     fetch(process.env.REACT_APP_API_PATH + "/connections/" + id, {
@@ -121,7 +117,7 @@ const FriendList = (props) => {
                       <button
                       className="message-btn"
                         type="button"
-                        onClick={() => goToChat(friend.id, friend)}
+                        onClick={() => deleteConnection(connection.id)}
                       >
                         Remove
                       </button>

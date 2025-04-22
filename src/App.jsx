@@ -174,7 +174,7 @@ function App() {
               <Route path="/cookbooks" element={<CookbookManager/>}/>
               <Route path="/cookbooks/:cookbookName" element={<CookbookDetail />} />
 
-              <Route path="/chat/:friendId" element={<ChatPage />} />
+              <Route path="/chat/:roomId" element={<ChatPage />} />
 
      {/* Dynamic Room ID for Messaging */}
 
