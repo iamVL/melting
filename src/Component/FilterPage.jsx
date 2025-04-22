@@ -23,8 +23,17 @@ const FilterPage = () => {
 
 
   const token = sessionStorage.getItem("token");
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  const userID = user.id || user.userID;
+  const raw = sessionStorage.getItem("user");
+let userObj = {};
+try {
+  userObj = JSON.parse(raw);
+} catch {
+  userObj = {};
+}
+if (typeof userObj === "number") {
+  userObj = { id: userObj };
+}
+const userID = userObj.id;
 
   // useEffect(() => {
   //   const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -86,18 +95,22 @@ const FilterPage = () => {
 
   useEffect(() => {
     if (!token || !userID) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/connections?userID=${userID}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
+    fetch(
+      `${process.env.REACT_APP_API_PATH}/connections?fromUserID=${userID}`,
+      
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+      .then((r) => r.json())
       .then((data) => {
-        setConnections(data || []);
-      })
-      .catch((err) => console.error("Error fetching connections:", err));
+        // flatten out the [array, meta] wrapper if needed
+        const list = Array.isArray(data[0]) ? data[0] : data;
+        setConnections(list);
+      });
   }, [token, userID]);
   
 
@@ -177,11 +190,15 @@ const FilterPage = () => {
     const authorID = post.authorID;
   
     // ⛔ Visibility check must go here:
-    const isFollowersOnly = attrs?.visibility === "Followers Only";
-    const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.targetUserID) === String(authorID) );
-    const isCreator = String(authorID) === String(userID);
-  
-    if (isFollowersOnly && !isFollowingAuthor && !isCreator) return false;
+    const isFollowersOnly = attrs.visibility === "Followers Only";
+    const isCreator       = String(authorID) === String(userID);
+    const isFollowingAuthor = connections.some(conn =>
+      String(conn.toUser?.id ?? conn.toUserID) === String(authorID)
+    );
+    
+    if (isFollowersOnly && !isCreator && !isFollowingAuthor) {
+      return false;   // hide it
+    }
   
     const matchesTitle = title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesDescription = description.toLowerCase().includes(descriptionQuery.toLowerCase());
@@ -430,7 +447,7 @@ const FilterPage = () => {
 
                   const authorID = post.authorID;
 const isFollowersOnly = attrs?.visibility === "Followers Only";
-const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.id) === String(authorID));
+const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.toUser?.id ?? connection.toUserID) === String(authorID) );
 const isCreator = String(authorID) === String(userID);
 
 if (isFollowersOnly && !isFollowingAuthor && !isCreator) {
