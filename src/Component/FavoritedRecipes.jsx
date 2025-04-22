@@ -60,17 +60,24 @@ const FavoritedRecipes = () => {
               description: recipeData.description || recipeData.summary || recipeData.attributes?.description || "No description available",
               image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail || "/default-recipe-image.jpg",
             };
+
           } catch (error) {
             console.error("Failed to fetch recipe details:", error);
             return null;
           }
         };
 
+
         Promise.all(reactions.map(fetchRecipeDetails)).then((recipes) => {
           const validRecipes = recipes.filter((recipe) => recipe !== null);
           const uniqueRecipes = Array.from(new Map(validRecipes.map((item) => [item.id, item])).values());
           setFavorites(uniqueRecipes);
+
+
+          const ids = uniqueRecipes.map((r) => String(r.id));
+          localStorage.setItem("favoritedRecipeIDs", JSON.stringify(ids));
         });
+
       })
       .catch((err) => console.error("Error fetching favorites:", err));
   }, [token, reactorID]);

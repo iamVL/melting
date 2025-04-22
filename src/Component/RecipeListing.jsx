@@ -31,6 +31,9 @@ const RecipeListing = ({
   const [deleteTargetId, setDeleteTargetId] = useState(null);
   const [showFavoriteModal, setShowFavoriteModal] = useState(false);
   const [showCookbookModal, setShowCookbookModal] = useState(false);
+  const rawFavIDs = localStorage.getItem("favoritedRecipeIDs");
+  const favoritedFromStorage = new Set(JSON.parse(rawFavIDs || "[]"));
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   useEffect( () => {
@@ -182,7 +185,7 @@ const RecipeListing = ({
           alert("Error removing favorite: " + errorMessage);
         }
       } catch (error) {
-        console.error("Failed to remove favorite:", error);
+
       }
     } else {
       try {
@@ -203,10 +206,13 @@ const RecipeListing = ({
 
         if (response.ok) {
           setFavoritedRecipes((prev) => [...prev, recipeID]);
-        } else {
-          setShowFavoriteModal(true);
-          setTimeout(() => setShowFavoriteModal(false), 2000);
+
+          // Trigger modal on success
+          setIsModalOpen(true);
+          setTimeout(() => setIsModalOpen(false), 2000);
         }
+
+
       } catch (error) {
         console.error("Failed to update favorite:", error);
       }
@@ -506,15 +512,17 @@ const RecipeListing = ({
                   </Link>
                   
                   <div style={{display:"flex", gap:"10px"}}>
-                    <button
-                      style={{width: String(authorID) === String(currentUserID) ? "40%" : "100%"}}
-                      className={`favorite-button-btn ${
-                        isFavorited ? "favorited" : ""
-                      }`}
-                      onClick={() => handleFavorite(recipeID)}
-                    >
-                      {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
-                    </button>
+                    {!favoritedFromStorage.has(String(recipeID)) && (
+                        <button
+                            style={{ width: String(authorID) === String(currentUserID) ? "40%" : "100%" }}
+                            className={`favorite-button-btn ${
+                                isFavorited ? "favorited" : ""
+                            }`}
+                            onClick={() => handleFavorite(recipeID)}
+                        >
+                          {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                        </button>
+                    )}
 
                     {String(authorID) === String(currentUserID) && (
                                 <button
@@ -558,6 +566,9 @@ const RecipeListing = ({
         <div className="no-recipes-found">No Recipes Found</div>
       )}
 
+
+
+
       {deleteTargetId && (
             <ConfirmModal
                 message="Are you sure you want to delete this recipe?"
@@ -567,13 +578,14 @@ const RecipeListing = ({
                 onCancel={() => setDeleteTargetId(null)}
             />
         )}
-        {showFavoriteModal && (
-            <div className="modal-overlay">
-              <div className="modal-content">
-                <p>Recipe favorited!</p>
-              </div>
+      {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <p>Recipe favorited!</p>
             </div>
-        )}
+          </div>
+      )}
+
 
         {showCookbookModal && (
             <div className="modal-overlay">

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Already have Link, just add useLocation
 import "../RecipeListing.css";
 import "../FilterPage.css";
 
+
 const FilterPage = () => {
+
   const [posts, setPosts] = useState([]);
-  const [favoritedRecipes, setFavoritedRecipes] = useState([]);
+  const [reactionMap, setReactionMap] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [descriptionQuery, setDescriptionQuery] = useState("");
   const [ingredientInput, setIngredientInput] = useState("");
@@ -20,162 +22,134 @@ const FilterPage = () => {
   const [showAllergies, setShowAllergies] = useState(true);
   const [showDiets, setShowDiets] = useState(true);
   const [connections, setConnections] = useState([]);
-
-
+  const location = useLocation();
+  const isFavoritesPage = location.pathname === "/favorites";
   const token = sessionStorage.getItem("token");
-  const userID = sessionStorage.getItem("user");
-  const [user, setUser] = useState({});
+  const raw = sessionStorage.getItem("user");
 
-  useEffect( () => {
-    fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
+  const rawFavIDs = localStorage.getItem("favoritedRecipeIDs");
+  const favoritedRecipeIDs = new Set(JSON.parse(rawFavIDs || "[]"));
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  let userObj = {};
+  try {
+    userObj = JSON.parse(raw);
+  } catch {
+    userObj = {};
+  }
+  if (typeof userObj === "number") userObj = { id: userObj };
+  const userID = userObj.id;
+
+  useEffect(() => {
+    if (!token) return;
+    fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
-      .then(res => res.json())
-      .then((result) => {
-        console.log("User grabbed:", result);
-        setUser(result);
-        setDietFilters(result.attributes.dietRegimes);
-        setAllergyFilters(result.attributes.allergies);
-      })
-  },[]);
-
-  // useEffect(() => {
-  //   const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
-  //   const savedAllergies = userProfile.allergy || []; // example: ["Peanuts", "Dairy"]
-  //   const savedDiets = userProfile.diet || []; // example: ["Halal", "Vegetarian"]
-    
-  //   setAllergyFilters(savedAllergies);
-  //   setDietFilters(savedDiets);
-  // }, []);  
-
-  // useEffect(() => {
-  //   let user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  //   if (typeof user === "number") user = { id: user };
-  //   user.allergy = allergyFilters;
-  //   sessionStorage.setItem("user", JSON.stringify(user));
-  // }, [allergyFilters]);  
-  
-  // useEffect(() => {
-  //   let user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  //   if (typeof user === "number") user = { id: user };
-  //   user.diet = dietFilters;
-  //   sessionStorage.setItem("user", JSON.stringify(user));
-  // }, [dietFilters]);  
-
-  useEffect(() => {
-    const fetchRandomRecipes = async (token) => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_PATH}/posts`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-   
-   
-        if (response.ok) {
-          const data = await response.json();
-          let recipes = [];
-   
-   
-          if (Array.isArray(data)) {
-            recipes = data[0].filter((post) => post.attributes?.postType === "recipe");
-          } else if (data.posts) {
-            recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
-          }
-        console.log(recipes);
-        setPosts(recipes);
-        } else {
-          console.error("Failed to fetch recipes, status:", response.status);
-        }
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
-      }
-    };
-
-    fetchRandomRecipes(token);
+        .then((res) => res.json())
+        .then((data) => {
+          const recipes = Array.isArray(data[0])
+              ? data[0].filter((p) => p.attributes?.postType === "recipe")
+              : data.posts?.filter((p) => p.attributes?.postType === "recipe") || [];
+          setPosts(recipes);
+        })
+        .catch((err) => console.error("Error fetching recipes:", err));
   }, [token]);
 
   useEffect(() => {
     if (!token || !userID) return;
     fetch(`${process.env.REACT_APP_API_PATH}/post-reactions?userID=${userID}`, {
-      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
-      .then((data) => {
-        const favorited = data.map((reaction) => reaction.postID);
-        setFavoritedRecipes(favorited);
-      })
-      .catch((err) => console.error("Error fetching favorites:", err));
+        .then((res) => res.json())
+        .then((data) => {
+          const map = {};
+          data.forEach((reaction) => {
+            const postID = String(reaction.postID);
+            if (postID && reaction.id) {
+              map[postID] = reaction.id;
+            }
+          });
+          setReactionMap(map);
+        })
+        .catch((err) => console.error("Error fetching reactions:", err));
   }, [token, userID]);
 
   useEffect(() => {
     if (!token || !userID) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/connections?userID=${userID}`, {
-      method: "GET",
+    fetch(`${process.env.REACT_APP_API_PATH}/connections?fromUserID=${userID}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setConnections(data || []);
-      })
-      .catch((err) => console.error("Error fetching connections:", err));
+        .then((r) => r.json())
+        .then((data) => {
+          const list = Array.isArray(data[0]) ? data[0] : data;
+          setConnections(list);
+        });
   }, [token, userID]);
-  
+
+  useEffect(() => {
+    if (!token || !userID) return;
+
+    fetch(`${process.env.REACT_APP_API_PATH}/post-reactions?reactorID=${userID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+        .then((res) => res.json())
+        .then((data) => {
+          const ids = data.map((r) => String(r.postID)); // Store as strings
+          setReactionMap(() => {
+            const map = {};
+            ids.forEach((id) => map[id] = true);
+            return map;
+          });
+        });
+  }, [token, userID]);
+
+
+  const favoritedPostIDs = new Set(Object.keys(reactionMap));
+
+
 
   const handleFavorite = async (recipeID) => {
     if (!token) return;
-  
-    let user = JSON.parse(sessionStorage.getItem("user"));
-    if (typeof user === "number") user = { id: user };
-    const reactorID = user?.id || user?.userID;
-  
-    const isFavorited = favoritedRecipes.includes(recipeID);
+    const reactionID = reactionMap[recipeID];
+    const isFavorited = !!reactionMap[recipeID];
+
     const apiUrl = `${process.env.REACT_APP_API_PATH}/post-reactions`;
-  
+
     if (isFavorited) {
       try {
-        const fetchUrl = `${apiUrl}?postID=${recipeID}&reactorID=${reactorID}`;
-        const response = await fetch(fetchUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        if (!data.length || !data[0].id) return;
-        const deleteUrl = `${apiUrl}/${data[0].id}`;
-        const deleteResponse = await fetch(deleteUrl, {
+        const res = await fetch(`${apiUrl}/${reactionID}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
-        if (deleteResponse.ok) {
-          setFavoritedRecipes((prev) => prev.filter((id) => id !== recipeID));
+        if (res.ok) {
+          setReactionMap((prev) => {
+            const updated = { ...prev };
+            delete updated[recipeID];
+            return updated;
+          });
         }
-      } catch (error) {
-        console.error("Failed to remove favorite:", error);
+      } catch (err) {
+        console.error("Failed to remove favorite:", err);
       }
     } else {
       try {
-        const response = await fetch(apiUrl, {
+        const res = await fetch(apiUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -183,25 +157,41 @@ const FilterPage = () => {
           },
           body: JSON.stringify({
             postID: recipeID,
-            reactorID: reactorID, // <-- FIXED
+            reactorID: userID,
             reactionType: "like",
             name: "favorite",
           }),
         });
-  
-        if (response.ok) {
-          setFavoritedRecipes((prev) => [...prev, recipeID]);
-        } else {
-          const errorText = await response.text();
-          console.error("Favorite failed:", errorText);
+
+
+        const result = await res.json();
+
+        if (res.ok && result?.id) {
+          setReactionMap((prev) => ({
+            ...prev,
+            [recipeID]: result.id,
+          }));
+
+          // Show modal
+          setIsModalOpen(true);
+          setTimeout(() => setIsModalOpen(false), 2000); // Auto-close after 2 seconds
         }
-      } catch (error) {
-        console.error("Failed to favorite:", error);
+
+
+
+      } catch (err) {
+        console.error("Failed to favorite:", err);
+
       }
     }
-  };  
+
+  };
+
 
   const filteredPosts = posts.filter((post) => {
+    const recipeID = String(post.id);
+
+
     const attrs = post.attributes || {};
     const title = attrs.title || post.content || "";
     const description = attrs.description || post.content || "";
@@ -211,90 +201,68 @@ const FilterPage = () => {
     const servingSize = parseInt(attrs.servingSize || 0);
     const totalTimeStr = attrs.totalTime || "";
     const authorID = post.authorID;
-  
-    // ⛔ Visibility check must go here:
+
     const isFollowersOnly = attrs.visibility === "Followers Only";
-    const isCreator       = String(authorID) === String(userID);
-    const isFollowingAuthor = connections.some(conn =>
-      String(conn.toUser?.id ?? conn.toUserID) === String(authorID)
+    const isCreator = String(authorID) === String(userID);
+    const isFollowingAuthor = connections.some(
+        (conn) => String(conn.toUser?.id ?? conn.toUserID) === String(authorID)
     );
-    
-    if (isFollowersOnly && !isCreator && !isFollowingAuthor) {
-      return false;   // hide it
-    }
-  
+
+    if (isFollowersOnly && !isCreator && !isFollowingAuthor) return false;
+
     const matchesTitle = title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesDescription = description.toLowerCase().includes(descriptionQuery.toLowerCase());
-    const matchesIngredient = ingredientFilters.length
-      ? ingredientFilters.every(filter =>
-          ingredients.some(ing => ing.toLowerCase().includes(filter.toLowerCase()))
-        )
-      : true;
-    const allergyTags = (attrs.allergy || []).map(a => a.toLowerCase());
-    const matchesAllergy = allergyFilters.length
-      ? allergyFilters.every(allergy =>
-          !allergyTags.includes(allergy.toLowerCase())
-        )
-      : true;
-
-    const dietTags = (attrs.diet || []).map(d => d.toLowerCase());
-    const matchesDiet = dietFilters.length
-      ? dietFilters.every(diet =>
-          dietTags.includes(diet.toLowerCase())
-        )
-      : true;
+    const matchesIngredient = ingredientFilters.every((filter) =>
+        ingredients.some((ing) => ing.toLowerCase().includes(filter.toLowerCase()))
+    );
+    const allergyTags = (attrs.allergy || []).map((a) => a.toLowerCase());
+    const matchesAllergy = allergyFilters.every(
+        (allergy) => !allergyTags.includes(allergy.toLowerCase())
+    );
+    const dietTags = (attrs.diet || []).map((d) => d.toLowerCase());
+    const matchesDiet = dietFilters.every((diet) => dietTags.includes(diet.toLowerCase()));
     const matchesCuisine = selectedCuisines.length
-      ? selectedCuisines.some((selected) =>
-          String(cuisine || "").toLowerCase().includes(selected.toLowerCase())
+        ? selectedCuisines.some((selected) =>
+            String(cuisine || "").toLowerCase().includes(selected.toLowerCase())
         )
-      : true;
-    const matchesDifficulty = difficultyFilter
-      ? difficulty === difficultyFilter
-      : true;
-    const matchesServingSize = minServingSize
-      ? servingSize >= parseInt(minServingSize)
-      : true;
+        : true;
+    const matchesDifficulty = difficultyFilter ? difficulty === difficultyFilter : true;
+    const matchesServingSize = minServingSize ? servingSize >= parseInt(minServingSize) : true;
     const matchesMaxTime = maxTotalTime
-      ? (() => {
+        ? (() => {
           const timeParts = totalTimeStr.match(/(\d+)\s*hours?\s*(\d+)?\s*minutes?/i);
           if (!timeParts) return true;
           const hours = parseInt(timeParts[1] || "0");
           const minutes = parseInt(timeParts[2] || "0");
-          const totalMinutes = hours * 60 + minutes;
-          return totalMinutes <= parseInt(maxTotalTime);
+          return hours * 60 + minutes <= parseInt(maxTotalTime);
         })()
-      : true;
-  
+        : true;
+
     return (
-      matchesTitle &&
-      matchesDescription &&
-      matchesIngredient &&
-      matchesCuisine &&
-      matchesDifficulty &&
-      matchesServingSize &&
-      matchesMaxTime &&
-      matchesAllergy &&
-      matchesDiet
+        matchesTitle &&
+        matchesDescription &&
+        matchesIngredient &&
+        matchesCuisine &&
+        matchesDifficulty &&
+        matchesServingSize &&
+        matchesMaxTime &&
+        matchesAllergy &&
+        matchesDiet
     );
   });
-  
-
-
-  return (
-      <div className="filter-layout">
-        {/* Sidebar Filters */}
+return(
+  <div className="filter-layout">
+        {/* ✅ Sidebar (restored from your previous layout) */}
         <aside className="filter-sidebar">
-          <div className="sidebar-navigation">
+          <div className="sidebar-section">
             <h2>Filters</h2>
 
-            {/* Search */}
             <input
                 type="text"
                 placeholder="Search by title..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
             />
-
             <input
                 type="text"
                 placeholder="Search by description..."
@@ -324,13 +292,7 @@ const FilterPage = () => {
                 {ingredientFilters.map((ingredient, index) => (
                     <span key={index} className="tag">
                 {ingredient}
-                      <button
-                          onClick={() =>
-                              setIngredientFilters((prev) =>
-                                  prev.filter((ing) => ing !== ingredient)
-                              )
-                          }
-                      >
+                      <button onClick={() => setIngredientFilters((prev) => prev.filter((ing) => ing !== ingredient))}>
                   ×
                 </button>
               </span>
@@ -338,106 +300,93 @@ const FilterPage = () => {
               </div>
             </div>
 
-            {/* Difficulty / Serving / Time */}
-
             <input
                 type="number"
                 placeholder="Min Serving Size"
                 value={minServingSize}
                 onChange={(e) => setMinServingSize(e.target.value)}
             />
-
             <input
                 type="number"
                 placeholder="Max Total Time (minutes)"
                 value={maxTotalTime}
                 onChange={(e) => setMaxTotalTime(e.target.value)}
             />
-            <select
-                value={difficultyFilter}
-                onChange={(e) => setDifficultyFilter(e.target.value)}
-            >
+
+            <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
               <option value="">All Difficulties</option>
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>
               <option value="Hard">Hard</option>
             </select>
 
-            {/* Cuisines Dropdown */}
+            {/* Cuisines */}
             <div className="dropdown-group">
               <div className="dropdown-header" onClick={() => setShowCuisines(!showCuisines)}>
                 <h4>Cuisines {showCuisines ? "▲" : "▼"}</h4>
               </div>
               {showCuisines && (
                   <div className="checkbox-group">
-                    {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map(
-                        (cuisine) => (
-                            <label key={cuisine}>
-                              <input
-                                  type="checkbox"
-                                  checked={selectedCuisines.includes(cuisine)}
-                                  onChange={() =>
-                                      setSelectedCuisines((prev) =>
-                                          prev.includes(cuisine)
-                                              ? prev.filter((c) => c !== cuisine)
-                                              : [...prev, cuisine]
-                                      )
-                                  }
-                              />
-                              {cuisine}
-                            </label>
-                        )
-                    )}
+                    {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map((cuisine) => (
+                        <label key={cuisine}>
+                          <input
+                              type="checkbox"
+                              checked={selectedCuisines.includes(cuisine)}
+                              onChange={() =>
+                                  setSelectedCuisines((prev) =>
+                                      prev.includes(cuisine) ? prev.filter((c) => c !== cuisine) : [...prev, cuisine]
+                                  )
+                              }
+                          />
+                          {cuisine}
+                        </label>
+                    ))}
                   </div>
               )}
             </div>
 
-            {/* Allergies Dropdown */}
+            {/* Allergies */}
             <div className="dropdown-group">
               <div className="dropdown-header" onClick={() => setShowAllergies(!showAllergies)}>
                 <h4>Allergies {showAllergies ? "▲" : "▼"}</h4>
               </div>
               {showAllergies && (
                   <div className="checkbox-group">
-                    {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs"].map(
-                        (allergy) => (
-                            <label key={allergy}>
-                              <input
-                                  type="checkbox"
-                                  checked={allergyFilters.includes(allergy)}
-                                  onChange={() =>
-                                      setAllergyFilters((prev) =>
-                                          prev.includes(allergy)
-                                              ? prev.filter((a) => a !== allergy)
-                                              : [...prev, allergy]
-                                      )
-                                  }
-                              />
-                              {allergy}
-                            </label>
-                        )
-                    )}
+                    {["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"].map((allergy) => (
+                        <label key={allergy}>
+                          <input
+                              type="checkbox"
+                              checked={allergyFilters.includes(allergy)}
+                              onChange={() =>
+                                  setAllergyFilters((prev) =>
+                                      prev.includes(allergy)
+                                          ? prev.filter((a) => a !== allergy)
+                                          : [...prev, allergy]
+                                  )
+                              }
+                          />
+                          {allergy}
+                        </label>
+                    ))}
                   </div>
               )}
             </div>
 
-            {/* Dietary Preferences Dropdown */}
+            {/* Diets */}
             <div className="dropdown-group">
               <div className="dropdown-header" onClick={() => setShowDiets(!showDiets)}>
                 <h4>Dietary Preferences {showDiets ? "▲" : "▼"}</h4>
               </div>
               {showDiets && (
                   <div className="checkbox-group">
-                    {["Halal", "Kosher", "Vegetarian", "Vegan", "Pescitarian"].map((diet) => (
+                    {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
                         <label key={diet}>
                           <input
                               type="checkbox"
                               checked={dietFilters.includes(diet)}
                               onChange={() =>
                                   setDietFilters((prev) =>
-                                      prev.includes(diet)
-                                          ? prev.filter((d) => d !== diet)
-                                          : [...prev, diet]
+                                      prev.includes(diet) ? prev.filter((d) => d !== diet) : [...prev, diet]
                                   )
                               }
                           />
@@ -450,8 +399,6 @@ const FilterPage = () => {
           </div>
         </aside>
 
-
-        {/* Recipe Grid */}
         <main className="recipe-listing">
           <h2 className="results-header">Recipes</h2>
           {filteredPosts.length > 0 ? (
@@ -466,18 +413,19 @@ const FilterPage = () => {
                           (rawDescription.length > 120 ? "..." : "")
                           : "No description available";
                   const mainImage = attrs.mainImage || "/default-recipe-image.jpg";
-                  const recipeID = post.id;
-                  const isFavorited = favoritedRecipes.includes(recipeID);
+                  const recipeID = String(post.id);
+                  const isFavorited = !!reactionMap[recipeID];
 
                   const authorID = post.authorID;
-const isFollowersOnly = attrs?.visibility === "Followers Only";
-const isFollowingAuthor = Array.isArray(connections) && connections.some(connection => String(connection.toUser?.id ?? connection.toUserID) === String(authorID) );
-const isCreator = String(authorID) === String(userID);
+                  const isFollowersOnly = attrs?.visibility === "Followers Only";
+                  const isFollowingAuthor = Array.isArray(connections) &&
+                      connections.some(
+                          (connection) =>
+                              String(connection.toUser?.id ?? connection.toUserID) === String(authorID)
+                      );
+                  const isCreator = String(authorID) === String(userID);
 
-if (isFollowersOnly && !isFollowingAuthor && !isCreator) {
-  return null; // Don't show card
-}
-
+                  if (isFollowersOnly && !isFollowingAuthor && !isCreator) return null;
 
                   return (
                       <div key={post.id} className="recipe-card">
@@ -494,29 +442,36 @@ if (isFollowersOnly && !isFollowingAuthor && !isCreator) {
                             Read More →
                           </Link>
                           <div className="card-footer">
-                            <button
-                                className={`favorite-button ${isFavorited ? "favorited" : ""}`}
-                                onClick={() => handleFavorite(recipeID)}
-                            >
-                              {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
-                            </button>
+                            {!favoritedRecipeIDs.has(String(post.id)) && (
+                                <button onClick={() => handleFavorite(post.id)}>☆ Favorite</button>
+                            )}
+
                             <div className="recipe-meta">
                               <span>{attrs.cuisine || "N/A"}</span>
                               <span>{attrs.totalTime || "⏱ Unknown"}</span>
                             </div>
                           </div>
-
                         </div>
                       </div>
                   );
                 })}
+
               </div>
           ) : (
               <p className="no-recipes">No recipes found matching filters.</p>
           )}
+          {isModalOpen && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <p>Recipe favorited!</p>
+                </div>
+              </div>
+          )}
+
         </main>
       </div>
 
   );
 };
+
 export default FilterPage;
