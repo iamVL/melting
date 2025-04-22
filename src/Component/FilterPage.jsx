@@ -23,17 +23,24 @@ const FilterPage = () => {
 
 
   const token = sessionStorage.getItem("token");
-  const raw = sessionStorage.getItem("user");
-let userObj = {};
-try {
-  userObj = JSON.parse(raw);
-} catch {
-  userObj = {};
-}
-if (typeof userObj === "number") {
-  userObj = { id: userObj };
-}
-const userID = userObj.id;
+  const userID = sessionStorage.getItem("user");
+  const [user, setUser] = useState({});
+
+  useEffect( () => {
+    fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then((result) => {
+        console.log("User grabbed:", result);
+        setUser(result);
+        setDietFilters(result.attributes.dietRegimes);
+        setAllergyFilters(result.attributes.allergies);
+      })
+  },[]);
 
   // useEffect(() => {
   //   const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -59,21 +66,41 @@ const userID = userObj.id;
   // }, [dietFilters]);  
 
   useEffect(() => {
-    if (!token) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        const recipes = Array.isArray(data[0])
-          ? data[0].filter(p => p.attributes?.postType === "recipe")
-          : data.posts?.filter(p => p.attributes?.postType === "recipe") || [];
+    const fetchRandomRecipes = async (token) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_PATH}/posts`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+   
+   
+        if (response.ok) {
+          const data = await response.json();
+          let recipes = [];
+   
+   
+          if (Array.isArray(data)) {
+            recipes = data[0].filter((post) => post.attributes?.postType === "recipe");
+          } else if (data.posts) {
+            recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
+          }
+        console.log(recipes);
         setPosts(recipes);
-      })
-      .catch(err => console.error("Error fetching recipes:", err));
+        } else {
+          console.error("Failed to fetch recipes, status:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    };
+
+    fetchRandomRecipes(token);
   }, [token]);
 
   useEffect(() => {
@@ -95,22 +122,18 @@ const userID = userObj.id;
 
   useEffect(() => {
     if (!token || !userID) return;
-    fetch(
-      `${process.env.REACT_APP_API_PATH}/connections?fromUserID=${userID}`,
-      
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-      .then((r) => r.json())
+    fetch(`${process.env.REACT_APP_API_PATH}/connections?userID=${userID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
       .then((data) => {
-        // flatten out the [array, meta] wrapper if needed
-        const list = Array.isArray(data[0]) ? data[0] : data;
-        setConnections(list);
-      });
+        setConnections(data || []);
+      })
+      .catch((err) => console.error("Error fetching connections:", err));
   }, [token, userID]);
   
 
@@ -213,6 +236,7 @@ const userID = userObj.id;
           !allergyTags.includes(allergy.toLowerCase())
         )
       : true;
+
     const dietTags = (attrs.diet || []).map(d => d.toLowerCase());
     const matchesDiet = dietFilters.length
       ? dietFilters.every(diet =>
@@ -260,7 +284,7 @@ const userID = userObj.id;
       <div className="filter-layout">
         {/* Sidebar Filters */}
         <aside className="filter-sidebar">
-          <div className="sidebar-section">
+          <div className="sidebar-navigation">
             <h2>Filters</h2>
 
             {/* Search */}
@@ -375,7 +399,7 @@ const userID = userObj.id;
               </div>
               {showAllergies && (
                   <div className="checkbox-group">
-                    {["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"].map(
+                    {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs"].map(
                         (allergy) => (
                             <label key={allergy}>
                               <input
@@ -404,7 +428,7 @@ const userID = userObj.id;
               </div>
               {showDiets && (
                   <div className="checkbox-group">
-                    {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
+                    {["Halal", "Kosher", "Vegetarian", "Vegan", "Pescitarian"].map((diet) => (
                         <label key={diet}>
                           <input
                               type="checkbox"
