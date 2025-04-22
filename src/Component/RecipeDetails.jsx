@@ -11,12 +11,14 @@ const RecipeDetails = () => {
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   const [rating, setRating] = useState(0);
   const [commentText, setCommentText] = useState("");
+  const reviewsRef = useRef(null);
+
   const [reviews, setReviews] = useState([]);
   const [authorInfo, setAuthorInfo] = useState(null);
   const [followMessage, setFollowMessage] = useState("");
-  const reviewsRef = useRef(null);
   const [expandedReview, setExpandedReview] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
   const [commentName, setCommentName] = useState("");

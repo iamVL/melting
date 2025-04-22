@@ -204,7 +204,7 @@
   
   .inputs input {
     width: 250px;
-    height: 18px;
+    height: 30px;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 7px;
@@ -226,7 +226,7 @@
     align-items: flex-start;
     place-items: center;
     width: 250px;
-    height: 18px;
+    height: 30px;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 7px;

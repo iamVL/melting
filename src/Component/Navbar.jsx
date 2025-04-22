@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation} from "react-router-dom";
 import "../Navbar.css";
 import profileIcon from "../assets/profile icon.png";
 import meltingLogo from "../assets/melting-pot-logo.jpeg";
@@ -7,6 +7,7 @@ import meltingLogo from "../assets/melting-pot-logo.jpeg";
 const Navbar = () => {
   // Track if mobile drawer is open
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   // Track each dropdown’s open state separately
   const [featuredOpen, setFeaturedOpen] = useState(false);
@@ -73,7 +74,7 @@ const Navbar = () => {
         <ul className="nav-links">
           {/* Home */}
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/" style={{textDecoration: location.pathname === "/" ? "underline" : undefined}}>Home</Link>
           </li>
 
           {/* Featured dropdown */}
@@ -83,7 +84,7 @@ const Navbar = () => {
             onMouseLeave={handleFeaturedLeave}
             onClick={handleFeaturedClick}
           >
-            <span className="dropdown-title">Featured ▼</span>
+            <span className="dropdown-title" style={{textDecoration: location.pathname === "/recipes"|| location.pathname === "/tips" || location.pathname === "/how-to-guides" || location.pathname === "/community" ? "underline" : undefined}}>Featured ▼</span>
             {featuredOpen && (
               <ul className="dropdown-menu">
                 <li><Link to="/recipes">Recipes</Link></li>
@@ -96,7 +97,7 @@ const Navbar = () => {
 
           {/* Favorites */}
           <li>
-            <Link to="/favorites">Favorites</Link>
+            <Link to="/favorites" style={{textDecoration: location.pathname === "/favorites" ? "underline" : undefined}}>Favorites</Link>
           </li>
 
           {/* Upload dropdown */}
@@ -106,7 +107,7 @@ const Navbar = () => {
             onMouseLeave={handleUploadLeave}
             onClick={handleUploadClick}
           >
-            <span className="dropdown-title">Upload ▼</span>
+            <span className="dropdown-title" style={{textDecoration: location.pathname === "/upload" || location.pathname === "/tip-upload"  ? "underline" : undefined}}>Upload ▼</span>
             {uploadOpen && (
               <ul className="dropdown-menu">
                 <li><Link to="/upload">Recipe</Link></li>
@@ -117,7 +118,7 @@ const Navbar = () => {
 
           {/* Filter */}
           <li>
-            <Link to="/filter">Filter</Link>
+            <Link to="/filter" style={{textDecoration: location.pathname === "/filter" ? "underline" : undefined}}>Filter</Link>
           </li>
 
           {/* About dropdown */}
@@ -127,7 +128,7 @@ const Navbar = () => {
             onMouseLeave={handleAboutLeave}
             onClick={handleAboutClick}
           >
-            <span className="dropdown-title">About ▼</span>
+            <span className="dropdown-title" style={{textDecoration: location.pathname === "/aboutus" || location.pathname === "/StyleGuide" ? "underline" : undefined}}>About ▼</span>
             {aboutOpen && (
               <ul className="dropdown-menu">
                 <li><Link to="/aboutus">Our Team</Link></li>

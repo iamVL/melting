@@ -23,8 +23,24 @@ const FilterPage = () => {
 
 
   const token = sessionStorage.getItem("token");
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  const userID = user.id || user.userID;
+  const userID = sessionStorage.getItem("user");
+  const [user, setUser] = useState({});
+
+  useEffect( () => {
+    fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then((result) => {
+        console.log("User grabbed:", result);
+        setUser(result);
+        setDietFilters(result.attributes.dietRegimes);
+        setAllergyFilters(result.attributes.allergies);
+      })
+  },[]);
 
   // useEffect(() => {
   //   const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -50,21 +66,41 @@ const FilterPage = () => {
   // }, [dietFilters]);  
 
   useEffect(() => {
-    if (!token) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        const recipes = Array.isArray(data[0])
-          ? data[0].filter(p => p.attributes?.postType === "recipe")
-          : data.posts?.filter(p => p.attributes?.postType === "recipe") || [];
+    const fetchRandomRecipes = async (token) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_PATH}/posts`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+   
+   
+        if (response.ok) {
+          const data = await response.json();
+          let recipes = [];
+   
+   
+          if (Array.isArray(data)) {
+            recipes = data[0].filter((post) => post.attributes?.postType === "recipe");
+          } else if (data.posts) {
+            recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
+          }
+        console.log(recipes);
         setPosts(recipes);
-      })
-      .catch(err => console.error("Error fetching recipes:", err));
+        } else {
+          console.error("Failed to fetch recipes, status:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    };
+
+    fetchRandomRecipes(token);
   }, [token]);
 
   useEffect(() => {
@@ -196,6 +232,7 @@ const FilterPage = () => {
           !allergyTags.includes(allergy.toLowerCase())
         )
       : true;
+
     const dietTags = (attrs.diet || []).map(d => d.toLowerCase());
     const matchesDiet = dietFilters.length
       ? dietFilters.every(diet =>
@@ -243,7 +280,7 @@ const FilterPage = () => {
       <div className="filter-layout">
         {/* Sidebar Filters */}
         <aside className="filter-sidebar">
-          <div className="sidebar-section">
+          <div className="sidebar-navigation">
             <h2>Filters</h2>
 
             {/* Search */}
@@ -358,7 +395,7 @@ const FilterPage = () => {
               </div>
               {showAllergies && (
                   <div className="checkbox-group">
-                    {["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"].map(
+                    {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs"].map(
                         (allergy) => (
                             <label key={allergy}>
                               <input
@@ -387,7 +424,7 @@ const FilterPage = () => {
               </div>
               {showDiets && (
                   <div className="checkbox-group">
-                    {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
+                    {["Halal", "Kosher", "Vegetarian", "Vegan", "Pescitarian"].map((diet) => (
                         <label key={diet}>
                           <input
                               type="checkbox"
