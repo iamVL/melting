@@ -70,7 +70,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
   const fetchRandomRecipes = async (token) => {
    try {
      const response = await fetch(
-       `${process.env.REACT_APP_API_PATH}/posts?limit=50`,
+       `${process.env.REACT_APP_API_PATH}/posts`,
        {
          method: "GET",
          headers: {
@@ -92,8 +92,8 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
        }
 
-
-       const randomRecipesSelected = shuffle([...recipes]).slice(0, 10);
+       console.log(recipes.length);
+       const randomRecipesSelected = shuffle([...recipes]);
        setRandomRecipes(randomRecipesSelected);
      } else {
        console.error("Failed to fetch recipes, status:", response.status);
@@ -151,9 +151,9 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
              <h1>Discover our New Recipes</h1>
              <p>Learn, cook, and share yummy recipes with our  community of foodies.</p>
              <div className="hero-buttons">
-               <Link to="/upload"><button className="btn primary">Upload Recipes</button></Link>
-               <Link to="/recipes"><button className="btn primary">Browse Recipes</button></Link>
-               <Link to="/filter"><button className="btn primary">Filter Recipes</button></Link>
+               <Link to="/upload"><button className="btn primary">Upload Own</button></Link>
+               <Link to="/recipes"><button className="btn primary">Browse All</button></Link>
+               <Link to="/filter"><button className="btn primary">Filter Needs</button></Link>
              </div>
            </div>
            <div className="hero-image">
@@ -166,13 +166,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          <section className="cuisine-section">
            <div className="cuisine-grid">
              {[
-               { name: "American" },
+               { name: "Italian" },
                { name: "Chinese" },
-               { name: "Filipino"},
-               { name: "Italian"},
+               { name: "American"},
                { name: "Indian"},
-               { name: "Mexican" },
-               { name: "Vietnamese"},
+               { name: "Mexican"},
+               { name: "Japanese" },
+               { name: "Spanish"},
              ].map((cuisine, index) => (
                <div key={index} className="cuisine-card">
                  <p>{cuisine.name}</p>
@@ -187,13 +187,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
            <section className="choose-level">
              <h2>Recommended Recipes based on Cooking Level!</h2>
              <div className="levels">
-               <div className="level" onClick={() => setSelectedLevel("easy")}>
+               <div style={{ backgroundColor: selectedLevel === "easy" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("easy")}>
                  <leveltext>Easy</leveltext>
                </div>
-               <div className="level" onClick={() => setSelectedLevel("medium")}>
+               <div style={{ backgroundColor: selectedLevel === "medium" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("medium")}>
                  <leveltext>Medium</leveltext>
                </div>
-               <div className="level" onClick={() => setSelectedLevel("hard")}>
+               <div style={{ backgroundColor: selectedLevel === "hard" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("hard")}>
                  <leveltext>Hard</leveltext>
                </div>
              </div>
@@ -202,15 +202,21 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
              {filteredRecipes.length > 0 ? (
                filteredRecipes.map((recipe) => (
                  <div key={recipe.id} className="recipe-card">
-                   <img src={recipe.attributes?.mainImage} alt="recipe pic" className="recipe-image" />
-                   <h3>{recipe.attributes?.title || "Untitled Recipe"}</h3>
+                   <img src={recipe.attributes?.mainImage} alt="recipe pic" className="recipe-image-cover" />
+                   <h3>
+                    {recipe.attributes?.title?.trim()
+                      ? recipe.attributes.title.length > 30
+                        ? `${recipe.attributes.title.substring(0, 30)}...`
+                        : recipe.attributes.title
+                      : "Untitled Recipe"}
+                  </h3>                   
                    <p>
- {recipe.content?.trim()
-   ? recipe.content.length > 120
-     ? `${recipe.content.substring(0, 120)}...`
-     : recipe.content
-   : "No description available"}
-</p>
+                    {recipe.content?.trim()
+                      ? recipe.content.length > 120
+                        ? `${recipe.content.substring(0, 120)}...`
+                        : recipe.content
+                      : "No description available"}
+                    </p>
                    <Link to={`/recipe/${recipe.id}`} className="read-more">
                      View Recipe →
                    </Link>
@@ -293,12 +299,12 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          </section>
        </>
      )}
-     <section className="contact">
-       <h2>Contact Us</h2>
-       <p>
-         We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-       </p>
-     </section>
+    {sessionStorage.getItem("token") && <section className="contact">
+      <h2>Contact Us</h2>
+      <p>
+        We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
+      </p>
+    </section>}
    </div>
  );
 };

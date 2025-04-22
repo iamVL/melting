@@ -6,6 +6,8 @@
   width: 100vw; 
   margin: auto;
   padding: 40px;
+  padding-left: 140px;
+  padding-right: 140px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -204,7 +206,7 @@ a {
 
 .inputs input {
   width: 250px;
-  height: 18px;
+  height: 30px;
   border-radius: 5px;
   border: 1px solid #ccc;
   padding: 7px;
@@ -226,7 +228,7 @@ a {
   align-items: flex-start;
   place-items: center;
   width: 250px;
-  height: 18px;
+  height: 30px;
   border-radius: 5px;
   border: 1px solid #ccc;
   padding: 7px;
@@ -661,11 +663,12 @@ profile-header {
   transform: scale(1.05);
 }
 
-.delete-button {
+.account-button.delete-button {
   background-color: #ff4d4f;
+  margin-left: 0px;
 }
 
-.delete-button:hover {
+.account-button.delete-button:hover {
   background-color: #d9363e;
   transform: scale(1.05);
 }

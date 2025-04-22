@@ -72,6 +72,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [refreshPosts, setRefreshPosts] = useState(false);
+  const token = sessionStorage.getItem("token");
 
   const logout = (e) => {
     e.preventDefault();
@@ -100,7 +101,7 @@ function App() {
     <Router basename={process.env.PUBLIC_URL}>
       <div className="App">
         <header className="App-header">
-          <Navbar toggleModal={toggleModal} logout={logout} />
+          {token !== null && <Navbar toggleModal={toggleModal} logout={logout} />}
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/tip-upload" element={<TipForm />} />

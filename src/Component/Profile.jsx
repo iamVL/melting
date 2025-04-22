@@ -336,12 +336,12 @@ const Profile = (props) => {
                 <a>Cookbooks</a>
               </recipebutton>
             </Link>
-            <Link to="/ab-profile" class="recipeButtons">
+            {/* <Link to="/ab-profile" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={GearIcon} alt="ABSettings"></img>
                 <a>A/B Settings</a>
               </recipebutton>
-            </Link>
+            </Link> */}
           </div>
 
           <h2>Dietary Restrictions</h2>
@@ -349,7 +349,7 @@ const Profile = (props) => {
           <div className="inputs">
             <a>Allergies</a>
             <div className="dietary-group">
-              {["Peanut", "Gluten", "Dairy", "Shellfish","Tree nuts", "None"].map((item) => (
+              {["Peanuts", "Gluten", "Dairy", "Shellfish","TreeNuts", "Eggs", "None"].map((item) => (
                   <button
                       type="button"
                       key={item}
