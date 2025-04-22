@@ -5,6 +5,7 @@ import "../ChatPage.css";
 
 const ChatRoom = () => {
   const { roomId } = useParams();
+  console.log("ChatPage mounted, roomId =", roomId);
   const { state } = useLocation();
   const friend = state?.friend ?? {};
   const friendId = friend?.id ?? null;
@@ -20,47 +21,58 @@ const ChatRoom = () => {
   const LOCAL_KEY = `chatroom-${roomId}`; 
 
   // Load chat history from backend "posts" + local storage
-  useEffect(() => {
-    if (!myId) {
-      navigate("/");
-      return;
-    }
-
-    fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const hist = data
-          .filter((post) => post.attributes?.type === "chat")
-          .map((post) => {
-            try {
-              const msg = JSON.parse(post.attributes?.content);
-              return msg.roomId === roomId ? msg : null;
-            } catch {
-              return null;
-            }
-          })
-          .filter(Boolean);
-
-        const local = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]");
-
-        const combined = [...hist];
-        local.forEach((msg) => {
-          const exists = combined.some(
-            (m) => m.ts === msg.ts && m.sender === msg.sender && m.text === msg.text
-          );
-          if (!exists) combined.push(msg);
-        });
-
-        setMessages(combined);
+    // Load chat history (and refetch whenever roomId changes)
+    useEffect(() => {
+      if (!myId) {
+        navigate("/");
+        return;
+      }
+  
+      // clear out old messages
+      setMessages([]);
+  
+      // fetch *all* posts, filter to just this room
+      fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .catch(() => {
-        const local = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]");
-        setMessages(local);
-      });
-  }, [roomId, myId, navigate, token]);
-
+        .then((res) => res.json())
+        .then((data) => {
+          // pull out only chat‐type posts
+          const history = data
+            .filter((post) => post.attributes.type === "chat")
+            .map((post) => {
+              try {
+                return JSON.parse(post.attributes.content);
+              } catch {
+                return null;
+              }
+            })
+            .filter((msg) => msg && msg.roomId === roomId);
+  
+          // grab any unsaved local messages
+          const local = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]");
+  
+          // merge without duplicates
+          const combined = [...history];
+          local.forEach((msg) => {
+            const dup = combined.some(
+              (m) =>
+                m.ts === msg.ts &&
+                m.sender === msg.sender &&
+                m.text === msg.text
+            );
+            if (!dup) combined.push(msg);
+          });
+  
+          setMessages(combined);
+        })
+        .catch(() => {
+          // fallback if network fails
+          const local = JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]");
+          setMessages(local);
+        });
+    }, [roomId, myId, navigate, token]);
+  
   // Handle socket messages
   useEffect(() => {
     socket.emit("joinRoom", { roomId });
