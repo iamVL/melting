@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom"; // Already have Link, just add useLocation
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import "../RecipeListing.css";
 import "../FilterPage.css";
 
@@ -26,6 +28,8 @@ const FilterPage = () => {
   const isFavoritesPage = location.pathname === "/favorites";
   const token = sessionStorage.getItem("token");
   const raw = sessionStorage.getItem("user");
+  const navigate = useNavigate();
+
 
   const rawFavIDs = localStorage.getItem("favoritedRecipeIDs");
   const favoritedRecipeIDs = new Set(JSON.parse(rawFavIDs || "[]"));
@@ -76,6 +80,7 @@ const FilterPage = () => {
               map[postID] = reaction.id;
             }
           });
+
           setReactionMap(map);
         })
         .catch((err) => console.error("Error fetching reactions:", err));
@@ -143,6 +148,15 @@ const FilterPage = () => {
             delete updated[recipeID];
             return updated;
           });
+          if (res.ok) {
+            setReactionMap((prev) => {
+              const updated = { ...prev };
+              delete updated[recipeID];
+              return updated;
+            });
+
+          }
+
         }
       } catch (err) {
         console.error("Failed to remove favorite:", err);
@@ -172,10 +186,19 @@ const FilterPage = () => {
             [recipeID]: result.id,
           }));
 
-          // Show modal
+          const existing = JSON.parse(localStorage.getItem("favoritedRecipeIDs") || "[]");
+          if (!existing.includes(recipeID)) {
+            localStorage.setItem("favoritedRecipeIDs", JSON.stringify([...existing, recipeID]));
+          }
+
+          window.dispatchEvent(new Event("favoritesUpdated")); // ✅ Keep this
+
           setIsModalOpen(true);
-          setTimeout(() => setIsModalOpen(false), 2000); // Auto-close after 2 seconds
+          setTimeout(() => {
+            setIsModalOpen(false);
+          }, 7000); // ✅ Show modal but don't redirect
         }
+
 
 
 
@@ -463,15 +486,16 @@ return(
           {isModalOpen && (
               <div className="modal-overlay">
                 <div className="modal-content">
-                  <p>Recipe favorited!</p>
+                  <p>Recipe favorited! <Link to="/favorites">Go to Favorites →</Link></p>
+
                 </div>
               </div>
           )}
 
         </main>
-      </div>
+  </div>
 
-  );
+);
 };
 
 export default FilterPage;
