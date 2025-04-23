@@ -7,33 +7,29 @@ import "../Friend.css";
 const Friends = () => {
   const [connections, setConnections] = useState([]);
   const [followers, setFollowers] = useState([]);
+  const [blockedByYou, setBlockedByYou] = useState([]);
+  const [blockedByOthers, setBlockedByOthers] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // variable for userToken to check authorization
   const userToken = sessionStorage.getItem("token");
 
-  // useEffect hook, this will run everything inside the callback
-  // function once when the component loads
-  // the dependency array has userToken inside of it, which means the useEffect will
-  // run everything inside of it everytime the userToken variable changes
   useEffect(() => {
     console.log(userToken);
 
-    // if the user is not logged in, go back to the default route, which will take them to the login page
     if (!userToken) {
       navigate("/");
     }
   }, [userToken, navigate]);
 
-  const loadFriends = () => {
+  const loadConnections = () => {
     fetch(
       process.env.REACT_APP_API_PATH +
         "/connections?fromUserID=" +
         sessionStorage.getItem("user"),
       {
-        method: "get",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -43,12 +39,15 @@ const Friends = () => {
       .then((res) => res.json())
       .then(
         (result) => {
-          setIsLoaded(true);
           setConnections(result[0]);
-          console.log(result[0]);
+
+          // Extract who you blocked
+          const blocked = result[0].filter(
+            (conn) => conn.attributes.status === "blocked"
+          );
+          setBlockedByYou(blocked);
         },
         (error) => {
-          setIsLoaded(true);
           setError(error);
         }
       );
@@ -60,7 +59,7 @@ const Friends = () => {
         "/connections?toUserID=" +
         sessionStorage.getItem("user"),
       {
-        method: "get",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -70,10 +69,14 @@ const Friends = () => {
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log("Result", result[0]);
           setIsLoaded(true);
           setFollowers(result[0]);
-          console.log(result[0]);
+
+          // Extract users who blocked you
+          const blockedYou = result[0].filter(
+            (conn) => conn.attributes.status === "blocked"
+          );
+          setBlockedByOthers(blockedYou);
         },
         (error) => {
           setIsLoaded(true);
@@ -82,37 +85,63 @@ const Friends = () => {
       );
   };
 
-  return (
-    <div className="friends-page-container">
-      <div className="add-a-friend"> 
-      <FriendForm
-        userid={sessionStorage.getItem("user")}
-        loadFriends={loadFriends}
-        connections={connections}
-      />
-      </div>
-      
-      <FriendList
-        title="Your Following"
-        userid={sessionStorage.getItem("user")}
-        loadFriends={loadFriends}
-        connections={connections}
-        setConnections={setConnections}
-        isLoaded={isLoaded}
-        error={error}
-      />
+  useEffect(() => {
+    loadConnections();
+    loadFollowers();
+  }, []);
 
-      <FriendList
-        title="People Who Follow You"
-        userid={sessionStorage.getItem("user")}
-        loadFriends={loadFollowers}
-        connections={followers}
-        setConnections={setFollowers}
-        isLoaded={isLoaded}
-        error={error}
-      />
-    </div>
-  );
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else if (!isLoaded) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <div className="friends-page-container">
+        <div className="add-a-friend">
+          <FriendForm
+            userid={sessionStorage.getItem("user")}
+            loadFriends={loadConnections}
+            connections={connections}
+            blocked={[...blockedByYou, ...blockedByOthers]} // Combining both blocked lists
+          />
+        </div>
+
+        <FriendList
+          title="Your Following"
+          userid={sessionStorage.getItem("user")}
+          loadFriends={loadConnections}
+          connections={connections.filter(
+            (conn) => conn.attributes.status !== "blocked"
+          )}
+          setConnections={setConnections}
+          isLoaded={isLoaded}
+          error={error}
+        />
+
+        <FriendList
+          title="People Who Follow You"
+          userid={sessionStorage.getItem("user")}
+          loadFriends={loadFollowers}
+          connections={followers.filter(
+            (conn) => conn.attributes.status !== "blocked"
+          )}
+          setConnections={setFollowers}
+          isLoaded={isLoaded}
+          error={error}
+        />
+
+        <FriendList
+          title="Blocked Users"
+          userid={sessionStorage.getItem("user")}
+          loadFriends={loadConnections}
+          connections={[...blockedByYou, ...blockedByOthers]} // Showing blocked relationships from both sides
+          setConnections={(setBlockedByYou, setBlockedByOthers)} // Handles both blocked lists
+          isLoaded={isLoaded}
+          error={error}
+        />
+      </div>
+    );
+  }
 };
 
 export default Friends;

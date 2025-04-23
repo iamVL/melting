@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import Autocomplete from "./Autocomplete.jsx";
 import "../Friend.css";
 
-const FriendForm = ({ userid, loadFriends, connections }) => {
+const FriendForm = ({ userid, loadFriends, connections, blocked }) => {
   const [friendname, setFriendname] = useState("");
   const [friendid, setFriendid] = useState("");
-  const [responseMessage, setResponseMessage] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");  // Error message state
+  const [responseMessage2, setResponseMessage2] = useState(""); // Success message state
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    console.log("Connects", connections);
-    // Fetch data and update users state
-    // make the api call to the user API to get the user with all of their attached preferences
     fetch(process.env.REACT_APP_API_PATH + "/users/", {
       method: "GET",
       headers: {
@@ -30,35 +28,61 @@ const FriendForm = ({ userid, loadFriends, connections }) => {
               }
             });
             setUsers(names);
-            setResponseMessage(result.Status);
+            setResponseMessage(""); // Clear any previous error messages
+            setResponseMessage2(""); // Clear any previous success messages
           }
         },
-        (error) => {
-          alert("error!");
+        () => {
+          setResponseMessage("Error fetching users.");
         }
       );
-  }, []); // Empty dependency array ensures this effect runs once after the initial render
+  }, []);
 
-  // Set the friendid state to the user id that is selected from the autocomplete for the connection
   const selectAutocomplete = (friendID) => {
     setFriendid(friendID);
-    console.log("Set Friend ID to " + friendID);
-    return; 
   };
 
   const submitHandler = (event) => {
-    if (friendid === sessionStorage.getItem("user")) {
-      alert("Cannot add yourself!");
-      return;
-    } else if (connections.find(connection => connection.toUserID === Number(friendid))) {
-      alert("Already follow this person!");
+    event.preventDefault();
+
+    const selfID = Number(sessionStorage.getItem("user"));
+    const numericFriendID = Number(friendid);
+
+    if (numericFriendID === selfID) {
+      setResponseMessage("You cannot follow yourself.");
+      setResponseMessage2(""); // Clear success message
       return;
     }
-  
-    event.preventDefault();
-    console.log("friend is ");
-    console.log(friendid);
-  
+
+    const alreadyFollowing = connections.find(
+      (conn) => conn.toUserID === numericFriendID
+    );
+    if (alreadyFollowing) {
+      setResponseMessage("Person is blocked or you're already following");
+      setResponseMessage2(""); // Clear success message
+      return;
+    }
+
+    // Log to check if blocking data is correct
+    console.log("Blocked Array:", blocked);
+    const isBlockedByUser = blocked.some(
+      (b) => b.fromUserID === selfID && b.toUserID === numericFriendID // You blocked this user
+    );
+    const isBlockedByTarget = blocked.some(
+      (b) => b.fromUserID === numericFriendID && b.toUserID === selfID // This user blocked you
+    );
+
+    // Log the blocking conditions to help debug
+    console.log("isBlockedByUser:", isBlockedByUser);
+    console.log("isBlockedByTarget:", isBlockedByTarget);
+
+    // Check if either user has blocked the other
+    if (isBlockedByUser || isBlockedByTarget) {
+      setResponseMessage("You cannot follow this person because they have blocked you or you have blocked them.");
+      setResponseMessage2(""); // Clear success message
+      return;
+    }
+
     fetch(process.env.REACT_APP_API_PATH + "/connections", {
       method: "POST",
       headers: {
@@ -74,31 +98,43 @@ const FriendForm = ({ userid, loadFriends, connections }) => {
       .then((res) => res.json())
       .then(
         (result) => {
-          setResponseMessage(result.Status);
-          loadFriends(); // update friend list
-          sessionStorage.setItem("refreshConnections", "true"); // 🧠 ← This tells RecipeListing to reload!
+          setResponseMessage2("Friend followed successfully!");
+          setResponseMessage(""); // Clear error message
+          loadFriends();
+          sessionStorage.setItem("refreshConnections", "true");
           sessionStorage.setItem("refreshPosts", "true");
         },
-        (error) => {
-          alert("error!");
+        () => {
+          setResponseMessage("Error adding friend.");
+          setResponseMessage2(""); // Clear success message
         }
       );
   };
-  
 
   return (
-    <form onSubmit={submitHandler} className="friend-form">
-      <label style={{color:"white", marginBottom:"0px"}}>
-        Follow a Friend!
-      </label>
-      <Autocomplete
-        suggestions={users}
-        selectAutocomplete={(e) => selectAutocomplete(e)}
-      />
-      {responseMessage}
-      <input id="follow-submit" type="submit" value="submit" />
+    <>
+      <form onSubmit={submitHandler} className="friend-form">
+        <label style={{ color: "white", marginBottom: "0px" }}>
+          Follow a Friend!
+        </label>
+        <Autocomplete
+          suggestions={users}
+          selectAutocomplete={(e) => selectAutocomplete(e)}
+        />
+        <input id="follow-submit" type="submit" value="submit" />
+      </form>
 
-    </form>
+      {responseMessage && (
+        <div>
+          <div className="alert error">{responseMessage}</div>
+        </div>
+      )}
+      {responseMessage2 && (
+        <div>
+          <div className="alert success">{responseMessage2}</div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -441,6 +441,15 @@ return(
 
                   const authorID = post.authorID;
                   const isFollowersOnly = attrs?.visibility === "Followers Only";
+                  const isBlocked = Array.isArray(connections) &&
+                    connections.some(
+                      (connection) =>
+                        String(connection.toUser?.id ?? connection.toUserID) === String(authorID) &&
+                          connection.attributes?.status === "blocked"
+                     );
+
+                        // If blocked, do not show any of their posts
+                        if (isBlocked) return null;
                   const isFollowingAuthor = Array.isArray(connections) &&
                       connections.some(
                           (connection) =>
