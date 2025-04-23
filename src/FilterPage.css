@@ -199,7 +199,7 @@
     top: 1rem;
 }
 
-.sidebar-section h2 {
+.sidebar-navigation h2 {
     font-size: 1.2rem;
     margin-bottom: 1rem;
     color: #333;
@@ -244,7 +244,7 @@
     display: flex;
     flex-direction: column;
     width: 240px;
-    height: auto; /* allow it to grow if needed */
+    height: 500px;
     min-height: 360px;
     justify-content: space-between;
     transition: transform 0.2s;
@@ -475,13 +475,17 @@
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 0.75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
     width: 100%;
     box-sizing: border-box;
     min-height: 150px; /* Equalize height */
 }
 .filter-sidebar {
-    width: 280px; /* already set */
+    width: 280px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 80px);
 }
 
 .dropdown-group {
@@ -505,7 +509,40 @@
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .dropdown-group {
-    min-height: 180px; /* or 150px depending on your needs */
+    min-height: 30px; /* or 150px depending on your needs */
+}
+
+.sidebar-navigation {
+    height: 100vh;
+    overflow: visible;
+}
+
+.recipe-card .read-more {
+    min-width: 80%;
+}
+
+@media (max-width: 1024px) {
+    .recipe-card {
+        width: 90%;
+    }
+
+    .filter-layout {
+        flex-direction: column;
+    }
+
+    .filter-sidebar {
+        position:static;
+        overscroll-behavior:unset;
+        height: auto;
+        width: 100%;
+    }
+
+    .sidebar-navigation {
+        height: auto;
+    }
 }

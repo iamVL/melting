@@ -8,6 +8,8 @@ import My_recipes from "../Account_Buttons/My_recipes.png"
 import GearIcon from "../assets/gear-icon.png"
 import { Link } from "react-router-dom";
 
+import Modal from "../Component/Modal"; // Adjust path if needed
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -30,6 +32,8 @@ const Profile = (props) => {
   const token = sessionStorage.getItem("token");
   const [allergies, setAllergies] = useState("");
   const [dietRegimes, setDietRegimes] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -37,7 +41,7 @@ const Profile = (props) => {
 
     const apiUrl = `${process.env.REACT_APP_API_PATH}/posts?postType=favorite`;
 
-    console.log("Fetching favorites from:", apiUrl);
+
 
     fetch(apiUrl, {
       method: "GET",  // ✅ Corrected method (was "POST" before)
@@ -133,7 +137,29 @@ const Profile = (props) => {
         alert("error!");
       });
   };
+  const handleDeleteAccount = async () => {
+    try {
+      const res = await fetch(
+          `${process.env.REACT_APP_API_PATH}/users/${sessionStorage.getItem("user")}?relatedObjectsAction=delete`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+      );
 
+      if (res.status === 204) {
+        sessionStorage.clear();
+        navigate("/"); // Or your login page
+      } else {
+        alert("Something went wrong deleting your account.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting account.");
+    }
+  };
   const uploadPicture = (event) => {
     event.preventDefault();
 
@@ -199,50 +225,27 @@ const Profile = (props) => {
         </div>
 
         {/* profile buttons */}
-       
+
         <div className="editUser">
-  <button onClick={logout} className="account-button logout-button">Log out</button>
+          <button onClick={logout} className="account-button logout-button">Log out</button>
 
-  <Link to="/edit-profile">
-    <button className="account-button editprofile-button">Edit Profile</button>
-  </Link>
+          <Link to="/edit-profile">
+            <button className="account-button editprofile-button">Edit Profile</button>
+          </Link>
 
-  <button
-    className="account-button delete-button"
-    onClick={() => {
-      const confirmed = window.confirm(
-        "Are you sure you want to permanently delete your account and all your data?"
-      );
-      if (confirmed) {
-        fetch(`${process.env.REACT_APP_API_PATH}/users/${sessionStorage.getItem("user")}?relatedObjectsAction=delete`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        })
-          .then((res) => {
-            if (res.status === 204) {
-              sessionStorage.clear();
-              window.location.href = process.env.PUBLIC_URL || "/hci/teams/melting/";
-            } else {
-              alert("Something went wrong deleting your account.");
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            alert("Error deleting account.");
-          });
-      }
-    }}
-  >
-    🗑️ Delete Account
-  </button>
-</div>
+          <button
+              className="account-button delete-button"
+              onClick={() => setShowDeleteModal(true)}
+          >
+            🗑️ Delete Account
+          </button>
+
+        </div>
 
 
       </div>
-      <div class ="bottonProfileSection">
-        <div class ="accountSettings" >
+      <div class="bottonProfileSection">
+        <div class="accountSettings">
           <div class="accountHeaders">
             <profile-header>Account Settings</profile-header>
             <a>Update your personal information</a>
@@ -336,12 +339,12 @@ const Profile = (props) => {
                 <a>Cookbooks</a>
               </recipebutton>
             </Link>
-            <Link to="/ab-profile" class="recipeButtons">
+            {/* <Link to="/ab-profile" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={GearIcon} alt="ABSettings"></img>
                 <a>A/B Settings</a>
               </recipebutton>
-            </Link>
+            </Link> */}
           </div>
 
           <h2>Dietary Restrictions</h2>
@@ -349,7 +352,7 @@ const Profile = (props) => {
           <div className="inputs">
             <a>Allergies</a>
             <div className="dietary-group">
-              {["Peanut", "Gluten", "Dairy", "Shellfish","Tree nuts", "None"].map((item) => (
+              {["Peanuts", "Gluten", "Dairy", "Shellfish","TreeNuts", "Eggs", "None"].map((item) => (
                   <button
                       type="button"
                       key={item}
@@ -379,8 +382,30 @@ const Profile = (props) => {
           </div>
               
         </div>
+        <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+          <h3>Delete Account</h3>
+          <p>Are you sure you want to permanently delete your account and all your data?</p>
+          <div className="modal-buttons">
+            <button
+                className="confirm-button"
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  handleDeleteAccount(); // ← external function is called here
+                }}
+            >
+              Yes, Delete
+            </button>
+            <button
+                className="cancel-button"
+                onClick={() => setShowDeleteModal(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </Modal>
 
-    </div>
+
+      </div>
     </form>
 </>
 )

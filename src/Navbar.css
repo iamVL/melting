@@ -54,7 +54,7 @@
 
 .dropdown-menu {
   position: absolute;
-  top: 2rem;
+  top: 2.5rem;
   left: 0;
   background-color: #fff;
   list-style: none;
@@ -107,7 +107,7 @@
     width: 75%;
     max-width: 300px;
     height: 100vh;
-    background-color: #d3d3d3;
+    background-color: #ffb285;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     z-index: 9999;

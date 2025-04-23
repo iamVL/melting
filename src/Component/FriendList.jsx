@@ -1,20 +1,17 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { socket } from "../App";
 import "../Friend.css";
-import Default from "../assets/Default-Avatar.jpg"
+import Default from "../assets/Default-Avatar.jpg";
 
 const FriendList = (props) => {
   const navigate = useNavigate();
+  const myId = sessionStorage.getItem("user");
 
   useEffect(() => {
     props.loadFriends();
-  }, []); // Empty dependency array ensures this effect runs once after the initial render
+  }, []);
 
   const updateConnection = (id, status) => {
-    console.log(`Attempting to update connection ${id} to status ${status}`);
-
-    //make the api call to the user controller with a PATCH request for updating a connection with another user
     fetch(process.env.REACT_APP_API_PATH + "/connections/" + id, {
       method: "PATCH",
       headers: {
@@ -22,171 +19,179 @@ const FriendList = (props) => {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
       body: JSON.stringify({
-        attributes: { status: status, type: "friend" },
-      }
-      ),
+        attributes: { status, type: "friend" },
+      }),
     })
-
       .then((res) => res.json())
       .then(
-        (result) => {
-          props.setConnections([]);
+        () => {
+          // If the user is being blocked, remove the active connection (if they're following you)
+          if (status === "blocked") {
+            props.connections.forEach((connection) => {
+              if (
+                connection.attributes.status === "active" &&
+                connection.toUser.id.toString() === myId &&
+                connection.fromUser.id === id
+              ) {
+                deleteConnection(connection.id); // Delete the active following connection
+              }
+            });
+
+            // Manually update the connections in the state to reflect that the user has been blocked
+            props.setConnections((prevConnections) =>
+              prevConnections.filter(
+                (connection) =>
+                  !(connection.toUser.id === id && connection.attributes.status === "active")
+              )
+            );
+          }
+
+          // Refresh connections after blocking
           props.loadFriends();
         },
-        (error) => {
-          alert("error!");
-        }
+        () => alert("error!")
       );
   };
 
-  const deleteConnection = (id, status) => {
-    console.log(`Attempting to delete connection ${id} to status ${status}`);
-
-    //make the api call to the user controller with a PATCH request for updating a connection with another user
+  const deleteConnection = (id) => {
     fetch(process.env.REACT_APP_API_PATH + "/connections/" + id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-    })
-      .then((res) => {
-        props.setConnections([]);
-        props.loadFriends();
-      });
-  };
-  const handleMessageClick = async (connectionUser) => {
-    const fromUserID = sessionStorage.getItem("user");
-    const toUserID = connectionUser.id;
-
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_PATH}/messages`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-        body: JSON.stringify({ fromUserID, toUserID }),
-      });
-
-      const data = await res.json();
-      const roomID = data.roomID;
-      sessionStorage.setItem("roomID", roomID);
-      sessionStorage.setItem("toUserID", toUserID);
-      sessionStorage.setItem("toUsername", connectionUser.attributes.username);
-
-      navigate(`/messages/${roomID}`);
-    } catch (error) {
-      console.error("Failed to get or create room:", error);
-    }
+    }).then(() => {
+      props.setConnections([]);
+      props.loadFriends();
+    });
   };
 
-  // If the user is not blocked, show the block icon
-  // Otherwise, show the unblock icon and update the connection
-  // with the updateConnection function
-  const conditionalAction = (status, id) => {
-    console.log(`Rendering action based on status: ${status} for connection ${id}`);
-    if (status === "active") {
-      return (
-        <button type="button" onClick={() => updateConnection(id, "blocked")}> Block </button>
-      );
-    } else {
-      return (
-        <button type="button" onClick={() => updateConnection(id, "active")}> Unblock </button>
-      );
-    }
+  const goToChat = (friendId, friend) => {
+    const roomId = [Number(myId), Number(friendId)].sort((a, b) => a - b).join("-");
+    navigate(`/chat/${roomId}`, { state: { friend } });
   };
 
-  useEffect(() => {
-    const handleCreateRoom = (data) => {
-      console.log("Received data on /room-created event:", data);
-      if (data && data.roomID) {
-        console.log("Navigating to room:", data.roomID);
+  const conditionalAction = (status, id, title) => {
+    // Don't render the block button for "People Who Follow You"
+    if (title === "People Who Follow You") return null;
 
-        navigate(`/messages/${data.roomID}`);
-        sessionStorage.setItem("toUserID", props.userId);
-      }
-    };
+    return status === "active" ? (
+      <button type="button" onClick={() => updateConnection(id, "blocked")}>
+        Block
+      </button>
+    ) : (
+      <button type="button" onClick={() => updateConnection(id, "active")}>
+        Unblock
+      </button>
+    );
+  };
 
-    //Listen for a response after room creation
-    // socket.on is used to listen for incoming events from the server.
-    // it's used to set up a listener for room creation
-    // if it is the first time, it will create a room between the two users, otherwise it will join a room
-    // that has already been established
-    socket.on("/room-created", handleCreateRoom);
-    // cleanup
-    return () => {
+  // Filtering out blocked users in all scenarios
+  const filteredConnections =
+    props.title === "Blocked Users"
+      ? props.connections.filter(
+          (connection) =>
+            connection.attributes.status === "blocked" &&
+            connection.fromUser.id.toString() === myId
+        )
+      : props.title === "Your Following"
+      ? props.connections.filter(
+          (connection) =>
+            connection.attributes.status === "active" &&
+            connection.fromUser.id.toString() === myId &&
+            !props.connections.some(
+              (conn) =>
+                conn.toUser.id === connection.toUser.id &&
+                conn.attributes.status === "blocked"
+            )  // Exclude blocked users
+        )
+      : props.title === "People Who Follow You"
+      ? props.connections.filter(
+          (connection) =>
+            connection.attributes.status === "active" &&
+            connection.toUser.id.toString() === myId &&
+            !props.connections.some(
+              (conn) =>
+                conn.fromUser.id === connection.fromUser.id &&
+                conn.attributes.status === "blocked"
+            )  // Exclude blocked users
+        )
+      : props.connections.filter(
+          (connection) =>
+            connection.attributes.status !== "blocked" // General filter for blocked users
+        );
 
-      // when the user leaves the component/page, this socket.off will be called which will turn off the listener
-      // for room creation
-      socket.off("/room-created", handleCreateRoom);
-    };
-  }, [navigate, props.userId]);
+  if (props.error) return <div>Error: {props.error.message}</div>;
+  if (!props.isLoaded) return <div>Loading…</div>;
 
+  return (
+    <div className="friend-posts">
+      <h3>{props.title}</h3>
 
+      <div className="friend-listing">
+        {filteredConnections
+          .slice()
+          .reverse()
+          .map((connection) => {
+            const friend =
+              connection.toUser.id.toString() === myId
+                ? connection.fromUser
+                : connection.toUser;
 
-  if (props.error) {
-    return <div> Error: {props.error.message} </div>;
-  } else if (!props.isLoaded) {
-    return <div> Loading... </div>;
-  } else {
-    return (
-      <div className="friend-posts">
-          {/* the list comes back in oldest first order, reverse so newest shows at the top */}
-          <h3>{props.title}</h3>
-          <div className="friend-listing">
-            {props.connections.reverse().map((connection) => (
+            return (
               <div key={connection.id} className="user-list">
                 <div className="friend-info">
-                { (props.title === "Your Following") ?
-                <>
-                { connection.toUser.attributes.picture !== undefined  && connection.toUser.attributes.picture !== "" ?
-                    <>
-                      <img src={connection.toUser.attributes.picture} alt="user picture"/>
-                    </>
-                  :
-                  <>
-                      <img src={Default} alt="user picture"/>
-                      </>
-                  }
+                  {friend.attributes.picture ? (
+                    <img src={friend.attributes.picture} alt="user avatar" />
+                  ) : (
+                    <img src={Default} alt="user avatar" />
+                  )}
+
                   <div className="friend-information">
-                    <p>
-                      {connection.toUser.attributes.username}
-                    </p>
+                    <p>{friend.attributes.username}</p>
+
                     <div className="friend-buttons">
-                      <button type="button" onClick={() => handleMessageClick(connection.toUser)}> Message </button>
-                      {conditionalAction(
-                          connection.attributes.status,
-                          connection.id
-                        )}
-                      <button type="button" onClick={() => deleteConnection(connection.id, connection.attributes.status)}> Remove </button>
+                      {props.title !== "Blocked Users" && connection.attributes.status !== "blocked" && (
+                        <button
+                          className="message-btn"
+                          type="button"
+                          onClick={() => goToChat(friend.id, friend)}
+                        >
+                          Message
+                        </button>
+                      )}
+
+                      {props.title !== "Blocked Users" && (
+                        <button
+                          className="message-btn"
+                          type="button"
+                          onClick={() => deleteConnection(connection.id)}
+                        >
+                          Remove
+                        </button>
+                      )}
+
+                      {props.title === "Your Following" &&
+                        conditionalAction(connection.attributes.status, connection.id, props.title)}
+
+                      {props.title === "Blocked Users" && (
+                        <button
+                          className="message-btn"
+                          type="button"
+                          onClick={() => deleteConnection(connection.id)}
+                        >
+                          Unblock
+                        </button>
+                      )}
                     </div>
-                  </div></> : <>
-                  { connection.fromUser.attributes.picture !== undefined  && connection.fromUser.attributes.picture !== "" ?
-                    <>
-                      <img src={connection.fromUser.attributes.picture} alt="user picture"/>
-                    </>
-                  :
-                  <>
-                      <img src={Default} alt="user picture" />
-                      </>
-                  }
-                  <div className="friend-information">
-                    <p>
-                      {connection.fromUser.attributes.username}
-                    </p>
-                    <div className="friend-buttons">
-                      <button type="button" onClick={() => handleMessageClick(connection.fromUser)}> Message </button>
-                      <button type="button" onClick={() => deleteConnection(connection.id, connection.attributes.status)}> Remove </button>
-                    </div>
-                  </div></>}
+                  </div>
                 </div>
-            </div>
-            ))}
-          </div>
+              </div>
+            );
+          })}
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default FriendList;

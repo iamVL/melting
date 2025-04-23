@@ -204,7 +204,7 @@
   
   .inputs input {
     width: 250px;
-    height: 18px;
+    height: 30px;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 7px;
@@ -226,7 +226,7 @@
     align-items: flex-start;
     place-items: center;
     width: 250px;
-    height: 18px;
+    height: 30px;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 7px;
@@ -505,6 +505,12 @@
     unicode-bidi: isolate;
   }
   
+  @media (max-width: 1440px) {
+    .accountSettings {
+      width: 40%;
+    }
+  }
+  
   @media (max-width: 768px) {
     .allinputs {
       padding: 0px;
@@ -597,3 +603,69 @@
   .input-row:last-of-type {
     margin-bottom: 5px; /* 👈 Reduce spacing only for last input row */
   }
+
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .accountSettings {
+      width: 50%;
+    }
+
+    .allinputs {
+      width: 100%;
+    }
+
+    .allinputs .inputs{
+      width: 100%;
+    }
+
+    .inputs input{
+      width: 100%;
+    }
+
+    .inputs, .allinputscp {
+      width: 100%;
+    }
+
+    .allinputs .display{
+      width: 100%;
+    }
+
+    .accountActions {
+      width: 70%;
+    }
+
+    .submitbutton {
+      width: calc(100% - 50px);
+      margin-left: 50px;
+    }
+  }
+
+@media (max-width: 425px) {
+  .userContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0px;
+    padding: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .editUser {
+    margin: 0px;
+  }
+
+  .containerInfo {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .account-button {
+    font-size: 12px;
+    width: 250px;
+    height: 35px;
+  }
+
+}

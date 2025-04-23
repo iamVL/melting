@@ -24,7 +24,6 @@ const LoginForm = ({ setLoggedIn }) => {
   }, [navigate]);
 
   useEffect(() => {
-    window.scrollTo(0, document.body.scrollHeight);
   }, []);
 
   const submitHandler = (event) => {
@@ -75,12 +74,11 @@ const LoginForm = ({ setLoggedIn }) => {
         {/* Back Arrow (only visible on mobile) */}
         <div className="back-arrow">&#8592;</div>
 
-        {/* Logo (only visible on desktop) */}
-        <img src={meltingLogo} alt="Melting Pot" className="logo-loginn" />
 
         {/* Left Column - Form */}
         <div className="left-column">
-          <h1 className="title">WELCOME BACK</h1>
+          <img src={meltingLogo} alt="Melting Pot" className="logo-loginn" />
+          <h1 className="login-title">WELCOME BACK</h1>
           <p className="subtitle">Sign in with your Email Address and Password</p>
 
           {/* Success Message */}
