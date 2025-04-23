@@ -690,3 +690,9 @@ profile-header {
     margin: 10px auto; /* 🧡 center horizontally */
   }
 }
+
+@media (max-width: 1024px) {
+  .accountSettings {
+    width: 50%;
+  }
+}

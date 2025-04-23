@@ -263,3 +263,35 @@
   width: fit-content;
   max-width: 100%;
 }
+
+@media (max-width: 768px) {
+  .tip-header-text input, .tip-step-content input{
+    font-size: 12px;
+  }
+
+  #tip-header-button {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #tip-header-button button {
+    width: 50%;
+  }
+
+  .tip-header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tip-header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+  }
+
+  .tip-header-text input{
+    width: 80%;
+  }
+}
