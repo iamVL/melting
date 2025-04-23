@@ -14,6 +14,7 @@
   background-color: white;
   width: 75vw;
   max-width: 1152px;
+  height: 90%;
   display: flex;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -36,24 +37,23 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  margin: 0px;
 }
 
 .food-image {
-  width: 90%;
-  max-width: 400px;
-  height: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .logo-loginn {
-  width: 140px;
-  position: absolute;
-  top: 20px;
-  left: 20px;
+  width: 200px;
+  align-self: flex-start;
+  border-radius: 20px;
 }
 
-.title {
-  font-family: 'Itim', cursive;
+.login-title {
+  /* font-family: 'Itim', cursive; */
   font-size: 36px;
   color: #4A2E1F;
   font-weight: bold;
@@ -81,9 +81,9 @@
 
 .input-groupp label {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #4a2c2a;
-  font-family: 'Itim', cursive;
+  /* font-family: 'Itim', cursive; */
 }
 
 .input-groupp input {
@@ -105,9 +105,9 @@
 
 .remember-me {
   display: flex;
-  align-items: center;
-  font-weight: bold;
-}
+  /* align-items: center; */
+  font-weight: bold;}
+   
 
 .remember-me input[type="checkbox"] {
   width: 16px;
@@ -129,10 +129,20 @@
   padding: 12px 24px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
   width: fit-content;
   align-self: flex-start;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: .3s;
+}
+
+.signup-btna:hover {
+  background: #56b940;
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+.signup-btna:active {
+  transform: scale(.99);
 }
 
 .login-text {
@@ -171,14 +181,16 @@
   }
 
   .logo-loginn {
-    display: none;
+    width: 150px;
+    align-self: center;
+    margin-bottom: 10px;
   }
 
   .back-arrow {
     display: block;
   }
 
-  .title {
+  .login-title {
     font-size: 28px;
     text-align: center;
     margin-top: 10px;
@@ -234,10 +246,6 @@
     display: none;
   }
 
-  .logo-loginn {
-    display: none;
-  }
-
   .left-column {
     width: 100%;
     padding: 0;
@@ -245,9 +253,15 @@
     text-align: center;
   }
 
-  .title {
+  .login-title {
     font-size: 30px;
     text-align: center;
+  }
+
+  .logo-loginn {
+    width: 150px;
+    align-self: center;
+    margin-bottom: 10px;
   }
 
   .subtitle {

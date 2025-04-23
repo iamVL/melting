@@ -282,6 +282,7 @@
 
 .community-post button:hover {
   transform: scale(1.02);
+  cursor: pointer;
   background-color: rgb(250, 127, 127);
 }
 

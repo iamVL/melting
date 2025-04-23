@@ -11,9 +11,11 @@ const RegisterForm = ({ setLoggedIn }) => {
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("");
   const [username, setUsername] = useState("");
-  const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [allergyOptions, setAllergyOptions] = useState([]);
   const [dietOptions, setDietOptions] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -47,18 +49,90 @@ const RegisterForm = ({ setLoggedIn }) => {
     }
   };
 
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const validatePassword = (password) => {
+    const errors = [];
+    if (!/[a-z]/.test(password)) errors.push("lowercase");
+    if (!/[A-Z]/.test(password)) errors.push("uppercase");
+    if (!/[0-9]/.test(password)) errors.push("number");
+    if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) errors.push("special character");
+    if (password.length < 8) errors.push("minimum 8 characters");
+    return errors;
+  };
+
+  // Phone number formatting to add dashes automatically
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // Remove all non-digits
+  
+    if (value.length > 10) value = value.slice(0, 10); // Limit to 10 digits
+  
+    let formatted = value;
+    if (value.length > 6) {
+      formatted = `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6)}`;
+    } else if (value.length > 3) {
+      formatted = `${value.slice(0, 3)}-${value.slice(3)}`;
+    }
+  
+    setPhone(formatted);
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
+    setErrorMsg("");  // Reset error message
 
+    // Check if any required fields are empty
+    if (
+      !fullName.trim() ||
+      !username.trim() ||
+      !email.trim() ||
+      !phone.trim() ||
+      !country.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
+      setErrorMsg("Please fill in all required fields.");
+      return;
+    }
+    
+    if (username.length < 5) {
+      setErrorMsg("Username must be at least 5 characters long.");
+      return;
+    }
+
+    // Validate email format
+    if (!isValidEmail(email)) {
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+
+    // Validate password
+    const passwordErrors = validatePassword(password);
+    if (passwordErrors.length > 0) {
+      setErrorMsg(`Password needs: ${passwordErrors.join(", ")}`);
+      return;
+    }
+
+    // Check if phone number is valid (e.g., must be at least 10 digits)
+    if (phone.replace(/-/g, "").length < 10) {
+      setErrorMsg("Phone number must follow the example format. (123-456-7890).");
+      return;
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setErrorMsg("Passwords do not match.");
+      return;
+    }
+
+    // Proceed with API call if everything is valid
     fetch(process.env.REACT_APP_API_PATH + "/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
+      body: JSON.stringify({ email, password }),
     })
       .then((res) => res.json())
       .then((result) => {
@@ -88,12 +162,12 @@ const RegisterForm = ({ setLoggedIn }) => {
       })
       .then((res) => res.json())
       .then(() => {
-        navigate("/");
+        navigate("/", { state: { accountCreated: true } });
         window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("Registration or profile setup failed!");
+        setErrorMsg("Email already exists!");
       });
   };
 
@@ -109,10 +183,12 @@ const RegisterForm = ({ setLoggedIn }) => {
           <img src={meltingLogo} alt="Melting" className="logo-login" />
           <h1 className="title">Registration</h1>
 
+          {errorMsg && <div className="alert error">{errorMsg}</div>}
+
           <form onSubmit={submitHandler} className="register-form">
             <div className="input-row">
               <div className="input-group">
-                <label>Full Name</label>
+                <label>Full Name (First and Last)</label>
                 <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
               </div>
               <div className="input-group">
@@ -124,11 +200,21 @@ const RegisterForm = ({ setLoggedIn }) => {
             <div className="input-row">
               <div className="input-group">
                 <label>Email address</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@email.com"
+                />
               </div>
               <div className="input-group">
                 <label>Phone Number</label>
-                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  placeholder="(XXX) XXX-XXXX"
+                />
               </div>
             </div>
 
@@ -146,18 +232,14 @@ const RegisterForm = ({ setLoggedIn }) => {
             <div className="input-row">
               <div className="input-group">
                 <label>Confirm Password</label>
-                <input type="password" />
-              </div>
-              <div className="input-group hidden-on-mobile">
-                <label>&nbsp;</label>
-                <input disabled />
+                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
             </div>
 
             <div className="input-group">
               <label>Allergies</label>
               <div className="option-group">
-                {["Peanut", "Gluten", "Dairy", "Shellfish", "Tree nuts", "None"].map((item) => (
+                {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs", "None"].map((item) => (
                   <button
                     type="button"
                     key={item}

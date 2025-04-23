@@ -75,7 +75,7 @@ function CommunityPage() {
     }
 
     setErrorMessage("");
-    const groupData = { name: newGroupName, description: "New group created", attributes: {ownerID: sessionStorage.getItem("user")}};
+    const groupData = { name: newGroupName, description: "New group created", attributes: {ownerID: sessionStorage.getItem("user"), description: "None"}};
 
     fetch(process.env.REACT_APP_API_PATH + "/groups", {
       method: "POST",
