@@ -227,10 +227,10 @@ const UploadRecipe = () => {
 
  return (
    <div className="page-container">
-     <div className="upload-recipe-header">Upload Recipe</div>
      {isLoaded ? (
        <div className="upload-recipe-container">
          <div className="upload-recipe-form">
+            <div style={{color:"black"}} className="upload-recipe-header">Upload Recipe</div>
            <label>Recipe Title *</label>
            <input type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
 

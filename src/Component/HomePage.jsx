@@ -284,31 +284,30 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                <p>Cook pasta perfectly every time with these simple tricks.</p>
                <Link to="/perfect-pasta"><a>Learn More →</a></Link>
              </div>
-             <div className="guide-card">
-               <h3>Fluffy Pancakes Secrets</h3>
-               <p>Discover the science behind the fluffiest pancakes ever!</p>
-               <Link to="/fluffy-pancakes"><a>Learn More →</a></Link>
-             </div>
            </div>
          </section>
 
-
-         {/* Community Section */}
+        <div style={{width:"100%"}}>
+           {/* Community Section */}
          <section className="community">
-           <h2>Try Joining or Making a Cooking Community!</h2>
-           <p>Connect with fellow food lovers, share recipes, and get inspired!</p>
-           <div className="community-buttons">
-             <Link to="/community"><button className="btn primary">Join Now</button></Link>
-           </div>
+          <div id="community-information">
+            <h2>Try Joining or Making a Cooking Community!</h2>
+            <p>Connect with fellow food lovers, share recipes, and get inspired!</p>
+            <div className="community-buttons">
+              <Link to="/community"><button className="btn primary">Join Now</button></Link>
+            </div>
+          </div>
          </section>
+
+         {sessionStorage.getItem("token") && <section className="contact">
+            <h2>Contact Us</h2>
+            <p>
+              We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
+            </p>
+          </section>}
+        </div>
        </>
      )}
-    {sessionStorage.getItem("token") && <section className="contact">
-      <h2>Contact Us</h2>
-      <p>
-        We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-      </p>
-    </section>}
    </div>
  );
 };
