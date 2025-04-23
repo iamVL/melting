@@ -370,3 +370,12 @@ select.search-bar-1 {
   background-color: #fcbfac;
   color: black;
 }
+.loading-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.loading-text {
+  font-size: 1.5rem;
+  color: #888;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import "../RecipeListing.css";
 import ConfirmModal from "../Component/ConfirmModal";
+import { useNavigate , Link} from "react-router-dom";
 
 
 const RecipeListing = ({
@@ -34,6 +34,7 @@ const RecipeListing = ({
   const rawFavIDs = localStorage.getItem("favoritedRecipeIDs");
   const favoritedFromStorage = new Set(JSON.parse(rawFavIDs || "[]"));
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
 
   useEffect( () => {
@@ -207,13 +208,15 @@ const RecipeListing = ({
         if (response.ok) {
           setFavoritedRecipes((prev) => [...prev, recipeID]);
 
-          // Trigger modal on success
           setIsModalOpen(true);
-          setTimeout(() => setIsModalOpen(false), 2000);
+          setTimeout(() => {
+            setIsModalOpen(false);
+            navigate("/favorites");
+          }, 2000);
+
         }
 
-
-      } catch (error) {
+        } catch (error) {
         console.error("Failed to update favorite:", error);
       }
     }
