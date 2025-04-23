@@ -22,6 +22,7 @@ const FilterPage = () => {
   const [showAllergies, setShowAllergies] = useState(true);
   const [showDiets, setShowDiets] = useState(true);
   const [connections, setConnections] = useState([]);
+  const location = useLocation();
   const isFavoritesPage = location.pathname === "/favorites";
   const raw = sessionStorage.getItem("user");
   const navigate = useNavigate();
@@ -31,7 +32,6 @@ const FilterPage = () => {
   const favoritedRecipeIDs = new Set(JSON.parse(rawFavIDs || "[]"));
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const location = useLocation();
   const params = new URLSearchParams(location.search);
   const initialCuisine = params.get("cuisine");
 
