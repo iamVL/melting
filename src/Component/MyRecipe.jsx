@@ -414,7 +414,7 @@ const RecipeDetails = () => {
             </div>
           </div>
 
-          <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+          <div id="recipe-header-button" style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
             <button type="button" onClick={cancelRecipe} id="edit-my-recipe"> Cancel </button>
             <button type="submit" id="save-my-recipe"> Save Changes </button>
           </div>
@@ -622,7 +622,7 @@ const RecipeDetails = () => {
             )}
           </div>
 
-          <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+          <div id="recipe-header-button" style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
             <button type="button" onClick={() => setEditMode(true)} id="edit-my-recipe"> Edit Recipe </button>
             <button type="button" onClick={() => handleDelete()} id="edit-my-recipe" style={{backgroundColor:"#ffa0a0"}}> Delete </button>
           </div>

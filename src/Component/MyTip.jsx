@@ -268,7 +268,7 @@ const TipDetails = () => {
             <div className="tip-header-text">
               <input name ="title" style={{color:"#555555"}} value={title} onChange={(e) => setTitle(e.target.value)}/>
               <input name ="desc" style={{color:"#555555"}} value={desc} onChange={(e) => setDesc(e.target.value)}/>
-              <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+              <div id="tip-header-button" style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
                 <button type="button" onClick={cancelTip} id="edit-my-recipe"> Cancel </button>
                 <button type="submit" id="save-my-recipe"> Save Changes </button>
             </div>
@@ -294,7 +294,6 @@ const TipDetails = () => {
                   </div>
                   <input name ="instruction" style={{color:"#555555"}} key={index} placeholder="Fill Out" value={step.description} onChange={(e) => handleStepChange(index, e)}/>
                   <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
-                    <button type="button" className="add-recipe-button" onClick={addNewStep}> Add Step</button>
                     <button type="button" className="delete-button-recipe" onClick={() => {removeStep(index)}}>Remove</button>
                   </div>
                 </div>
@@ -308,6 +307,7 @@ const TipDetails = () => {
               </div>
             ))}
           </div>
+          <button style={{marginTop:"20px"}} type="button" className="add-recipe-button" onClick={addNewStep}> Add Step</button>
         </div>
       </form>
     </div>
@@ -318,7 +318,7 @@ const TipDetails = () => {
           <div className="tip-header-text">
             <h2 className="tip-details-title">{tip.content}</h2>
             <p className="tip-details-description">{tip.attributes?.description}</p>
-            <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+            <div id="tip-header-button" style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
               <button type="button" onClick={() => setEditMode(true)} id="edit-my-recipe"> Edit Tip </button>
               <button type="button" onClick={() => handleDelete()} id="edit-my-recipe" style={{backgroundColor:"#ffa0a0"}}> Delete </button>
             </div>

@@ -570,3 +570,15 @@ html, body {
     width: 60%;
   }
 }
+
+@media (max-width: 425px) {
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .read-more {
+    width: 100%;
+    font-size: 12px;
+  }
+}
