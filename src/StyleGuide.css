@@ -353,3 +353,28 @@ display: block;
 
 
 
+@media (max-width: 1024px) {
+  .alert {
+    font-size: 14px;;
+  }
+
+  .nav-links {
+    gap: 10px;
+  }
+
+  .nav-links-container.open {
+    background-color: #ffb285;
+  }
+}
+
+@media (max-width: 425px) {
+  .alert {
+    font-size: 12px;;
+  }
+}
+
+@media (max-width: 320px) {
+  .alert {
+    font-size: 10px;;
+  }
+}

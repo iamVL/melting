@@ -232,4 +232,10 @@ body, html {
 
 .delete-btn:hover {
     background: darkred;
-}
+ } 
+
+ @media (max-width: 768px) {
+   .upload-recipe-image {
+     width: 100%;
+   }
+ }

@@ -281,3 +281,9 @@
     font-size: 14px;
   }
 }
+
+@media (min-width: 2560px) {
+  .login-box {  
+    height: auto;
+  }
+}

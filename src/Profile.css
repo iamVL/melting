@@ -600,3 +600,96 @@ profile-header {
 .input-row:last-of-type {
   margin-bottom: 5px; /* 👈 Reduce spacing only for last input row */
 }
+
+.delete-account-top {
+  margin-top: 10px;
+  width: 200px;
+  height: 45px;
+  background-color: #e60023;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.delete-account-top:hover {
+  background-color: #cc001f;
+  transform: scale(1.05);
+}
+
+.delete-account-top:active {
+  transform: scale(1);
+}
+
+
+.account-button {
+  width: 200px;
+  height: 45px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 🎯 Specific variations */
+.logout-button {
+  background-color: #696968;
+  border: 1px solid white;
+}
+
+.logout-button:hover {
+  background-color: #d46a4c;
+  transform: scale(1.05);
+}
+
+.editprofile-button {
+  background-color: #000;
+}
+
+.editprofile-button:hover {
+  background-color: #d46a4c;
+  transform: scale(1.05);
+}
+
+.account-button.delete-button {
+  background-color: #ff4d4f;
+  margin-left: 0px;
+}
+
+.account-button.delete-button:hover {
+  background-color: #d9363e;
+  transform: scale(1.05);
+}
+
+
+@media (max-width: 768px) {
+  .editUser {
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .logout,
+  .editprofile,
+  .delete-account-top {
+    width: 90%;
+    max-width: 250px;
+    margin: 10px auto; /* 🧡 center horizontally */
+  }
+}
+
+@media (max-width: 1024px) {
+  .accountSettings {
+    width: 50%;
+  }
+}

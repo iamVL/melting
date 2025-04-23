@@ -247,3 +247,51 @@
 .review-form button:hover {
   background-color: #a64000;
 }
+
+.reviews-list-tips {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  scroll-behavior: smooth;
+  align-items: flex-start;
+  margin-top: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .tip-header-text input, .tip-step-content input{
+    font-size: 12px;
+  }
+
+  #tip-header-button {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #tip-header-button button {
+    width: 50%;
+  }
+
+  .tip-header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tip-header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+  }
+
+  .tip-header-text input{
+    width: 80%;
+  }
+}
