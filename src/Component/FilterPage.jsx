@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
 import "../RecipeListing.css";
 import "../FilterPage.css";
 
@@ -34,12 +32,19 @@ const FilterPage = () => {
   const favoritedRecipeIDs = new Set(JSON.parse(rawFavIDs || "[]"));
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const initialCuisine = params.get("cuisine");
 
   const token = sessionStorage.getItem("token");
   const userID = sessionStorage.getItem("user");
   const [user, setUser] = useState({});
 
   useEffect( () => {
+    if (initialCuisine) {
+      setSelectedCuisines([initialCuisine]);
+      return;
+    }
     fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
       headers: {
         "Content-Type": "application/json",
@@ -380,20 +385,24 @@ return(
               </div>
               {showCuisines && (
                   <div className="checkbox-group">
-                    {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map((cuisine) => (
-                        <label key={cuisine}>
-                          <input
-                              type="checkbox"
-                              checked={selectedCuisines.includes(cuisine)}
-                              onChange={() =>
-                                  setSelectedCuisines((prev) =>
-                                      prev.includes(cuisine) ? prev.filter((c) => c !== cuisine) : [...prev, cuisine]
-                                  )
-                              }
-                          />
-                          {cuisine}
-                        </label>
-                    ))}
+                    {["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"].map(
+                        (cuisine) => (
+                            <label key={cuisine}>
+                              <input
+                                  type="checkbox"
+                                  checked={selectedCuisines.includes(cuisine)}
+                                  onChange={() =>
+                                      setSelectedCuisines((prev) =>
+                                          prev.includes(cuisine)
+                                              ? prev.filter((c) => c !== cuisine)
+                                              : [...prev, cuisine]
+                                      )
+                                  }
+                              />
+                              {cuisine}
+                            </label>
+                        )
+                    )}
                   </div>
               )}
             </div>
@@ -453,7 +462,7 @@ return(
         </aside>
 
         <main className="recipe-listing">
-          <h2 className="results-header">Recipes</h2>
+          <h2 className="results-header">Serving { selectedCuisines.length >= 2 || selectedCuisines.length == 0  ?  "Cooking" : selectedCuisines[0]} Recipes!</h2>
           {filteredPosts.length > 0 ? (
               <div className="recipe-grid">
                 {filteredPosts.map((post) => {
