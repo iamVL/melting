@@ -22,7 +22,6 @@ const FilterPage = () => {
   const [showAllergies, setShowAllergies] = useState(true);
   const [showDiets, setShowDiets] = useState(true);
   const [connections, setConnections] = useState([]);
-  const location = useLocation();
   const isFavoritesPage = location.pathname === "/favorites";
   const raw = sessionStorage.getItem("user");
   const navigate = useNavigate();
