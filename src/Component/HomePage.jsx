@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link,useNavigate } from "react-router-dom"; // Import Link for navigation
 import LoginForm from "./LoginForm";
 import "../HomePage.css";
 import Homephoto from "../assets/Homephoto.jpeg";
@@ -8,7 +8,6 @@ import Homephoto from "../assets/Homephoto.jpeg";
 // Helper function to shuffle an array (Fisher-Yates algorithm)
 const shuffle = (array) => {
  let currentIndex = array.length, randomIndex;
-
 
  while (currentIndex !== 0) {
    randomIndex = Math.floor(Math.random() * currentIndex);
@@ -26,6 +25,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
  const [userToken, setUserToken] = useState("");
  const [randomTips, setRandomTips] = useState([]);
  const [randomRecipes, setRandomRecipes] = useState([]);
+ const navigate = useNavigate();
 
 
  // 🔥 NEW STATE FOR LEVEL FILTERING
@@ -138,6 +138,10 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
    }
  };
 
+ const handleCuisine = (cuisine) => {
+  console.log(1);
+  navigate("/filter?cuisine=" + cuisine);
+ };
 
  return (
    <div className="homepage">
@@ -174,8 +178,8 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                { name: "Japanese" },
                { name: "Spanish"},
              ].map((cuisine, index) => (
-               <div key={index} className="cuisine-card">
-                 <p>{cuisine.name}</p>
+               <div key={index} onClick={() => handleCuisine(cuisine.name)} className="cuisine-card">
+                 <button type="button" style={{backgroundColor:"transparent", border:"0px", fontSize:"18px"}}>{cuisine.name}</button>
                </div>
              ))}
            </div>

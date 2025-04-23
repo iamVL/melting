@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../RecipeListing.css";
 import "../FilterPage.css";
 
@@ -21,12 +21,19 @@ const FilterPage = () => {
   const [showDiets, setShowDiets] = useState(true);
   const [connections, setConnections] = useState([]);
 
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const initialCuisine = params.get("cuisine");
 
   const token = sessionStorage.getItem("token");
   const userID = sessionStorage.getItem("user");
   const [user, setUser] = useState({});
 
   useEffect( () => {
+    if (initialCuisine) {
+      setSelectedCuisines([initialCuisine]);
+      return;
+    }
     fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
       headers: {
         "Content-Type": "application/json",
@@ -41,29 +48,6 @@ const FilterPage = () => {
         setAllergyFilters(result.attributes.allergies);
       })
   },[]);
-
-  // useEffect(() => {
-  //   const userProfile = JSON.parse(sessionStorage.getItem("user") || "{}");
-  //   const savedAllergies = userProfile.allergy || []; // example: ["Peanuts", "Dairy"]
-  //   const savedDiets = userProfile.diet || []; // example: ["Halal", "Vegetarian"]
-    
-  //   setAllergyFilters(savedAllergies);
-  //   setDietFilters(savedDiets);
-  // }, []);  
-
-  // useEffect(() => {
-  //   let user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  //   if (typeof user === "number") user = { id: user };
-  //   user.allergy = allergyFilters;
-  //   sessionStorage.setItem("user", JSON.stringify(user));
-  // }, [allergyFilters]);  
-  
-  // useEffect(() => {
-  //   let user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  //   if (typeof user === "number") user = { id: user };
-  //   user.diet = dietFilters;
-  //   sessionStorage.setItem("user", JSON.stringify(user));
-  // }, [dietFilters]);  
 
   useEffect(() => {
     const fetchRandomRecipes = async (token) => {
@@ -370,7 +354,7 @@ const FilterPage = () => {
               </div>
               {showCuisines && (
                   <div className="checkbox-group">
-                    {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map(
+                    {["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"].map(
                         (cuisine) => (
                             <label key={cuisine}>
                               <input
@@ -453,7 +437,7 @@ const FilterPage = () => {
 
         {/* Recipe Grid */}
         <main className="recipe-listing">
-          <h2 className="results-header">Recipes</h2>
+          <h2 className="results-header">Serving { selectedCuisines.length >= 2 || selectedCuisines.length == 0  ?  "Cooking" : selectedCuisines[0]} Recipes!</h2>
           {filteredPosts.length > 0 ? (
               <div className="recipe-grid">
                 {filteredPosts.map((post) => {
