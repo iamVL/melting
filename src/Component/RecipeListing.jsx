@@ -427,8 +427,16 @@ const RecipeListing = ({
             const flatConnections = Array.isArray(connections) && connections.length
   ? (Array.isArray(connections[0]) ? connections[0] : connections)
   : localConnections;     // ← fallback to the locally‑fetched list
-
-
+  
+            const isBlocked = flatConnections.some(
+              (conn) =>
+                String(conn.toUser?.id ?? conn.toUserID) === String(authorID) &&
+                conn.attributes?.status === "blocked"
+            );
+  
+            if (isBlocked) {
+              return null;
+            }
             const isFollowing = flatConnections.some(
               (conn) =>
                 String(conn.toUser?.id ?? conn.toUserID) === String(authorID) &&
