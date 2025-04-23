@@ -44,22 +44,23 @@ const AboutUs = () => {
           <li><strong>Difficulty Levels:</strong> Choose recipes based on time, cost, and complexity.</li>
           <li><strong>User Reviews & Comments:</strong> Rate recipes and share your tweaks and experiences.</li>
           <li><strong>Recipe Filters:</strong> Explore recipes based on preferred cuisines and nationalities.</li>
-          <li><strong>Swipe Feature:</strong> Like Tinder for recipes—swipe through meal ideas and save your favorites to your cookbook.</li>
         </ul>
 
         <h2>Meet the Team Members</h2>
         <ul>
-          <li><Link to="/about_rudy">Rudy Karthick</Link></li>
-          <li><Link to="/about_yessica">Quinonez Yessica</Link></li>
-          <li><Link to="/about_joshua">Joshua Castillo</Link></li>
-          <li><Link to="/about_justin">Justin Nguyen</Link></li>
-          <li><Link to="/about_vi">Vaishnavi Lokhande</Link></li>   
+          <p style={{margin:"5px"}}><Link to="/about_rudy">Rudy Karthick</Link></p>
+          <p style={{margin:"5px"}}><Link to="/about_yessica">Quinonez Yessica</Link></p>
+          <p style={{margin:"5px"}}><Link to="/about_joshua">Joshua Castillo</Link></p>
+          <p style={{margin:"5px"}}><Link to="/about_justin">Justin Nguyen</Link></p>
+          <p style={{margin:"5px"}}><Link to="/about_vi">Vaishnavi Lokhande</Link></p>   
         </ul>
-        <h2>Contact Us</h2>
-        <p>
-          We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-        </p>
       </section>
+      {sessionStorage.getItem("token") && <section className="contact">
+            <h2>Contact Us</h2>
+            <p style={{color:"white"}}>
+              We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
+            </p>
+          </section>}
     </div>
   );
 };

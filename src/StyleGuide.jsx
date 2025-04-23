@@ -76,7 +76,7 @@ const StyleGuide = () => {
         <h2>3. Color Palette & Usage</h2>
         <div className="color-sample brand">Terracotta (#E8775B)</div>  
         <div className="color-sample posthome">Pumpkin (#FF8C42)</div>
-        <div className="color-sample cuisine">Ivory (#FF8F4A)</div>
+        <div className="color-sample cuisine">Ivory (#FF8F4A39)</div>
         <div className="color-sample text">Dark Gray (#333333)</div>
         <div className="color-sample success">Success Green (#5CB85C)</div>
         <div className="color-sample error">Error Red (#D9534F)</div>

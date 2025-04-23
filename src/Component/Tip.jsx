@@ -138,6 +138,8 @@ const TipForm = () => {
         setMainImage(null);
         setSteps([{ id: 1, description: "", image: null }]);
         setDescription("");
+        const result = await response.json();
+        navigate("/tip/" + JSON.stringify(result.id));
       } else {
         const result = await response.json();
         setErrorMessage("Error: " + (result.error || "Something went wrong"));
@@ -149,15 +151,16 @@ const TipForm = () => {
   
 
   return (
-    <div className="tip-container">
+    <div className="whole-tip-page">
+      <div className="tip-container">
       <form className="tip-form" onSubmit={handleSubmit}>
-        <h2 className="tip-header">Upload a Cooking Tip</h2>
+        <h2 className="tip-header">Upload Cooking Tip</h2>
 
-        <label className="tip-label">Title *</label>
-        <textarea className="tip-textarea" placeholder="Enter tip title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <label className="tip-label">Cooking Tip Title *</label>
+        <textarea className="tip-textarea" value={title} onChange={(e) => setTitle(e.target.value)} required />
 
         <label className="tip-label">Description *</label>
-        <textarea className="tip-textarea" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <textarea className="tip-textarea" value={description} onChange={(e) => setDescription(e.target.value)} required />
 
         <label className="tip-label">Steps/Directions *</label>
         <div className="tip-steps-container">
@@ -182,7 +185,7 @@ const TipForm = () => {
       </form>
 
       <div className="tip-image-upload">
-        <label className="tip-label">Main Picture *</label>
+        <label className="tip-label">Upload an Image *</label>
         <div className="tip-upload-box">
           <input type="file" accept="image/*" onChange={handleMainImageUpload} />
           {mainImage && (
@@ -204,6 +207,7 @@ const TipForm = () => {
           <img src={fullscreenImage} alt="Full Screen" className="tip-fullscreen-image" />
         </div>
       )}
+    </div>
     </div>
   );
 };
