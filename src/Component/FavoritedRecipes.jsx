@@ -7,6 +7,7 @@ const FavoritedRecipes = () => {
   const [searchQuery, setSearchQuery] = useState(""); // Only title search
   const token = sessionStorage.getItem("token");
   const rawUser = sessionStorage.getItem("user");
+  const [connections, setConnections] = useState([]);
 
   let user;
   try {
@@ -53,11 +54,22 @@ const FavoritedRecipes = () => {
 
               const recipeData = await response.json();
 
+              const rawDesc =
+  recipeData.attributes?.description  // prefer the attrs field
+  || recipeData.content               // otherwise post.content
+  || recipeData.summary               // then summary (if you really need)
+  || "";
+const description = rawDesc.trim()
+  ? rawDesc
+  : "No description available";
+
               return {
                 id: recipeData.id || postID,
                 reactionID: reaction.id,
                 title: recipeData.title || recipeData.name || recipeData.attributes?.title || "Untitled Recipe",
-                description: recipeData.description || recipeData.summary || recipeData.attributes?.description || "No description available",
+                visibility: recipeData.attributes?.visibility,
+                authorID:   recipeData.authorID || recipeData.attributes?.authorID,
+                description,   
                 image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail || "/default-recipe-image.jpg",
               };
 
@@ -81,6 +93,25 @@ const FavoritedRecipes = () => {
         })
         .catch((err) => console.error("Error fetching favorites:", err));
   }, [token, reactorID]);
+
+  // ---------- load your following list ----------
+useEffect(() => {
+  if (!token || !reactorID) return;
+
+  fetch(`${process.env.REACT_APP_API_PATH}/connections?fromUserID=${reactorID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const list = Array.isArray(data[0]) ? data[0] : data;
+      setConnections(list);
+    })
+    .catch((err) => console.error("Error loading connections:", err));
+}, [token, reactorID]);
+
 
   const removeFavorite = async (reactionID) => {
     if (!token) {
@@ -119,6 +150,29 @@ const FavoritedRecipes = () => {
       recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // helper to test if you follow a given authorID
+const isFollowing = (authorID) =>
+  connections.some(
+    (c) => String(c.toUser?.id ?? c.toUserID) === String(authorID)
+  );
+
+const visibleFavorites = filteredFavorites.filter((recipe) => {
+  // recipe.visibility you don’t have on your shape yet, so we need to
+  // fetch it when we loaded recipeData. Let’s assume you added it:
+  const visibility = recipe.visibility || recipe.attributes?.visibility;
+  const authorID   = recipe.authorID || recipe.attributes?.authorID;
+
+  const isOwner       = String(authorID) === String(reactorID);
+  const followersOnly = visibility === "Followers Only";
+
+  // if it’s followers‐only, and we’re neither owner nor following → hide
+  if (followersOnly && !isOwner && !isFollowing(authorID)) {
+    return false;
+  }
+  return true;
+});
+
+
   return (
       <div className="recipe-container">
         <h2 className="recipe-header">Your Favorite Recipes</h2>
@@ -134,9 +188,9 @@ const FavoritedRecipes = () => {
           />
         </div>
 
-        {filteredFavorites.length > 0 ? (
+        {visibleFavorites.length > 0 ? (
             <div className="recipe-grid">
-              {filteredFavorites.map((recipe, index) => (
+              {visibleFavorites.map((recipe, index) => (
                   <div key={recipe.id || recipe.postID || index} className="recipe-card-1">
                     <img
                         src={recipe.image}
