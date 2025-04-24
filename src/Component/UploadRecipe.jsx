@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../UploadRecipe.css";
 
+import Modal from "../Component/Modal";
+
 
 const UploadRecipe = () => {
  const [recipe, setRecipe] = useState({
@@ -28,7 +30,7 @@ const UploadRecipe = () => {
  const [isLoaded, setIsLoaded] = useState(false);
  const [imageFile, setImageFile] = useState(null);
  const navigate = useNavigate();
-
+ const [showErrorModal, setShowErrorModal] = useState(false);
 
  const handleChange = (e) => {
    const { name, value } = e.target;
@@ -168,10 +170,12 @@ const UploadRecipe = () => {
    let uploadedImageUrl = null;
    if (imageFile) {
      uploadedImageUrl = await uploadImage();
-     if (!uploadedImageUrl) {
-       alert("Image upload failed.");
-       return;
-     }
+       if (!uploadedImageUrl) {
+           setError("Image upload failed.");
+           setShowErrorModal(true);
+           return;
+       }
+
    }
 
 
@@ -206,11 +210,26 @@ const UploadRecipe = () => {
        setIsLoaded(true);
        navigate(`/recipe/${data.id}`);
      })
-     .catch((error) => {
-       setIsLoaded(true);
-       setError("Something went wrong while submitting your recipe. Please try again.");
-       console.log("Upload error:", error);
-     });
+       .then(async (res) => {
+           const data = await res.json();
+           if (!res.ok) throw new Error(data.message);
+           setIsLoaded(true);
+           navigate(`/recipe/${data.id}`);
+       })
+       .catch((error) => {
+           setIsLoaded(true);
+           setError("Something went wrong while submitting your recipe. Please try again.");
+           setShowErrorModal(true);
+           console.error("Upload error:", error);
+       });
+
+     if (!uploadedImageUrl) {
+         setError("Image upload failed.");
+         setShowErrorModal(true);
+         return;
+     }
+
+
  };
 
 
@@ -227,16 +246,16 @@ const UploadRecipe = () => {
 
  return (
    <div className="page-container">
-     <div className="upload-recipe-header">Upload Recipe</div>
      {isLoaded ? (
        <div className="upload-recipe-container">
          <div className="upload-recipe-form">
+            <div style={{color:"black"}} className="upload-recipe-header">Upload Recipe</div>
            <label>Recipe Title *</label>
-           <input type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
+           <input type="text" placeholder="Enter Title" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
 
 
            <label>Description *</label>
-           <textarea name="description" value={recipe.description} onChange={handleChange} required maxLength={125} />
+           <textarea name="description" placeholder="Enter Description" value={recipe.description} onChange={handleChange} required maxLength={125} />
 
 
            <label>Total Time *</label>
@@ -253,7 +272,7 @@ const UploadRecipe = () => {
 
 
            <label>Serving Size *</label>
-           <input type="number" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
+           <input type="number" placeholder="Enter Serving Size" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
 
 
            <label>Select Difficulty *</label>
@@ -323,7 +342,7 @@ const UploadRecipe = () => {
              {cuisineOptions.map((cuisine) => (
                <div
                  key={cuisine}
-                 className={`cuisine-tag ${recipe.cuisine.includes(cuisine) ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.cuisine.includes(cuisine) ? "selected" : ""}`}
                  onClick={() => handleCuisineToggle(cuisine)}
                >
                  {cuisine}
@@ -337,7 +356,7 @@ const UploadRecipe = () => {
              {allergyOptions.map((allergy) => (
                <div
                  key={allergy}
-                 className={`cuisine-tag ${recipe.allergy.includes(allergy) ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.allergy.includes(allergy) ? "selected" : ""}`}
                  onClick={() => handleAllergyToggle(allergy)}
                >
                  {allergy}
@@ -351,7 +370,7 @@ const UploadRecipe = () => {
              {dietOptions.map((diet) => (
                <div
                  key={diet}
-                 className={`cuisine-tag ${recipe.diet.includes(diet) ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.diet.includes(diet) ? "selected" : ""}`}
                  onClick={() => handleDietToggle(diet)}
                >
                  {diet}
@@ -365,7 +384,7 @@ const UploadRecipe = () => {
              {visibilityOptions.map((option) => (
                <div
                  key={option}
-                 className={`cuisine-tag ${recipe.visibility === option ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.visibility === option ? "selected" : ""}`}
                  onClick={() => handleVisibility(option)}
                >
                  {option}
@@ -388,6 +407,14 @@ const UploadRecipe = () => {
            </div>
            {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
          </div>
+           <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+               <h2 style={{ color: "#b00020" }}>⚠️ Error</h2>
+               <p>{error || "Something went wrong."}</p>
+               <button className="modal-button" onClick={() => setShowErrorModal(false)}>
+                   Close
+               </button>
+           </Modal>
+
        </div>
      ) : (
        <div>Loading...</div>

@@ -43,11 +43,45 @@
   padding: 50px;
 }
 
+@keyframes DiscoverSlide {
+  from {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes difficultyGlow {
+  from {
+    box-shadow: 0px 0px 10px rgb(99, 78, 59);    
+  }
+  to {
+    box-shadow: 0px 0px 10px rgba(90, 90, 90, 0.348);    
+  }
+}
+
+
+
+@keyframes opacityChange {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-text h1 {
   font-size: 2.8rem;
   color: #222;
   font-weight: 700;
   text-transform: capitalize;
+  animation: DiscoverSlide 0.8s ease-out;
 }
 
 .hero-text p {
@@ -55,6 +89,7 @@
   margin: 15px 0;
   color: #444;
   line-height: 1.6;
+  animation: opacityChange 1s ease-out forwards;
 }
 
 @media (max-width: 768px) {
@@ -84,7 +119,7 @@
   gap: 20px;
 }
 .btn.primary {
-  background-color: #ff8c42;
+  background-color: rgb(77, 61, 47);
   color: white;
   font-weight: bold;
   border: none;
@@ -102,7 +137,7 @@
 }
 
 .btn.primary:hover {
-  background-color: #e76b1f;
+  background-color: rgb(133, 108, 85);
   transform: scale(1.05);
 }
 
@@ -185,13 +220,18 @@
   margin-top: 15px;
   padding: 10px 15px;
   background-color: #ff8c42;
-  color: white;
+  color: black;
   text-decoration: none;
   border-radius: 20px;
   width: 80%;
   font-size: 15px;
   transition: background 0.3s ease-in-out;
   align-self: center;
+}
+
+.contact a {
+  color: white;
+  text-decoration: underline;
 }
 
 
@@ -213,19 +253,47 @@
 }
 
 .guides .guide-card {
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+
   font-size: 22px;
   width: 100%;
-  max-width: 500px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background-color: #f4c8b4;
+  background-color: #ff8d5a;
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 10px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   box-sizing: border-box;
+  height: 150px;
+}
+
+.how-to {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.guide-card a {
+  color: black;
+  font-size: 16px;
+}
+
+.guide-card a:hover {
+  text-decoration: underline;
+}
+
+.guide-card p {
+  font-size: 16px;
+  color: black;
+}
+
+.guide-card h3 {
+  color: black;
+  margin: 0px;
+  font-size: 18px;
 }
 
 
@@ -275,12 +343,13 @@
   justify-content: center;
   background-color:black;
   border-radius: 8px;
-  border-style:solid;
+  border: 0px;
   height: 40px;
   font-size: 15px;
   width: 80px;
   transition: .3s;
   color: white;
+  animation: difficultyGlow 0.8s ease-out infinite alternate;
 }
 
 .level:hover {
@@ -330,16 +399,21 @@ leveltext {
   text-align: center;
   padding: 50px;
   width: 100%;
-  border-radius: 10px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.9);
+  background-color: rgb(188 145 118 / 65%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .community h2 {
   font-size: 2rem;
+  color: white;
 }
 
 .community p {
   color:black;
+  color: white;
 }
 
 .community-buttons {
@@ -349,8 +423,7 @@ leveltext {
   transition: .3s;
 }
 .community-buttons .btn {
-  margin-top: 15px;
-  padding: 12px 24px;
+  padding: 16px 40px;
   border-radius: 8px;
   font-size: 1rem;
   transition: .3s;
@@ -360,13 +433,22 @@ leveltext {
   transform: scale(1);
 }
 
+#community-information {
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  background-color: rgb(115, 115, 115);
+  padding: 30px;
+  padding-left: 150px;
+  padding-right: 150px;
+  width: 80%;
+  border-radius: 50px;
+}
+
 .contact {
   line-height: .9;
   margin-bottom: 0px;
   text-align: center;
   background: #505050;
-  width: 100%;
-  padding: 5%;
+  padding: 3%;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 

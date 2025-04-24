@@ -18,13 +18,14 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #FAEBDC;
+    background-color: #FF8F4A39;
     padding: 20px; /* Add padding around the container */
     box-sizing: border-box; /* Include padding in width/height */
  }
  
  
  .upload-recipe-header {
+   animation: DiscoverSlide 0.8s ease-out;
     width: 100%;
     color:grey;
      /* Or any header background */
@@ -149,6 +150,7 @@ body, html {
  
  .upload-recipe-container button[type="button"] {
     background: #ddd;
+    color: black;
     padding: 8px 12px; /* Reduced padding */
     border: none;
     border-radius: 4px; /* Smaller border radius */
@@ -211,19 +213,20 @@ body, html {
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 20px;
- }.cuisine-tag {
+ }.cuisine-tagz {
      background-color: #f0f0f0;
+     color: black;
      padding: 8px 12px;
      border-radius: 20px;
      cursor: pointer;
      transition: background-color 0.2s ease-in-out;
      font-size: 0.9rem; /* Smaller font size */
- }.cuisine-tag:hover,.cuisine-tag.selected {
+ }.cuisine-tagz:hover,.cuisine-tagz.selected {
        background-color: #e0e0e0;
    }
- .cuisine-tag.selected {
-    background-color: #E0785A; /* Orange background */
-    color: white; /* White text for better contrast */
+ .cuisine-tagz.selected {
+    background-color: #fc8f71; /* Orange background */
+    color: black; /* White text for better contrast */
  }
  
  
@@ -239,10 +242,59 @@ body, html {
  
  .delete-btn:hover {
     background: darkred;
- } 
+
+ }
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fffaf5;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+}
+
+.close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #444;
+}
+
+.modal-button {
+    background-color: #3d943d;
+    color: white;
+    padding: 10px 25px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.modal-button:hover {
+    background-color: #2e7b2e;
+}
+
+
 
  @media (max-width: 768px) {
    .upload-recipe-image {
      width: 100%;
    }
  }
+

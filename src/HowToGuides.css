@@ -16,6 +16,7 @@
 }
 
 .howto-header h1 {
+  animation: DiscoverSlide 0.8s ease-out;
   font-size: 32px;
   font-weight: bold;
   color: #333;
@@ -28,6 +29,7 @@
 }
 
 .howto-subheading {
+  animation: opacityChange 1s ease-out forwards;
   font-size: 24px;
   color: #727272;
   margin-top: 10px;

@@ -17,6 +17,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   padding: 20px;
+  height: 90%;
   flex-wrap: nowrap;
 }
 
@@ -39,6 +40,8 @@
   flex: 1;
   background: white;
   padding: 2rem;
+  padding-top: 0px;
+  padding-bottom: 0px;
   position: relative;
   text-align: left;
 }
@@ -62,7 +65,7 @@
 }
 
 /* Title */
-.title {
+.titles {
   font-family: 'Itim', cursive;
   font-size: 45px;
   color: #4A2E1F;
@@ -71,20 +74,20 @@
 }
 
 /* Form layout */
-.register-form {
+.register-forms {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 }
 
-.input-group {
+.input-groups {
   display: flex;
   flex-direction: column;
   text-align: left;
 }
 
-.input-group label {
+.input-groups label {
   font-weight: bold;
   margin-bottom: 5px;
   font-size: 1.2rem;
@@ -92,20 +95,20 @@
   font-family: 'Itim', cursive;
 }
 
-.input-group input {
+.input-groups input {
   padding: 8px;
   border: 1px solid #ccc;
   background-color: #d3d3d3;
   font-size: 1rem;
 }
 
-.input-row {
+.input-rows {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.input-row .input-group {
+.input-rows .input-groups {
   flex: 1 1 48%;
   min-width: 0px;
 }
@@ -188,15 +191,15 @@
     font-size: 32px;
   }
 
-  .input-row {
+  .input-rows {
     flex-direction: column;
   }
 
-  .input-row .input-group {
+  .input-rows .input-groups {
     width: 100%;
   }
 
-  .input-group input {
+  .input-groups input {
     width: 100%;
   }
 
@@ -238,15 +241,15 @@
     font-size: 32px;
   }
 
-  .input-row {
+  .input-rows {
     flex-direction: column;
   }
 
-  .input-row .input-group {
+  .input-rows .input-groups {
     width: 100%;
   }
 
-  .input-group input {
+  .input-groups input {
     width: 100%;
   }
 

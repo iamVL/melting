@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../RecipeListing.css";
 import ConfirmModal from "../Component/ConfirmModal";
 import { useNavigate , Link} from "react-router-dom";
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
+import Modal from "./Modal";
 
 
 const RecipeListing = ({
@@ -534,6 +536,15 @@ const RecipeListing = ({
                           {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
                         </button>
                     )}
+                    <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                      <img
+                          src={meltingLogo}
+                          alt="Melting Pot Logo"
+                          style={{ width: "120px", marginBottom: "1rem" }}
+                      />
+                      <h2>Recipe favorited!</h2>
+                      <p>You will now be redirected to the Favorite Recipe page.</p>
+                    </Modal>
 
                     {String(authorID) === String(currentUserID) && (
                                 <button
@@ -589,13 +600,7 @@ const RecipeListing = ({
                 onCancel={() => setDeleteTargetId(null)}
             />
         )}
-      {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <p>Recipe favorited!</p>
-            </div>
-          </div>
-      )}
+
 
 
         {showCookbookModal && (

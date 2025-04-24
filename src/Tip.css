@@ -14,10 +14,22 @@
   align-items: flex-start;
   padding: 30px;
   margin: 40px auto;
-  max-width: 1200px;
+  width: 60%;
   background: white;
   border-radius: 12px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.whole-tip-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #FF8F4A39;
+  padding: 20px;
+  min-height: 95vh;
+  height: auto;
+  box-sizing: border-box;
 }
 
 /* Left Column - Form */
@@ -33,32 +45,31 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100%; /* ✅ Makes it the same height as the form */
 }
 
 /* Header */
 .tip-header {
-  color: #5a3e36;
-  font-size: 35px;
-  margin-bottom: 20px;
-  text-align: left;
+  width: 100%;
+  color: black;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 15px 0;
 }
 
 /* Labels */
 .tip-label {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: block;
-  font-weight: bold;
-  color: #5a3e36;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem
 }
 
 /* Input Fields */
 .tip-textarea,
 .tip-step-textarea {
-  width: 100%;
+  /* width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -68,7 +79,17 @@
   resize: none;
   min-height: 40px;
   max-height: 60px;
-  overflow-y: auto;
+  overflow-y: auto; */
+
+  width: 100%;
+  resize: vertical;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border 0.2s ease-in-out;
+  box-sizing: border-box;
 }
 
 .tip-textarea:focus,
@@ -82,7 +103,7 @@
   max-width: 350px; /* ✅ Bigger image box */
   height: 350px; /* ✅ Matches form height */
   padding: 20px;
-  border: 2px dashed #ccc;
+  border: 2px dashed #000000;
   border-radius: 8px;
   text-align: center;
   background: #fafafa;
@@ -93,6 +114,10 @@
   position: relative;
   cursor: pointer;
   overflow: hidden;
+}
+
+.tip-upload-box:hover {
+  border: 2px dashed #f97217;
 }
 
 /* Fix Full-Screen Input Issue */
@@ -182,7 +207,7 @@
 
 /* Delete Button */
 .tip-delete-step-btn {
-  background: red;
+  background: #E0785A;
   color: white;
   border: none;
   padding: 6px;
@@ -202,15 +227,15 @@
 
 /* Buttons */
 .tip-form .tip-add-step-btn,
-.tip-submit-btn {
-  background: #e4684a;
-  color: white;
+.tip-submit-btn { 
+  background: #ddd;
+  color: black;
   border: none;
   padding: 14px;
   cursor: pointer;
   margin-top: 15px;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 16px;
   width: 100%;
   transition: .3s;
 }
@@ -218,7 +243,7 @@
 .tip-add-step-btn:hover,
 .tip-submit-btn:hover {
   transform: scale(1.01);
-  background: #c74c32;
+  background: #bcbcbc;
 }
 
 @media (max-width: 768px) {

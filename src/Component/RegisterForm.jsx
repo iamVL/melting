@@ -181,24 +181,24 @@ const RegisterForm = ({ setLoggedIn }) => {
         <div className="form-container">
           <div className="back-arrow">&#8592;</div>
           <img src={meltingLogo} alt="Melting" className="logo-login" />
-          <h1 className="title">Registration</h1>
+          <h1 className="titles">Registration</h1>
 
           {errorMsg && <div className="alert error">{errorMsg}</div>}
 
-          <form onSubmit={submitHandler} className="register-form">
-            <div className="input-row">
-              <div className="input-group">
+          <form onSubmit={submitHandler} className="register-forms">
+            <div className="input-rows">
+              <div className="input-groups">
                 <label>Full Name (First and Last)</label>
                 <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
               </div>
-              <div className="input-group">
+              <div className="input-groups">
                 <label>Username</label>
                 <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
               </div>
             </div>
 
-            <div className="input-row">
-              <div className="input-group">
+            <div className="input-rows">
+              <div className="input-groups">
                 <label>Email address</label>
                 <input
                   type="text"
@@ -207,7 +207,7 @@ const RegisterForm = ({ setLoggedIn }) => {
                   placeholder="example@email.com"
                 />
               </div>
-              <div className="input-group">
+              <div className="input-groups">
                 <label>Phone Number</label>
                 <input
                   type="tel"
@@ -218,26 +218,27 @@ const RegisterForm = ({ setLoggedIn }) => {
               </div>
             </div>
 
-            <div className="input-row">
-              <div className="input-group">
+            <div className="input-rows">
+              <div className="input-groups">
                 <label>Password</label>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
-              <div className="input-group">
+              <div className="input-groups">
                 <label>Country</label>
                 <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
               </div>
             </div>
 
-            <div className="input-row">
-              <div className="input-group">
+            <div className="input-rows">
+              <div className="input-groups">
                 <label>Confirm Password</label>
                 <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
             </div>
 
-            <div className="input-group">
-              <label>Allergies</label>
+            <div className="input-groups">
+              <label style={{marginBottom:"0px"}}>Allergies</label>
+              <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>*Auto-Selected to Filter</label>
               <div className="option-group">
                 {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs", "None"].map((item) => (
                   <button
@@ -252,8 +253,9 @@ const RegisterForm = ({ setLoggedIn }) => {
               </div>
             </div>
 
-            <div className="input-group">
-              <label>Diet Regimes</label>
+            <div className="input-groups">
+              <label style={{marginBottom:"0px"}}>Diet Regimes</label>
+              <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>*Auto-Selected to Filter</label>
               <div className="option-group">
                 {["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian", "None"].map((item) => (
                   <button

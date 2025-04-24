@@ -71,6 +71,7 @@ const description = rawDesc.trim()
                 authorID:   recipeData.authorID || recipeData.attributes?.authorID,
                 description,   
                 image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail || "/default-recipe-image.jpg",
+
               };
 
             } catch (error) {
@@ -196,7 +197,7 @@ const visibleFavorites = filteredFavorites.filter((recipe) => {
                         src={recipe.image}
                         alt={recipe.title}
                         className="recipe-image-1"
-                        onError={(e) => (e.target.src = "/default-recipe-image.jpg")}
+
                     />
                     <div className="recipe-content-1">
                       <h3 className="recipe-title-1">{recipe.title}</h3>

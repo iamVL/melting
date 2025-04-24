@@ -52,12 +52,13 @@ import CommunityDetails from "./Component/CommunityDetails";
 import FavoritedRecipes from "./Component/FavoritedRecipes";
 import FilterPage from "./Component/FilterPage"
 import ChatPage from "./Component/ChatPage";
-
 import { io } from "socket.io-client";
 import CookbookManager from "./Component/CookbookManager";
 import CookbookDetail from "./Component/CookbookDetail";
-
-
+import { LanguageProvider } from './translator/Languagecontext';
+import { useLanguage } from './translator/Languagecontext';
+import MyComponent from './translator/MyComponent';
+import LanguageSwitcher from './translator/LanguageSwitcher';
 
 // Initialize socket connection
 const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
@@ -67,6 +68,8 @@ const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
   },
 });
 export { socket };
+
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -98,10 +101,13 @@ function App() {
   }, []);
 
   return (
+      <LanguageProvider>
     <Router basename={process.env.PUBLIC_URL}>
+
       <div className="App">
         <header className="App-header">
           {token !== null && <Navbar toggleModal={toggleModal} logout={logout} />}
+          <LanguageSwitcher />
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/tip-upload" element={<TipForm />} />
@@ -190,7 +196,10 @@ function App() {
           This is a modal dialog!
         </Modal>
       </div>
+
     </Router>
+        </LanguageProvider>
+
   );
 }
 

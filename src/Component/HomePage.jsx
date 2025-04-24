@@ -3,6 +3,8 @@ import { Link,useNavigate } from "react-router-dom"; // Import Link for navigati
 import LoginForm from "./LoginForm";
 import "../HomePage.css";
 import Homephoto from "../assets/Homephoto.jpeg";
+import { useLanguage } from "../translator/Languagecontext";
+
 
 
 // Helper function to shuffle an array (Fisher-Yates algorithm)
@@ -25,7 +27,11 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
  const [userToken, setUserToken] = useState("");
  const [randomTips, setRandomTips] = useState([]);
  const [randomRecipes, setRandomRecipes] = useState([]);
+
+ const { t } = useLanguage();
+
  const navigate = useNavigate();
+
 
 
  // 🔥 NEW STATE FOR LEVEL FILTERING
@@ -145,6 +151,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
 
  return (
    <div className="homepage">
+
      {!userToken ? (
        <LoginForm setLoggedIn={setLoggedIn} />
      ) : (
@@ -152,16 +159,16 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          {/* Hero Section */}
          <section className="hero">
            <div className="hero-text">
-             <h1>Discover our New Recipes</h1>
-             <p>Learn, cook, and share yummy recipes with our  community of foodies.</p>
-             <div className="hero-buttons">
-               <Link to="/upload"><button className="btn primary">Upload Own</button></Link>
-               <Link to="/recipes"><button className="btn primary">Browse All</button></Link>
-               <Link to="/filter"><button className="btn primary">Filter Needs</button></Link>
-             </div>
+               <h1>{t ("discoverNewRecipes")}</h1>
+               <p>{t("learnCookShare")}</p>
+               <div className="hero-buttons">
+                   <Link to="/upload"><button className="btn primary">{t("uploadOwn")}</button></Link>
+                   <Link to="/recipes"><button className="btn primary">{t("browseAll")}</button></Link>
+                   <Link to="/filter"><button className="btn primary">{t("filterNeeds")}</button></Link>
+               </div>
            </div>
-           <div className="hero-image">
-             <img src={Homephoto} alt="Home Photo" className="responsive-image" />
+             <div className="hero-image">
+                 <img src={Homephoto} alt="Home Photo" className="responsive-image" />
            </div>
          </section>
 
@@ -191,13 +198,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
            <section className="choose-level">
              <h2>Recommended Recipes based on Cooking Level!</h2>
              <div className="levels">
-               <div style={{ backgroundColor: selectedLevel === "easy" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("easy")}>
+               <div style={{ backgroundColor: selectedLevel === "easy" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("easy")}>
                  <leveltext>Easy</leveltext>
                </div>
-               <div style={{ backgroundColor: selectedLevel === "medium" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("medium")}>
+               <div style={{ backgroundColor: selectedLevel === "medium" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("medium")}>
                  <leveltext>Medium</leveltext>
                </div>
-               <div style={{ backgroundColor: selectedLevel === "hard" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("hard")}>
+               <div style={{ backgroundColor: selectedLevel === "hard" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("hard")}>
                  <leveltext>Hard</leveltext>
                </div>
              </div>
@@ -213,7 +220,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                         ? `${recipe.attributes.title.substring(0, 30)}...`
                         : recipe.attributes.title
                       : "Untitled Recipe"}
-                  </h3>                   
+                  </h3>
                    <p>
                     {recipe.content?.trim()
                       ? recipe.content.length > 120
@@ -247,7 +254,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                        ? `${tip.attributes.description.substring(0, 100)}...`
                        : tip.attributes.description
                      : "No description available"}
-                   </p>                   
+                   </p>
                    <Link to={`/tip/${tip.id}`} className="read-more">
                      Read More →
                    </Link>
@@ -284,31 +291,30 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                <p>Cook pasta perfectly every time with these simple tricks.</p>
                <Link to="/perfect-pasta"><a>Learn More →</a></Link>
              </div>
-             <div className="guide-card">
-               <h3>Fluffy Pancakes Secrets</h3>
-               <p>Discover the science behind the fluffiest pancakes ever!</p>
-               <Link to="/fluffy-pancakes"><a>Learn More →</a></Link>
-             </div>
            </div>
          </section>
 
-
-         {/* Community Section */}
+        <div style={{width:"100%"}}>
+           {/* Community Section */}
          <section className="community">
-           <h2>Try Joining or Making a Cooking Community!</h2>
-           <p>Connect with fellow food lovers, share recipes, and get inspired!</p>
-           <div className="community-buttons">
-             <Link to="/community"><button className="btn primary">Join Now</button></Link>
-           </div>
+          <div id="community-information">
+            <h2>Try Joining or Making a Cooking Community!</h2>
+            <p>Connect with fellow food lovers, share recipes, and get inspired!</p>
+            <div className="community-buttons">
+              <Link to="/community"><button className="btn primary">Join Now</button></Link>
+            </div>
+          </div>
          </section>
+
+         {sessionStorage.getItem("token") && <section className="contact">
+            <h2>Contact Us</h2>
+            <p>
+              We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
+            </p>
+          </section>}
+        </div>
        </>
      )}
-    {sessionStorage.getItem("token") && <section className="contact">
-      <h2>Contact Us</h2>
-      <p>
-        We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-      </p>
-    </section>}
    </div>
  );
 };
