@@ -829,3 +829,47 @@
     margin-top: 0px;
     border-radius: 8px;
 }
+
+@media (max-width: 425px) {
+    .instruction-flex {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e67e22;
+    }
+
+    .instruction-flex input {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .delete-button-recipe {
+        width: 100%;
+    }
+
+    .recipe-section .recipe-ingredients-list {
+        gap: 25px;
+    }
+
+    .add-recipe-button {
+        width: 100%;
+    }
+
+    .upload-recipe-image{
+        width: 100%;
+    }
+
+    #edit-my-recipe {
+        width: 80%;
+    }
+
+    #save-my-recipe {
+        width: 80%;
+    }
+
+    #recipe-header-button {
+        flex-direction: column;
+    }
+}

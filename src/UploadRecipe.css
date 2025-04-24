@@ -18,7 +18,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #FAEBDC;
+    background-color: #FF8F4A39;
     padding: 20px; /* Add padding around the container */
     box-sizing: border-box; /* Include padding in width/height */
  }
@@ -149,6 +149,7 @@ body, html {
  
  .upload-recipe-container button[type="button"] {
     background: #ddd;
+    color: black;
     padding: 8px 12px; /* Reduced padding */
     border: none;
     border-radius: 4px; /* Smaller border radius */
@@ -239,6 +240,7 @@ body, html {
  
  .delete-btn:hover {
     background: darkred;
+
  }
 
 .modal-overlay {
@@ -285,3 +287,12 @@ body, html {
 .modal-button:hover {
     background-color: #2e7b2e;
 }
+
+ } 
+
+ @media (max-width: 768px) {
+   .upload-recipe-image {
+     width: 100%;
+   }
+ }
+

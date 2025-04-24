@@ -447,3 +447,9 @@
 .file-upload-box img {
   max-height: 90px;
 }
+
+@media (max-width: 768px) {
+  .file-upload-box {
+    width: calc(90% - 4px);
+ }
+}

@@ -525,3 +525,24 @@
 .recipe-card .read-more {
     min-width: 80%;
 }
+
+@media (max-width: 1024px) {
+    .recipe-card {
+        width: 90%;
+    }
+
+    .filter-layout {
+        flex-direction: column;
+    }
+
+    .filter-sidebar {
+        position:static;
+        overscroll-behavior:unset;
+        height: auto;
+        width: 100%;
+    }
+
+    .sidebar-navigation {
+        height: auto;
+    }
+}
