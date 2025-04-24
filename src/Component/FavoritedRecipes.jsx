@@ -58,7 +58,7 @@ const FavoritedRecipes = () => {
                 reactionID: reaction.id,
                 title: recipeData.title || recipeData.name || recipeData.attributes?.title || "Untitled Recipe",
                 description: recipeData.description || recipeData.summary || recipeData.attributes?.description || "No description available",
-                image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail || "/default-recipe-image.jpg",
+                image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail ,
               };
 
             } catch (error) {
@@ -142,7 +142,7 @@ const FavoritedRecipes = () => {
                         src={recipe.image}
                         alt={recipe.title}
                         className="recipe-image-1"
-                        onError={(e) => (e.target.src = "/default-recipe-image.jpg")}
+
                     />
                     <div className="recipe-content-1">
                       <h3 className="recipe-title-1">{recipe.title}</h3>

@@ -21,20 +21,19 @@ const Modal = ({ onClose, show, children }) => {
 
   return (
       <div className="modal-overlay">
-        <div className="modal-content">
-        <span className="close" onClick={handleClose}>
-          &times;
-        </span>
-          <div id="modalcontent">{children}</div>
-        </div>
+          <div className="modal-content">
+              <span className="close" onClick={onClose}>&times;</span>
+              <div>{children}</div>
+          </div>
       </div>
   );
 };
 
 // Prop types validation
 Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  show: PropTypes.bool.isRequired
+    onClose: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default Modal;

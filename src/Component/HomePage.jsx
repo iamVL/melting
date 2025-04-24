@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"; // Import Link for navigation
 import LoginForm from "./LoginForm";
 import "../HomePage.css";
 import Homephoto from "../assets/Homephoto.jpeg";
+import { useLanguage } from "../translator/Languagecontext";
+
 
 
 // Helper function to shuffle an array (Fisher-Yates algorithm)
@@ -26,7 +28,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
  const [userToken, setUserToken] = useState("");
  const [randomTips, setRandomTips] = useState([]);
  const [randomRecipes, setRandomRecipes] = useState([]);
-
+ const { t } = useLanguage();
 
  // 🔥 NEW STATE FOR LEVEL FILTERING
  const [selectedLevel, setSelectedLevel] = useState("easy");
@@ -141,6 +143,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
 
  return (
    <div className="homepage">
+
      {!userToken ? (
        <LoginForm setLoggedIn={setLoggedIn} />
      ) : (
@@ -148,7 +151,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          {/* Hero Section */}
          <section className="hero">
            <div className="hero-text">
-             <h1>Discover our New Recipes</h1>
+             <h1>{t ("Discover our New Recipes")}</h1>
              <p>Learn, cook, and share yummy recipes with our  community of foodies.</p>
              <div className="hero-buttons">
                <Link to="/upload"><button className="btn primary">Upload Own</button></Link>
