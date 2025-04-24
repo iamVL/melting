@@ -13,10 +13,28 @@ function CommunityPage() {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [groupName, setGroupName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const foodQuotes = [
+    '"Good food is the foundation of genuine happiness." — Auguste Escoffier',
+    '"People who love to eat are always the best people." — Julia Child',
+    '"One cannot think well, love well, sleep well, if one has not dined well." — Virginia Woolf',
+    '"Cooking is at once child’s play and adult joy." — Craig Claiborne',
+    '"Life is uncertain. Eat dessert first." — Ernestine Ulmer'
+  ];
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
 
   // Fetch groups when the component mounts
   useEffect(() => {
     fetchGroups();
+  }, []);
+
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % foodQuotes.length);
+    }, 5000); // every 5 seconds
+  
+    return () => clearInterval(interval);
   }, []);
 
   // Fetch the groups list
@@ -125,14 +143,21 @@ function CommunityPage() {
 
   return (
     <div className="ComHeading">
-      <h2 className="MainHeading">Welcome to the Community Page</h2>
-      <p className="SubHeading">
-        Meet others who have the same food interests as you!
-      </p>
+      <h2 className="MainHeading">🍽️ Find Your Foodie Fam!</h2>
+<p className="SubHeading">
+  Join communities that match your cravings and cooking vibes. 
+  Whether you’re into spicy noodles or sweet bakes—there’s a group for you.
+</p>
+<div className="quote-ticker-container">
+  <div className="quote-ticker">
+    <span>{foodQuotes[currentQuoteIndex]}</span>
+  </div>
+</div>
+
 
       {/* Toggle Button */}
       <button className="toggle-btn" onClick={toggleSearchBar}>
-        {showSearchBar ? "Create Group" : "Search Groups"}
+        {showSearchBar ? "👨‍🍳 Start a New Group" : "🔍 Back to Search"}
       </button>
 
       {/* Conditional Rendering */}
@@ -141,7 +166,7 @@ function CommunityPage() {
           <input
             type="text"
             className="search-input"
-            placeholder="Search groups..."
+            placeholder="🔍 Search by group name..."
           />
         </div>
       ) : (
@@ -149,12 +174,12 @@ function CommunityPage() {
           <input
             type="text"
             className="create-group-input"
-            placeholder="Name of the Food Group"
+            placeholder="e.g. Pasta Lovers United 🍝"
             value={newGroupName}
             onChange={(e) => setNewGroupName(e.target.value)}
           />
           <button className="create-group-btn" onClick={createGroup}>
-            Create Group
+          🚀 Create
           </button>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>

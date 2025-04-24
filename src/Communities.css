@@ -1,293 +1,210 @@
 .MainHeading {
-  font-size: 35px;
+  font-size: 36px;
   font-weight: bold;
-  color: #333;
-  margin-top: 40px;
-  margin-bottom: 10px;
+  color: #2e2e2e;
   text-align: center;
+  margin-top: 40px;
 }
-
+.SectionHeading {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #333;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease-in-out;
+  animation: fadeInUp 0.8s ease forwards;
+}
 .SubHeading {
   text-align: center;
-  margin-bottom: 30px;
-  color: #727272;
+  color: #2e2e2e;
   font-size: 18px;
-  animation: opacityChange 1s ease-out forwards;
+  margin-bottom: 30px;
 }
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
-.toggle-btn {
+input::placeholder {
+  font-style: italic;
+  color: #aaa;
+}
+.toggle-btn,
+.create-group-btn {
   padding: 10px 20px;
+  font-size: 16px;
   background-color: #333;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+  margin: 10px;
 }
 
-.toggle-btn:hover {
+.toggle-btn:hover,
+.create-group-btn:hover {
   background-color: #555;
 }
 
-.search-input {
-  width: 300px; 
-  height: 33px; 
-  font-size: 16px; 
-  padding: 8px; 
-  border: 1px solid #ccc; 
-  border-radius: 8px;
-}
-
-.create-group-btn {
-    padding: 15px 20px;
-    font-size: 16px;
-    width: auto;
-    border-radius: 8px;
-    background-color: #333; 
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .create-group-btn:hover {
-    background-color: #595959; 
-  }
-
-  .create-group-input {
-    width: 300px; 
-    height: 33px; 
-    font-size: 16px; 
-    padding: 8px; 
-    border: 1px solid #ccc; 
-    border-radius: 8px;
-  }
-
-/* Styles for the group list section */
-
-  .GroupListSection h3 {
-    font-size: 24px;
-    color: #333;
-    text-align: center;
-    margin-bottom: 15px;
-    text-transform: uppercase; /* 💥 This does the magic */
-    letter-spacing: 1px; /* Optional: adds nice spacing between letters */
-  }
-  
-/* Style for the individual groups */
-.userlist {
-    background-color: #ffffff;  
-    border-radius: 10px;  
-    padding: 20px;  
-    margin: 15px 20px;  
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);  
-    display: flex;  
-    flex-direction: column;
-    justify-content: center;  
-    align-items: center;  
-    width: 100%;
-    height: auto;
-    min-height: 150px;
-    color: #333;
-    font-weight: bold;
-    gap: 20px;
-}
-
-.userlist button, .userlist a {
-  width: 130px;
-  height: 30px;
-  font-size: 12px;
-  background-color: rgb(255, 171, 140);
-  border: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.search-input,
+.create-group-input {
+  width: 300px;
+  max-width: 90%;
+  height: 36px;
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  color: black;
-  font-weight: 100;
-  transition: .3s;
-  filter: drop-shadow(0px 5px 4px rgba(0, 0, 0, 0.439));
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.userlist button:hover, .userlist a:hover {
-  background-color: rgb(247, 154, 121);
-  transform: scale(1.02);
+.GroupListSection h3 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #444;
+  letter-spacing: 0.5px;
 }
 
-.userlist button:active, .userlist a:active {
-  transform: scale(.98);
+.community-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  padding: 30px;
+}
+
+.userlist {
+  background-color: #fff7f4;
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.userlist h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
 }
 
 .group-buttons {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.community-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px 10px;
+.userlist button,
+.userlist a {
+  background-color: rgb(255, 171, 140);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #000;
+  font-weight: 500;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease;
+  cursor: pointer;
 }
 
-  .userlist h4 {
-    font-weight: bold;
-    text-align: center;
-    margin: 0;  
-  }
-  
-  .userlist .deletePost img {
-    width: 25px;  
-    height: 25px;
-    cursor: pointer; 
-  }
-  
-  /* Hover effect for each group */
-  .userlist:hover {
-    background-color: #ffffff;  
-    transform: scale(1.02);  
-    transition: transform 0.2s ease, background-color 0.2s ease;  
-  }
+.userlist button:hover,
+.userlist a:hover {
+  background-color: rgb(247, 154, 121);
+  transform: scale(1.05) translateY(-1px);
+}
 
-  .comment-button {
-    position: static;
-    padding: 8px 12px;
-    background-color: #333; 
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 90px;
-  }
-  
-  .comment-button:hover {
-    background-color: #555;
-  }
-  
-  .deletePost {
-    width: 50px;
-    height: 50px;
-    background-color: red;
-  }
+.userlist:hover {
+  transform: scale(1.02);
+}
 
-  @media (max-width: 768px) {
-    .userlist {
-      width: 90%;
-    }
-  
-    .group-buttons {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .search-input, .create-group-input {
-      width: 90%;
-    }
-  }
-  
+.comment-button {
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
 
-  @media (min-width: 768px) {
-    .community-box {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr); /* 4 columns */
-      gap: 30px 20px;
-      justify-content: center;
-      padding: 30px;
-    }
-  }
-  
+.comment-button:hover {
+  background-color: #555;
+}
 
-  /* === RESPONSIVE STYLES === */
+.error-message {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
 
+/* Responsive grid */
 @media (max-width: 768px) {
-  .MainHeading {
-    font-size: 24px;
-    text-align: center;
-    margin-top: 30px;
-  }
-
-  .SubHeading {
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
-
-  .search-input,
-  .create-group-input {
-    width: 100%;
-    max-width: 90%;
-    margin: 0 auto;
-    display: block;
-  }
-
-  .toggle-btn,
-  .create-group-btn {
-    width: 100%;
-    max-width: 90%;
-    margin: 10px auto;
-    display: block;
-  }
-
-  .GroupListSection h3 {
-    font-size: 18px;
-  }
-
   .community-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 10px;
-  }
-
-  .userlist {
-    width: 100%;
-    max-width: 95%;
-    padding: 20px 15px;
-    gap: 15px;
+    grid-template-columns: 1fr;
+    padding: 20px;
   }
 
   .group-buttons {
     flex-direction: column;
-    gap: 10px;
   }
 
-  .comment-button {
-    width: 100%;
-    max-width: 200px;
+  .toggle-btn,
+  .create-group-btn {
+    width: 90%;
+    margin: 10px auto;
   }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-  .community-box {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Tablet grid */
-    gap: 25px 20px;
-    padding: 30px 20px;
+.quote-ticker-container {
+  width: 100%;
+  background-color: #fff0e6;
+  padding: 10px 0;
+  margin: 10px 0 30px 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 2px solid #ffd0b3;
+  border-bottom: 2px solid #ffd0b3;
+}
+
+.quote-ticker {
+  white-space: nowrap;
+  animation: scrollQuote 10s linear infinite;
+  font-size: 24px; 
+  font-style: italic;
+  color: #444;
+  font-weight: 500;
+  max-width: 100%;
+}
+
+@keyframes scrollQuote {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
   }
 }
 
-@media (min-width: 1025px) {
-  .community-box {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Desktop grid */
-    gap: 30px 20px;
-    padding: 40px 30px;
-  }
-
-  .search-input {
-    width: 300px;
-  }
-
-  .create-group-input {
-    width: 300px;
-  }
-}
