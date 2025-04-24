@@ -181,7 +181,7 @@ const RegisterForm = ({ setLoggedIn }) => {
         <div className="form-container">
           <div className="back-arrow">&#8592;</div>
           <img src={meltingLogo} alt="Melting" className="logo-login" />
-          <h1 className="title">Registration</h1>
+          <h1 className="titles">Registration</h1>
 
           {errorMsg && <div className="alert error">{errorMsg}</div>}
 
@@ -237,7 +237,8 @@ const RegisterForm = ({ setLoggedIn }) => {
             </div>
 
             <div className="input-groups">
-              <label>Allergies</label>
+              <label style={{marginBottom:"0px"}}>Allergies</label>
+              <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>*Auto-Selected to Filter</label>
               <div className="option-group">
                 {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs", "None"].map((item) => (
                   <button
@@ -253,7 +254,8 @@ const RegisterForm = ({ setLoggedIn }) => {
             </div>
 
             <div className="input-groups">
-              <label>Diet Regimes</label>
+              <label style={{marginBottom:"0px"}}>Diet Regimes</label>
+              <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>*Auto-Selected to Filter</label>
               <div className="option-group">
                 {["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian", "None"].map((item) => (
                   <button

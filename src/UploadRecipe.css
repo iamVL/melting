@@ -25,6 +25,7 @@ body, html {
  
  
  .upload-recipe-header {
+   animation: DiscoverSlide 0.8s ease-out;
     width: 100%;
     color:grey;
      /* Or any header background */
@@ -212,19 +213,20 @@ body, html {
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 20px;
- }.cuisine-tag {
+ }.cuisine-tagz {
      background-color: #f0f0f0;
+     color: black;
      padding: 8px 12px;
      border-radius: 20px;
      cursor: pointer;
      transition: background-color 0.2s ease-in-out;
      font-size: 0.9rem; /* Smaller font size */
- }.cuisine-tag:hover,.cuisine-tag.selected {
+ }.cuisine-tagz:hover,.cuisine-tagz.selected {
        background-color: #e0e0e0;
    }
- .cuisine-tag.selected {
-    background-color: #E0785A; /* Orange background */
-    color: white; /* White text for better contrast */
+ .cuisine-tagz.selected {
+    background-color: #fc8f71; /* Orange background */
+    color: black; /* White text for better contrast */
  }
  
  

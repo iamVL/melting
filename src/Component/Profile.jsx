@@ -347,7 +347,8 @@ const Profile = (props) => {
             </Link> */}
           </div>
 
-          <h2>Dietary Restrictions</h2>
+          <h2 style={{marginBottom:"0px"}}>Dietary Restrictions</h2>
+          <label style={{fontSize:"14px", color:"#d46a4c", marginTop:"0px", padding:"0px"}}>*Auto-Selected to Filter</label>
 
           <div className="inputs">
             <a>Allergies</a>

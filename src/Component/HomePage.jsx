@@ -198,13 +198,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
            <section className="choose-level">
              <h2>Recommended Recipes based on Cooking Level!</h2>
              <div className="levels">
-               <div style={{ backgroundColor: selectedLevel === "easy" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("easy")}>
+               <div style={{ backgroundColor: selectedLevel === "easy" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("easy")}>
                  <leveltext>Easy</leveltext>
                </div>
-               <div style={{ backgroundColor: selectedLevel === "medium" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("medium")}>
+               <div style={{ backgroundColor: selectedLevel === "medium" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("medium")}>
                  <leveltext>Medium</leveltext>
                </div>
-               <div style={{ backgroundColor: selectedLevel === "hard" ? "rgb(188 145 118)" : undefined}} className="level" onClick={() => setSelectedLevel("hard")}>
+               <div style={{ backgroundColor: selectedLevel === "hard" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("hard")}>
                  <leveltext>Hard</leveltext>
                </div>
              </div>
