@@ -1,6 +1,6 @@
  export const translations = {
      en: {
-         discoverNewRecipes: "Discover our New Recipes",
+         discoverNewRecipes: "Discover Our New Recipes",
          learnCookShare: "Learn, cook, and share yummy recipes with our community of foodies.",
          uploadOwn: "Upload Own",
          browseAll: "Browse All",
@@ -184,7 +184,7 @@
          }
      },
      es: {
-         discoverNewRecipes: "Descubre nuestras Nuevas Recetas",
+         discoverNewRecipes: "Descubre Nuestras Nuevas Recetas",
          learnCookShare: "Aprende, cocina y comparte deliciosas recetas con nuestra comunidad de amantes de la comida.",
          uploadOwn: "Subir Propia",
          browseAll: "Explorar Todo",
@@ -267,107 +267,104 @@
                  vegetarian: "Vegetariano",
                  vegan: "Vegano",
                  pescatarian: "Pescetariano"
+             }
+         },
+         browseRecipes: {
+             title: "Explorar Recetas",
+             sortBy: "Ordenar por:",
+             ratingHighToLow: "Calificación (Alta a Baja)",
+             description: "Explora las recetas compartidas por nuestra comunidad. ¡Haz clic en cualquier tarjeta para ver detalles!",
+             applyPreferences: "Aplicar mis preferencias dietéticas y de alergias"
+         },
+         accountSettings: {
+             title: "Configuración de Cuenta",
+             description: "Actualiza tu información personal",
+             fields: {
+                 email: "Correo electrónico",
+                 username: "Nombre de usuario",
+                 fullName: "Nombre completo",
+                 phoneNumber: "Número de teléfono",
+                 country: "País"
+             }
+         },
+         favorites: {
+             title: "Recetas Favoritas",
+             stars: "Estrellas",
+             followList: "Lista de Seguimiento",
+             myRecipes: "Mis Recetas",
+             cookbooks: "Libros de Cocina",
+             dietaryRestrictions: "Restricciones Dietéticas",
+             allergies: {
+                 peanuts: "Cacahuetes",
+                 gluten: "Gluten",
+                 dairy: "Lácteos",
+                 shellfish: "Mariscos",
+                 treeNuts: "Frutos secos",
+                 eggs: "Huevos",
+                 none: "Ninguna"
+             }
+         },
+         dietRegimes: {
+             kosher: "Kosher",
+             halal: "Halal",
+             vegetarian: "Vegetariano"
+         },
+         guides: {
+             grilling: {
+                 title: "Domina el Arte de la Parrilla"
              },
-             browseRecipes: {
-                 title: "Explorar Recetas",
-                 sortBy: "Ordenar por:",
-                 ratingHighToLow: "Calificación (Alta a Baja)",
-                 description: "Explora las recetas compartidas por nuestra comunidad. ¡Haz clic en cualquier tarjeta para ver detalles!",
-                 applyPreferences: "Aplicar mis preferencias dietéticas y de alergias"
+             knifeSkills: {
+                 title: "Habilidades con el Cuchillo 101",
+                 description: "¡Aprende a picar, cortar en cubos y en juliana como un profesional!"
              },
-             accountSettings: {
-                 title: "Configuración de Cuenta",
-                 description: "Actualiza tu información personal",
-                 fields: {
-                     email: "Correo electrónico",
-                     username: "Nombre de usuario",
-                     fullName: "Nombre completo",
-                     phoneNumber: "Número de teléfono",
-                     country: "País"
-                 }
+             perfectPasta: {
+                 title: "Guía de Pasta Perfecta",
+                 description: "Cocina pasta perfectamente cada vez con estos sencillos trucos."
              },
-             favorites: {
-                 title: "Recetas Favoritas",
-                 stars: "Estrellas",
-                 followList: "Lista de Seguimiento",
-                 myRecipes: "Mis Recetas",
-                 cookbooks: "Libros de Cocina",
-                 dietaryRestrictions: "Restricciones Dietéticas",
-                 allergies: {
-                     peanuts: "Cacahuetes",
-                     gluten: "Gluten",
-                     dairy: "Lácteos",
-                     shellfish: "Mariscos",
-                     treeNuts: "Frutos secos",
-                     eggs: "Huevos",
-                     none: "Ninguna"
-                 },
-                 dietRegimes: {
-                     kosher: "Kosher",
-                     halal: "Halal",
-                     vegetarian: "Vegetariano"
-                 },
-                 guides: {
-                     grilling: {
-                         title: "Domina el Arte de la Parrilla"
-                     },
-                     knifeSkills: {
-                         title: "Habilidades con el Cuchillo 101",
-                         description: "¡Aprende a picar, cortar en cubos y en juliana como un profesional!"
-                     },
-                     perfectPasta: {
-                         title: "Guía de Pasta Perfecta",
-                         description: "Cocina pasta perfectamente cada vez con estos sencillos trucos."
-                     },
-                     fluffyPancakes: {
-                         title: "Secretos de Panqueques Esponjosos",
-                         description: "¡Descubre la ciencia detrás de los panqueques más esponjosos de todos!"
-                     },
-                     homemadeBread: {
-                         title: "Pan Casero Desde Cero",
-                         description: "Una guía para hacer pan suave, esponjoso y sabroso sin máquina de pan."
-                     },
-                     caramelizedOnions: {
-                         title: "Cómo Caramelizar Cebollas para un Sabor Intenso",
-                         description: "¡Transforma las cebollas en un aderezo dulce y dorado con una cocción lenta y suave!"
-                     },
-                     stirFry: {
-                         title: "Cómo Hacer el Salteado Perfecto",
-                         description: "Descubre los secretos para preparar un salteado rápido, saludable y lleno de sabor con vegetales y proteínas cocinados a la perfección."
-                     },
-                     simpleCake: {
-                         title: "Cómo Hornear un Pastel Simple",
-                         description: "Una guía para hornear pasteles ligeros y esponjosos con la estructura perfecta, junto con consejos para glasear y decorar."
-                     },
-                     cookEggs: {
-                         title: "Diferentes Formas de Cocinar Huevos",
-                         description: "¿Has pensado en cuántas formas puedes cocinar huevos? ¡Haz clic en esta guía para descubrir las más comunes!"
-                     },
-                     perfectSteak: {
-                         title: "Cómo Cocinar el Filete Perfecto",
-                         description: "¡Logra el punto exacto de cocción del filete cada vez con estos sencillos pasos y consejos!"
-                     },
-                     cookRice: {
-                         title: "Cómo Cocinar Arroz Sin una Arrocera",
-                         description: "¡Sigue esta sencilla guía paso a paso para cocinar arroz sin una arrocera!"
-                     },
-                     filletFish: {
-                         title: "Cómo Filetear un Pescado",
-                         description: "Filetear pescado puede ser muy difícil para los principiantes. ¡Sigue esta guía para aprender a hacerlo correctamente!"
-                     },
-                     sharpenKnives: {
-                         title: "Cómo Afilas los Cuchillos Correctamente",
-                         description: "¡Aprende cómo afilar tus cuchillos con esta guía!"
-                     },
-                     seasoningBasics: {
-                         title: "Condimentar para Principiantes",
-                         description: "El condimento puede mejorar drásticamente tu comida. ¡Sigue estos pasos básicos!"
-                     }
-                 }
-
+             fluffyPancakes: {
+                 title: "Secretos de Panqueques Esponjosos",
+                 description: "¡Descubre la ciencia detrás de los panqueques más esponjosos de todos!"
+             },
+             homemadeBread: {
+                 title: "Pan Casero Desde Cero",
+                 description: "Una guía para hacer pan suave, esponjoso y sabroso sin máquina de pan."
+             },
+             caramelizedOnions: {
+                 title: "Cómo Caramelizar Cebollas para un Sabor Intenso",
+                 description: "¡Transforma las cebollas en un aderezo dulce y dorado con una cocción lenta y suave!"
+             },
+             stirFry: {
+                 title: "Cómo Hacer el Salteado Perfecto",
+                 description: "Descubre los secretos para preparar un salteado rápido, saludable y lleno de sabor con vegetales y proteínas cocinados a la perfección."
+             },
+             simpleCake: {
+                 title: "Cómo Hornear un Pastel Simple",
+                 description: "Una guía para hornear pasteles ligeros y esponjosos con la estructura perfecta, junto con consejos para glasear y decorar."
+             },
+             cookEggs: {
+                 title: "Diferentes Formas de Cocinar Huevos",
+                 description: "¿Has pensado en cuántas formas puedes cocinar huevos? ¡Haz clic en esta guía para descubrir las más comunes!"
+             },
+             perfectSteak: {
+                 title: "Cómo Cocinar el Filete Perfecto",
+                 description: "¡Logra el punto exacto de cocción del filete cada vez con estos sencillos pasos y consejos!"
+             },
+             cookRice: {
+                 title: "Cómo Cocinar Arroz Sin una Arrocera",
+                 description: "¡Sigue esta sencilla guía paso a paso para cocinar arroz sin una arrocera!"
+             },
+             filletFish: {
+                 title: "Cómo Filetear un Pescado",
+                 description: "Filetear pescado puede ser muy difícil para los principiantes. ¡Sigue esta guía para aprender a hacerlo correctamente!"
+             },
+             sharpenKnives: {
+                 title: "Cómo Afilas los Cuchillos Correctamente",
+                 description: "¡Aprende cómo afilar tus cuchillos con esta guía!"
+             },
+             seasoningBasics: {
+                 title: "Condimentar para Principiantes",
+                 description: "El condimento puede mejorar drásticamente tu comida. ¡Sigue estos pasos básicos!"
              }
          }
      }
- }
-
-
+ };
