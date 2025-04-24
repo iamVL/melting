@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../UploadRecipe.css";
 
 import Modal from "../Component/Modal";
+import { useLanguage } from "../translator/Languagecontext";
 
 
 const UploadRecipe = () => {
@@ -21,7 +22,7 @@ const UploadRecipe = () => {
    diet: [],
    visibility: "Public",
  });
-
+    const { t } = useLanguage();
 
  const [newIngredient, setNewIngredient] = useState("");
  const [newStep, setNewStep] = useState(""); // ✅ NEW STATE
@@ -249,16 +250,16 @@ const UploadRecipe = () => {
      {isLoaded ? (
        <div className="upload-recipe-container">
          <div className="upload-recipe-form">
-            <div style={{color:"black"}} className="upload-recipe-header">Upload Recipe</div>
-           <label>Recipe Title *</label>
+            <div style={{color:"black"}} className="upload-recipe-header">{t('uploadRecipe_title')}</div>
+           <label>{t('recipeTitle')}</label>
            <input type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
 
 
-           <label>Description *</label>
+           <label>{t('description')}</label>
            <textarea name="description" value={recipe.description} onChange={handleChange} required maxLength={125} />
 
 
-           <label>Total Time *</label>
+           <label>{t('totalTime')}</label>
            <div className="time-inputs">
              <input type="number" name="timeHours" value={recipe.timeHours} onChange={handleChange} placeholder="hr" />
              <input
@@ -271,11 +272,11 @@ const UploadRecipe = () => {
            </div>
 
 
-           <label>Serving Size *</label>
+           <label>{t('servingSize')}</label>
            <input type="number" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
 
 
-           <label>Select Difficulty *</label>
+           <label>{t('selectDifficulty')}</label>
            <div className="difficulty-options">
              {["Easy", "Medium", "Hard"].map((level) => (
                <button
@@ -289,7 +290,7 @@ const UploadRecipe = () => {
            </div>
 
 
-           <label>List of Ingredients *</label>
+           <label>{t('listOfIngredients')}</label>
            <div className="ingredient-input">
              <input
                type="text"
@@ -313,7 +314,7 @@ const UploadRecipe = () => {
            </ul>
 
 
-           <label>Steps to Create Recipe *</label>
+           <label>{t('stepsToCreate')}</label>
            <div className="ingredient-input">
              <input
                type="text"
@@ -337,7 +338,7 @@ const UploadRecipe = () => {
            </ul>
 
 
-           <label>Cuisine Tags</label>
+           <label>{t('cuisineTags')}</label>
            <div className="cuisine-tags">
              {cuisineOptions.map((cuisine) => (
                <div
@@ -351,7 +352,7 @@ const UploadRecipe = () => {
            </div>
 
 
-           <label>Allergy Tags</label>
+           <label>{t('allergyTags')}</label>
            <div className="cuisine-tags">
              {allergyOptions.map((allergy) => (
                <div
@@ -365,7 +366,7 @@ const UploadRecipe = () => {
            </div>
 
 
-           <label>Diet Tags</label>
+           <label>{t('dietTags')}</label>
            <div className="cuisine-tags">
              {dietOptions.map((diet) => (
                <div
@@ -379,7 +380,7 @@ const UploadRecipe = () => {
            </div>
 
 
-           <label>Visibility</label>
+           <label>{t('visibility')}</label>
            <div className="cuisine-tags">
              {visibilityOptions.map((option) => (
                <div
@@ -394,13 +395,13 @@ const UploadRecipe = () => {
 
 
            <button type="button" className="submit-btn" onClick={handleSubmit}>
-             Serve
+               {t('serve')}
            </button>
          </div>
 
 
          <div className="upload-recipe-image">
-           <label>Upload an Image *</label>
+           <label>{t('image')}</label>
            <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>
              <input type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} required hidden />
              <span>Choose a file or drag and drop it here</span>
