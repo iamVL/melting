@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../RecipeListing.css";
 import "../FilterPage.css";
+import "../Modal.css"
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
+import Modal from "./Modal";
 
 
 const FilterPage = () => {
@@ -230,7 +233,8 @@ const FilterPage = () => {
           setIsModalOpen(true);
           setTimeout(() => {
             setIsModalOpen(false);
-          }, 7000); // ✅ Show modal but don't redirect
+            navigate("/favorites");
+          }, 2000);
         }
 
 
@@ -503,7 +507,7 @@ return(
                             src={mainImage}
                             alt={title}
                             className="recipe-image"
-                            onError={(e) => (e.target.src = "/default-recipe-image.jpg")}
+
                         />
                         <div className="recipe-content">
                           <h3>{title}</h3>
@@ -515,6 +519,16 @@ return(
                             {!favoritedRecipeIDs.has(String(post.id)) && (
                                 <button onClick={() => handleFavorite(post.id)}>☆ Favorite</button>
                             )}
+
+                            <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                              <img
+                                  src={meltingLogo}
+                                  alt="Melting Pot Logo"
+                                  style={{ width: "120px", marginBottom: "1rem" }}
+                              />
+                              <h2>Recipe favorited!</h2>
+                              <p>You will now be redirected to the Favorite Recipe page.</p>
+                            </Modal>
 
                             <div className="recipe-meta">
                               <span>{attrs.cuisine || "N/A"}</span>
@@ -529,14 +543,6 @@ return(
               </div>
           ) : (
               <p className="no-recipes">No recipes found matching filters.</p>
-          )}
-          {isModalOpen && (
-              <div className="modal-overlay">
-                <div className="modal-content">
-                  <p>Recipe favorited! <Link to="/favorites">Go to Favorites →</Link></p>
-
-                </div>
-              </div>
           )}
 
         </main>

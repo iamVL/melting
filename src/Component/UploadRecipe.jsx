@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../UploadRecipe.css";
 
+import Modal from "../Component/Modal";
+
 
 const UploadRecipe = () => {
  const [recipe, setRecipe] = useState({
@@ -28,7 +30,7 @@ const UploadRecipe = () => {
  const [isLoaded, setIsLoaded] = useState(false);
  const [imageFile, setImageFile] = useState(null);
  const navigate = useNavigate();
-
+ const [showErrorModal, setShowErrorModal] = useState(false);
 
  const handleChange = (e) => {
    const { name, value } = e.target;
@@ -168,10 +170,12 @@ const UploadRecipe = () => {
    let uploadedImageUrl = null;
    if (imageFile) {
      uploadedImageUrl = await uploadImage();
-     if (!uploadedImageUrl) {
-       alert("Image upload failed.");
-       return;
-     }
+       if (!uploadedImageUrl) {
+           setError("Image upload failed.");
+           setShowErrorModal(true);
+           return;
+       }
+
    }
 
 
@@ -206,11 +210,26 @@ const UploadRecipe = () => {
        setIsLoaded(true);
        navigate(`/recipe/${data.id}`);
      })
-     .catch((error) => {
-       setIsLoaded(true);
-       setError("Something went wrong while submitting your recipe. Please try again.");
-       console.log("Upload error:", error);
-     });
+       .then(async (res) => {
+           const data = await res.json();
+           if (!res.ok) throw new Error(data.message);
+           setIsLoaded(true);
+           navigate(`/recipe/${data.id}`);
+       })
+       .catch((error) => {
+           setIsLoaded(true);
+           setError("Something went wrong while submitting your recipe. Please try again.");
+           setShowErrorModal(true);
+           console.error("Upload error:", error);
+       });
+
+     if (!uploadedImageUrl) {
+         setError("Image upload failed.");
+         setShowErrorModal(true);
+         return;
+     }
+
+
  };
 
 
@@ -388,6 +407,14 @@ const UploadRecipe = () => {
            </div>
            {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
          </div>
+           <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+               <h2 style={{ color: "#b00020" }}>⚠️ Error</h2>
+               <p>{error || "Something went wrong."}</p>
+               <button className="modal-button" onClick={() => setShowErrorModal(false)}>
+                   Close
+               </button>
+           </Modal>
+
        </div>
      ) : (
        <div>Loading...</div>
