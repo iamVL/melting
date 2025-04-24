@@ -14,6 +14,7 @@
 }
 
 .recipe-subheader { 
+  animation: opacityChange 1s ease-out forwards;
   display: flex;
   align-items: center;
   color: #777;
@@ -128,7 +129,7 @@ select.search-bar-1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
-  height: 450px;
+  height: 465px;
 
 }
 
@@ -183,7 +184,7 @@ select.search-bar-1 {
   color: #666;
   margin-bottom: 12px;
   margin-top: 5px;
-  height: auto;
+  height: 10%;
 }
 
 /* Buttons */

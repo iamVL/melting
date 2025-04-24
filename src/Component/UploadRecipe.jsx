@@ -250,6 +250,7 @@ const UploadRecipe = () => {
      {isLoaded ? (
        <div className="upload-recipe-container">
          <div className="upload-recipe-form">
+
             <div style={{color:"black"}} className="upload-recipe-header">{t('uploadRecipe_title')}</div>
            <label>{t('recipeTitle')}</label>
            <input type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
@@ -274,6 +275,7 @@ const UploadRecipe = () => {
 
            <label>{t('servingSize')}</label>
            <input type="number" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
+
 
 
            <label>{t('selectDifficulty')}</label>
@@ -343,7 +345,7 @@ const UploadRecipe = () => {
              {cuisineOptions.map((cuisine) => (
                <div
                  key={cuisine}
-                 className={`cuisine-tag ${recipe.cuisine.includes(cuisine) ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.cuisine.includes(cuisine) ? "selected" : ""}`}
                  onClick={() => handleCuisineToggle(cuisine)}
                >
                  {cuisine}
@@ -357,7 +359,7 @@ const UploadRecipe = () => {
              {allergyOptions.map((allergy) => (
                <div
                  key={allergy}
-                 className={`cuisine-tag ${recipe.allergy.includes(allergy) ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.allergy.includes(allergy) ? "selected" : ""}`}
                  onClick={() => handleAllergyToggle(allergy)}
                >
                  {allergy}
@@ -371,7 +373,7 @@ const UploadRecipe = () => {
              {dietOptions.map((diet) => (
                <div
                  key={diet}
-                 className={`cuisine-tag ${recipe.diet.includes(diet) ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.diet.includes(diet) ? "selected" : ""}`}
                  onClick={() => handleDietToggle(diet)}
                >
                  {diet}
@@ -385,7 +387,7 @@ const UploadRecipe = () => {
              {visibilityOptions.map((option) => (
                <div
                  key={option}
-                 className={`cuisine-tag ${recipe.visibility === option ? "selected" : ""}`}
+                 className={`cuisine-tagz ${recipe.visibility === option ? "selected" : ""}`}
                  onClick={() => handleVisibility(option)}
                >
                  {option}
