@@ -90,18 +90,20 @@ const LoginForm = ({ setLoggedIn }) => {
           {errorMessage && <div className="alert error">{errorMessage}</div>}
 
           <form onSubmit={submitHandler} className="register-form">
-            <div className="input-groupp">
-              <label>Email Address</label>
-              <input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+          <div className="input-groupp">
+            <label htmlFor="email">Email Address</label>
+                <input
+                    id="email"
+                    type="text"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                />
+          </div>
 
             <div className="input-groupp">
               <label>Password</label>
               <input
+                id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -137,7 +139,7 @@ const LoginForm = ({ setLoggedIn }) => {
 
         {/* Right Column - Desktop Only */}
         <div className="right-column">
-          <img src={foodImage} alt="Delicious food" className="food-image" />
+          <img src={foodImage} alt="Delicious food" width="1200" height="1800" className="food-image" />
         </div>
       </div>
     </div>
