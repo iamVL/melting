@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f26b3a;
+  background-color: #ff8254;
   padding: 0.5rem 1rem;
   position: relative;
   z-index: 100;
@@ -48,8 +48,8 @@
 
 .dropdown-title {
   cursor: pointer;
-  color: white;
-  font-weight: 600;
+  color: black;
+  font-weight: 100;
 }
 
 .dropdown-menu {

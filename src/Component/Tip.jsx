@@ -157,10 +157,10 @@ const TipForm = () => {
         <h2 className="tip-header">Upload Cooking Tip</h2>
 
         <label className="tip-label">Cooking Tip Title *</label>
-        <textarea className="tip-textarea" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <textarea className="tip-textarea" placeholder="Enter Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
 
         <label className="tip-label">Description *</label>
-        <textarea className="tip-textarea" value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <textarea className="tip-textarea" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
 
         <label className="tip-label">Steps/Directions *</label>
         <div className="tip-steps-container">
@@ -187,14 +187,16 @@ const TipForm = () => {
       <div className="tip-image-upload">
         <label className="tip-label">Upload an Image *</label>
         <div className="tip-upload-box">
-          <input type="file" accept="image/*" onChange={handleMainImageUpload} />
-          {mainImage && (
+          <input placeholder="Add Photo" type="file" accept="image/*" onChange={handleMainImageUpload} />
+          {mainImage ? (
             <img
               src={mainImage}  // ✅ Base64 works directly as an image src
               alt="Main"
               className="tip-image-preview"
             />
-          )}
+          ) : ( <>
+          <p style={{color:"black", fontSize:"18px"}}>Add Photo</p>
+          </>)}
         </div>
 
         {errorMessage && (

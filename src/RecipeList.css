@@ -9,6 +9,7 @@
 h2 {
     font-size: 2rem;
     margin-bottom: 20px;
+    animation: DiscoverSlide 0.8s ease-out;
 }
 
 .recipes-grid {

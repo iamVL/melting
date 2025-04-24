@@ -53,7 +53,7 @@
 }
 
 .login-title {
-  /* font-family: 'Itim', cursive; */
+  font-family: 'Itim', cursive;
   font-size: 36px;
   color: #4A2E1F;
   font-weight: bold;
@@ -62,6 +62,7 @@
 }
 
 .subtitle {
+  font-family: 'Itim', cursive;
   font-size: 18px;
   color: #444;
   margin-bottom: 20px;
@@ -81,9 +82,9 @@
 
 .input-groupp label {
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   color: #4a2c2a;
-  /* font-family: 'Itim', cursive; */
+  font-family: 'Itim', cursive;
 }
 
 .input-groupp input {
