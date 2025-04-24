@@ -159,16 +159,16 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          {/* Hero Section */}
          <section className="hero">
            <div className="hero-text">
-             <h1>{t ("Discover our New Recipes")}</h1>
-             <p>Learn, cook, and share yummy recipes with our  community of foodies.</p>
-             <div className="hero-buttons">
-               <Link to="/upload"><button className="btn primary">Upload Own</button></Link>
-               <Link to="/recipes"><button className="btn primary">Browse All</button></Link>
-               <Link to="/filter"><button className="btn primary">Filter Needs</button></Link>
-             </div>
+               <h1>{t ("discoverNewRecipes")}</h1>
+               <p>{t("learnCookShare")}</p>
+               <div className="hero-buttons">
+                   <Link to="/upload"><button className="btn primary">{t("uploadOwn")}</button></Link>
+                   <Link to="/recipes"><button className="btn primary">{t("browseAll")}</button></Link>
+                   <Link to="/filter"><button className="btn primary">{t("filterNeeds")}</button></Link>
+               </div>
            </div>
-           <div className="hero-image">
-             <img src={Homephoto} alt="Home Photo" className="responsive-image" />
+             <div className="hero-image">
+                 <img src={Homephoto} alt="Home Photo" className="responsive-image" />
            </div>
          </section>
 
@@ -220,7 +220,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                         ? `${recipe.attributes.title.substring(0, 30)}...`
                         : recipe.attributes.title
                       : "Untitled Recipe"}
-                  </h3>                   
+                  </h3>
                    <p>
                     {recipe.content?.trim()
                       ? recipe.content.length > 120
@@ -254,7 +254,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                        ? `${tip.attributes.description.substring(0, 100)}...`
                        : tip.attributes.description
                      : "No description available"}
-                   </p>                   
+                   </p>
                    <Link to={`/tip/${tip.id}`} className="read-more">
                      Read More →
                    </Link>

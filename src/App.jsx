@@ -58,6 +58,7 @@ import CookbookDetail from "./Component/CookbookDetail";
 import { LanguageProvider } from './translator/Languagecontext';
 import { useLanguage } from './translator/Languagecontext';
 import MyComponent from './translator/MyComponent';
+import LanguageSwitcher from './translator/LanguageSwitcher';
 
 // Initialize socket connection
 const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
@@ -68,15 +69,7 @@ const socket = io(process.env.REACT_APP_API_PATH_SOCKET, {
 });
 export { socket };
 
-const LanguageSwitcher = () => {
-  const { language, setLanguage } = useLanguage();
-  return (
-      <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-        <option value="en">English</option>
-        <option value="es">Español</option>
-      </select>
-  );
-};
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
