@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
 import "../RecipeListing.css";
 import "../FilterPage.css";
+import "../Modal.css"
+import meltingLogo from "../assets/melting-pot-logo.jpeg";
+import Modal from "./Modal";
 
 
 const FilterPage = () => {
@@ -26,7 +27,6 @@ const FilterPage = () => {
   const [connections, setConnections] = useState([]);
   const location = useLocation();
   const isFavoritesPage = location.pathname === "/favorites";
-  const token = sessionStorage.getItem("token");
   const raw = sessionStorage.getItem("user");
   const navigate = useNavigate();
 
@@ -35,32 +35,69 @@ const FilterPage = () => {
   const favoritedRecipeIDs = new Set(JSON.parse(rawFavIDs || "[]"));
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const params = new URLSearchParams(location.search);
+  const initialCuisine = params.get("cuisine");
 
-  let userObj = {};
-  try {
-    userObj = JSON.parse(raw);
-  } catch {
-    userObj = {};
-  }
-  if (typeof userObj === "number") userObj = { id: userObj };
-  const userID = userObj.id;
+  const token = sessionStorage.getItem("token");
+  const userID = sessionStorage.getItem("user");
+  const [user, setUser] = useState({});
 
-  useEffect(() => {
-    if (!token) return;
-    fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
+  useEffect( () => {
+    if (initialCuisine) {
+      setSelectedCuisines([initialCuisine]);
+      return;
+    }
+    fetch(`${process.env.REACT_APP_API_PATH}/users/${userID}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
-        .then((res) => res.json())
-        .then((data) => {
-          const recipes = Array.isArray(data[0])
-              ? data[0].filter((p) => p.attributes?.postType === "recipe")
-              : data.posts?.filter((p) => p.attributes?.postType === "recipe") || [];
-          setPosts(recipes);
-        })
-        .catch((err) => console.error("Error fetching recipes:", err));
+      .then(res => res.json())
+      .then((result) => {
+        console.log("User grabbed:", result);
+        setUser(result);
+        setDietFilters(result.attributes.dietRegimes);
+        setAllergyFilters(result.attributes.allergies);
+      })
+  },[]);
+
+  useEffect(() => {
+    const fetchRandomRecipes = async (token) => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_PATH}/posts`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+   
+   
+        if (response.ok) {
+          const data = await response.json();
+          let recipes = [];
+   
+   
+          if (Array.isArray(data)) {
+            recipes = data[0].filter((post) => post.attributes?.postType === "recipe");
+          } else if (data.posts) {
+            recipes = data.posts.filter((post) => post.attributes?.postType === "recipe");
+          }
+        console.log(recipes);
+        setPosts(recipes);
+        } else {
+          console.error("Failed to fetch recipes, status:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    };
+
+    fetchRandomRecipes(token);
   }, [token]);
 
   useEffect(() => {
@@ -196,7 +233,8 @@ const FilterPage = () => {
           setIsModalOpen(true);
           setTimeout(() => {
             setIsModalOpen(false);
-          }, 7000); // ✅ Show modal but don't redirect
+            navigate("/favorites");
+          }, 2000);
         }
 
 
@@ -277,7 +315,7 @@ return(
   <div className="filter-layout">
         {/* ✅ Sidebar (restored from your previous layout) */}
         <aside className="filter-sidebar">
-          <div className="sidebar-section">
+          <div className="sidebar-navigation">
             <h2>Filters</h2>
 
             <input
@@ -350,20 +388,24 @@ return(
               </div>
               {showCuisines && (
                   <div className="checkbox-group">
-                    {["Italian", "Indian", "Chinese", "Mexican", "Japanese", "American"].map((cuisine) => (
-                        <label key={cuisine}>
-                          <input
-                              type="checkbox"
-                              checked={selectedCuisines.includes(cuisine)}
-                              onChange={() =>
-                                  setSelectedCuisines((prev) =>
-                                      prev.includes(cuisine) ? prev.filter((c) => c !== cuisine) : [...prev, cuisine]
-                                  )
-                              }
-                          />
-                          {cuisine}
-                        </label>
-                    ))}
+                    {["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"].map(
+                        (cuisine) => (
+                            <label key={cuisine}>
+                              <input
+                                  type="checkbox"
+                                  checked={selectedCuisines.includes(cuisine)}
+                                  onChange={() =>
+                                      setSelectedCuisines((prev) =>
+                                          prev.includes(cuisine)
+                                              ? prev.filter((c) => c !== cuisine)
+                                              : [...prev, cuisine]
+                                      )
+                                  }
+                              />
+                              {cuisine}
+                            </label>
+                        )
+                    )}
                   </div>
               )}
             </div>
@@ -423,7 +465,7 @@ return(
         </aside>
 
         <main className="recipe-listing">
-          <h2 className="results-header">Recipes</h2>
+          <h2 className="results-header">Serving { selectedCuisines.length >= 2 || selectedCuisines.length == 0  ?  "Cooking" : selectedCuisines[0]} Recipes!</h2>
           {filteredPosts.length > 0 ? (
               <div className="recipe-grid">
                 {filteredPosts.map((post) => {
@@ -441,6 +483,15 @@ return(
 
                   const authorID = post.authorID;
                   const isFollowersOnly = attrs?.visibility === "Followers Only";
+                  const isBlocked = Array.isArray(connections) &&
+                    connections.some(
+                      (connection) =>
+                        String(connection.toUser?.id ?? connection.toUserID) === String(authorID) &&
+                          connection.attributes?.status === "blocked"
+                     );
+
+                        // If blocked, do not show any of their posts
+                        if (isBlocked) return null;
                   const isFollowingAuthor = Array.isArray(connections) &&
                       connections.some(
                           (connection) =>
@@ -456,7 +507,7 @@ return(
                             src={mainImage}
                             alt={title}
                             className="recipe-image"
-                            onError={(e) => (e.target.src = "/default-recipe-image.jpg")}
+
                         />
                         <div className="recipe-content">
                           <h3>{title}</h3>
@@ -468,6 +519,16 @@ return(
                             {!favoritedRecipeIDs.has(String(post.id)) && (
                                 <button onClick={() => handleFavorite(post.id)}>☆ Favorite</button>
                             )}
+
+                            <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                              <img
+                                  src={meltingLogo}
+                                  alt="Melting Pot Logo"
+                                  style={{ width: "120px", marginBottom: "1rem" }}
+                              />
+                              <h2>Recipe favorited!</h2>
+                              <p>You will now be redirected to the Favorite Recipe page.</p>
+                            </Modal>
 
                             <div className="recipe-meta">
                               <span>{attrs.cuisine || "N/A"}</span>
@@ -482,14 +543,6 @@ return(
               </div>
           ) : (
               <p className="no-recipes">No recipes found matching filters.</p>
-          )}
-          {isModalOpen && (
-              <div className="modal-overlay">
-                <div className="modal-content">
-                  <p>Recipe favorited! <Link to="/favorites">Go to Favorites →</Link></p>
-
-                </div>
-              </div>
           )}
 
         </main>

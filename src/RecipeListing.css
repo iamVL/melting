@@ -128,7 +128,8 @@ select.search-bar-1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
-  height: 480px;
+  height: 450px;
+
 }
 
 .recipe-card-1:hover {
@@ -182,7 +183,7 @@ select.search-bar-1 {
   color: #666;
   margin-bottom: 12px;
   margin-top: 5px;
-  height: 10%;
+  height: auto;
 }
 
 /* Buttons */
@@ -378,4 +379,13 @@ select.search-bar-1 {
 .loading-text {
   font-size: 1.5rem;
   color: #888;
+}
+
+.remove-favorite-button {
+  width: 100%;
+  max-width: none;      /* override any desktop-only width limit */
+  padding: 10px 0;      /* give it some breathing room */
+  font-size: 12px;      /* tap-friendly size */
+  margin-top: 10px;     /* separate it from the View button above */
+  box-sizing: border-box;
 }

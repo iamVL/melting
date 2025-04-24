@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link,useNavigate } from "react-router-dom"; // Import Link for navigation
 import LoginForm from "./LoginForm";
 import "../HomePage.css";
 import Homephoto from "../assets/Homephoto.jpeg";
+import { useLanguage } from "../translator/Languagecontext";
+
 
 
 // Helper function to shuffle an array (Fisher-Yates algorithm)
 const shuffle = (array) => {
  let currentIndex = array.length, randomIndex;
-
 
  while (currentIndex !== 0) {
    randomIndex = Math.floor(Math.random() * currentIndex);
@@ -26,6 +27,11 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
  const [userToken, setUserToken] = useState("");
  const [randomTips, setRandomTips] = useState([]);
  const [randomRecipes, setRandomRecipes] = useState([]);
+
+ const { t } = useLanguage();
+
+ const navigate = useNavigate();
+
 
 
  // 🔥 NEW STATE FOR LEVEL FILTERING
@@ -138,9 +144,14 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
    }
  };
 
+ const handleCuisine = (cuisine) => {
+  console.log(1);
+  navigate("/filter?cuisine=" + cuisine);
+ };
 
  return (
    <div className="homepage">
+
      {!userToken ? (
        <LoginForm setLoggedIn={setLoggedIn} />
      ) : (
@@ -148,16 +159,16 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          {/* Hero Section */}
          <section className="hero">
            <div className="hero-text">
-             <h1>Discover our New Recipes</h1>
-             <p>Learn, cook, and share yummy recipes with our  community of foodies.</p>
-             <div className="hero-buttons">
-               <Link to="/upload"><button className="btn primary">Upload Own</button></Link>
-               <Link to="/recipes"><button className="btn primary">Browse All</button></Link>
-               <Link to="/filter"><button className="btn primary">Filter Needs</button></Link>
-             </div>
+               <h1>{t ("discoverNewRecipes")}</h1>
+               <p>{t("learnCookShare")}</p>
+               <div className="hero-buttons">
+                   <Link to="/upload"><button className="btn primary">{t("uploadOwn")}</button></Link>
+                   <Link to="/recipes"><button className="btn primary">{t("browseAll")}</button></Link>
+                   <Link to="/filter"><button className="btn primary">{t("filterNeeds")}</button></Link>
+               </div>
            </div>
-           <div className="hero-image">
-             <img src={Homephoto} alt="Home Photo" className="responsive-image" />
+             <div className="hero-image">
+                 <img src={Homephoto} alt="Home Photo" className="responsive-image" />
            </div>
          </section>
 
@@ -174,8 +185,8 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                { name: "Japanese" },
                { name: "Spanish"},
              ].map((cuisine, index) => (
-               <div key={index} className="cuisine-card">
-                 <p>{cuisine.name}</p>
+               <div key={index} onClick={() => handleCuisine(cuisine.name)} className="cuisine-card">
+                 <button type="button" style={{backgroundColor:"transparent", border:"0px", fontSize:"18px"}}>{cuisine.name}</button>
                </div>
              ))}
            </div>
@@ -209,7 +220,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                         ? `${recipe.attributes.title.substring(0, 30)}...`
                         : recipe.attributes.title
                       : "Untitled Recipe"}
-                  </h3>                   
+                  </h3>
                    <p>
                     {recipe.content?.trim()
                       ? recipe.content.length > 120
@@ -243,7 +254,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                        ? `${tip.attributes.description.substring(0, 100)}...`
                        : tip.attributes.description
                      : "No description available"}
-                   </p>                   
+                   </p>
                    <Link to={`/tip/${tip.id}`} className="read-more">
                      Read More →
                    </Link>
