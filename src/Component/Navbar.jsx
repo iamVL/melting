@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../Navbar.css";
-import profileIcon from "../assets/profile icon.png";
+import profileIcon from "../assets/profilelogo.png";
 import meltingLogo from "../assets/Transparent TMP.png";
 import LanguageSwitcher from '../translator/LanguageSwitcher';
 import { useLanguage } from "../translator/Languagecontext";
@@ -109,9 +109,51 @@ const Navbar = () => {
                   <li><Link to="/register">{t("nav_register")}</Link></li>
                 </>
             )}
-          </ul>
-        </div>
+          </li>
 
+          {/* Profile Icon */}
+          <li>
+            <Link to="/settings">
+              <img
+                src={profileIcon}
+                width={60}
+                height={60}
+                className="active"
+                alt="profile"
+                title="profile"
+              />
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      {/* Right: Hamburger / X button (visible on mobile) */}
+      <button className="hamburger" onClick={toggleMobileMenu}>
+        {mobileMenuOpen ? "✕" : "☰"}
+      </button>
+    </nav>
+      </>) : ( <>
+        <nav className="navbar">
+      {/* Left: Logo */}
+      <div className="nav-left">
+        <Link to="/">
+          <img
+            src={meltingLogo}
+            alt="Melting Logo"
+            className="logo"
+            width={120}
+          />
+        </Link>
+        <LanguageSwitcher />
+      </div>
+
+      {/* Main nav container (slides in from left on mobile) */}
+      <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
+        <ul className="landing-links">
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/register">Register</Link></li>
+        </ul>
+      </div>
         <button className="hamburger" onClick={toggleMobileMenu}>
           {mobileMenuOpen ? "✕" : "☰"}
         </button>

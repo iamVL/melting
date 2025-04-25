@@ -318,14 +318,6 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
             </div>
           </div>
          </section>
-
-         {sessionStorage.getItem("token") && <section className="contact">
-             <h2>{t('contactUs_title')}</h2>
-             <p>
-                 {t("contactUs_description").split("support@meltingpot.com")[0]}
-                 <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-             </p>
-         </section>}
         </div>
        </>
      )}
