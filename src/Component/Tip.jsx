@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Tip.css";
+import { useLanguage } from "../translator/Languagecontext";
 
 const TipForm = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const userToken = sessionStorage.getItem("token");
 
   useEffect(() => {
-    if (!userToken) {
-      navigate("/");
-    }
+    if (!userToken) navigate("/");
   }, [userToken]);
 
   const [title, setTitle] = useState("");
@@ -20,108 +20,68 @@ const TipForm = () => {
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
   const addStep = () => setSteps([...steps, { id: steps.length + 1, description: "", image: null }]);
-
   const removeStep = (id) => {
-    if (steps.length > 1 && id === steps.length) {
-      setSteps(steps.slice(0, -1)); // ✅ Remove last step only
-    }
+    if (steps.length > 1 && id === steps.length) setSteps(steps.slice(0, -1));
   };
-
   const handleStepChange = (id, event) => {
     setSteps(steps.map((step) => (step.id === id ? { ...step, description: event.target.value } : step)));
   };
-
   const handleStepImageUpload = (id, event) => {
     const file = event.target.files[0];
     setSteps(steps.map((step) => (step.id === id ? { ...step, image: file } : step)));
   };
 
   const handleMainImageUpload = (event) => {
-  const file = event.target.files[0];
+    const file = event.target.files[0];
+    if (!file) return setErrorMessage(t("uploadImage"));
+    const allowedTypes = ["image/jpeg", "image/png"];
+    if (!allowedTypes.includes(file.type)) return setErrorMessage(t("uploadImageErrorType"));
 
-  if (!file) {
-    setErrorMessage("Please select a valid image file.");
-    return;
-  }
-
-  // ✅ Ensure the file type is recognized correctly
-  const allowedTypes = ["image/jpeg", "image/png"];
-  if (!allowedTypes.includes(file.type)) {
-    setErrorMessage("Only JPEG and PNG files are allowed.");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-
-  reader.onloadend = () => {
-    const img = new Image();
-    img.src = reader.result;
-
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      // ✅ Set max width & height (adjust as needed)
-      const MAX_WIDTH = 800;
-      const MAX_HEIGHT = 600;
-      let width = img.width;
-      let height = img.height;
-
-      if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-        if (width > height) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        } else {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const img = new Image();
+      img.src = reader.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        let width = img.width;
+        let height = img.height;
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 600;
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+          if (width > height) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          } else {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
         }
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-
-      // ✅ Ensure the format is always correct
-      const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7); // Forces JPEG format
-
-      setMainImage(compressedBase64);
-      setErrorMessage("");
-    };
-
-    img.onerror = () => {
-      setErrorMessage("Error loading image. Please try again.");
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        setMainImage(canvas.toDataURL("image/jpeg", 0.7));
+        setErrorMessage("");
+      };
+      img.onerror = () => setErrorMessage(t("uploadImageError"));
     };
   };
-};
 
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    if (!mainImage) {
-      setErrorMessage("Please upload a main picture!");
-      return;
-    }
-  
-    // Convert steps into a proper JSON array
-    const formattedSteps = steps.map((step, index) => ({
-      id: index + 1,
-      description: step.description,
-      image: step.image, // Assuming this is a URL or base64 string
-    }));
-  
+    if (!mainImage) return setErrorMessage(t("uploadImage"));
+    const formattedSteps = steps.map((step, index) => ({ id: index + 1, description: step.description, image: step.image }));
     const postData = {
       authorID: sessionStorage.getItem("user"),
-      content: title, // Using the title as the main content
+      content: title,
       attributes: {
         postType: "tip",
         steps: formattedSteps,
-        mainImage, // Assuming it's a URL or base64 string
+        mainImage,
         description,
       },
     };
-  
     try {
       const response = await fetch(process.env.REACT_APP_API_PATH + "/posts", {
         method: "POST",
@@ -131,7 +91,6 @@ const TipForm = () => {
         },
         body: JSON.stringify(postData),
       });
-  
       if (response.ok) {
         setErrorMessage("");
         setTitle("");
@@ -142,75 +101,63 @@ const TipForm = () => {
         navigate("/tip/" + JSON.stringify(result.id));
       } else {
         const result = await response.json();
-        setErrorMessage("Error: " + (result.error || "Something went wrong"));
+        setErrorMessage(t("submitError") + (result.error || "Something went wrong"));
       }
     } catch (error) {
-      setErrorMessage("Error uploading tip!");
+      setErrorMessage(t("uploadTipError"));
     }
   };
-  
 
   return (
-    <div className="whole-tip-page">
-      <div className="tip-container">
-      <form className="tip-form" onSubmit={handleSubmit}>
-        <h2 className="tip-header">Upload Cooking Tip</h2>
+      <div className="whole-tip-page">
+        <div className="tip-container">
+          <form className="tip-form" onSubmit={handleSubmit}>
+            <h2 className="tip-header">{t("uploadTip")}</h2>
 
-        <label className="tip-label">Cooking Tip Title *</label>
-        <textarea className="tip-textarea" placeholder="Enter Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+            <label className="tip-label">{t("tipTitle")}</label>
+            <textarea className="tip-textarea" placeholder={t("enterTitle")}
+                      value={title} onChange={(e) => setTitle(e.target.value)} required />
 
-        <label className="tip-label">Description *</label>
-        <textarea className="tip-textarea" placeholder="Enter Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+            <label className="tip-label">{t("description")}</label>
+            <textarea className="tip-textarea" placeholder={t("enterDescription")}
+                      value={description} onChange={(e) => setDescription(e.target.value)} required />
 
-        <label className="tip-label">Steps/Directions *</label>
-        <div className="tip-steps-container">
-          {steps.map((step) => (
-            <div key={step.id} className="tip-step-wrapper">
-              <textarea className="tip-step-textarea" placeholder={`Step ${step.id} description`} value={step.description} onChange={(e) => handleStepChange(step.id, e)} required />
-              <button
-                type="button"
-                className="tip-delete-step-btn"
-                onClick={() => removeStep(step.id)}
-                disabled={step.id !== steps.length}
-                style={{ opacity: step.id === steps.length ? 1 : 0, cursor: step.id === steps.length ? "pointer" : "default" }}
-              >
-                X
-              </button>
+            <label className="tip-label">{t("steps")}</label>
+            <div className="tip-steps-container">
+              {steps.map((step) => (
+                  <div key={step.id} className="tip-step-wrapper">
+                <textarea className="tip-step-textarea" placeholder={`${t("stepDescription").replace("1", step.id)}`}
+                          value={step.description} onChange={(e) => handleStepChange(step.id, e)} required />
+                    <button type="button" className="tip-delete-step-btn" onClick={() => removeStep(step.id)}
+                            disabled={step.id !== steps.length} style={{ opacity: step.id === steps.length ? 1 : 0, cursor: step.id === steps.length ? "pointer" : "default" }}>
+                      {t("removeStep")}
+                    </button>
+                  </div>
+              ))}
             </div>
-          ))}
+
+            <button type="button" className="tip-add-step-btn" onClick={addStep}>+ {t("addStep")}</button>
+            <button type="submit" className="tip-submit-btn">{t("submitTip")}</button>
+          </form>
+
+          <div className="tip-image-upload">
+            <label className="tip-label">{t("uploadImage")}</label>
+            <div className="tip-upload-box">
+              <input placeholder={t("addPhoto")} type="file" accept="image/*" onChange={handleMainImageUpload} />
+              {mainImage ? (
+                  <img src={mainImage} alt="Main" className="tip-image-preview" />
+              ) : <p style={{ color: "black", fontSize: "18px" }}>{t("addPhoto")}</p>}
+            </div>
+            {errorMessage && <p className="tip-error-message">{errorMessage}</p>}
+          </div>
+
+          {fullscreenImage && (
+              <div className="tip-fullscreen-overlay" onClick={() => setFullscreenImage(null)}>
+                <img src={fullscreenImage} alt="Full Screen" className="tip-fullscreen-image" />
+              </div>
+          )}
         </div>
-
-        <button type="button" className="tip-add-step-btn" onClick={addStep}>+ Add Step</button>
-        <button type="submit" className="tip-submit-btn">Submit Tip</button>
-      </form>
-
-      <div className="tip-image-upload">
-        <label className="tip-label">Upload an Image *</label>
-        <div className="tip-upload-box">
-          <input placeholder="Add Photo" type="file" accept="image/*" onChange={handleMainImageUpload} />
-          {mainImage ? (
-            <img
-              src={mainImage}  // ✅ Base64 works directly as an image src
-              alt="Main"
-              className="tip-image-preview"
-            />
-          ) : ( <>
-          <p style={{color:"black", fontSize:"18px"}}>Add Photo</p>
-          </>)}
-        </div>
-
-        {errorMessage && (
-          <p className="tip-error-message">{errorMessage}</p>
-        )}
       </div>
-
-      {fullscreenImage && (
-        <div className="tip-fullscreen-overlay" onClick={() => setFullscreenImage(null)}>
-          <img src={fullscreenImage} alt="Full Screen" className="tip-fullscreen-image" />
-        </div>
-      )}
-    </div>
-    </div>
   );
 };
 

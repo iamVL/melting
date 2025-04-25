@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "../TipDetails.css";
 
+import { useLanguage } from "../translator/Languagecontext";
 const TipDetails = () => {
   const { id } = useParams();
   const [tip, setTip] = useState(null);
@@ -9,9 +10,11 @@ const TipDetails = () => {
   const [reviews, setReviews] = useState([]);
   const [reviewsLoaded, setReviewsLoaded] = useState(false); // 🌟 Important flag
 
+
   const [rating, setRating] = useState(0);
   const [commentText, setCommentText] = useState("");
   const reviewsRef = useRef(null);
+  const { t } = useLanguage();
 
   
   // ✅ Fetch tip
@@ -304,8 +307,8 @@ const TipDetails = () => {
             <div className="review-reactions">
               <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like", review)}>👍 {review.attributes.likes.length}</button>
               <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike", review)}>👎 {review.attributes.dislikes.length}</button>
-              {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && 
-                <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button> 
+              {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) &&
+                <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button>
               }
             </div>
             </> ) : ( <>
@@ -338,54 +341,54 @@ const TipDetails = () => {
     );
   };
 
-  if (error) return <p>Error loading tip.</p>;
-  if (!tip) return <p>Loading...</p>;
+  if (error) return <p>{t("error_loading_tip")}</p>;
+  if (!tip) return <p>{t("loading_tip")}</p>;
 
   return (
-    <div className="tip-details-container">
-      <div className="tip-main-content">
-        <div className="tip-header-container">
-          <div className="tip-header-text">
-            <h2 className="tip-details-title">{tip.content}</h2>
-            <p className="tip-details-description">{tip.attributes?.description}</p>
+      <div className="tip-details-container">
+        <div className="tip-main-content">
+          <div className="tip-header-container">
+            <div className="tip-header-text">
+              <h2 className="tip-details-title">{tip.content}</h2>
+              <p className="tip-details-description">{tip.attributes?.description}</p>
+            </div>
+
+            {tip.attributes?.mainImage && (
+                <img
+                    src={tip.attributes.mainImage}
+                    alt={tip.content}
+                    className="tip-details-main-image"
+                />
+            )}
           </div>
 
-          {tip.attributes?.mainImage && (
-            <img
-              src={tip.attributes.mainImage}
-              alt={tip.content}
-              className="tip-details-main-image"
-            />
-          )}
-        </div>
-
-        <h3 className="tip-directions-title">Directions</h3>
-        <div className="tip-steps-container">
-          {tip.attributes?.steps?.map((step, index) => (
-            <div key={index} className="tip-step">
-              <div className="tip-step-content">
-                <div className="tip-step-header">
-                  <span className="tip-step-number">{`Step ${index + 1}`}</span>
-                  <h4 className="tip-step-title">{step.title}</h4>
+          <h3 className="tip-directions-title">{t("tip_directions")}</h3>
+          <div className="tip-steps-container">
+            {tip.attributes?.steps?.map((step, index) => (
+                <div key={index} className="tip-step">
+                  <div className="tip-step-content">
+                    <div className="tip-step-header">
+                      <span className="tip-step-number">{`${t("tip_step")} ${index + 1}`}</span>
+                      <h4 className="tip-step-title">{step.title}</h4>
+                    </div>
+                    <p className="tip-step-description">{step.description}</p>
+                  </div>
+                  {step.image && (
+                      <img
+                          src={step.image}
+                          alt={`${t("tip_step")} ${index + 1}`}
+                          className="tip-step-image"
+                      />
+                  )}
                 </div>
-                <p className="tip-step-description">{step.description}</p>
-              </div>
-              {step.image && (
-                <img
-                  src={step.image}
-                  alt={`Step ${index + 1}`}
-                  className="tip-step-image"
-                />
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="recipe-section">
-            <h3 className="reviews">Reviews</h3>
+          <div className="recipe-section">
+            <h3 className="reviews">{t("reviews_title")}</h3>
             {reviews.length > 0 && (
                 <div className="average-rating">
-                  ⭐ Average Rating: {getAverageRating()} / 5 ({getRatingPercentage()}% positive)
+                  ⭐ {t("reviews_average_rating")}: {getAverageRating()} / 5 ({getRatingPercentage()}% {t("reviews_positive")})
                 </div>
             )}
 
@@ -398,13 +401,13 @@ const TipDetails = () => {
 
             <div className="reviews-list-tips" ref={reviewsRef}>
               {reviews.map((review, index) => (
-                  <ReviewItem key={index} review={review} index={index} setReviews={setReviews}/>
+                  <ReviewItem key={index} review={review} index={index} setReviews={setReviews} />
               ))}
             </div>
           </div>
 
           <div className="recipe-section">
-            <h3 className="leave-comment">Leave a Review</h3>
+            <h3 className="leave-comment">{t("reviews_leave_review")}</h3>
             <div className="comment-form">
               <div className="rating-stars">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -415,13 +418,18 @@ const TipDetails = () => {
                     >★</span>
                 ))}
               </div>
-              <textarea placeholder="Your Review" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
-              <button onClick={handleCommentSubmit}>Post Review</button>
+              <textarea
+                  placeholder={t("reviews_input_placeholder")}
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+              />
+              <button onClick={handleCommentSubmit}>{t("reviews_submit_button")}</button>
             </div>
           </div>
+        </div>
       </div>
-    </div>
   );
+
 };
 
 export default TipDetails;

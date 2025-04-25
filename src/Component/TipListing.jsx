@@ -3,21 +3,21 @@ import { Link } from "react-router-dom"; // ✅ Import Link for navigation
 import "../TipListing.css"; // ✅ Ensure CSS is imported
 import Tip from "../Component/Tip";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { useLanguage } from "../translator/Languagecontext";
 
 const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
   const currentUserID = sessionStorage.getItem("user"); // ✅ Get logged-in user ID
-
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState(""); // Search query for title
   const [advancedSearch, setAdvancedSearch] = useState(false); // Toggle advanced search
   const [descriptionQuery, setDescriptionQuery] = useState(""); // Search query for description
 
   if (!sessionStorage.getItem("token")) {
-    return <div>Please Log In...</div>;
+    return <div>{t("pleaseLogin")}.</div>;
   } else if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>{t("errorLoadingTips")} {error.message}</div>;
   } else if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <div>{t("loadingTips")}</div>;
   }
 
   // ✅ Filter posts based on search criteria
@@ -64,30 +64,30 @@ const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
 
   return (
     <div className="tip-container-2">
-      <h2 className="tip-header-2">Cooking Tips & Tricks</h2>
-      <p className="tip-subheader-2">Discover culinary secrets from around the world in this melting pot of flavors!</p>
+      <h2 className="tip-header-2">{t("cookingTips")}</h2>
+      <p className="tip-subheader-2">{t("discoverSecrets")}</p>
 
-      {/* ✅ Search Bar */}
+
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search by title..."
+          placeholder={t('searchByTitle')}
           className="search-bar"
           style={{ width: "300px" }} // Force width
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="toggle-advanced-btn" onClick={() => setAdvancedSearch(!advancedSearch)}>
-          {advancedSearch ? "Hide Advanced Search" : "Show Advanced Search"}
+          {advancedSearch ? t("hideAdvancedSearch") : t("showAdvancedSearch")}
         </button>
       </div>
 
-      {/* ✅ Advanced Search Options */}
+
       {advancedSearch && (
         <div className="advanced-search-container">
           <input
             type="text"
-            placeholder="Search by description..."
+            placeholder={t("searchByDescription")}
             className="search-bar"
             style={{ width: "300px" }} // Force width
             value={descriptionQuery}
@@ -112,11 +112,11 @@ const TipListing = ({ refresh, posts, error, isLoaded, type, loadPosts }) => {
                   <p className="tip-description-2">{description}</p>
 
                   {/* ✅ "Read More" button linking to the full tip page */}
-                  <Link to={`/tip/${post.id}`} className="read-more-button">Read More →</Link>
+                  <Link to={`/tip/${post.id}`} className="read-more-button">{t("readMore")}</Link>
 
                   {/* ✅ Show delete button only if the user owns the post */}
                   {String(authorID) === String(currentUserID) && (
-                    <button className="delete-button-2" onClick={() => handleDelete(post.id)}>🗑 Delete</button>
+                    <button className="delete-button-2" onClick={() => handleDelete(post.id)}>🗑 {t("delete")}</button>
                   )}
                 </div>
               </div>

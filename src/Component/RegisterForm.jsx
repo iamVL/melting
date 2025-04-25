@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import "../RegisterForm.css";
 import regPhoto from "../assets/Reg-page-photo.png";
-
+import { useLanguage } from "../translator/Languagecontext";
 const RegisterForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +16,7 @@ const RegisterForm = ({ setLoggedIn }) => {
   const [dietOptions, setDietOptions] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -171,115 +172,117 @@ const RegisterForm = ({ setLoggedIn }) => {
       });
   };
 
+
   return (
-    <div className="register-container">
-      <div className="content-wrapper">
-        <div className="image-container">
-          <img src={regPhoto} alt="Food" className="food-image" />
-        </div>
+      <div className="register-container">
+        <div className="content-wrapper">
+          <div className="image-container">
+            <img src={regPhoto} alt="Food" className="food-image" />
+          </div>
 
-        <div className="form-container">
-          <div className="back-arrow">&#8592;</div>
-          <img src={meltingLogo} alt="Melting" className="logo-login" />
-          <h1 className="titles">Registration</h1>
+          <div className="form-container">
+            <div className="back-arrow">&#8592;</div>
+            <img src={meltingLogo} alt="Melting" className="logo-login" />
+            <h1 className="titles">{t("registration")}</h1>
 
-          {errorMsg && <div className="alert error">{errorMsg}</div>}
+            {errorMsg && <div className="alert error">{errorMsg}</div>}
 
-          <form onSubmit={submitHandler} className="register-forms">
-            <div className="input-rows">
+            <form onSubmit={submitHandler} className="register-forms">
+              <div className="input-rows">
+                <div className="input-groups">
+                  <label>{t("full_name")}</label>
+                  <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                </div>
+                <div className="input-groups">
+                  <label>{t("username")}</label>
+                  <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                </div>
+              </div>
+
+              <div className="input-rows">
+                <div className="input-groups">
+                  <label>{t("email_address")}</label>
+                  <input
+                      type="text"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="example@email.com"
+                  />
+                </div>
+                <div className="input-groups">
+                  <label>{t("phone_number")}</label>
+                  <input
+                      type="tel"
+                      value={phone}
+                      onChange={handlePhoneChange}
+                      placeholder="(XXX) XXX-XXXX"
+                  />
+                </div>
+              </div>
+
+              <div className="input-rows">
+                <div className="input-groups">
+                  <label>{t("password")}</label>
+                  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                </div>
+                <div className="input-groups">
+                  <label>{t("country")}</label>
+                  <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
+                </div>
+              </div>
+
+              <div className="input-rows">
+                <div className="input-groups">
+                  <label>{t("confirm_password")}</label>
+                  <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                </div>
+              </div>
+
               <div className="input-groups">
-                <label>Full Name (First and Last)</label>
-                <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                <label style={{marginBottom:"0px"}}>{t("allergies")}</label>
+                <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>{t("auto_selected_filter")}</label>
+                <div className="option-group">
+                  {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs", "None"].map((item) => (
+                      <button
+                          type="button"
+                          key={item}
+                          className={allergyOptions.includes(item) ? "selected" : ""}
+                          onClick={() => handleAllergyChange(item)}
+                      >
+                        {item}
+                      </button>
+                  ))}
+                </div>
               </div>
+
               <div className="input-groups">
-                <label>Username</label>
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <label style={{marginBottom:"0px"}}>{t("diet_regimes")}</label>
+                <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>{t("auto_selected_filter")}</label>
+                <div className="option-group">
+                  {["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian", "None"].map((item) => (
+                      <button
+                          type="button"
+                          key={item}
+                          className={dietOptions.includes(item) ? "selected" : ""}
+                          onClick={() => handleDietChange(item)}
+                      >
+                        {item}
+                      </button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div className="input-rows">
-              <div className="input-groups">
-                <label>Email address</label>
-                <input
-                  type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="example@email.com"
-                />
-              </div>
-              <div className="input-groups">
-                <label>Phone Number</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  placeholder="(XXX) XXX-XXXX"
-                />
-              </div>
-            </div>
+              <button type="submit" className="signup-btn">{t("sign_up")}</button>
 
-            <div className="input-rows">
-              <div className="input-groups">
-                <label>Password</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              </div>
-              <div className="input-groups">
-                <label>Country</label>
-                <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="input-rows">
-              <div className="input-groups">
-                <label>Confirm Password</label>
-                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="input-groups">
-              <label style={{marginBottom:"0px"}}>Allergies</label>
-              <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>*Auto-Selected to Filter</label>
-              <div className="option-group">
-                {["Peanuts", "Gluten", "Dairy", "Shellfish", "TreeNuts", "Eggs", "None"].map((item) => (
-                  <button
-                    type="button"
-                    key={item}
-                    className={allergyOptions.includes(item) ? "selected" : ""}
-                    onClick={() => handleAllergyChange(item)}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="input-groups">
-              <label style={{marginBottom:"0px"}}>Diet Regimes</label>
-              <label style={{fontSize:"14px", color:"rgb(23 125 0)", marginTop:"0px"}}>*Auto-Selected to Filter</label>
-              <div className="option-group">
-                {["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian", "None"].map((item) => (
-                  <button
-                    type="button"
-                    key={item}
-                    className={dietOptions.includes(item) ? "selected" : ""}
-                    onClick={() => handleDietChange(item)}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button type="submit" className="signup-btn">Sign Up</button>
-
-            <p className="login-text">
-              Already have an account? <Link to="/login">Log in</Link>
-            </p>
-          </form>
+              <p className="login-text">
+                {t("already_have_account")} <Link to="/login">{t("log_in")}</Link>
+              </p>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
   );
+
 };
 
 export default RegisterForm;

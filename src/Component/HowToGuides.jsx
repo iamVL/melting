@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";  // Import Link for navigation
 import "../HowToGuides.css";
+import { useLanguage } from "../translator/Languagecontext";
 import cupcakeIcon from "../assets/cupcake.png";  
 import grillChickenIcon from "../assets/grill-chicken.png";  
 import knifeIcon from "../assets/knife-skills.png";
@@ -31,117 +32,120 @@ import riceRecipe from "../assets/rice-recipe.png";
 import fishRecipe from "../assets/FilletFish-recipe.png";
 import knifeRecipe from "../assets/sharpen-knives-recipe.png";
 import seasoningRecipe from "../assets/seasoning-recipe.png";
+const HowToGuides = () => {
+
+  const { t } = useLanguage();
 
 
 const guides = [
   {
-    title: "Baking Basics",
-    description: "Learn the Essentials of Baking at Home",
+   title: t("bakingBasicsTitle"),
+    description: t("bakingBasicsDesc"),
     guideIcon: cupcakeIcon,
     recipeImage: cupcakeRecipe,
     link: "/baking-basics",
   },
   {
-    title: "Grilling Techniques",
-    description: "Master the Art of Grilling",
+    title:  t("grilling_title"),
+    description: t("grilling_title"),
     guideIcon: grillChickenIcon,
     recipeImage: grillChickenRecipe,
     link: "/grilling-techniques",
   },
   {
-    title: "Knife Skills 101",
-    description: "Learn how to chop, dice, and julienne like a pro!",
+    title: t("knifeSkills_title"),
+    description: t("knifeSkills_description"),
     guideIcon: knifeIcon,
     recipeImage: knifeSkillsRecipe,
     link: "/knife-skills",
   },
   {
-    title: "Perfect Pasta Guide",
-    description: "Cook pasta perfectly every time with these simple tricks.",
+    title: t("perfectPasta_title"),
+    description: t("perfectPasta_description"),
     guideIcon: pastaIcon,
     recipeImage: pastaRecipe,
     link: "/perfect-pasta",
   },
   {
-    title: "Fluffy Pancakes Secrets",
-    description: "Discover the science behind the fluffiest pancakes ever!",
+    title:  t("fluffyPancakes_title"),
+    description: t("fluffyPancakes_description"),
     guideIcon: pancakeIcon,
     recipeImage: pancakeRecipe,
     link: "/fluffy-pancakes",
   },
   {
-    title: "Homemade Bread from Scratch", // 1
-    description: "A guide to making soft, fluffy, and flavorful bread without a bread machine.",
+    title: t("homemadeBread_title"), // 1
+    description: t("homemadeBread_description"),
     guideIcon: breadIcon,
     recipeImage: breadRecipe,
     link: "/homemade-bread",
   },
   {
-    title: "How to Caramelize Onions for Rich Flavor", // 2
-    description: "Transform onions into a sweet, golden topping with slow, gentle cooking!",
+    title:  t("caramelizedOnions_title"), // 2
+    description: t("caramelizedOnions_description"),
     guideIcon: onionIcon,
     recipeImage: onionRecipe,
     link: "/caramelized-onions",
   },
   {
-    title: "Building the Ultimate Stir-Fry", // 3
-    description: "Learn the secrets to making a quick, healthy, and flavorful stir-fry with perfectly cooked vegetables and proteins.",
+    title:  t("stirFry_title"), // 3
+    description:  t("stirFry_description"),
     guideIcon: stirfryIcon,
     recipeImage: stirfryRecipe,
     link: "/stirfry",
   },
   {
-    title: "How to Bake a Simple Cake", // 4
-    description: "A guide to baking light, fluffy cakes with the perfect crumb structure, along with tips on frosting and decorating.",
+    title:  t("simpleCake_title"), // 4
+    description: t("simpleCake_description"),
     guideIcon: cakeIcon,
     recipeImage: cakeRecipe,
     link: "/baking-cake",
   },
   {
-    title: "Different Ways to Cook Eggs", // 5
-    description: "Have you thought about how many ways you could cook eggs? Click on this guide to find out the most common ways!",
+    title: t("cookEggs_title"), // 5
+    description: t("cookEggs_description"),
     guideIcon: eggIcon,
     recipeImage: eggRecipe,
     link: "/cooking-eggs"
   },
   {
-    title: "How to Cook the Perfect Steak", // 6
-    description: "Achieve the perfect steak doneness every time with these simple steps and tips!",
+    title: t("perfectSteak_title"), // 6
+    description:t("perfectSteak_description"),
     guideIcon: steakIcon,
     recipeImage: steakRecipe,
     link: "/cooking-steak",
   },
   {
-    title: "How to Cook Rice Without a Rice Cooker", // 7
-    description: "Follow this simple how-to guide to cook rice without a rice cooker!",
+    title: t("cookRice_title"), // 7
+    description: t("cookRice_description"),
     guideIcon: riceIcon,
     recipeImage: riceRecipe,
     link: "/cooking-rice",
   },
   {
-    title: "How to Fillet Fish", // 8
-    description: "Filleting fish can be really hard for first timers. Follow this guide to learn how to do it properly!",
+    title: t("filletFish_title"), // 8
+    description:  t("filletFish_description"),
     guideIcon: fishIcon,
     recipeImage: fishRecipe,
     link: "/fillet-fish",
   },
   {
-    title: "How to Sharpen Knives Properly", // 9
-    description: "Learn how to sharpen your knives with this guide!",
+    title: t("sharpenKnives_title"), // 9
+    description: t("sharpenKnives_title"),
     guideIcon: knifeIcon,
     recipeImage: knifeRecipe,
     link: "/sharpen-knife",
   },
   {
-    title: "Seasoning for Beginners", // 10
-    description: "Seasoning can enhance your food dramatically. Follow these basic steps!",
+    title:  t("seasoningBasics_title"), // 10
+    description: t("seasoningBasics_description"),
     guideIcon: seasoningIcon,
     recipeImage: seasoningRecipe,
     link: "/seasoning",
   },
 ];
 
-const HowToGuides = () => {
+
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
   const openFullScreen = (image) => {
@@ -155,8 +159,8 @@ const HowToGuides = () => {
   return (
     <div className="howto-container">
       <header className="howto-header">
-        <h1>How-to Guides</h1>
-        <p className="howto-subheading">Follow these guides created by the owners of The Melting Pot!</p>
+        <h1>{t('howToGuides')}</h1>
+        <p className="howto-subheading">{t('guidesDescription')}</p>
       </header>
 
       <div className="howto-guides">
@@ -171,7 +175,7 @@ const HowToGuides = () => {
             <div className="guide-icons">
               <span className="icon guide" onClick={() => openFullScreen(guide.recipeImage)}>
                 <img src={guide.guideIcon} alt="Guide Poster" />
-                <p>Guide Poster</p>
+                <p>{t('guidePoster')}</p>
               </span>
             </div>
           </div>

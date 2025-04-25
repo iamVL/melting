@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "../RecipeListing.css";
-
+import { useLanguage } from "../translator/Languagecontext";
 
 const CookbookDetail = () => {
+    const { t } = useLanguage();
     const { cookbookName } = useParams();
     const [recipes, setRecipes] = useState([]);
     const token = sessionStorage.getItem("token");
@@ -25,8 +26,8 @@ const CookbookDetail = () => {
                 const post = Array.isArray(data) && data[0] ? data[0] : data;
                 return {
                     id: post.id || id,
-                    title: post.attributes?.title || "Untitled",
-                    description: post.attributes?.description || "No description available",
+                    title: post.attributes?.title || t("cookbook_untitled"),
+                    description: post.attributes?.description || t("cookbook_no_desc"),
                     image: post.attributes?.mainImage || "/default-recipe-image.jpg"
                 };
             });
@@ -36,7 +37,7 @@ const CookbookDetail = () => {
         };
 
         fetchAllRecipes();
-    }, [cookbookName, token]);
+    }, [cookbookName, token, t]);
 
     const removeRecipeFromCookbook = (recipeID) => {
         const allCookbooks = JSON.parse(localStorage.getItem("cookbooks")) || [];
@@ -50,21 +51,17 @@ const CookbookDetail = () => {
             return cb;
         });
 
-        // Save and update
         localStorage.setItem("cookbooks", JSON.stringify(updatedCookbooks));
         setRecipes(prev => prev.filter(r => r.id !== recipeID));
     };
 
-
     return (
-
-
-    <div className="recipe-container">
-        <Link to="/cookbooks" className="back-button">
-            ← Back to Cookbooks
-        </Link>
-            <h2 className="recipe-header">Cookbook: {cookbookName}</h2>
-            <p className="recipe-subheader">All recipes inside this cookbook</p>
+        <div className="recipe-container">
+            <Link to="/cookbooks" className="back-button">
+                ← {t("cookbook_back")}
+            </Link>
+            <h2 className="recipe-header">{t("cookbook_title")}: {cookbookName}</h2>
+            <p className="recipe-subheader">{t("cookbook_all_recipes")}</p>
 
             {recipes.length ? (
                 <div className="recipe-grid">
@@ -75,21 +72,20 @@ const CookbookDetail = () => {
                                 <h3 className="recipe-title-1">{recipe.title}</h3>
                                 <p className="recipe-description-1">{recipe.description}</p>
                                 <Link to={`/recipe/${recipe.id}`} className="read-more-button-1">
-                                    View Recipe →
+                                    {t("cookbook_view_recipe")} →
                                 </Link>
                                 <button
                                     className="delete-recipe-button-1"
                                     onClick={() => removeRecipeFromCookbook(recipe.id)}
                                 >
-                                    🗑 Remove from Cookbook
+                                    🗑 {t("cookbook_remove")}
                                 </button>
-
                             </div>
                         </div>
                     ))}
                 </div>
             ) : (
-                <p className="no-recipes-found">This cookbook has no recipes yet.</p>
+                <p className="no-recipes-found">{t("cookbook_empty")}</p>
             )}
         </div>
     );
