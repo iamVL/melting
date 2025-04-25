@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation} from "react-router-dom";
 import "../Navbar.css";
+import { useLanguage } from "../translator/Languagecontext";
 import profileIcon from "../assets/profilelogo.png";
 import meltingLogo from "../assets/Transparent TMP.png";
 import LanguageSwitcher from '../translator/LanguageSwitcher';
