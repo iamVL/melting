@@ -34,6 +34,8 @@ const Profile = (props) => {
   const [allergies, setAllergies] = useState("");
   const [dietRegimes, setDietRegimes] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
   const navigate = useNavigate();
 
   const { t } = useLanguage();
@@ -152,15 +154,17 @@ const Profile = (props) => {
 
       if (res.status === 204) {
         sessionStorage.clear();
-        navigate("/"); // Or your login page
+        setModalMessage("✅ Account successfully deleted.");
+        setTimeout(() => navigate("/"), 2000); // short delay before navigating away
       } else {
-        alert("Something went wrong deleting your account.");
+        setModalMessage("❌ Something went wrong deleting your account.");
       }
     } catch (err) {
       console.error(err);
-      alert("Error deleting account.");
+      setModalMessage("❌ Error deleting account. Please try again.");
     }
   };
+
   const uploadPicture = (event) => {
     event.preventDefault();
 
@@ -384,27 +388,30 @@ const Profile = (props) => {
           </div>
 
         </div>
-        <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-          <h3>Delete Account</h3>
-          <p>Are you sure you want to permanently delete your account and all your data?</p>
-          <div className="modal-buttons">
-            <button
-                className="confirm-button"
-                onClick={() => {
-                  setShowDeleteModal(false);
-                  handleDeleteAccount(); // ← external function is called here
-                }}
-            >
-              Yes, Delete
-            </button>
-            <button
-                className="cancel-button"
-                onClick={() => setShowDeleteModal(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </Modal>
+        {showDeleteModal && (
+            <Modal show={true} onClose={() => setShowDeleteModal(false)}>
+              <h2 style={{ color: "#e67e22" }}>⚠️ {t("deleteAccount")}</h2>
+              <p>{t("deleteAccount_confirm")}</p>
+              <div className="modal-buttons">
+                <button
+                    className="confirm-button"
+                    onClick={() => {
+                      setShowDeleteModal(false);
+                      handleDeleteAccount();
+                    }}
+                >
+                  {t("yesDelete")}
+                </button>
+                <button
+                    className="cancel-button"
+                    onClick={() => setShowDeleteModal(false)}
+                >
+                  {t("cancel")}
+                </button>
+              </div>
+            </Modal>
+        )}
+
 
 
       </div>

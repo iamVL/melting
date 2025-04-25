@@ -173,7 +173,7 @@ export const translations = {
         chooseFile: "choose a file",
         logout: "log out",
         editProfile: "edit profile",
-        deleteAccount: "delet account",
+        deleteAccount: "delete account",
         user: "User",
         enterTitle: "Enter Title",
         enterDescription: "Enter Description",
@@ -740,6 +740,29 @@ export const translations = {
         reset_success: "Password successfully reset!",
         reset_failed_request: "Failed to send reset link. Please try again.",
         reset_failed_confirm: "Failed to reset password. Please try again.",
+        friend_your_following: "Your Following",
+        friend_people_follow_you: "People Who Follow You",
+        friend_blocked_users: "Blocked Users",
+        friendform_label: "Follow a Friend!",
+        friendform_submit: "Submit",
+        friendform_success: "Friend followed successfully!",
+        friendform_error_fetching_users: "Error fetching users.",
+        friendform_error_follow_self: "You cannot follow yourself.",
+        friendform_error_already_following: "Person is blocked or you're already following.",
+        friendform_error_blocked: "You cannot follow this person because they have blocked you or you have blocked them.",
+        friendform_error_adding: "Error adding friend.",
+        autocomplete_enter_user: "Enter User...",
+        autocomplete_no_suggestions: "No suggestions, you're on your own!",
+        autocomplete_no_user: "No User Found",
+        deleteAccount_confirm: "Are you sure you want to permanently delete your account and all your data?",
+        yesDelete: "Yes, Delete",
+        favorite_success_title: "Recipe Favorited!",
+        favorite_success_message: "You will now be redirected to the Favorite Recipe page.",
+        goToFavorites: "Go to Favorites",
+
+
+
+
 
     },
 
@@ -1482,6 +1505,30 @@ export const translations = {
             reset_success: "¡Contraseña restablecida con éxito!",
             reset_failed_request: "No se pudo enviar el enlace. Inténtalo de nuevo.",
             reset_failed_confirm: "No se pudo restablecer la contraseña. Inténtalo de nuevo.",
+            friend_your_following: "Tus Seguimientos",
+            friend_people_follow_you: "Personas que te siguen",
+            friend_blocked_users: "Usuarios Bloqueados",
+            friendform_label: "¡Sigue a un amigo!",
+            friendform_submit: "Enviar",
+            friendform_success: "¡Amigo seguido con éxito!",
+            friendform_error_fetching_users: "Error al obtener los usuarios.",
+            friendform_error_follow_self: "No puedes seguirte a ti mismo.",
+            friendform_error_already_following: "La persona está bloqueada o ya la sigues.",
+            friendform_error_blocked: "No puedes seguir a esta persona porque te ha bloqueado o tú la has bloqueado.",
+            friendform_error_adding: "Error al agregar al amigo.",
+            autocomplete_enter_user: "Ingresa un usuario...",
+            autocomplete_no_suggestions: "¡Sin sugerencias, estás por tu cuenta!",
+            autocomplete_no_user: "No se encontró usuario",
+            deleteAccount_confirm: "¿Estás seguro de que deseas eliminar permanentemente tu cuenta y todos tus datos?",
+            deleteRecipe: "Eliminar Receta",
+            deleteRecipe_confirm: "¿Estás seguro de que deseas eliminar esta receta?",
+            yesDelete: "Sí, Eliminar",
+            favorite_success_title: "¡Receta añadida a favoritos!",
+            favorite_success_message: "Ahora serás redirigido a tu página de recetas favoritas.",
+            goToFavorites: "Ir a Favoritos",
+
+
+
 
 
         }

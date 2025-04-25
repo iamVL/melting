@@ -1,158 +1,113 @@
-import React, { useState , useEffect, useRef} from "react";
+import { useLanguage } from "../translator/Languagecontext";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 const Autocomplete = ({ suggestions, selectAutocomplete }) => {
-  // the active selection's index
   const [activeSuggestion, setActiveSuggestion] = useState(0);
-  // the suggestions that match the user's input
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-  // whether or not the suggestion list is shown
   const [showSuggestions, setShowSuggestions] = useState(false);
-  // input from the user
   const [userInput, setUserInput] = useState("");
   const [showBox, setShowBox] = useState(false);
   const boxRef = useRef(null);
+  const { t } = useLanguage();
 
-  // Event fired when the input value is changed
   const onChange = (e) => {
-    const userInput = e.currentTarget.value;
-    let filteredSuggestions = suggestions;
-    // Filter our suggestions that don't contain the user's input
+    const input = e.currentTarget.value;
+    let filtered = suggestions;
+
     if (suggestions) {
-      filteredSuggestions = suggestions.filter(
-        (suggestion) =>
+      filtered = suggestions.filter((suggestion) =>
           suggestion.attributes.username
-            .toLowerCase()
-            .indexOf(userInput.toLowerCase()) > -1
+              .toLowerCase()
+              .includes(input.toLowerCase())
       );
     }
 
-    // Update the user input and filtered suggestions, reset the active
-    // suggestion and make sure the suggestions are shown
     setActiveSuggestion(0);
-    setFilteredSuggestions(filteredSuggestions);
+    setFilteredSuggestions(filtered);
     setShowSuggestions(true);
-    setUserInput(userInput);
+    setUserInput(input);
   };
 
-  // Event fired when the user clicks on a suggestion
   const onClick = (e) => {
-    // Update the user input and reset the rest of the state
     setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
     setUserInput(e.currentTarget.innerText);
     setShowBox(false);
-    let selectedId = e.currentTarget.id;
-    selectAutocomplete(selectedId);
-    console.log("Friend selected is " + selectedId);
+    selectAutocomplete(e.currentTarget.id);
   };
 
-  // Event fired when the user presses a key down
   const onKeyDown = (e) => {
-    // User pressed the enter key, update the input and close the suggestions
-    if (e.keyCode === 13) {
+    if (e.key === "Enter") {
       setActiveSuggestion(0);
       setShowSuggestions(false);
-      setUserInput(filteredSuggestions[activeSuggestion]);
-    }
-    // User pressed the arrow up key, so decrement the index
-    else if (e.keyCode === 38) {
-      if (activeSuggestion === 0) {
-        return;
-      }
+      setUserInput(filteredSuggestions[activeSuggestion]?.attributes.username || "");
+    } else if (e.key === "ArrowUp") {
+      if (activeSuggestion === 0) return;
       setActiveSuggestion(activeSuggestion - 1);
-    }
-    // User pressed the arrow down key, so increment the index
-    else if (e.keyCode === 40) {
-      if (activeSuggestion - 1 === filteredSuggestions.length) {
-        return;
-      }
+    } else if (e.key === "ArrowDown") {
+      if (activeSuggestion >= filteredSuggestions.length - 1) return;
       setActiveSuggestion(activeSuggestion + 1);
     }
   };
 
-  let suggestionsListComponent = null;
-
-  if (showSuggestions && userInput) {
-    if (filteredSuggestions.length) {
-      suggestionsListComponent = (
-        <div className="autocomplete" ref={boxRef}>
-          <ul className="suggestions">
-            {filteredSuggestions.map((suggestion, index) => {
-              let className =
-                index === activeSuggestion ? "suggestion-active" : "";
-              return (
-                <li
-                  className={className}
-                  key={suggestion.id}
-                  id={suggestion.id}
-                  onClick={onClick}
-                >
-                  {suggestion.attributes.username}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      );
-    } else {
-      suggestionsListComponent = (
-        <div className="autocomplete" ref={boxRef}>
-          <em>No suggestions, you're on your own!</em>
-        </div>
-      );
-    }
-  } else {
-    suggestionsListComponent = (
-      <div className="autocomplete" ref={boxRef}>
-        <em>No User Found</em>
-      </div>
-    );
-  }
-
   useEffect(() => {
-    function handleClickOutside(event) {
+    const handleClickOutside = (event) => {
       if (boxRef.current && !boxRef.current.contains(event.target)) {
         setShowBox(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
     };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <>
       <div className="suggestions-list">
-      <input
-        type="text"
-        placeholder="Enter User..."
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        onFocus={() => setShowBox(true)}
-        value={userInput}
-      />
-      <br />
-      
-      { (showBox === true) && (suggestionsListComponent)}
+        <label htmlFor="autocompleteInput" className="custom-autocomplete-label">
+          {t("autocomplete_enter_user")}
+        </label>
+        <input
+            id="autocompleteInput"
+            type="text"
+            className="autocomplete-input"
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            onFocus={() => setShowBox(true)}
+            value={userInput}
+            placeholder={t("autocomplete_enter_user")}
+        />
+        {showBox && (
+            <div className="autocomplete" ref={boxRef}>
+              {filteredSuggestions.length > 0 ? (
+                  <ul className="suggestions">
+                    {filteredSuggestions.map((suggestion, index) => (
+                        <li
+                            key={suggestion.id}
+                            id={suggestion.id}
+                            className={index === activeSuggestion ? "suggestion-active" : ""}
+                            onClick={onClick}
+                        >
+                          {suggestion.attributes.username}
+                        </li>
+                    ))}
+                  </ul>
+              ) : (
+                  <em>{t("autocomplete_no_suggestions")}</em>
+              )}
+            </div>
+        )}
       </div>
-    </>
   );
 };
 
-export default Autocomplete;
-
-// PropTypes is a mechanism in React for validating the properties (props) passed to a component.
-// Here, Autocomplete component's PropTypes are defined to specify the expected data types for its props.
-// 'suggestions' prop is expected to be an instance of an Array.
 Autocomplete.propTypes = {
-  suggestions: PropTypes.instanceOf(Array)
+  suggestions: PropTypes.instanceOf(Array),
 };
 
-// defaultProps is used to specify default values for props in case they are not provided when using the component.
-// If 'suggestions' prop is not provided, it defaults to an empty array.
 Autocomplete.defaultProps = {
   suggestions: [],
 };
+
+export default Autocomplete;

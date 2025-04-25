@@ -15,6 +15,7 @@ const LoginForm = ({ setLoggedIn }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isEmailInvalid, setIsEmailInvalid] = useState(false);
 
   const accountCreated = location.state?.accountCreated;
 
@@ -40,7 +41,10 @@ const LoginForm = ({ setLoggedIn }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setErrorMessage("Please enter a valid Email Address.");
+      setIsEmailInvalid(true);
       return;
+    } else {
+      setIsEmailInvalid(false);
     }
 
     fetch(process.env.REACT_APP_API_PATH + "/auth/login", {
@@ -84,36 +88,43 @@ const LoginForm = ({ setLoggedIn }) => {
             <div className="alert success">Account created successfully! Please log in.</div>
           )}
 
-          {/* Error Message */}
-          {errorMessage && <div className="alert error">{errorMessage}</div>}
 
           <form onSubmit={submitHandler} className="register-form">
-          <div className="input-groupp">
-            <label htmlFor="email">{t("email_address")}</label>
-                <input
-                    id="email"
-                    type="text"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
-          </div>
+            <div className="input-groupp">
+              <label htmlFor="email">{t("email_address")}</label>
+              <input
+                  id="email"
+                  type="text"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className={isEmailInvalid ? "invalid-input" : ""}
+              />
+              {isEmailInvalid && (
+                  <div className="input-error-text">{errorMessage}</div>
+              )}
+            </div>
+
 
             <div className="input-groupp">
               <label>{t("password")}</label>
               <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            {!isEmailInvalid && errorMessage && (
+                <div className="input-error-text">{errorMessage}</div>
+            )}
+
 
             <div className="options">
               <label className="remember-me">
                 <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
                 />
                 {t("remember_me")}
               </label>
@@ -137,7 +148,7 @@ const LoginForm = ({ setLoggedIn }) => {
 
         {/* Right Column - Desktop Only */}
         <div className="right-column">
-          <img src={foodImage} alt="Delicious food" width="1200" height="1800" className="food-image" />
+          <img src={foodImage} alt="Delicious food" width="1200" height="1800" className="food-image"/>
         </div>
       </div>
     </div>

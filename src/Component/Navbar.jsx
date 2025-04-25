@@ -98,6 +98,7 @@ const Navbar = () => {
                 <li><Link to="/how-to-guides">{t("nav_how_to_guides")}</Link></li>
                 <li><Link to="/community">{t("nav_communities")}</Link></li>
               </ul>
+
             )}
           </li>
 

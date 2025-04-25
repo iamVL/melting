@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-
+import React, {useState, useEffect, use, useRef} from "react";
 import "../RecipeDetails.css";
 import Modal from "../Component/Modal";
 
 import { useLanguage } from "../translator/Languagecontext";
 const RecipeDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // ⬅️ NEW
+  const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [rating, setRating] = useState(0);
   const [commentText, setCommentText] = useState("");
   const reviewsRef = useRef(null);
@@ -24,6 +23,7 @@ const RecipeDetails = () => {
   const [commentName, setCommentName] = useState("");
   const [connections, setConnections] = useState([]);
   const [followClick, setFollowClick] = useState(false);
+
   const { t } = useLanguage();
   useEffect(() => {
     const fetchRecipeWithVisibilityCheck = async () => {
@@ -109,27 +109,27 @@ const RecipeDetails = () => {
 
     const loadFriends = () => {
       fetch(
-        process.env.REACT_APP_API_PATH +
+          process.env.REACT_APP_API_PATH +
           "/connections?fromUserID=" +
           sessionStorage.getItem("user"),
-        {
-          method: "get",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            setConnections(result[0]);
-            console.log("Following", result[0]);
-          },
-          (error) => {
-            setError(error);
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + sessionStorage.getItem("token"),
+            },
           }
-        );
+      )
+          .then((res) => res.json())
+          .then(
+              (result) => {
+                setConnections(result[0]);
+                console.log("Following", result[0]);
+              },
+              (error) => {
+                setError(error);
+              }
+          );
     };
 
     loadFriends();
@@ -159,10 +159,11 @@ const RecipeDetails = () => {
   const handleCommentSubmit = (event) => {
     event.preventDefault();
     if (rating === 0) {
-      alert("Choose a rating 1-5!");
+      setModalMessage("⚠️ Please choose a rating between 1 and 5.");
       return;
     } else if (commentText === "") {
-      alert("Fill in a review!");
+      setModalMessage("✏️ Please write something for your review.");
+
       return;
     }
 
@@ -184,52 +185,52 @@ const RecipeDetails = () => {
         },
       }),
     })
-      .then(async (res) => {
-        const result = await res.json();
-        setReviews((prev) => [result, ...prev]);
-        setCommentText("");
-        setRating(0);   
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log("Review Submit error:", error);
-      });
+        .then(async (res) => {
+          const result = await res.json();
+          setReviews((prev) => [result, ...prev]);
+          setCommentText("");
+          setRating(0);
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log("Review Submit error:", error);
+        });
   };
 
   const handleCommentUpdate = (review, editComment, editRating) => {
     if (editComment === "") {
-      alert("Review cannot be blank!");
+      setModalMessage("❌ Review cannot be blank.");
       return;
     }
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${review.id}`, {
-        method:"PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      method:"PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        authorID: sessionStorage.getItem("user"),
+        content: editComment,
+        parentID: review.parentID,
+        attributes: {
+          postType: "review",
+          rating: editRating,
+          likes: review.attributes.likes || [],
+          dislikes: review.attributes.dislikes || [],
         },
-        body: JSON.stringify({
-          authorID: sessionStorage.getItem("user"),
-          content: editComment,
-          parentID: review.parentID,
-          attributes: {
-            postType: "review",
-            rating: editRating,
-            likes: review.attributes.likes || [],
-            dislikes: review.attributes.dislikes || [],
-          },
+      })
+    })
+        .then(async (res) => {
+          const result = await res.json();
+          setReviews((prev) =>
+              prev.map((r) => (r.id === result.id ? result : r))
+          );
+          console.log("Edited Review:", result);
         })
-      })
-      .then(async (res) => {
-        const result = await res.json();
-        setReviews((prev) =>
-          prev.map((r) => (r.id === result.id ? result : r))
-        );        
-        console.log("Edited Review:", result);
-      })
-      .catch((error) => {
-        console.log("Review Update error:", error);
-      });
-    }
+        .catch((error) => {
+          console.log("Review Update error:", error);
+        });
+  }
 
   const handleDeleteReview = (reviewID) => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${reviewID}`, {
@@ -351,16 +352,16 @@ const RecipeDetails = () => {
             },
           })
         })
-        .then(async (res) => {
-          const result = await res.json();
-          setReviews(prev =>
-            prev.map(r => (r.id === result.id ? result : r))
-          );
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log("Review Update error:", error);
-        })
+            .then(async (res) => {
+              const result = await res.json();
+              setReviews(prev =>
+                  prev.map(r => (r.id === result.id ? result : r))
+              );
+              console.log(result);
+            })
+            .catch((error) => {
+              console.log("Review Update error:", error);
+            })
       } else if (type === "dislike") {
         let new_dislikes = [...review.attributes.dislikes];
 
@@ -393,16 +394,16 @@ const RecipeDetails = () => {
             },
           })
         })
-        .then(async (res) => {
-          const result = await res.json();
-          setReviews(prev =>
-            prev.map(r => (r.id === result.id ? result : r))
-          );
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log("Review Update error:", error);
-        })
+            .then(async (res) => {
+              const result = await res.json();
+              setReviews(prev =>
+                  prev.map(r => (r.id === result.id ? result : r))
+              );
+              console.log(result);
+            })
+            .catch((error) => {
+              console.log("Review Update error:", error);
+            })
       }
     };
 
@@ -410,59 +411,59 @@ const RecipeDetails = () => {
         <div className={`review-item ${showFull ? "expanded" : ""}`}>
           { editReview !== review.id ? (<>
 
-          <div className="review-header">
-            <strong>{review.author.attributes?.username}</strong>
-            <div className="review-rating">
-              {Array.from({ length: review.attributes?.rating }, (_, i) => (
-                  <span key={i} className="star">★</span>
-              ))}
-              {Array.from({ length: 5 - review.attributes?.rating }, (_, i) => (
-                  <span key={i} className="empty-stars">★</span>
-              ))}
+            <div className="review-header">
+              <strong>{review.author.attributes?.username}</strong>
+              <div className="review-rating">
+                {Array.from({ length: review.attributes?.rating }, (_, i) => (
+                    <span key={i} className="star">★</span>
+                ))}
+                {Array.from({ length: 5 - review.attributes?.rating }, (_, i) => (
+                    <span key={i} className="empty-stars">★</span>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className={`review-text ${showFull ? "expanded" : "collapsed"}`}>
-            {review.content}
-          </div>
+            <div className={`review-text ${showFull ? "expanded" : "collapsed"}`}>
+              {review.content}
+            </div>
 
-          {review.content.length > 100 && (
-              <button className="show-more-button" onClick={() => setShowFull(!showFull)}>
-                {showFull ? "Show Less" : "Show More"}
-              </button>
-          )}
+            {review.content.length > 100 && (
+                <button className="show-more-button" onClick={() => setShowFull(!showFull)}>
+                  {showFull ? "Show Less" : "Show More"}
+                </button>
+            )}
             <div className="review-reactions">
               <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like", review)}>👍 {review.attributes.likes.length}</button>
               <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike", review)}>👎 {review.attributes.dislikes.length}</button>
-              {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && 
-                <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button> 
+              {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) &&
+                  <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button>
               }
             </div>
-            </> ) : ( <>
-              <div className="review-header">
-                <strong>{review.author.attributes?.username}</strong>
-                <div className="empty-stars-background">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                      <span
-                          key={star}
-                          className={`star ${star <= editRating ? "edit-active" : "edit"}`}
-                          onClick={() => setEditRating(star)}
-                      >★</span>
-                  ))}
+          </> ) : ( <>
+                <div className="review-header">
+                  <strong>{review.author.attributes?.username}</strong>
+                  <div className="empty-stars-background">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                            key={star}
+                            className={`star ${star <= editRating ? "edit-active" : "edit"}`}
+                            onClick={() => setEditRating(star)}
+                        >★</span>
+                    ))}
+                  </div>
+                  <div className="rating-stars">
+                  </div>
                 </div>
-                <div className="rating-stars">
-              </div>
-              </div>
 
-              <textarea id="review-textarea" placeholder="Enter review text" value={editComment} onChange={(e) => setEditComment(e.target.value)} />
+                <textarea id="review-textarea" placeholder="Enter review text" value={editComment} onChange={(e) => setEditComment(e.target.value)} />
 
-              <div className="review-reactions">
-                <button className="reaction-button delete-button" onClick={() => handleDeleteReview(review.id)}>🗑️</button>
-                <button className="reaction-button delete-button" onClick={() => handleCommentUpdate(review, editComment, editRating)}>Save</button>
-                <button className="reaction-button delete-button" onClick={() => setEditReview(null)}>Cancel</button>
-              </div>
-            </>
-            )
+                <div className="review-reactions">
+                  <button className="reaction-button delete-button" onClick={() => handleDeleteReview(review.id)}>🗑️</button>
+                  <button className="reaction-button delete-button" onClick={() => handleCommentUpdate(review, editComment, editRating)}>Save</button>
+                  <button className="reaction-button delete-button" onClick={() => setEditReview(null)}>Cancel</button>
+                </div>
+              </>
+          )
           }
         </div>
     );
@@ -645,11 +646,19 @@ const RecipeDetails = () => {
           </div>
         </div>
 
-        {modalMessage && <Modal message={modalMessage} onClose={() => setModalMessage("")} />}
+        {modalMessage && (
+            <Modal show={true} onClose={() => setModalMessage("")}>
+              <h2 style={{ color: "#b00020" }}>Notice</h2>
+              <p>{modalMessage}</p>
+              <button className="modal-button" onClick={() => setModalMessage("")}>
+                Close
+              </button>
+            </Modal>
+        )}
+
       </div>
   );
 
 };
 
 export default RecipeDetails;
-
