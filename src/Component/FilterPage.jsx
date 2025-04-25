@@ -442,7 +442,7 @@ const FilterPage = () => {
               </div>
               {showDiets && (
                   <div className="checkbox-group">
-                    {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
+                    {["Halal", "Kosher", "Vegetarian", "Vegan", "Pescitarian"].map((diet) => (
                         <label key={diet}>
                           <input
                               type="checkbox"
@@ -471,6 +471,10 @@ const FilterPage = () => {
                 {filteredPosts.map((post) => {
                   const attrs = post.attributes || {};
                   const title = attrs.title || post.content || "Untitled";
+                  const shortTitle =
+                        title.length > 25
+                      ? title.substring(0, 25) + "..."
+                      : title;
                   const rawDescription = attrs.description || post.content || "";
                   const description =
                       rawDescription && rawDescription.trim() !== "undefined"
@@ -485,7 +489,7 @@ const FilterPage = () => {
                       <div key={post.id} className="recipe-card">
                         <img src={mainImage} alt={title} className="recipe-image" />
                         <div className="recipe-content">
-                          <h3>{title}</h3>
+                          <h3>{shortTitle}</h3>
                           <p>{description}</p>
                           <Link to={`/recipe/${post.id}`} className="read-more">
                             {t("readMore")}
