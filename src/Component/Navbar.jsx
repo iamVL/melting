@@ -181,13 +181,17 @@ const Navbar = () => {
       <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
         <ul className="landing-links">
           {/* Home */}
-          <li>
-            <Link to="/login"> Login </Link>
-          </li>
+          <Link to="/login">
+            <li>
+              Login 
+            </li>
+          </Link>
 
-          <li>
-            <Link to="/register"> Register </Link>
-          </li>
+          <Link to="/register">
+            <li>
+              Register 
+            </li>
+          </Link>
         </ul>
       </div>
 

@@ -190,19 +190,46 @@
 
 .landing-about {
     width: 50%;
-
+    background-color: #97735229;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .landing-about h3 {
     color: #62472f;
     text-shadow: 0px 1px 10px #00000038;
     text-align: left;
-    margin: 0px 50px;
+    margin: 30px 30px 10px;
+    font-size: 34px;
 }
 
 .landing-about h4 {
     text-align: left;
-    margin: 10px 0px 0px 50px;
-    color: rgb(255, 255, 255);
-    text-shadow: 0px 1px 5px #0000005f;
+    margin: 10px 30px;
+    font-size: 26px;
+    color: rgb(0, 0, 0);
+    text-shadow: 0px 1px 5px #0000002e;
+    font-weight: 100;
+}
+
+#journey-join-button {
+    padding: 5px 35px;
+    border-radius: 15px;
+    border: 0px;
+    font-size: 14px;
+    background-color: rgb(255, 170, 117);
+    margin-left: 30px;
+    color: black;
+    transition: .3s;
+    height: 40px;
+    margin-top: 20px;
+}
+
+#journey-join-button:hover {
+    cursor: pointer;
+    transform: translateY(-1px);
+    box-shadow: 0px 3px 8px #0000002e;
 }

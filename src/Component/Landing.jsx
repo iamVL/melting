@@ -62,7 +62,7 @@ const Landing = ({ setLoggedIn }) => {
         </div>
 
         <div className="feature-box">
-        <div className="feature-box-header">
+        <div className="feature-box-header">  
             <img src={Review} alt="share-symbol" width={60}/>
             <h5> Review Your Opinions</h5>
           </div>
@@ -73,7 +73,12 @@ const Landing = ({ setLoggedIn }) => {
 
       <div className="landing-about">
         <h3> Our Cooking Journey</h3>
-        <h4> Placeholder </h4>
+        <h4> Melting Pot's mission is to make cooking fun, quick, and easy for everyone. Whether you're new to cooking or a pro, our platform gives you recipes based on your ingredients, skill level, and taste.</h4>
+        <br></br>
+        <h4>No more stressing over what to cook. Just enter what you have, and we’ll suggest recipes sorted by difficulty — Easy, Medium, or Hard. Choose what works best for you and start cooking! </h4>
+        <Link to="/register">
+          <button id="journey-join-button"> Join Us </button>
+        </Link>
       </div>
     </div>
 
