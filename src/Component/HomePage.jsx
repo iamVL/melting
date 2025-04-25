@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link,useNavigate } from "react-router-dom"; // Import Link for navigation
 import LoginForm from "./LoginForm";
+import Landing from "./Landing";
 import "../HomePage.css";
 import Homephoto from "../assets/Homephoto.jpeg";
 import { useLanguage } from "../translator/Languagecontext";
@@ -153,7 +154,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
    <div className="homepage">
 
      {!userToken ? (
-       <LoginForm setLoggedIn={setLoggedIn} />
+       <Landing setLoggedIn={setLoggedIn} />
      ) : (
        <>
          {/* Hero Section */}

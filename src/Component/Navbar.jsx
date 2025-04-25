@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useLocation} from "react-router-dom";
 import "../Navbar.css";
 import profileIcon from "../assets/profile icon.png";
-import meltingLogo from "../assets/melting-pot-logo.jpeg";
+import meltingLogo from "../assets/Transparent TMP.png";
+import LanguageSwitcher from '../translator/LanguageSwitcher';
 
 const Navbar = () => {
   // Track if mobile drawer is open
@@ -13,6 +14,7 @@ const Navbar = () => {
   const [featuredOpen, setFeaturedOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const token = sessionStorage.getItem("token");
 
   // Quick “isMobile” check (<= 768px).
   const isMobile = window.innerWidth <= 768;
@@ -56,6 +58,7 @@ const Navbar = () => {
   };
 
   return (
+    (token ? (<>
     <nav className="navbar">
       {/* Left: Logo */}
       <div className="nav-left">
@@ -67,6 +70,7 @@ const Navbar = () => {
             width={120}
           />
         </Link>
+        <LanguageSwitcher />
       </div>
 
       {/* Main nav container (slides in from left on mobile) */}
@@ -158,6 +162,41 @@ const Navbar = () => {
         {mobileMenuOpen ? "✕" : "☰"}
       </button>
     </nav>
+      </>) : ( <>
+        <nav className="navbar">
+      {/* Left: Logo */}
+      <div className="nav-left">
+        <Link to="/">
+          <img
+            src={meltingLogo}
+            alt="Melting Logo"
+            className="logo"
+            width={120}
+          />
+        </Link>
+        <LanguageSwitcher />
+      </div>
+
+      {/* Main nav container (slides in from left on mobile) */}
+      <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
+        <ul className="landing-links">
+          {/* Home */}
+          <li>
+            <Link to="/login"> Login </Link>
+          </li>
+
+          <li>
+            <Link to="/register"> Register </Link>
+          </li>
+        </ul>
+      </div>
+
+      {/* Right: Hamburger / X button (visible on mobile) */}
+      <button className="hamburger" onClick={toggleMobileMenu}>
+        {mobileMenuOpen ? "✕" : "☰"}
+      </button>
+    </nav>
+        </>))
   );
 };
 
