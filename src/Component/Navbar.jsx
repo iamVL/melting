@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation} from "react-router-dom";
 import "../Navbar.css";
-import profileIcon from "../assets/profile icon.png";
+import profileIcon from "../assets/profilelogo.png";
 import meltingLogo from "../assets/Transparent TMP.png";
 import LanguageSwitcher from '../translator/LanguageSwitcher';
 
@@ -180,18 +180,8 @@ const Navbar = () => {
       {/* Main nav container (slides in from left on mobile) */}
       <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
         <ul className="landing-links">
-          {/* Home */}
-          <Link to="/login">
-            <li>
-              Login 
-            </li>
-          </Link>
-
-          <Link to="/register">
-            <li>
-              Register 
-            </li>
-          </Link>
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/register">Register</Link></li>
         </ul>
       </div>
 

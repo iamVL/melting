@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   margin: auto;
-  gap: 75px;
+  gap: 35px;
 }
  .nav-links li a {
   color: black;

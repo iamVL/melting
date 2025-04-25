@@ -57,8 +57,17 @@ const FilterPage = () => {
       .then((result) => {
         console.log("User grabbed:", result);
         setUser(result);
-        setDietFilters(result.attributes.dietRegimes);
-        setAllergyFilters(result.attributes.allergies);
+        if (result.attributes.dietRegimes.includes("None")) {
+          setDietFilters([]);
+        } else {
+          setDietFilters(result.attributes.dietRegimes);
+        }
+
+        if (result.attributes.allergies.includes("None")) {
+          setAllergyFilters([]);
+        } else {
+          setAllergyFilters(result.attributes.allergies);
+        }
       })
   },[]);
 
