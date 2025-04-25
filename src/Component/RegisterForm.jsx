@@ -137,7 +137,7 @@ const RegisterForm = ({ setLoggedIn }) => {
         })
         .then((res) => res.json())
         .then(() => {
-          navigate("/", { state: { accountCreated: true } });
+          navigate("/login", { state: { accountCreated: true } });
           window.location.reload();
         })
         .catch((err) => {

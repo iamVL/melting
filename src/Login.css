@@ -2,7 +2,7 @@
 
 .login-container {
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
   background-color: #D96846;
   display: flex;
   align-items: center;
@@ -14,7 +14,7 @@
   background-color: white;
   width: 75vw;
   max-width: 1152px;
-  height: 100%;
+  height: auto;
   display: flex;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -496,9 +496,6 @@
 }
 
 @media (max-width: 1024px) {
-  .login-container {
-    height: auto;
-  }
 
   .input-groupp {
     width: 80%;
@@ -506,6 +503,15 @@
 
   .signup-btna {
     width: 80%;
+  }
+}
+
+@media (max-width: 1024px) and (max-height: 600px) {
+  .logo-loginn {
+    display: none;
+  }
+  .login-container {
+    height: auto;
   }
 }
 
@@ -535,6 +541,12 @@
   .options {
     flex-direction: row;
     width: 80%;
+  }
+}
+
+@media (max-width: 375px) {
+  .left-column img {
+    display: none;
   }
 }
 
