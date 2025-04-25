@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 
 import Modal from "../Component/Modal"; // Adjust path if needed
 import { useNavigate } from "react-router-dom";
+import {useLanguage} from "../translator/Languagecontext";
 
 
 
@@ -33,9 +34,11 @@ const Profile = (props) => {
   const [allergies, setAllergies] = useState("");
   const [dietRegimes, setDietRegimes] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
   const navigate = useNavigate();
 
-
+  const { t } = useLanguage();
   useEffect(() => {
     if (!token) return;
 
@@ -94,7 +97,7 @@ const Profile = (props) => {
       .catch((error) => {
         alert("error!");
       });
-  }, []); 
+  }, []);
 
   // This is the function that will get called the first time that the component gets rendered.  This is where we load the current
   // values from the database via the API, and put them in the state so that they can be rendered to the screen.
@@ -151,15 +154,17 @@ const Profile = (props) => {
 
       if (res.status === 204) {
         sessionStorage.clear();
-        navigate("/"); // Or your login page
+        setModalMessage("✅ Account successfully deleted.");
+        setTimeout(() => navigate("/"), 2000); // short delay before navigating away
       } else {
-        alert("Something went wrong deleting your account.");
+        setModalMessage("❌ Something went wrong deleting your account.");
       }
     } catch (err) {
       console.error(err);
-      alert("Error deleting account.");
+      setModalMessage("❌ Error deleting account. Please try again.");
     }
   };
+
   const uploadPicture = (event) => {
     event.preventDefault();
 
@@ -220,24 +225,24 @@ const Profile = (props) => {
           {/* user info */}
           <div class="userInfo">
             <a>{fullName}</a><br />
-            <a>User: {username}</a>
+            <a>{t('user')}: {username}</a>
           </div>
         </div>
 
         {/* profile buttons */}
 
         <div className="editUser">
-          <button onClick={logout} className="account-button logout-button">Log out</button>
+          <button onClick={logout} className="account-button logout-button">{t('logout')}</button>
 
           <Link to="/edit-profile">
-            <button className="account-button editprofile-button">Edit Profile</button>
+            <button className="account-button editprofile-button">{t('editProfile')}</button>
           </Link>
 
           <button
               className="account-button delete-button"
               onClick={() => setShowDeleteModal(true)}
           >
-            🗑️ Delete Account
+            🗑️ {t('deleteAccount')}
           </button>
 
         </div>
@@ -247,30 +252,30 @@ const Profile = (props) => {
       <div class="bottonProfileSection">
         <div class="accountSettings">
           <div class="accountHeaders">
-            <profile-header>Account Settings</profile-header>
-            <a>Update your personal information</a>
+            <profile-header>{t('accountSettings_title')}</profile-header>
+            <a>{t('accountSettings_description')}</a>
           </div>
           <div class="allinputs">
             <div class ="inputs">
-              <a> Email</a>
+              <a> {t('email')}</a>
               <div class="display">
                   {email}
               </div>
             </div>
             <div class ="inputs">
-              <a> Username</a>
+              <a> {t('username')}</a>
               <div class="display">
                   {username}
               </div>
             </div>
             <div class ="inputs">
-              <a> Full Name</a>
+              <a> {t('fullName')}</a>
               <div class="display">
                   {fullName}
               </div>
             </div>
             <div class ="inputs">
-              <a> Phone Number</a>
+              <a> {t('phoneNumber')}</a>
               <div class="display">
                   {phone}
               </div>
@@ -285,22 +290,22 @@ const Profile = (props) => {
                 />
             </div> */}
             <div class="countrybuttons">
-              <a> Country</a>
+              <a> {t('country')}</a>
               <form>
                 <country>
                   <input
                       type="button"
-                      value="USA"
+                      value={t("usa")}
                       class={country === "USA" ? "selected_country" : "countrybutton"}
                   />
                   <input
                       type="button"
-                      value="Canada"
+                      value={t("canada")}
                       class={country === "Canada" ? "selected_country" : "countrybutton"}
                   />
                   <input
                       type="button"
-                      value="UK"
+                      value={t("uk")}
                       class={country === "UK" ? "selected_country" : "countrybutton"}
                   />
                 </country>
@@ -322,21 +327,21 @@ const Profile = (props) => {
             <Link to="/favorites" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={Favorites} alt="favorites"></img>
-                <a>Favorite Recipes</a>
+                <a>{t('favorites_title')}</a>
               </recipebutton>
             </Link>
 
             <Link to="/friends" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={Stars} alt="Stars"></img>
-                <a> Follow List</a>
+                <a> {t('followList')}</a>
               </recipebutton>
             </Link>
 
             <Link to="/cookbooks" class="recipeButtons">
               <recipebutton>
                 <img class="recipeimage" src={My_recipes} alt="My_recipes"></img>
-                <a>Cookbooks</a>
+                <a>{t('cookbooks')}</a>
               </recipebutton>
             </Link>
             {/* <Link to="/ab-profile" class="recipeButtons">
@@ -347,11 +352,11 @@ const Profile = (props) => {
             </Link> */}
           </div>
 
-          <h2 style={{marginBottom:"0px"}}>Dietary Restrictions</h2>
-          <label style={{fontSize:"14px", color:"#d46a4c", marginTop:"0px", padding:"0px"}}>*Auto-Selected to Filter</label>
+          <h2 style={{marginBottom:"0px"}}> {t('dietaryRestrictions')}</h2>
+          <label style={{fontSize:"14px", color:"#d46a4c", marginTop:"0px", padding:"0px"}}>{t('auto')}</label>
 
           <div className="inputs">
-            <a>Allergies</a>
+            <a>{t('allergiesHeader')}</a>
             <div className="dietary-group">
               {["Peanuts", "Gluten", "Dairy", "Shellfish","TreeNuts", "Eggs", "None"].map((item) => (
                   <button
@@ -367,7 +372,7 @@ const Profile = (props) => {
           </div>
 
           <div className="inputs">
-            <a>Diet Regimes</a>
+            <a>{t('dietRegimes')}</a>
             <div className="dietary-group">
               {["Kosher", "Halal", "Vegetarian", "Vegan","Pescitarian", "None"].map((item) => (
                   <button
@@ -381,29 +386,32 @@ const Profile = (props) => {
               ))}
             </div>
           </div>
-              
+
         </div>
-        <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-          <h3>Delete Account</h3>
-          <p>Are you sure you want to permanently delete your account and all your data?</p>
-          <div className="modal-buttons">
-            <button
-                className="confirm-button"
-                onClick={() => {
-                  setShowDeleteModal(false);
-                  handleDeleteAccount(); // ← external function is called here
-                }}
-            >
-              Yes, Delete
-            </button>
-            <button
-                className="cancel-button"
-                onClick={() => setShowDeleteModal(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </Modal>
+        {showDeleteModal && (
+            <Modal show={true} onClose={() => setShowDeleteModal(false)}>
+              <h2 style={{ color: "#e67e22" }}>⚠️ {t("deleteAccount")}</h2>
+              <p>{t("deleteAccount_confirm")}</p>
+              <div className="modal-buttons">
+                <button
+                    className="confirm-button"
+                    onClick={() => {
+                      setShowDeleteModal(false);
+                      handleDeleteAccount();
+                    }}
+                >
+                  {t("yesDelete")}
+                </button>
+                <button
+                    className="cancel-button"
+                    onClick={() => setShowDeleteModal(false)}
+                >
+                  {t("cancel")}
+                </button>
+              </div>
+            </Modal>
+        )}
+
 
 
       </div>

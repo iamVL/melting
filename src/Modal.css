@@ -128,6 +128,10 @@
 .modal-overlay {
     background-color: transparent !important;
 }
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0) !important;
+    backdrop-filter: none !important;
+}
 
 
 .modal-content {

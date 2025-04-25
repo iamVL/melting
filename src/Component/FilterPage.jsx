@@ -5,10 +5,10 @@ import "../FilterPage.css";
 import "../Modal.css"
 import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import Modal from "./Modal";
-
+import { useLanguage } from "../translator/Languagecontext";
 
 const FilterPage = () => {
-
+  const { t } = useLanguage();
   const [posts, setPosts] = useState([]);
   const [reactionMap, setReactionMap] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,8 +57,17 @@ const FilterPage = () => {
       .then((result) => {
         console.log("User grabbed:", result);
         setUser(result);
-        setDietFilters(result.attributes.dietRegimes);
-        setAllergyFilters(result.attributes.allergies);
+        if (result.attributes.dietRegimes.includes("None")) {
+          setDietFilters([]);
+        } else {
+          setDietFilters(result.attributes.dietRegimes);
+        }
+
+        if (result.attributes.allergies.includes("None")) {
+          setAllergyFilters([]);
+        } else {
+          setAllergyFilters(result.attributes.allergies);
+        }
       })
   },[]);
 
@@ -311,31 +320,29 @@ const FilterPage = () => {
         matchesDiet
     );
   });
-return(
-  <div className="filter-layout">
-        {/* ✅ Sidebar (restored from your previous layout) */}
+  return (
+      <div className="filter-layout">
         <aside className="filter-sidebar">
           <div className="sidebar-navigation">
-            <h2>Filters</h2>
+            <h2>{t("filtersHeader")}</h2>
 
             <input
                 type="text"
-                placeholder="Search by title..."
+                placeholder={t("searchByTitle")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
             />
             <input
                 type="text"
-                placeholder="Search by description..."
+                placeholder={t("searchByDescription")}
                 value={descriptionQuery}
                 onChange={(e) => setDescriptionQuery(e.target.value)}
             />
 
-            {/* Ingredient Input */}
             <div className="ingredient-filter">
               <input
                   type="text"
-                  placeholder="Add ingredient and press Enter"
+                  placeholder={t("addIngredientPlaceholder")}
                   value={ingredientInput}
                   onChange={(e) => setIngredientInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -363,57 +370,51 @@ return(
 
             <input
                 type="number"
-                placeholder="Min Serving Size"
+                placeholder={t("minServingSize")}
                 value={minServingSize}
                 onChange={(e) => setMinServingSize(e.target.value)}
             />
             <input
                 type="number"
-                placeholder="Max Total Time (minutes)"
+                placeholder={t("maxTotalTime")}
                 value={maxTotalTime}
                 onChange={(e) => setMaxTotalTime(e.target.value)}
             />
 
             <select value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
-              <option value="">All Difficulties</option>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
+              <option value="">{t("allDifficulties")}</option>
+              <option value="Easy">{t("easy")}</option>
+              <option value="Medium">{t("medium")}</option>
+              <option value="Hard">{t("hard")}</option>
             </select>
 
-            {/* Cuisines */}
             <div className="dropdown-group">
               <div className="dropdown-header" onClick={() => setShowCuisines(!showCuisines)}>
-                <h4>Cuisines {showCuisines ? "▲" : "▼"}</h4>
+                <h4>{t("cuisinesHeader")} {showCuisines ? "▲" : "▼"}</h4>
               </div>
               {showCuisines && (
                   <div className="checkbox-group">
-                    {["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"].map(
-                        (cuisine) => (
-                            <label key={cuisine}>
-                              <input
-                                  type="checkbox"
-                                  checked={selectedCuisines.includes(cuisine)}
-                                  onChange={() =>
-                                      setSelectedCuisines((prev) =>
-                                          prev.includes(cuisine)
-                                              ? prev.filter((c) => c !== cuisine)
-                                              : [...prev, cuisine]
-                                      )
-                                  }
-                              />
-                              {cuisine}
-                            </label>
-                        )
-                    )}
+                    {["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"].map((cuisine) => (
+                        <label key={cuisine}>
+                          <input
+                              type="checkbox"
+                              checked={selectedCuisines.includes(cuisine)}
+                              onChange={() =>
+                                  setSelectedCuisines((prev) =>
+                                      prev.includes(cuisine) ? prev.filter((c) => c !== cuisine) : [...prev, cuisine]
+                                  )
+                              }
+                          />
+                          {t(cuisine.toLowerCase())}
+                        </label>
+                    ))}
                   </div>
               )}
             </div>
 
-            {/* Allergies */}
             <div className="dropdown-group">
               <div className="dropdown-header" onClick={() => setShowAllergies(!showAllergies)}>
-                <h4>Allergies {showAllergies ? "▲" : "▼"}</h4>
+                <h4>{t("allergiesHeader")} {showAllergies ? "▲" : "▼"}</h4>
               </div>
               {showAllergies && (
                   <div className="checkbox-group">
@@ -424,27 +425,24 @@ return(
                               checked={allergyFilters.includes(allergy)}
                               onChange={() =>
                                   setAllergyFilters((prev) =>
-                                      prev.includes(allergy)
-                                          ? prev.filter((a) => a !== allergy)
-                                          : [...prev, allergy]
+                                      prev.includes(allergy) ? prev.filter((a) => a !== allergy) : [...prev, allergy]
                                   )
                               }
                           />
-                          {allergy}
+                          {t(allergy.toLowerCase())}
                         </label>
                     ))}
                   </div>
               )}
             </div>
 
-            {/* Diets */}
             <div className="dropdown-group">
               <div className="dropdown-header" onClick={() => setShowDiets(!showDiets)}>
-                <h4>Dietary Preferences {showDiets ? "▲" : "▼"}</h4>
+                <h4>{t("dietsHeader")} {showDiets ? "▲" : "▼"}</h4>
               </div>
               {showDiets && (
                   <div className="checkbox-group">
-                    {["Halal", "Kosher", "Vegetarian", "Vegan"].map((diet) => (
+                    {["Halal", "Kosher", "Vegetarian", "Vegan", "Pescitarian"].map((diet) => (
                         <label key={diet}>
                           <input
                               type="checkbox"
@@ -455,7 +453,7 @@ return(
                                   )
                               }
                           />
-                          {diet}
+                          {t(diet.toLowerCase())}
                         </label>
                     ))}
                   </div>
@@ -465,12 +463,18 @@ return(
         </aside>
 
         <main className="recipe-listing">
-          <h2 className="results-header">Serving { selectedCuisines.length >= 2 || selectedCuisines.length == 0  ?  "Cooking" : selectedCuisines[0]} Recipes!</h2>
+          <h2 className="results-header">
+            {t("cookingResultsHeader").replace("Cooking", selectedCuisines.length >= 2 || selectedCuisines.length === 0 ? "Cooking" : selectedCuisines[0])}
+          </h2>
           {filteredPosts.length > 0 ? (
               <div className="recipe-grid">
                 {filteredPosts.map((post) => {
                   const attrs = post.attributes || {};
                   const title = attrs.title || post.content || "Untitled";
+                  const shortTitle =
+                        title.length > 25
+                      ? title.substring(0, 25) + "..."
+                      : title;
                   const rawDescription = attrs.description || post.content || "";
                   const description =
                       rawDescription && rawDescription.trim() !== "undefined"
@@ -481,74 +485,54 @@ return(
                   const recipeID = String(post.id);
                   const isFavorited = !!reactionMap[recipeID];
 
-                  const authorID = post.authorID;
-                  const isFollowersOnly = attrs?.visibility === "Followers Only";
-                  const isBlocked = Array.isArray(connections) &&
-                    connections.some(
-                      (connection) =>
-                        String(connection.toUser?.id ?? connection.toUserID) === String(authorID) &&
-                          connection.attributes?.status === "blocked"
-                     );
-
-                        // If blocked, do not show any of their posts
-                        if (isBlocked) return null;
-                  const isFollowingAuthor = Array.isArray(connections) &&
-                      connections.some(
-                          (connection) =>
-                              String(connection.toUser?.id ?? connection.toUserID) === String(authorID)
-                      );
-                  const isCreator = String(authorID) === String(userID);
-
-                  if (isFollowersOnly && !isFollowingAuthor && !isCreator) return null;
-
                   return (
                       <div key={post.id} className="recipe-card">
-                        <img
-                            src={mainImage}
-                            alt={title}
-                            className="recipe-image"
-
-                        />
+                        <img src={mainImage} alt={title} className="recipe-image" />
                         <div className="recipe-content">
-                          <h3>{title}</h3>
+                          <h3>{shortTitle}</h3>
                           <p>{description}</p>
                           <Link to={`/recipe/${post.id}`} className="read-more">
-                            Read More →
+                            {t("readMore")}
                           </Link>
                           <div className="card-footer">
                             {!favoritedRecipeIDs.has(String(post.id)) && (
-                                <button onClick={() => handleFavorite(post.id)}>☆ Favorite</button>
+                                <button onClick={() => handleFavorite(post.id)}>{t("favoriteButton")}</button>
+                            )}
+                            {isModalOpen && (
+                                <Modal show={true} onClose={() => setIsModalOpen(false)}>
+                                  <h2 style={{ color: "#e67e22" }}>{t("favorite_success_title")}</h2>
+                                  <p>{t("favorite_success_message")}</p>
+                                  <div className="modal-buttons">
+                                    <button
+                                        className="confirm-button"
+                                        onClick={() => {
+                                          setIsModalOpen(false);
+                                          navigate("/favorites");
+                                        }}
+                                    >
+                                      {t("goToFavorites")}
+                                    </button>
+                                  </div>
+                                </Modal>
                             )}
 
-                            <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                              <img
-                                  src={meltingLogo}
-                                  alt="Melting Pot Logo"
-                                  style={{ width: "120px", marginBottom: "1rem" }}
-                              />
-                              <h2>Recipe favorited!</h2>
-                              <p>You will now be redirected to the Favorite Recipe page.</p>
-                            </Modal>
-
                             <div className="recipe-meta">
-                              <span>{attrs.cuisine || "N/A"}</span>
-                              <span>{attrs.totalTime || "⏱ Unknown"}</span>
+                              <span>{attrs.cuisine || t("None")}</span>
+                              <span>{attrs.totalTime || t("unknown_time")}</span>
                             </div>
                           </div>
                         </div>
                       </div>
                   );
                 })}
-
               </div>
           ) : (
-              <p className="no-recipes">No recipes found matching filters.</p>
+              <p className="no-recipes">{t("noRecipesFound")}</p>
           )}
-
         </main>
-  </div>
+      </div>
+  );
 
-);
 };
 
 export default FilterPage;

@@ -4,7 +4,7 @@ import ConfirmModal from "../Component/ConfirmModal";
 import { useNavigate , Link} from "react-router-dom";
 import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import Modal from "./Modal";
-
+import { useLanguage } from "../translator/Languagecontext";
 
 const RecipeListing = ({
   posts,
@@ -22,20 +22,21 @@ const RecipeListing = ({
   const userID = sessionStorage.getItem("user");
   const [savedAllergies, setSavedAllergies] = useState([]);
   const [savedDiets, setSavedDiets] = useState([]);
-
+  const { t } = useLanguage();
   const [sortOption, setSortOption] = useState("rating-h-l");
   const [userCookbooks, setUserCookbooks] = useState([]);
   const [favoritedRecipes, setFavoritedRecipes] = useState([]);
   const [applyPreferences, setApplyPreferences] = useState(false);
   const [localConnections, setLocalConnections] = useState([]);
   const [postRatings, setPostRatings] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [deleteTargetId, setDeleteTargetId] = useState(null);
   const [showFavoriteModal, setShowFavoriteModal] = useState(false);
   const [showCookbookModal, setShowCookbookModal] = useState(false);
   const rawFavIDs = localStorage.getItem("favoritedRecipeIDs");
   const favoritedFromStorage = new Set(JSON.parse(rawFavIDs || "[]"));
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
 
@@ -210,9 +211,9 @@ const RecipeListing = ({
         if (response.ok) {
           setFavoritedRecipes((prev) => [...prev, recipeID]);
 
-          setIsModalOpen(true);
+          setShowFavoriteModal(true);
           setTimeout(() => {
-            setIsModalOpen(false);
+            setShowFavoriteModal(false);
             navigate("/favorites");
           }, 2000);
 
@@ -380,33 +381,33 @@ const RecipeListing = ({
   return (
     <div className="recipe-container">
       <div className="recipe-header-container">
-        <h2 className="recipe-header">Browse Recipes</h2>
+        <h2 className="recipe-header">{t('browseRecipes_title')}</h2>
 
         <div className="sort-dropdown">
-          <label htmlFor="sort">Sort by: </label>
+          <label htmlFor="sort"> {t('sortBy')}</label>
           <select
             id="sort"
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
-            <option value="rating-h-l">Rating (High to Low)</option>
-            <option value="rating-l-h">Rating (Low to High)</option>
-            <option value="title-a-z">Title (A to Z)</option>
-            <option value="title-z-a">Title (Z to A)</option>
+            <option value="rating-h-l">{t('ratingHighToLow')}</option>
+            <option value="rating-l-h">{t('ratingLow')}</option>
+            <option value="title-a-z">{t('atoz')}</option>
+            <option value="title-z-a">{t('ztoa')}</option>
             {showCreatedByYouOption && (
-              <option value="created">Created by You</option>
+              <option value="created">{t('createdByYou')}</option>
             )}
           </select>
         </div>
 
       </div>
       
-      <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+      <div id="listing-information" style={{display:"flex", justifyContent:"space-between"}}>
         <p className="recipe-subheader" style={{margin:"0px"}}>
-          Explore our community’s shared recipes. Click any card to see details!
+          {t('browseRecipes_description')}
         </p>
         
-        <label style={{ marginLeft: "16px", display:"flex", flexDirection:"row", height:"50px", alignItems:"center", gap:"10px"}}>
+        <label style={{ display:"flex", flexDirection:"row", alignItems:"center", gap:"10px"}}>
           <input
             style={{width:"20px", height:"20px", margin:"0px"}}
             type="checkbox"
@@ -414,7 +415,7 @@ const RecipeListing = ({
             onChange={(e) => setApplyPreferences(e.target.checked)}
           />{" "}
           <p className="recipe-subheader" style={{margin:"0px"}}>
-            Apply my dietary and allergy preferences
+            {t('applyPreferences2')}
           </p>
         </label>
       </div>
@@ -521,7 +522,7 @@ const RecipeListing = ({
                   <p className="recipe-description-1">{shortDescription}</p>
 
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
-                    Read More →
+                    {t('readmore')} →
                   </Link>
                   
                   <div style={{display:"flex", gap:"10px"}}>
@@ -533,18 +534,28 @@ const RecipeListing = ({
                             }`}
                             onClick={() => handleFavorite(recipeID)}
                         >
-                          {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                          {isFavorited ? "⭐ Unfavorite" : t('favorite')}
                         </button>
                     )}
-                    <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                      <img
-                          src={meltingLogo}
-                          alt="Melting Pot Logo"
-                          style={{ width: "120px", marginBottom: "1rem" }}
-                      />
-                      <h2>Recipe favorited!</h2>
-                      <p>You will now be redirected to the Favorite Recipe page.</p>
-                    </Modal>
+                    {showFavoriteModal && (
+                        <Modal show={true} onClose={() => setShowFavoriteModal(false)}>
+                          <h2 className="modal-title" style={{ color: "#e67e22" }}>{t("favorite_success_title")}</h2>
+                          <p className="modal-message">{t("favorite_success_message")}</p>
+                          <div className="modal-buttons">
+                            <button
+                                className="confirm-button"
+                                onClick={() => {
+                                  setShowFavoriteModal(false);
+                                  navigate("/favorites");
+                                }}
+                            >
+                              {t("goToFavorites")}
+                            </button>
+                          </div>
+                        </Modal>
+                    )}
+
+
 
                     {String(authorID) === String(currentUserID) && (
                                 <button
@@ -592,24 +603,29 @@ const RecipeListing = ({
 
 
       {deleteTargetId && (
-            <ConfirmModal
-                message="Are you sure you want to delete this recipe?"
-                onConfirm={() => {
-                  deleteRecipe(deleteTargetId);
-                }}
-                onCancel={() => setDeleteTargetId(null)}
-            />
-        )}
-
-
-
-        {showCookbookModal && (
-            <div className="modal-overlay">
-              <div className="modal-content">
-                <p>Recipe added to cookbook!</p>
-              </div>
+          <Modal show={true} onClose={() => setDeleteTargetId(null)}>
+            <h2 style={{ color: "#b00020" }}>🗑️ {t("deleteRecipe")}</h2>
+            <p>{t("deleteRecipe_confirm") || "Are you sure you want to delete this recipe?"}</p>
+            <div className="modal-buttons">
+              <button
+                  className="cancel-button"
+                  onClick={() => setDeleteTargetId(null)}
+              >
+                {t("cancel") || "Cancel"}
+              </button>
+              <button
+                  className="confirm-button"
+                  onClick={() => {
+                    setDeleteTargetId(null);
+                    deleteRecipe(deleteTargetId);
+                  }}
+              >
+                {t("yesDelete") || "Yes, Delete"}
+              </button>
             </div>
-        )}
+          </Modal>
+      )}
+
     </div>
   );
 };

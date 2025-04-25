@@ -5,6 +5,7 @@ import Favorites from "../Account_Buttons/Favorites.png";
 import Stars from "../Account_Buttons/Stars.png";
 import My_recipes from "../Account_Buttons/My_recipes.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "../translator/Languagecontext";
 
 const Profile = () => {
   const [username, setUsername] = useState("");

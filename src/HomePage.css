@@ -160,7 +160,7 @@
 .featured-tips {
   margin-top: 40px;
   width: 85%;
-  background: #a0a0a056;
+  background: #ff740317;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
@@ -219,7 +219,7 @@
 .read-more {
   margin-top: 15px;
   padding: 10px 15px;
-  background-color: #ff8c42;
+  background-color: #ff9450;
   color: black;
   text-decoration: none;
   border-radius: 20px;
@@ -262,7 +262,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background-color: #ff8d5a;
+  background-color: #ff8f4a39;
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 10px;
@@ -318,7 +318,7 @@
 }
 
 .choose-level {
-  width: 105%;
+  width: 100%;
   text-align: center;
 }
 
@@ -397,7 +397,7 @@ leveltext {
 
 .community {
   text-align: center;
-  padding: 50px;
+  padding: 100px 0px;
   width: 100%;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.9);
   background-color: rgb(188 145 118 / 65%);
@@ -662,5 +662,19 @@ html, body {
   .read-more {
     width: 100%;
     font-size: 12px;
+  }
+}
+
+@media (max-width: 425px) {
+  #community-information {
+    padding: 30px 10px;
+  }
+
+  #community-information h2 {
+    font-size: 1.4rem;
+  }
+
+  #community-information p {
+    font-size: 1.2rem;
   }
 }

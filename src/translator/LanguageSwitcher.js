@@ -6,10 +6,13 @@ const LanguageSwitcher = () => {
     const { language, setLanguage } = useLanguage();
 
     return (
-        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-            <option value="en">English</option>
-            <option value="es">Español</option>
-        </select>
+        <label htmlFor="language">
+            <span className="visually-hidden">Language</span>
+            <select id="language" value={language} onChange={(e) => setLanguage(e.target.value)}>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+        </label>
     );
 };
 

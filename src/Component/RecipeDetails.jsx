@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-
+import React, {useState, useEffect, use, useRef} from "react";
 import "../RecipeDetails.css";
 import Modal from "../Component/Modal";
 
-
+import { useLanguage } from "../translator/Languagecontext";
 const RecipeDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // ⬅️ NEW
+  const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [rating, setRating] = useState(0);
   const [commentText, setCommentText] = useState("");
   const reviewsRef = useRef(null);
@@ -25,6 +24,7 @@ const RecipeDetails = () => {
   const [connections, setConnections] = useState([]);
   const [followClick, setFollowClick] = useState(false);
 
+  const { t } = useLanguage();
   useEffect(() => {
     const fetchRecipeWithVisibilityCheck = async () => {
       try {
@@ -109,27 +109,27 @@ const RecipeDetails = () => {
 
     const loadFriends = () => {
       fetch(
-        process.env.REACT_APP_API_PATH +
+          process.env.REACT_APP_API_PATH +
           "/connections?fromUserID=" +
           sessionStorage.getItem("user"),
-        {
-          method: "get",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            setConnections(result[0]);
-            console.log("Following", result[0]);
-          },
-          (error) => {
-            setError(error);
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + sessionStorage.getItem("token"),
+            },
           }
-        );
+      )
+          .then((res) => res.json())
+          .then(
+              (result) => {
+                setConnections(result[0]);
+                console.log("Following", result[0]);
+              },
+              (error) => {
+                setError(error);
+              }
+          );
     };
 
     loadFriends();
@@ -159,10 +159,13 @@ const RecipeDetails = () => {
   const handleCommentSubmit = (event) => {
     event.preventDefault();
     if (rating === 0) {
-      alert("Choose a rating 1-5!");
+      setModalMessage(t("reviews_choose_rating_error")
+      );
       return;
     } else if (commentText === "") {
-      alert("Fill in a review!");
+      setModalMessage(t("reviews_fill_in_review_error")
+      );
+
       return;
     }
 
@@ -184,52 +187,52 @@ const RecipeDetails = () => {
         },
       }),
     })
-      .then(async (res) => {
-        const result = await res.json();
-        setReviews((prev) => [result, ...prev]);
-        setCommentText("");
-        setRating(0);   
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log("Review Submit error:", error);
-      });
+        .then(async (res) => {
+          const result = await res.json();
+          setReviews((prev) => [result, ...prev]);
+          setCommentText("");
+          setRating(0);
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log("Review Submit error:", error);
+        });
   };
 
   const handleCommentUpdate = (review, editComment, editRating) => {
     if (editComment === "") {
-      alert("Review cannot be blank!");
+      setModalMessage("❌ Review cannot be blank.");
       return;
     }
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${review.id}`, {
-        method:"PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      method:"PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        authorID: sessionStorage.getItem("user"),
+        content: editComment,
+        parentID: review.parentID,
+        attributes: {
+          postType: "review",
+          rating: editRating,
+          likes: review.attributes.likes || [],
+          dislikes: review.attributes.dislikes || [],
         },
-        body: JSON.stringify({
-          authorID: sessionStorage.getItem("user"),
-          content: editComment,
-          parentID: review.parentID,
-          attributes: {
-            postType: "review",
-            rating: editRating,
-            likes: review.attributes.likes || [],
-            dislikes: review.attributes.dislikes || [],
-          },
+      })
+    })
+        .then(async (res) => {
+          const result = await res.json();
+          setReviews((prev) =>
+              prev.map((r) => (r.id === result.id ? result : r))
+          );
+          console.log("Edited Review:", result);
         })
-      })
-      .then(async (res) => {
-        const result = await res.json();
-        setReviews((prev) =>
-          prev.map((r) => (r.id === result.id ? result : r))
-        );        
-        console.log("Edited Review:", result);
-      })
-      .catch((error) => {
-        console.log("Review Update error:", error);
-      });
-    }
+        .catch((error) => {
+          console.log("Review Update error:", error);
+        });
+  }
 
   const handleDeleteReview = (reviewID) => {
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${reviewID}`, {
@@ -351,16 +354,16 @@ const RecipeDetails = () => {
             },
           })
         })
-        .then(async (res) => {
-          const result = await res.json();
-          setReviews(prev =>
-            prev.map(r => (r.id === result.id ? result : r))
-          );
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log("Review Update error:", error);
-        })
+            .then(async (res) => {
+              const result = await res.json();
+              setReviews(prev =>
+                  prev.map(r => (r.id === result.id ? result : r))
+              );
+              console.log(result);
+            })
+            .catch((error) => {
+              console.log("Review Update error:", error);
+            })
       } else if (type === "dislike") {
         let new_dislikes = [...review.attributes.dislikes];
 
@@ -393,16 +396,16 @@ const RecipeDetails = () => {
             },
           })
         })
-        .then(async (res) => {
-          const result = await res.json();
-          setReviews(prev =>
-            prev.map(r => (r.id === result.id ? result : r))
-          );
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log("Review Update error:", error);
-        })
+            .then(async (res) => {
+              const result = await res.json();
+              setReviews(prev =>
+                  prev.map(r => (r.id === result.id ? result : r))
+              );
+              console.log(result);
+            })
+            .catch((error) => {
+              console.log("Review Update error:", error);
+            })
       }
     };
 
@@ -410,59 +413,59 @@ const RecipeDetails = () => {
         <div className={`review-item ${showFull ? "expanded" : ""}`}>
           { editReview !== review.id ? (<>
 
-          <div className="review-header">
-            <strong>{review.author.attributes?.username}</strong>
-            <div className="review-rating">
-              {Array.from({ length: review.attributes?.rating }, (_, i) => (
-                  <span key={i} className="star">★</span>
-              ))}
-              {Array.from({ length: 5 - review.attributes?.rating }, (_, i) => (
-                  <span key={i} className="empty-stars">★</span>
-              ))}
+            <div className="review-header">
+              <strong>{review.author.attributes?.username}</strong>
+              <div className="review-rating">
+                {Array.from({ length: review.attributes?.rating }, (_, i) => (
+                    <span key={i} className="star">★</span>
+                ))}
+                {Array.from({ length: 5 - review.attributes?.rating }, (_, i) => (
+                    <span key={i} className="empty-stars">★</span>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className={`review-text ${showFull ? "expanded" : "collapsed"}`}>
-            {review.content}
-          </div>
+            <div className={`review-text ${showFull ? "expanded" : "collapsed"}`}>
+              {review.content}
+            </div>
 
-          {review.content.length > 100 && (
-              <button className="show-more-button" onClick={() => setShowFull(!showFull)}>
-                {showFull ? "Show Less" : "Show More"}
-              </button>
-          )}
+            {review.content.length > 100 && (
+                <button className="show-more-button" onClick={() => setShowFull(!showFull)}>
+                  {showFull ? "Show Less" : "Show More"}
+                </button>
+            )}
             <div className="review-reactions">
               <button className={`reaction-button ${reaction === "like" ? "active" : ""}`} onClick={() => toggleReaction("like", review)}>👍 {review.attributes.likes.length}</button>
               <button className={`reaction-button ${reaction === "dislike" ? "active" : ""}`} onClick={() => toggleReaction("dislike", review)}>👎 {review.attributes.dislikes.length}</button>
-              {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) && 
-                <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button> 
+              {parseInt(review.authorID) === parseInt(sessionStorage.getItem("user")) &&
+                  <button className="reaction-button delete-button" onClick={() => {setEditReview(review.id); setEditRating(review.attributes?.rating); setEditComment(review.content);}}>Edit ✏️</button>
               }
             </div>
-            </> ) : ( <>
-              <div className="review-header">
-                <strong>{review.author.attributes?.username}</strong>
-                <div className="empty-stars-background">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                      <span
-                          key={star}
-                          className={`star ${star <= editRating ? "edit-active" : "edit"}`}
-                          onClick={() => setEditRating(star)}
-                      >★</span>
-                  ))}
+          </> ) : ( <>
+                <div className="review-header">
+                  <strong>{review.author.attributes?.username}</strong>
+                  <div className="empty-stars-background">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                            key={star}
+                            className={`star ${star <= editRating ? "edit-active" : "edit"}`}
+                            onClick={() => setEditRating(star)}
+                        >★</span>
+                    ))}
+                  </div>
+                  <div className="rating-stars">
+                  </div>
                 </div>
-                <div className="rating-stars">
-              </div>
-              </div>
 
-              <textarea id="review-textarea" placeholder="Enter review text" value={editComment} onChange={(e) => setEditComment(e.target.value)} />
+                <textarea id="review-textarea" placeholder="Enter review text" value={editComment} onChange={(e) => setEditComment(e.target.value)} />
 
-              <div className="review-reactions">
-                <button className="reaction-button delete-button" onClick={() => handleDeleteReview(review.id)}>🗑️</button>
-                <button className="reaction-button delete-button" onClick={() => handleCommentUpdate(review, editComment, editRating)}>Save</button>
-                <button className="reaction-button delete-button" onClick={() => setEditReview(null)}>Cancel</button>
-              </div>
-            </>
-            )
+                <div className="review-reactions">
+                  <button className="reaction-button delete-button" onClick={() => handleDeleteReview(review.id)}>🗑️</button>
+                  <button className="reaction-button delete-button" onClick={() => handleCommentUpdate(review, editComment, editRating)}>Save</button>
+                  <button className="reaction-button delete-button" onClick={() => setEditReview(null)}>Cancel</button>
+                </div>
+              </>
+          )
           }
         </div>
     );
@@ -475,7 +478,9 @@ const RecipeDetails = () => {
   return (
       <div className="recipe-details-container">
         <div className="back-to-recipes">
-          <Link to="/recipes" className="back-button">← All Recipes</Link>
+          <Link to="/recipes" className="back-button">
+            ← {t("back_to_all_recipes")}
+          </Link>
         </div>
 
         <div className="recipe-content">
@@ -490,7 +495,7 @@ const RecipeDetails = () => {
           </div>
 
           <div className="recipe-section">
-            <h3 className="ingredients">Ingredients</h3>
+            <h3 className="ingredients">{t("recipe_ingredients")}</h3>
             <ul className="recipe-ingredients-list">
               {recipe.attributes?.ingredients?.map((ingredient, index) => (
                   <li key={index}>{ingredient}</li>
@@ -499,11 +504,11 @@ const RecipeDetails = () => {
           </div>
 
           <div className="recipe-section">
-            <h3 className="steps">Recipe Instructions</h3>
+            <h3 className="steps">{t("recipe_steps")}</h3>
             <div className="steps-container">
               {recipe.attributes?.steps?.map((step, index) => (
                   <div key={index} className="step-card">
-                    <div className="step-title">Step {index + 1}</div>
+                    <div className="step-title">{t("step")} {index + 1}</div>
                     <p className="step-instruction">{step}</p>
                   </div>
               ))}
@@ -511,10 +516,10 @@ const RecipeDetails = () => {
           </div>
 
           <div className="recipe-section">
-            <h3 className="reviews">Reviews</h3>
+            <h3 className="reviews">{t("reviews_title")}</h3>
             {reviews.length > 0 && (
                 <div className="average-rating">
-                  ⭐ Average Rating: {getAverageRating()} / 5 ({getRatingPercentage()}% positive)
+                  ⭐ {t("reviews_average_rating")}: {getAverageRating()} / 5 ({getRatingPercentage()}% {t("reviews_positive")})
                 </div>
             )}
 
@@ -527,13 +532,13 @@ const RecipeDetails = () => {
 
             <div className="reviews-list" ref={reviewsRef}>
               {reviews.map((review, index) => (
-                  <ReviewItem key={index} review={review} index={index} setReviews={setReviews}/>
+                  <ReviewItem key={index} review={review} index={index} setReviews={setReviews} />
               ))}
             </div>
           </div>
 
           <div className="recipe-section">
-            <h3 className="leave-comment">Leave a Review</h3>
+            <h3 className="leave-comment">{t("reviews_leave_review")}</h3>
             <div className="comment-form">
               <div className="rating-stars">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -544,103 +549,88 @@ const RecipeDetails = () => {
                     >★</span>
                 ))}
               </div>
-              <textarea placeholder="Your Review" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
-              <button onClick={handleCommentSubmit}>Post Review</button>
+              <textarea placeholder={t("reviews_input_placeholder")} value={commentText} onChange={(e) => setCommentText(e.target.value)} />
+              <button onClick={handleCommentSubmit}>{t("reviews_submit_button")}</button>
             </div>
           </div>
         </div>
 
         <div className="recipe-sidebar">
           <div className="sidebar-section">
-            <h4>Total Time</h4>
+            <h4>{t("sidebar_total_time")}</h4>
             <div className="total-time-display">{recipe.attributes?.totalTime || "N/A"}</div>
           </div>
           <div className="sidebar-section">
-            <h4>Cooking Level</h4>
-            <div className="cooking-level-display">{recipe.attributes?.difficulty || "Medium"}</div>
+            <h4>{t("sidebar_cooking_level")}</h4>
+            <div className="cooking-level-display">{recipe.attributes?.difficulty || t("medium")}</div>
           </div>
           <div className="sidebar-section">
-            <h4>Serving Size</h4>
+            <h4>{t("sidebar_serving_size")}</h4>
             <div className="serving-size-display">{recipe.attributes?.servingSize}</div>
           </div>
           <div className="sidebar-section">
-            <h4>Cuisine</h4>
+            <h4>{t("sidebar_cuisine")}</h4>
             <div className="cuisine-tags">
               {Array.isArray(recipe.attributes?.cuisine)
-                  ? ( recipe.attributes?.cuisine.length !== 0 ? (
-                    recipe.attributes.cuisine.map((cuisine, index) => (
-                      <div key={index} className="cuisine-tag">{cuisine}</div>
-                  ))
-                  ): ( 
-                    <div className="cuisine-tag">None</div>
-                  ))
-                  : <div className="cuisine-tag">None</div>}
+                  ? recipe.attributes.cuisine.length !== 0
+                      ? recipe.attributes.cuisine.map((cuisine, index) => (
+                          <div key={index} className="cuisine-tag">{cuisine}</div>
+                      ))
+                      : <div className="cuisine-tag">{t("none")}</div>
+                  : <div className="cuisine-tag">{t("none")}</div>}
             </div>
           </div>
-        <div className="sidebar-section">
-          <h4 style={{margin:"0px"}}>Allergy</h4>
-          <div className="cuisine-tags">
-            {Array.isArray(recipe.attributes?.allergy)
-                ? ( recipe.attributes?.allergy.length !== 0 ? (
-                  recipe.attributes.allergy.map((allergy, index) => (
-                    <div key={index} className="cuisine-tag">{allergy}</div>
-                ))
-                ): ( 
-                  <div className="cuisine-tag">None</div>
-                ))
-                : <div className="cuisine-tag">None</div>}
+          <div className="sidebar-section">
+            <h4>{t("sidebar_allergy")}</h4>
+            <div className="cuisine-tags">
+              {Array.isArray(recipe.attributes?.allergy)
+                  ? recipe.attributes.allergy.length !== 0
+                      ? recipe.attributes.allergy.map((a, index) => (
+                          <div key={index} className="cuisine-tag">{a}</div>
+                      ))
+                      : <div className="cuisine-tag">{t("none")}</div>
+                  : <div className="cuisine-tag">{t("none")}</div>}
+            </div>
           </div>
-        </div>
-        <div className="sidebar-section">
-          <h4 style={{margin:"0px"}}>Diet</h4>
-          <div className="cuisine-tags">
+          <div className="sidebar-section">
+            <h4>{t("sidebar_diet")}</h4>
+            <div className="cuisine-tags">
               {Array.isArray(recipe.attributes?.diet)
-                  ? ( recipe.attributes?.diet.length !== 0 ? (
-                    recipe.attributes.diet.map((diet, index) => (
-                      <div key={index} className="cuisine-tag">{diet}</div>
-                  ))
-                  ): ( 
-                    <div className="cuisine-tag">None</div>
-                  ))
-                  : <div className="cuisine-tag">None</div>}
+                  ? recipe.attributes.diet.length !== 0
+                      ? recipe.attributes.diet.map((d, index) => (
+                          <div key={index} className="cuisine-tag">{d}</div>
+                      ))
+                      : <div className="cuisine-tag">{t("none")}</div>
+                  : <div className="cuisine-tag">{t("none")}</div>}
             </div>
           </div>
-        <div className="sidebar-section">
-           <h4 style={{ margin: "0px" }}>Visible To</h4>
-            {recipe.attributes?.visibility ? (
+          <div className="sidebar-section">
+            <h4>{t("sidebar_visibility")}</h4>
             <div className="cuisine-tags">
               <div className="cuisine-tag">
-                {recipe.attributes.visibility === "Followers Only" ? "Followers Only" : "Public"}
+                {recipe.attributes?.visibility === "Followers Only" ? t("visibility_followers_only") : t("visibility_public")}
               </div>
             </div>
-              ) : ( 
-                <div className="cuisine-tags">
-              <div className="cuisine-tag">
-                {"Public"}
-              </div>
-            </div>
-              )}
-        </div>
-
+          </div>
 
           <div className="sidebar-section">
-            <h4>Recipe Created By</h4>
-
+            <h4>{t("sidebar_created_by")}</h4>
             <div className="created-by">
               {authorInfo ? (
                   <>
-                    <span>{authorInfo.username}</span>
-                    <br/>
-                    { ( parseInt(authorInfo.id) !== parseInt(sessionStorage.getItem("user")) && connections.some(conn => conn.toUserID === authorInfo.id) == false && !followClick) && 
-                      <button onClick={() => {handleFollowUser(); setFollowClick(true);}} className="orange-follow-button">
-                        ➕ Follow this user
-                      </button>
-                    }
-
-                    {connections.some(conn => conn.toUserID === authorInfo.id) === true && <>
-                    <p style={{marginTop:"35px", color:"#e67e22", fontWeight:"1000"}}> You are following this user!</p>
-                    </>}
-
+                    <span>{authorInfo.username}</span><br/>
+                    {(parseInt(authorInfo.id) !== parseInt(sessionStorage.getItem("user")) &&
+                        connections.some(conn => conn.toUserID === authorInfo.id) === false &&
+                        !followClick) && (
+                        <button onClick={() => { handleFollowUser(); setFollowClick(true); }} className="orange-follow-button">
+                          ➕ {t("follow_button")}
+                        </button>
+                    )}
+                    {connections.some(conn => conn.toUserID === authorInfo.id) && (
+                        <p style={{ marginTop: "35px", color: "#e67e22", fontWeight: "1000" }}>
+                          {t("already_following")}
+                        </p>
+                    )}
                     {followMessage && (
                         <p style={{
                           color: followMessage.includes("❌") ? "red" : "green",
@@ -652,16 +642,25 @@ const RecipeDetails = () => {
                     )}
                   </>
               ) : (
-                  <span>Loading user...</span>
+                  <span>{t("loading_user")}</span>
               )}
             </div>
           </div>
         </div>
-        {modalMessage && <Modal message={modalMessage} onClose={() => setModalMessage("")} />}
 
-        </div>
-        );
-        };
+        {modalMessage && (
+            <Modal show={true} onClose={() => setModalMessage("")}>
+              <h2 style={{ color: "#b00020" }}>Notice</h2>
+              <p>{modalMessage}</p>
+              <button className="modal-button" onClick={() => setModalMessage("")}>
+                Close
+              </button>
+            </Modal>
+        )}
 
-        export default RecipeDetails;
+      </div>
+  );
 
+};
+
+export default RecipeDetails;

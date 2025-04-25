@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import TipListing from "./TipListing";
-
+import { useLanguage } from "../translator/Languagecontext";
 const Posts = ({ doRefreshPosts, appRefresh }) => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-
-
+  const { t } = useLanguage();
   const loadPosts = () => {
     if (sessionStorage.getItem("token")) {
       let url = process.env.REACT_APP_API_PATH + "/posts?parentID="; // Remove attributes filter

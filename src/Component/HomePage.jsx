@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link,useNavigate } from "react-router-dom"; // Import Link for navigation
 import LoginForm from "./LoginForm";
+import Landing from "./Landing";
 import "../HomePage.css";
 import Homephoto from "../assets/Homephoto.jpeg";
 import { useLanguage } from "../translator/Languagecontext";
@@ -153,7 +154,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
    <div className="homepage">
 
      {!userToken ? (
-       <LoginForm setLoggedIn={setLoggedIn} />
+       <Landing setLoggedIn={setLoggedIn} />
      ) : (
        <>
          {/* Hero Section */}
@@ -173,43 +174,55 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          </section>
 
 
-         {/* Cuisine Section */}
-         <section className="cuisine-section">
-           <div className="cuisine-grid">
-             {[
-               { name: "Italian" },
-               { name: "Chinese" },
-               { name: "American"},
-               { name: "Indian"},
-               { name: "Mexican"},
-               { name: "Japanese" },
-               { name: "Spanish"},
-             ].map((cuisine, index) => (
-               <div key={index} onClick={() => handleCuisine(cuisine.name)} className="cuisine-card">
-                 <button type="button" style={{backgroundColor:"transparent", border:"0px", fontSize:"18px"}}>{cuisine.name}</button>
+           {/* Cuisine Section */}
+           <section className="cuisine-section">
+               <div className="cuisine-grid">
+                   {[
+                       { key: "italian", label: t("italian") },
+                       { key: "chinese", label: t("chinese") },
+                       { key: "american", label: t("american") },
+                       { key: "indian", label: t("indian") },
+                       { key: "mexican", label: t("mexican") },
+                       { key: "japanese", label: t("japanese") },
+                       { key: "spanish", label: t("spanish") }
+                   ].map((cuisine, index) => (
+                       <div
+                           key={index}
+                           onClick={() => handleCuisine(cuisine.key)}
+                           className="cuisine-card"
+                       >
+                           <button
+                               type="button"
+                               style={{ backgroundColor: "transparent", border: "0px", fontSize: "18px" }}
+                           >
+                               {cuisine.label}
+                           </button>
+                       </div>
+                   ))}
                </div>
-             ))}
-           </div>
-         </section>
-
-
-         {/* Popular Recipes */}
-         <section className="popular-recipes">
-           <section className="choose-level">
-             <h2>Recommended Recipes based on Cooking Level!</h2>
-             <div className="levels">
-               <div style={{ backgroundColor: selectedLevel === "easy" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("easy")}>
-                 <leveltext>Easy</leveltext>
-               </div>
-               <div style={{ backgroundColor: selectedLevel === "medium" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("medium")}>
-                 <leveltext>Medium</leveltext>
-               </div>
-               <div style={{ backgroundColor: selectedLevel === "hard" ? "#634E3B" : undefined}} className="level" onClick={() => setSelectedLevel("hard")}>
-                 <leveltext>Hard</leveltext>
-               </div>
-             </div>
            </section>
-           <div className="recipes-grid">
+
+
+           {/* Popular Recipes */}
+         <section className="popular-recipes">
+             <section className="choose-level">
+                 <h2>{t("recommendedRecipes")}</h2>
+                 <div className="levels">
+                     <div style={{backgroundColor: selectedLevel === "easy" ? "rgb(188 145 118)" : undefined}}
+                          className="level" onClick={() => setSelectedLevel("easy")}>
+                         <leveltext>{t('easy')}</leveltext>
+                     </div>
+                     <div style={{backgroundColor: selectedLevel === "medium" ? "rgb(188 145 118)" : undefined}}
+                          className="level" onClick={() => setSelectedLevel("medium")}>
+                         <leveltext>{t('medium')}</leveltext>
+                     </div>
+                     <div style={{backgroundColor: selectedLevel === "hard" ? "rgb(188 145 118)" : undefined}}
+                          className="level" onClick={() => setSelectedLevel("hard")}>
+                         <leveltext>{t('hard')}</leveltext>
+                     </div>
+                 </div>
+             </section>
+             <div className="recipes-grid">
              {filteredRecipes.length > 0 ? (
                filteredRecipes.map((recipe) => (
                  <div key={recipe.id} className="recipe-card">
@@ -229,7 +242,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                       : "No description available"}
                     </p>
                    <Link to={`/recipe/${recipe.id}`} className="read-more">
-                     View Recipe →
+                       {t('viewRecipe')}
                    </Link>
                  </div>
                ))
@@ -242,7 +255,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
 
          {/* Featured Cooking Tips */}
          <section className="featured-tips">
-           <h2>Featured Cooking Tips</h2>
+           <h2>{t('featuredCookingTips')}</h2>
            <div className="tips-grid">
              {randomTips.length > 0 ? (
                randomTips.map((tip) => (
@@ -256,7 +269,7 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
                      : "No description available"}
                    </p>
                    <Link to={`/tip/${tip.id}`} className="read-more">
-                     Read More →
+                       {t('readmore')}→
                    </Link>
                  </div>
                ))
@@ -269,27 +282,27 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
 
          {/* How-To Guides */}
          <section className="how-to">
-           <h2>How-To Guides</h2>
+           <h2>{t('howToGuides')}</h2>
            <div className="guides">
              <div className="guide-card">
-               <h3>Grilling Techniques</h3>
+               <h3>{t('grilling_title')}</h3>
                <p> Master the Art of Grilling.</p>
-               <Link to="/grilling-techniques"><a>Learn More →</a></Link>
+               <Link to="/grilling-techniques"><a>{t('learnMore')}</a></Link>
              </div>
              <div className="guide-card">
-               <h3>Baking Basics</h3>
-               <p>Essential techniques for perfect baked goods.</p>
-               <Link to="/baking-basics"><a>Learn More →</a></Link>
+               <h3>{t('bakingBasicsTitle')}</h3>
+               <p>{t('bakingBasicsDesc')}</p>
+               <Link to="/baking-basics"><a>{t('learnMore')}</a></Link>
              </div>
              <div className="guide-card">
-               <h3>Knife Skills 101</h3>
-               <p> Learn how to chop, dice, and julienne like a pro!</p>
-               <Link to="/knife-skills"><a>Learn More →</a></Link>
+               <h3>{t('knifeSkills_title')}</h3>
+               <p> {t('knifeSkills_description')}</p>
+               <Link to="/knife-skills"><a>{t('learnMore')}</a></Link>
              </div>
              <div className="guide-card">
-               <h3>Perfect Pasta</h3>
-               <p>Cook pasta perfectly every time with these simple tricks.</p>
-               <Link to="/perfect-pasta"><a>Learn More →</a></Link>
+               <h3>{t('perfectPasta_title')}</h3>
+               <p>{t('perfectPasta_description')}</p>
+               <Link to="/perfect-pasta"><a>{t('learnMore')}</a></Link>
              </div>
            </div>
          </section>
@@ -298,20 +311,13 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
            {/* Community Section */}
          <section className="community">
           <div id="community-information">
-            <h2>Try Joining or Making a Cooking Community!</h2>
-            <p>Connect with fellow food lovers, share recipes, and get inspired!</p>
+            <h2>{t('cookingCommunity_title')}</h2>
+            <p>{t('cookingCommunity_description')}</p>
             <div className="community-buttons">
-              <Link to="/community"><button className="btn primary">Join Now</button></Link>
+              <Link to="/community"><button className="btn primary">{t('cookingCommunity_joinNow')}</button></Link>
             </div>
           </div>
          </section>
-
-         {sessionStorage.getItem("token") && <section className="contact">
-            <h2>Contact Us</h2>
-            <p>
-              We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-            </p>
-          </section>}
         </div>
        </>
      )}

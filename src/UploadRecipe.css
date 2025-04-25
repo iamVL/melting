@@ -298,3 +298,8 @@ body, html {
    }
  }
 
+@media (max-width: 425px) {
+   .upload-recipe-container {
+      flex-direction: column;
+   }
+}

@@ -4,6 +4,7 @@ import "../Login.css";
 import meltingLogo from "../assets/melting-pot-logo.jpeg";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import foodImage from "../food-image.jpeg";
+import {useLanguage} from "../translator/Languagecontext";
 
 const LoginForm = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
@@ -11,9 +12,10 @@ const LoginForm = ({ setLoggedIn }) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [sessionToken, setSessionToken] = useState("");
-
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isEmailInvalid, setIsEmailInvalid] = useState(false);
 
   const accountCreated = location.state?.accountCreated;
 
@@ -39,7 +41,10 @@ const LoginForm = ({ setLoggedIn }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setErrorMessage("Please enter a valid Email Address.");
+      setIsEmailInvalid(true);
       return;
+    } else {
+      setIsEmailInvalid(false);
     }
 
     fetch(process.env.REACT_APP_API_PATH + "/auth/login", {
@@ -73,65 +78,69 @@ const LoginForm = ({ setLoggedIn }) => {
       <div className="login-box">
         {/* Back Arrow (only visible on mobile) */}
         <div className="back-arrow">&#8592;</div>
-
-
-        {/* Left Column - Form */}
         <div className="left-column">
           <img src={meltingLogo} alt="Melting Pot" className="logo-loginn" />
-          <h1 className="login-title">WELCOME BACK</h1>
-          <p className="subtitle">Sign in with your Email Address and Password</p>
+          <h1 className="login-title">{t("welcome_back")}</h1>
+          <p className="subtitle">{t("sign_in_instruction")}</p>
 
           {/* Success Message */}
           {accountCreated && (
             <div className="alert success">Account created successfully! Please log in.</div>
           )}
 
-          {/* Error Message */}
-          {errorMessage && <div className="alert error">{errorMessage}</div>}
 
           <form onSubmit={submitHandler} className="register-form">
-          <div className="input-groupp">
-            <label htmlFor="email">Email Address</label>
-                <input
-                    id="email"
-                    type="text"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
-          </div>
+            <div className="input-groupp">
+              <label htmlFor="email">{t("email_address")}</label>
+              <input
+                  id="email"
+                  type="text"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className={isEmailInvalid ? "invalid-input" : ""}
+              />
+              {isEmailInvalid && (
+                  <div className="input-error-text">{errorMessage}</div>
+              )}
+            </div>
+
 
             <div className="input-groupp">
-              <label>Password</label>
+              <label>{t("password")}</label>
               <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            {!isEmailInvalid && errorMessage && (
+                <div className="input-error-text">{errorMessage}</div>
+            )}
+
 
             <div className="options">
               <label className="remember-me">
                 <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
                 />
-                Remember me
+                {t("remember_me")}
               </label>
               <Link to="/reset-password" className="forgot-password">
-                Forgot Password?
+                {t("forgot_password")}
               </Link>
             </div>
 
             <button type="submit" className="signup-btna">
-              Log In
+              {t("log_in")}
             </button>
 
             <p className="login-text">
-              Don’t have an account?{" "}
+              {t("dont_have_account")}{" "}
               <Link to="/register" className="sign-up-link">
-                Sign Up
+                {t("sign_up")}
               </Link>
             </p>
           </form>
@@ -139,7 +148,7 @@ const LoginForm = ({ setLoggedIn }) => {
 
         {/* Right Column - Desktop Only */}
         <div className="right-column">
-          <img src={foodImage} alt="Delicious food" width="1200" height="1800" className="food-image" />
+          <img src={foodImage} alt="Delicious food" width="1200" height="1800" className="food-image"/>
         </div>
       </div>
     </div>

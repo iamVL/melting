@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../RecipeListing.css";
+import { useLanguage } from "../translator/Languagecontext";
 
 const FavoritedRecipes = () => {
   const [favorites, setFavorites] = useState([]);
@@ -8,7 +9,7 @@ const FavoritedRecipes = () => {
   const token = sessionStorage.getItem("token");
   const rawUser = sessionStorage.getItem("user");
   const [connections, setConnections] = useState([]);
-
+  const { t } = useLanguage();
   let user;
   try {
     user = JSON.parse(rawUser);
@@ -62,6 +63,10 @@ const FavoritedRecipes = () => {
 const description = rawDesc.trim()
   ? rawDesc
   : "No description available";
+  const shortDescription =
+              description.length > 100
+                ? description.substring(0, 90) + "..."
+                : description;
 
               return {
                 id: recipeData.id || postID,
@@ -69,7 +74,7 @@ const description = rawDesc.trim()
                 title: recipeData.title || recipeData.name || recipeData.attributes?.title || "Untitled Recipe",
                 visibility: recipeData.attributes?.visibility,
                 authorID:   recipeData.authorID || recipeData.attributes?.authorID,
-                description,   
+                description: shortDescription,   
                 image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail || "/default-recipe-image.jpg",
 
               };
@@ -174,52 +179,51 @@ const visibleFavorites = filteredFavorites.filter((recipe) => {
 });
 
 
-  return (
-      <div className="recipe-container">
-        <h2 className="recipe-header">Your Favorite Recipes</h2>
-        <p className="recipe-subheader">Here are the recipes you favorited!</p>
+    return (
+        <div className="recipe-container">
+          <h2 className="recipe-header">{t("favorites_title")}</h2>
+          <p className="favorite-subheader">{t("favorites_subheader")}</p>
 
-        <div className="search-container">
-          <input
-              type="text"
-              placeholder="Search by title..."
-              className="search-bar"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+          <div className="search-container">
+            <input
+                type="text"
+                placeholder={t("searchByTitle")}
+                className="search-bar"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
 
-        {visibleFavorites.length > 0 ? (
-            <div className="recipe-grid">
-              {visibleFavorites.map((recipe, index) => (
-                  <div key={recipe.id || recipe.postID || index} className="recipe-card-1">
-                    <img
-                        src={recipe.image}
-                        alt={recipe.title}
-                        className="recipe-image-1"
-
-                    />
-                    <div className="recipe-content-1">
-                      <h3 className="recipe-title-1">{recipe.title}</h3>
-                      <p className="recipe-description-1">{recipe.description}</p>
-                      <Link to={`/recipe/${recipe.id}`} className="read-more-button-1">
-                        View Recipe →
-                      </Link>
-                      <button
-                          className="remove-favorite-button"
-                          onClick={() => removeFavorite(recipe.reactionID)}
-                      >
-                        ❌ Remove Favorite
-                      </button>
+          {visibleFavorites.length > 0 ? (
+              <div className="recipe-grid">
+                {visibleFavorites.map((recipe, index) => (
+                    <div key={recipe.id || recipe.postID || index} className="recipe-card-1">
+                      <img
+                          src={recipe.image}
+                          alt={recipe.title}
+                          className="recipe-image-1"
+                      />
+                      <div className="recipe-content-1">
+                        <h3 className="recipe-title-1">{recipe.title}</h3>
+                        <p className="recipe-description-1">{recipe.description}</p>
+                        <Link to={`/recipe/${recipe.id}`} className="read-more-button-1">
+                          {t("viewRecipe")}
+                        </Link>
+                        <button
+                            className="remove-favorite-button"
+                            onClick={() => removeFavorite(recipe.reactionID)}
+                        >
+                          ❌ {t("removeFavorite")}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-              ))}
-            </div>
-        ) : (
-            <p className="no-recipes-found">You have no favorite recipes yet.</p>
-        )}
-      </div>
-  );
-};
+                ))}
+              </div>
+          ) : (
+              <p className="no-recipes-found">{t("noFavorites")}</p>
+          )}
+        </div>
+    );
+  };
 
-export default FavoritedRecipes;
+  export default FavoritedRecipes;

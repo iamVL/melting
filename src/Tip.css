@@ -256,3 +256,10 @@
     margin-top: 20px;
   }
 }
+
+@media (max-width: 425px) {
+  .tip-container {
+    margin: 0px;
+    width: 100%;
+  }
+}

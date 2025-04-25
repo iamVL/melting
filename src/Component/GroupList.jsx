@@ -3,6 +3,7 @@ import blockIcon from "../assets/block_white_216x216.png";
 import unblockIcon from "../assets/thumbsup.png";
 import deleteIcon from "../assets/delete.png";
 import { Link } from 'react-router-dom';
+import { useLanguage } from "../translator/Languagecontext";
 
 const GroupList = () => {
   const userID = parseInt(sessionStorage.getItem("user"));
@@ -14,6 +15,7 @@ const GroupList = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [responseMessage, setResponseMessage] = useState("");
+  const { t } = useLanguage();
 
   useEffect(() => {
     loadGroups();
@@ -246,42 +248,46 @@ const GroupList = () => {
   // to update those to be specific to the way you manage groups.
 
   if (error) {
-    return <div> Error: {error.message} </div>;
+    return <div>{t("error")}: {error.message}</div>;
   } else if (!isLoaded) {
-    return <div> Loading... </div>;
+    return <div>{t("loading")}</div>;
   } else {
     return (
-      <div>
-        <p style={{color:"black", marginBottom:"0px"}}> My Communities</p>
-        <div className="community-box"> 
-          {mygroups.map((group) => (
-            <div key={group.groupID} className="userlist">
-              <h4>{group.group.name}</h4>
-              <div className="group-buttons">
-                {group.group.attributes?.ownerID == userID ? <button onClick={() => deleteGroup(group.groupID)}>Delete</button> :               
-                <button onClick={() => updateConnection(group.groupID, "inactive")}>Leave</button>
-                }
-                <a href={`/hci/teams/melting/community-details/${group.groupID}/${group.group.name}`} onClick={() => console.log(`Viewing ${group.name}`)}>
-                  View Community
-                </a>
-              </div>
-            </div>
-          ))}
+        <div>
+          <p style={{ color: "black", marginBottom: "0px" }}>{t("my_communities")}</p>
+          <div className="community-box">
+            {mygroups.map((group) => (
+                <div key={group.groupID} className="community-model">
+                  <h4>{group.group.name}</h4>
+                  <div className="group-buttons">
+                    {group.group.attributes?.ownerID == userID ? (
+                        <button onClick={() => deleteGroup(group.groupID)}>{t("delete")}</button>
+                    ) : (
+                        <button onClick={() => updateConnection(group.groupID, "inactive")}>{t("leave")}</button>
+                    )}
+                    <a
+                        href={`/hci/teams/melting/community-details/${group.groupID}/${group.group.name}`}
+                        onClick={() => console.log(`Viewing ${group.name}`)}
+                    >
+                      {t("view_community")}
+                    </a>
+                  </div>
+                </div>
+            ))}
+          </div>
+          <p style={{ color: "black", marginBottom: "0px" }}>{t("all_communities")}</p>
+          <div className="community-box">
+            {groups.map((group) => (
+                <div key={group.id} className="community-model">
+                  <h4>{group.name}</h4>
+                  <button onClick={() => updateConnection(group.id, "active")}>{t("join")}</button>
+                </div>
+            ))}
+          </div>
         </div>
-        <p style={{color:"black", marginBottom:"0px"}}> All Communities</p>
-        <div className="community-box">
-          {groups.map((group) => (
-            <div key={group.id} className="userlist">
-              <h4>{group.name}</h4>
-              <button onClick={() => updateConnection(group.id, "active")}>Join</button>
-            </div>
-          ))}
-        </div>
-        {/*<button onClick={testGroupUpdate}>Test Update</button>*/}
-        {/*<button onClick={testGroupAdd}>Test Add</button>*/}
-      </div>
     );
   }
+
 };
 
 export default GroupList;
