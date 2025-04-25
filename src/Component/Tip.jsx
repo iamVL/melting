@@ -19,6 +19,7 @@ const TipForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
+
   const addStep = () => setSteps([...steps, { id: steps.length + 1, description: "", image: null }]);
   const removeStep = (id) => {
     if (steps.length > 1 && id === steps.length) setSteps(steps.slice(0, -1));

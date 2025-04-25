@@ -181,19 +181,32 @@ const Navbar = () => {
       </div>
 
       {/* Main nav container (slides in from left on mobile) */}
-      <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
-        <ul className="landing-links">
-        <li><Link to="/login">{t("nav_login")}</Link></li>
-        <li><Link to="/register">{t("nav_register")}</Link></li>
-        </ul>
-      </div>
+          <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
+            <ul className="landing-links">
+              <li>
+                {location.pathname === "/login" ? (
+                    <span className="nav-btn active-nav-btn">{t("nav_login")}</span>
+                ) : (
+                    <Link className="nav-btn" to="/login">{t("nav_login")}</Link>
+                )}
+              </li>
+              <li>
+                {location.pathname === "/register" ? (
+                    <span className="nav-btn active-nav-btn">{t("nav_register")}</span>
+                ) : (
+                    <Link className="nav-btn" to="/register">{t("nav_register")}</Link>
+                )}
+              </li>
+            </ul>
 
-      {/* Right: Hamburger / X button (visible on mobile) */}
-      <button className="hamburger" onClick={toggleMobileMenu}>
-        {mobileMenuOpen ? "✕" : "☰"}
-      </button>
-    </nav>
-        </>))
+          </div>
+
+          {/* Right: Hamburger / X button (visible on mobile) */}
+          <button className="hamburger" onClick={toggleMobileMenu}>
+            {mobileMenuOpen ? "✕" : "☰"}
+          </button>
+        </nav>
+    </>))
   );
 };
 

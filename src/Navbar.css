@@ -248,6 +248,7 @@
 .active-nav-btn {
   background-color: #262626 !important;
   color: white;
+  font-size: 14px;
 }
 
 @media (max-width: 1024px) {
