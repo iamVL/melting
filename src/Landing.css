@@ -86,7 +86,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 50%;
+    width: 40%;
     animation: opacityChange 1.3s ease-out forwards;
 }
 
@@ -540,7 +540,7 @@
 
 @media (max-width: 768px) {
     .slogan-layout {
-        width: 90%;
+        width: 80%;
     }
 }
 
@@ -572,10 +572,6 @@
         flex-direction: column;
     }
 
-    .slogan-layout {
-        width: 100%;
-    }
-
     .feature-showcase {
         padding: 60px 20px;
     }
@@ -604,11 +600,19 @@
     .landing-about h4 {
         font-size: 14px;
     }
+    
+    .feature-showcase h2 {
+        font-size: 26px;
+    }
 }
 
 @media (max-width: 375px) {
     .feature-box h4 {
         font-size: 14px;
+    }
+
+    .slogan-text {
+        margin: 0px 30px;
     }
 
     .feature-box-header h3 {

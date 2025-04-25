@@ -402,12 +402,12 @@ const RecipeListing = ({
 
       </div>
       
-      <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+      <div id="listing-information" style={{display:"flex", justifyContent:"space-between"}}>
         <p className="recipe-subheader" style={{margin:"0px"}}>
           {t('browseRecipes_description')}
         </p>
         
-        <label style={{ marginLeft: "16px", display:"flex", flexDirection:"row", height:"50px", alignItems:"center", gap:"10px"}}>
+        <label style={{ display:"flex", flexDirection:"row", alignItems:"center", gap:"10px"}}>
           <input
             style={{width:"20px", height:"20px", margin:"0px"}}
             type="checkbox"

@@ -63,6 +63,10 @@ const FavoritedRecipes = () => {
 const description = rawDesc.trim()
   ? rawDesc
   : "No description available";
+  const shortDescription =
+              description.length > 100
+                ? description.substring(0, 90) + "..."
+                : description;
 
               return {
                 id: recipeData.id || postID,
@@ -70,7 +74,7 @@ const description = rawDesc.trim()
                 title: recipeData.title || recipeData.name || recipeData.attributes?.title || "Untitled Recipe",
                 visibility: recipeData.attributes?.visibility,
                 authorID:   recipeData.authorID || recipeData.attributes?.authorID,
-                description,   
+                description: shortDescription,   
                 image: recipeData.image || recipeData.attributes?.mainImage || recipeData.attributes?.thumbnail || "/default-recipe-image.jpg",
 
               };
@@ -178,7 +182,7 @@ const visibleFavorites = filteredFavorites.filter((recipe) => {
     return (
         <div className="recipe-container">
           <h2 className="recipe-header">{t("favorites_title")}</h2>
-          <p className="recipe-subheader">{t("favorites_subheader")}</p>
+          <p className="favorite-subheader">{t("favorites_subheader")}</p>
 
           <div className="search-container">
             <input

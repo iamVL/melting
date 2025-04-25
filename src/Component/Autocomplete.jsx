@@ -65,7 +65,7 @@ const Autocomplete = ({ suggestions, selectAutocomplete }) => {
 
   return (
       <div className="suggestions-list">
-        <label htmlFor="autocompleteInput" className="custom-autocomplete-label">
+        <label style={{color:"rgb(70, 70, 70)", display:"none"}}htmlFor="autocompleteInput" className="custom-autocomplete-label">
           {t("autocomplete_enter_user")}
         </label>
         <input

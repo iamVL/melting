@@ -2,7 +2,7 @@
 
 .login-container {
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   background-color: #D96846;
   display: flex;
   align-items: center;
@@ -14,7 +14,7 @@
   background-color: white;
   width: 75vw;
   max-width: 1152px;
-  height: 90%;
+  height: 100%;
   display: flex;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -44,15 +44,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.logo-loginn {
-  width: 150px;
-  position: absolute;
-  top: 1rem;
-  left: 3rem; 
-  align-self: flex-start;
-  border-radius: 20px;
 }
 
 .login-title {
@@ -109,14 +100,20 @@
 
 .remember-me {
   display: flex;
-  font-weight: bold;}
+  font-weight: bold;
+  margin-bottom: 0px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 5px
+}
    
 
 .remember-me input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: #43A32D;
-  margin-right: 6px;
+  margin: 0px;
 }
 
 .forgot-password {
@@ -285,9 +282,10 @@
   }
 
   .options {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     text-align: center;
+    width: 80%;
   }
 
   .signup-btna {
@@ -313,7 +311,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background-color: #da7948;
   padding: 40px 20px;
 }
@@ -331,15 +328,15 @@
 /* Left Column */
 .left-column {
   flex: 1;
-  padding: 50px;
+  padding: 10px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .logo-loginn {
-  width: 140px;
-  margin-bottom: 30px;
+  width: 150px;
+  border-radius: 20px;
 }
 
 .login-title {
@@ -498,6 +495,20 @@
   margin-bottom: 20px;
 }
 
+@media (max-width: 1024px) {
+  .login-container {
+    height: auto;
+  }
+
+  .input-groupp {
+    width: 80%;
+  }
+
+  .signup-btna {
+    width: 80%;
+  }
+}
+
 @media (max-width: 768px) {
   .login-box {
     flex-direction: column;
@@ -509,11 +520,27 @@
   }
 
   .left-column {
-    padding: 30px 20px;
+    padding: 0px 5px;
+  }
+
+  .left-column img {
+    margin-bottom: 0px;
+    width: 150px;
   }
 
   .back-arrow {
     display: block;
+  }
+
+  .options {
+    flex-direction: row;
+    width: 80%;
+  }
+}
+
+@media (max-width:320px) {
+  .login-title {
+    font-size: 25px;
   }
 }
 
