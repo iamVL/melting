@@ -556,12 +556,3 @@
   }
 }
 
-
-input:focus-visible,
-.signup-btna:focus-visible,
-.sign-up-link:focus-visible,
-.forgot-password:focus-visible {
-  outline: 3px dashed #f26b3a;
-  outline-offset: 2px;
-}
-

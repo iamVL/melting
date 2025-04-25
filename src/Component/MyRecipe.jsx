@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import "../MyRecipe.css";
+import Modal from "../Component/Modal";
 //import { all } from "axios";
 
 const RecipeDetails = () => {
@@ -36,6 +37,11 @@ const RecipeDetails = () => {
   
   const [minutes, setMinutes] = useState(0);
   const [hours, setHours] = useState(0);
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [pendingDelete, setPendingDelete] = useState(false);
+
 
   useEffect(() => {    
     fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`)
@@ -175,6 +181,30 @@ const RecipeDetails = () => {
     if (reviews.length === 0) return 0;
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     return (totalRating / reviews.length).toFixed(1);
+  };
+
+  const confirmActualDelete = async () => {
+    const token = sessionStorage.getItem("token");
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        setModalMessage("✅ Recipe deleted successfully!");
+        setShowConfirmModal(false);
+        setTimeout(() => navigate("/cookbooks"), 1500);
+      } else {
+        const result = await response.json();
+        setModalMessage("❌ Error deleting recipe: " + (result.error || "Something went wrong"));
+      }
+    } catch (error) {
+      setModalMessage("❌ Failed to delete the recipe. Please try again.");
+    }
+
+    setPendingDelete(false);
   };
 
   const handleChange = (index, event) => {
@@ -359,29 +389,10 @@ const RecipeDetails = () => {
       alert("You must be logged in to delete a recipe.");
       return;
     }
- 
- 
-    const confirmDelete = window.confirm("Are you sure you want to delete this recipe?");
-    if (!confirmDelete) return;
- 
- 
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
- 
- 
-      if (response.ok) {
-        alert("Recipe deleted successfully!");
-        navigate("/cookbooks");
-      } else {
-        const result = await response.json();
-        alert("Error deleting recipe: " + (result.error || "Something went wrong"));
-      }
-    } catch (error) {
-      alert("Failed to delete the recipe. Please try again.");
-    }
+
+
+    setShowConfirmModal(true);
+    setPendingDelete(true);
   };
 
   if (isLoading) return <p>Loading recipe details...</p>;
@@ -720,6 +731,25 @@ const RecipeDetails = () => {
             </div>
           </div>
         </div>
+        {modalMessage && (
+          <Modal show={true} onClose={() => setModalMessage("")}>
+            <h2 style={{ color: "#b00020" }}>Notice</h2>
+            <p>{modalMessage}</p>
+            <button className="modal-button" onClick={() => setModalMessage("")}>
+              Close
+            </button>
+          </Modal>
+      )}
+      {showConfirmModal && (
+          <Modal show={true} onClose={() => setShowConfirmModal(false)}>
+            <h2 style={{ color: "#e67e22" }}>⚠️ Confirm Deletion</h2>
+            <p>Are you sure you want to delete this recipe?</p>
+            <div className="modal-buttons">
+              <button className="cancel-btn" onClick={() => setShowConfirmModal(false)}>Cancel</button>
+              <button className="delete-btn" onClick={confirmActualDelete}>Delete</button>
+            </div>
+          </Modal>
+      )}
         </div>
     ))
   

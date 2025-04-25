@@ -152,6 +152,27 @@ const UploadRecipe = () => {
 
 
     const handleSubmit = async () => {
+        if (recipe.timeHours < 0 || recipe.timeMinutes < 0) {
+            setError("Hours/Minutes cannot be negative!");
+            setShowErrorModal(true);
+            return;
+        }
+        if (recipe.timeHours > 1000 || recipe.timeMinutes > 1000) {
+            setError("Hours/Minutes is too large!");
+            setShowErrorModal(true);
+            return;
+        }
+        if (recipe.servingSize < 0) {
+            setError("Serving Size cannot be negative!");
+            setShowErrorModal(true);
+            return;
+        }
+        if (recipe.servingSize > 1000) {
+            setError("Serving Size is too large!");
+            setShowErrorModal(true);
+            return;
+        }
+        
         if (
             !recipe.title ||
             !recipe.description ||
@@ -255,10 +276,10 @@ const UploadRecipe = () => {
                         <div className="upload-recipe-header">{t("uploadRecipe_title")}</div>
 
                         <label>{t("recipeTitle")}</label>
-                        <input type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
+                        <input placeholder={t("recipeTitle")} type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
 
                         <label>{t("description")}</label>
-                        <textarea name="description" value={recipe.description} onChange={handleChange} required maxLength={125} />
+                        <textarea placeholder={t("description")} name="description" value={recipe.description} onChange={handleChange} required maxLength={125} />
 
                         <label>{t("totalTime")}</label>
                         <div className="time-inputs">
@@ -267,7 +288,7 @@ const UploadRecipe = () => {
                         </div>
 
                         <label>{t("servingSize")}</label>
-                        <input type="number" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
+                        <input placeholder={t("servingSize")} type="number" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
 
                         <label>{t("selectDifficulty")}</label>
                         <div className="difficulty-options">

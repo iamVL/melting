@@ -67,7 +67,7 @@ export const translations = {
 
         // Allergies
         peanuts: "Peanuts",
-        treeNuts: "TreeNuts",
+        treenuts: "TreeNuts",
         shellfish: "Shellfish",
         gluten: "Gluten",
         eggs: "Eggs",

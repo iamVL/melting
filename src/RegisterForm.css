@@ -735,14 +735,6 @@
   border-color: #43A32D;
 }
 
-/* Accessibility Enhancements */
-input:focus-visible,
-.signup-btn:focus-visible,
-.login-text a:focus-visible {
-  outline: 3px dashed #f26b3a;
-  outline-offset: 2px;
-}
-
 /* Mobile View */
 @media (max-width: 768px) {
   .content-wrapper {
@@ -902,15 +894,6 @@ input:focus-visible,
     font-size: 14px;
   }
 }
-
-/* Accessibility Highlights */
-input:focus-visible,
-.signup-btn:focus-visible,
-.login-text a:focus-visible {
-  outline: 3px dashed #f26b3a;
-  outline-offset: 2px;
-}
-
 /* Alerts */
 .alert {
   padding: 12px 16px;
