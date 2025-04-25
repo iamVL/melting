@@ -173,7 +173,6 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          </section>
 
 
-         {/* Cuisine Section */}
            {/* Cuisine Section */}
            <section className="cuisine-section">
                <div className="cuisine-grid">
@@ -320,11 +319,12 @@ const HomePage = ({ isLoggedIn, setLoggedIn, doRefreshPosts, appRefresh }) => {
          </section>
 
          {sessionStorage.getItem("token") && <section className="contact">
-            <h2>{t('contactUs_title')}</h2>
-            <p>
-              We'd love to hear from you! Share your feedback, questions, or suggestions at <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
-            </p>
-          </section>}
+             <h2>{t('contactUs_title')}</h2>
+             <p>
+                 {t("contactUs_description").split("support@meltingpot.com")[0]}
+                 <a href="mailto:support@meltingpot.com">support@meltingpot.com</a>.
+             </p>
+         </section>}
         </div>
        </>
      )}
