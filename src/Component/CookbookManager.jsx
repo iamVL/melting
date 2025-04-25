@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import "../RecipeListing.css"; // For shared recipe styles
+import "../RecipeListing.css";
 import "../CookbookManager.css";
 import Modal from "../Component/Modal";
-
+import { useLanguage } from "../translator/Languagecontext";
 
 const CookbookManager = () => {
+    const { t } = useLanguage();
+
     const [cookbooks, setCookbooks] = useState([]);
     const [newCookbookName, setNewCookbookName] = useState("");
     const [recipes, setRecipes] = useState([]);
     const [favoritedRecipes, setFavoritedRecipes] = useState([]);
     const [selectedRecipes, setSelectedRecipes] = useState([]);
-
     const [category, setCategory] = useState("Recipes");
 
     const token = sessionStorage.getItem("token");
@@ -25,8 +26,6 @@ const CookbookManager = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [cookbookToDelete, setCookbookToDelete] = useState(null);
-
-
 
     useEffect(() => {
         if (!token || !currentUserID) return;
@@ -56,98 +55,80 @@ const CookbookManager = () => {
 
     const loadPosts = () => {
         if (!token) {
-          setError(new Error("No token found. Please log in."));
-          return;
+            setError(new Error(t("error_no_token")));
+            return;
         }
-    
+
         fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
         })
-          .then((res) => res.json())
-          .then((data) => {
-            setIsLoaded(true);
-            if (Array.isArray(data) && data[0]) {
-              const recipePosts = data[0].filter(
-                (p) => p.attributes?.postType === "recipe"
-              );
-              setPosts(recipePosts);
-            } else if (data.posts) {
-              const recipePosts = data.posts.filter(
-                (p) => p.attributes?.postType === "recipe"
-              );
-              setPosts(recipePosts);
-            }
-          })
-          .catch((err) => {
-            setIsLoaded(true);
-            setError(err);
-            console.error("Error fetching recipes:", err);
-          });
-      };
+            .then((res) => res.json())
+            .then((data) => {
+                setIsLoaded(true);
+                const recipePosts = Array.isArray(data) && data[0]
+                    ? data[0].filter((p) => p.attributes?.postType === "recipe")
+                    : data.posts?.filter((p) => p.attributes?.postType === "recipe") || [];
+                setPosts(recipePosts);
+            })
+            .catch((err) => {
+                setIsLoaded(true);
+                setError(err);
+                console.error("Error fetching recipes:", err);
+            });
+    };
 
     useEffect(() => {
-    loadPosts();
+        loadPosts();
     }, []);
 
     let sortedPosts = posts
-        .filter((post) => String(post.authorID) === String(sessionStorage.getItem("user")))
-        .map((post) => ({
-        ...post,
-  }));
+        .filter((post) => String(post.authorID) === String(currentUserID))
+        .map((post) => ({ ...post }));
 
-  const loadTips = () => {
+    const loadTips = () => {
         if (!token) {
-          setError(new Error("No token found. Please log in."));
-          return;
+            setError(new Error(t("error_no_token")));
+            return;
         }
-    
+
         fetch(`${process.env.REACT_APP_API_PATH}/posts?limit=100`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
         })
-          .then((res) => res.json())
-          .then((data) => {
-            setIsLoaded(true);
-            if (Array.isArray(data) && data[0]) {
-              const cookingTips = data[0].filter(
-                (p) => p.attributes?.postType === "tip"
-              );
-              setTips(cookingTips);
-            } else if (data.posts) {
-              const cookingTips = data.posts.filter(
-                (p) => p.attributes?.postType === "tip"
-              );
-              setTips(cookingTips);
-            }
-          })
-          .catch((err) => {
-            setIsLoaded(true);
-            setError(err);
-            console.error("Error fetching tips:", err);
-          });
-      };
+            .then((res) => res.json())
+            .then((data) => {
+                setIsLoaded(true);
+                const cookingTips = Array.isArray(data) && data[0]
+                    ? data[0].filter((p) => p.attributes?.postType === "tip")
+                    : data.posts?.filter((p) => p.attributes?.postType === "tip") || [];
+                setTips(cookingTips);
+            })
+            .catch((err) => {
+                setIsLoaded(true);
+                setError(err);
+                console.error("Error fetching tips:", err);
+            });
+    };
 
     useEffect(() => {
-    loadTips();
+        loadTips();
     }, []);
 
     let sortedTips = tips
-        .filter((tip) => String(tip.authorID) === String(sessionStorage.getItem("user")))
-        .map((tip) => ({
-        ...tip,
-  }));
+        .filter((tip) => String(tip.authorID) === String(currentUserID))
+        .map((tip) => ({ ...tip }));
 
     const handleCreateCookbook = () => {
         if (!newCookbookName.trim()) return;
         if (cookbooks.some((cb) => cb.name === newCookbookName)) {
-            alert("Cookbook already exists");
+            alert(t("cookbook_exists"));
             return;
         }
         const newCB = {
@@ -161,113 +142,89 @@ const CookbookManager = () => {
         setNewCookbookName("");
     };
 
-    const handleDeleteCookbook = (cookbookName) => {
-        const confirm = window.confirm(`Delete cookbook "${cookbookName}"?`);
-        if (!confirm) return;
-        const updated = cookbooks.filter((cb) => cb.name !== cookbookName);
-        saveCookbooks(updated);
-    };
-
-
     return (
         <div className="cookbook-manager">
-            <h2 className="recipe-header">Melting Pot Editor</h2>
+            <h2 className="recipe-header">{t("cookbook_editor")}</h2>
             <div className="cookbook-categories">
-                <button type="button" onClick={(e) => setCategory(e.target.value)} value="Recipes"> Recipes </button>
-                <button type="button" onClick={(e) => setCategory(e.target.value)} value="Tips"> Tips </button>
+                <button type="button" onClick={(e) => setCategory(e.target.value)} value="Recipes">
+                    {t("cookbook_recipes")}
+                </button>
+                <button type="button" onClick={(e) => setCategory(e.target.value)} value="Tips">
+                    {t("cookbook_tips")}
+                </button>
             </div>
-            <p className="recipe-subheader">
-                Click to view/edit your own listings!
-            </p>
+            <p className="recipe-subheader">{t("cookbook_view_edit")}</p>
             <p className="cookbook-recipe-manager">
-                {category === "Recipes" && <>
-                    {sortedPosts.map( (recipe) => {
-                        return (
-                            <div className="cookbook-recipe">
-                                <Link to={`/my_recipe/${recipe.id}`}>
-                                    <img src={recipe.attributes?.mainImage} alt="recipe" />
-                                    {/* title */}
-                                    <p id="cookbook-recipe-title">{recipe.attributes.title
-                                        ? recipe.attributes.title.length > 20
+                {category === "Recipes" && sortedPosts.map((recipe) => (
+                    <div className="cookbook-recipe" key={recipe.id}>
+                        <Link to={`/my_recipe/${recipe.id}`}>
+                            <img src={recipe.attributes?.mainImage} alt="recipe" />
+                            <p id="cookbook-recipe-title">
+                                {recipe.attributes.title
+                                    ? recipe.attributes.title.length > 20
                                         ? `${recipe.attributes.title.substring(0, 35)}...`
                                         : recipe.attributes.title
-                                        : "No title available"}
-                                    </p>   
-                                    {/* description */}
-                                    <p id="cookbook-recipe-desc">{recipe.content
-                                        ? recipe.content.length > 80
+                                    : t("cookbook_no_title")}
+                            </p>
+                            <p id="cookbook-recipe-desc">
+                                {recipe.content
+                                    ? recipe.content.length > 80
                                         ? `${recipe.content.substring(0, 80)}...`
                                         : recipe.content
-                                        : "No description available"}
-                                    </p>    
-                                </Link>
-                            </div>
-                        )
-                    })}
-                </>}
+                                    : t("cookbook_no_desc")}
+                            </p>
+                        </Link>
+                    </div>
+                ))}
 
-                {category === "Tips" && <>
-                    {sortedTips.map( (tip) => {
-                        return (
-                            <div className="cookbook-recipe">
-                                <Link to={`/my_tip/${tip.id}`}>
-                                    <img src={tip.attributes?.mainImage} alt="tip" />
-                                    {/* title */}
-                                    <p id="cookbook-recipe-title">{tip.content
-                                        ? tip.content.length > 20
+                {category === "Tips" && sortedTips.map((tip) => (
+                    <div className="cookbook-recipe" key={tip.id}>
+                        <Link to={`/my_tip/${tip.id}`}>
+                            <img src={tip.attributes?.mainImage} alt="tip" />
+                            <p id="cookbook-recipe-title">
+                                {tip.content
+                                    ? tip.content.length > 20
                                         ? `${tip.content.substring(0, 35)}...`
                                         : tip.content
-                                        : "No title available"}
-                                    </p>   
-                                    {/* description */}
-                                    <p id="cookbook-recipe-desc">{tip.attributes.description
-                                        ? tip.attributes.description.length > 80
+                                    : t("cookbook_no_title")}
+                            </p>
+                            <p id="cookbook-recipe-desc">
+                                {tip.attributes.description
+                                    ? tip.attributes.description.length > 80
                                         ? `${tip.attributes.description.substring(0, 80)}...`
                                         : tip.attributes.description
-                                        : "No description available"}
-                                    </p>    
-                                </Link>
-                            </div>
-                        )
-                    })}
-                </>}
+                                    : t("cookbook_no_desc")}
+                            </p>
+                        </Link>
+                    </div>
+                ))}
             </p>
 
-            <h2 className="recipe-header">Cookbook Manager</h2>
-            <p className="recipe-subheader">
-                Browse all recipes and add them to your own cookbooks!
-            </p>
-
+            <h2 className="recipe-header">{t("cookbook_manager")}</h2>
+            <p className="recipe-subheader">{t("cookbook_browse_add")}</p>
 
             <div className="create-cookbook-form">
                 <input
                     type="text"
-                    placeholder="New Cookbook Name"
+                    placeholder={t("cookbook_new_cookbook")}
                     value={newCookbookName}
                     onChange={(e) => setNewCookbookName(e.target.value)}
                 />
-                <button onClick={handleCreateCookbook}>➕ Create</button>
+                <button onClick={handleCreateCookbook}>➕ {t("cookbook_create")}</button>
             </div>
 
-
             <div className="cookbook-list">
-                <h3 style={{marginBottom: "1rem"}}>Your Cookbooks</h3>
-                <p className="recipe-subheader">
-                   Here are the cookbooks you've created!
-                </p>
+                <h3 style={{ marginBottom: "1rem" }}>{t("cookbook_your_cookbooks")}</h3>
+                <p className="recipe-subheader">{t("cookbook_here_are_yours")}</p>
                 {cookbooks.length === 0 ? (
-                    <p>You haven't created any cookbooks yet.</p>
+                    <p>{t("cookbook_none_yet")}</p>
                 ) : (
                     cookbooks.map((cb, idx) => (
                         <div key={idx} className="cookbook-item">
-                            <Link
-                                to={`/cookbooks/${encodeURIComponent(cb.name)}`}
-                                className="cookbook-link"
-                            >
+                            <Link to={`/cookbooks/${encodeURIComponent(cb.name)}`} className="cookbook-link">
                                 {cb.name}
                             </Link>
                             <div>
-
                                 <button
                                     className="delete-cookbook-btn"
                                     onClick={() => {
@@ -277,16 +234,18 @@ const CookbookManager = () => {
                                 >
                                     🗑
                                 </button>
-
                             </div>
                         </div>
                     ))
                 )}
             </div>
+
             <Modal show={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
-                <p>Are you sure you want to delete the cookbook "<strong>{cookbookToDelete}</strong>"?</p>
+                <p>{t("cookbook_confirm_delete").replace("{{name}}", cookbookToDelete)}</p>
                 <div className="modal-buttons">
-                    <button className="cancel-btn" onClick={() => setOpenDeleteModal(false)}>Cancel</button>
+                    <button className="cancel-btn" onClick={() => setOpenDeleteModal(false)}>
+                        {t("modal_cancel")}
+                    </button>
                     <button
                         className="delete-btn"
                         onClick={() => {
@@ -296,12 +255,10 @@ const CookbookManager = () => {
                             setCookbookToDelete(null);
                         }}
                     >
-                        Yes, Delete
+                        {t("modal_confirm_delete")}
                     </button>
                 </div>
             </Modal>
-
-
         </div>
     );
 };

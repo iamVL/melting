@@ -394,7 +394,7 @@ const RecipeListing = ({
             <option value="title-a-z">{t('atoz')}</option>
             <option value="title-z-a">{t('ztoa')}</option>
             {showCreatedByYouOption && (
-              <option value="created">Created by You</option>
+              <option value="created">{t('createdByYou')}</option>
             )}
           </select>
         </div>
@@ -403,7 +403,7 @@ const RecipeListing = ({
       
       <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
         <p className="recipe-subheader" style={{margin:"0px"}}>
-          Explore our community’s shared recipes. Click any card to see details!
+          {t('browseRecipes_description')}
         </p>
         
         <label style={{ marginLeft: "16px", display:"flex", flexDirection:"row", height:"50px", alignItems:"center", gap:"10px"}}>
@@ -414,7 +414,7 @@ const RecipeListing = ({
             onChange={(e) => setApplyPreferences(e.target.checked)}
           />{" "}
           <p className="recipe-subheader" style={{margin:"0px"}}>
-            Apply my dietary and allergy preferences
+            {t('applyPreferences2')}
           </p>
         </label>
       </div>
@@ -521,7 +521,7 @@ const RecipeListing = ({
                   <p className="recipe-description-1">{shortDescription}</p>
 
                   <Link to={`/recipe/${post.id}`} className="read-more-button-1">
-                    Read More →
+                    {t('readmore')} →
                   </Link>
                   
                   <div style={{display:"flex", gap:"10px"}}>
@@ -533,7 +533,7 @@ const RecipeListing = ({
                             }`}
                             onClick={() => handleFavorite(recipeID)}
                         >
-                          {isFavorited ? "⭐ Unfavorite" : "☆ Favorite"}
+                          {isFavorited ? "⭐ Unfavorite" : t('favorite')}
                         </button>
                     )}
                     <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>

@@ -1,63 +1,65 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
-import "../HowtoBakeCake.css";  // Import CSS
-import cakePoster from "../assets/bake-cake-recipe.png";  // Image file
+import "../HowtoBakeCake.css";
+import cakePoster from "../assets/bake-cake-recipe.png";
+import { useLanguage } from "../translator/Languagecontext"; // ✅ Import translation hook
 
 const BakingCake = () => {
-    return (
+  const { t } = useLanguage();
+
+  return (
       <div className="cake-container">
         <div className="back-link">
-          <Link to="/how-to-guides">← Back to How-To Guides</Link>
+          <Link to="/how-to-guides">← {t("backToGuides")}</Link>
         </div>
-        <h1 className="title">Baking a Perfect Cake</h1>
-  
+        <h1 className="title">{t("bakeCakeTitle")}</h1>
+
         <div className="poster-container">
           <img src={cakePoster} alt="Baking Cake Poster" className="poster" />
         </div>
-  
+
         <div className="info-section">
-          <h2>Why Bake a Cake?</h2>
-          <p>Nothing beats the aroma of a freshly baked cake wafting through your kitchen. 🍰</p>
-          <p>Follow these steps to create a light, fluffy, and delicious cake that’s sure to impress!</p>
-          <p>Once you successfully made the cake, you may decorate it, fill it with whatever you want!</p>
-  
-          <h2>Ingredients</h2>
+          <h2>{t("whyBakeCakeTitle")}</h2>
+          <p>{t("whyBakeCakeLine1")}</p>
+          <p>{t("whyBakeCakeLine2")}</p>
+          <p>{t("whyBakeCakeLine3")}</p>
+
+          <h2>{t("ingredientsTitle")}</h2>
           <ul>
-            <li>2 cups all-purpose flour</li>
-            <li>1 1/2 cups granulated sugar</li>
-            <li>1/2 cup unsalted butter, softened</li>
-            <li>1 cup milk</li>
-            <li>3 large eggs</li>
-            <li>2 tsp baking powder</li>
-            <li>1 tsp vanilla extract</li>
-            <li>1/4 tsp salt</li>
-            <li>2 cups powdered sugar</li>
-            <li>1/2 cup heavy cream</li>
+            <li>{t("ingredient1")}</li>
+            <li>{t("ingredient2")}</li>
+            <li>{t("ingredient3")}</li>
+            <li>{t("ingredient4")}</li>
+            <li>{t("ingredient5")}</li>
+            <li>{t("ingredient6")}</li>
+            <li>{t("ingredient7")}</li>
+            <li>{t("ingredient8")}</li>
+            <li>{t("ingredient9")}</li>
+            <li>{t("ingredient10")}</li>
           </ul>
 
-          <h2>Steps to Bake a Cake</h2>
+          <h2>{t("stepsTitle")}</h2>
           <ul>
-            <li>🍚 <strong>Sift Dry Ingredients</strong> – Sift together flour, baking powder, and salt into a large bowl.</li>
-            <li>🥣 <strong>Mix Wet Ingredients</strong> – In another bowl, whisk together softened butter, sugar, eggs, milk, and vanilla extract.</li>
-            <li>🥄 <strong>Combine and Mix</strong> – Gradually add the dry ingredients to the wet ingredients, mixing until smooth and lump-free.</li>
-            <li>🪣 <strong>Divide and Pour</strong> – Pour the batter evenly between two greased and floured cake pans.</li>
-            <li>🔥 <strong>Bake</strong> – Preheat oven to 350°F (175°C) and bake for 30-35 minutes, or until a toothpick inserted comes out clean.</li>
-            <li>🍰 <strong>Make the Frosting</strong> – Combine powdered sugar, heavy cream, and a splash of vanilla extract. Whisk until smooth and fluffy.</li>
-            <li>🎂 <strong>Assemble and Decorate</strong> – Once the cakes have cooled, layer and frost them. Decorate with sprinkles or fruit as desired.</li>
+            <li>🍚 <strong>{t("step1Title")}</strong> – {t("step1Desc")}</li>
+            <li>🥣 <strong>{t("step2Title")}</strong> – {t("step2Desc")}</li>
+            <li>🥄 <strong>{t("step3Title")}</strong> – {t("step3Desc")}</li>
+            <li>🪣 <strong>{t("step4Title")}</strong> – {t("step4Desc")}</li>
+            <li>🔥 <strong>{t("step5Title")}</strong> – {t("step5Desc")}</li>
+            <li>🍰 <strong>{t("step6Title")}</strong> – {t("step6Desc")}</li>
+            <li>🎂 <strong>{t("step7Title")}</strong> – {t("step7Desc")}</li>
           </ul>
-  
-          <h2>Cake Baking Tips</h2>
+
+          <h2>{t("tipsTitle")}</h2>
           <ul>
-            <li>🧈 Bring ingredients to room temperature for smoother mixing.</li>
-            <li>🥄 Do not overmix the batter to keep the cake fluffy.</li>
-            <li>⏰ Let the cake cool completely before frosting to avoid melting.</li>
+            <li>🧈 {t("tip1")}</li>
+            <li>🥄 {t("tip2")}</li>
+            <li>⏰ {t("tip3")}</li>
           </ul>
-  
-          <p>Enjoy a slice of homemade cake that's fluffy, moist, and delicious! 🎂</p>
+
+          <p>{t("finalMessage")}</p>
         </div>
       </div>
-    );
-  };
-  
-  export default BakingCake;
+  );
+};
+
+export default BakingCake;

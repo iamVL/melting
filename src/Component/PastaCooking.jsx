@@ -1,47 +1,50 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../PastaCooking.css";  // Import CSS
-import pastaPoster from "../assets/pasta-recipe.png";  // Image file
+import "../PastaCooking.css";
+import pastaPoster from "../assets/pasta-recipe.png";
+import { useLanguage } from "../translator/Languagecontext";
 
 const PastaCooking = () => {
-  return (
-    <div className="pasta-container">
-      <div className="back-link">
-        <Link to="/how-to-guides">← Back to How-To Guides</Link>
-      </div>
+    const { t } = useLanguage();
 
-      <h1 className="title">How to Cook Pasta</h1>
+    return (
+        <div className="pasta-container">
+            <div className="back-link">
+                <Link to="/how-to-guides">← {t("backToGuides")}</Link>
+            </div>
 
-      <div className="poster-container">
-        <img src={pastaPoster} alt="Pasta Cooking Poster" className="poster" />
-      </div>
+            <h1 className="title">{t("howToCookPastaTitle")}</h1>
 
-      <div className="info-section">
-        <h2>Mastering Pasta Perfection</h2>
-        <p>Cooking pasta might seem simple, but small changes make a big difference! 🍝</p>
+            <div className="poster-container">
+                <img src={pastaPoster} alt="Pasta Cooking Poster" className="poster" />
+            </div>
 
-        <h2>Key Steps for the Best Pasta</h2>
-        <ul>
-          <li>💧 Use plenty of water – 4-6 cups per 100g pasta.</li>
-          <li>🧂 Salt the water generously – It enhances flavor.</li>
-          <li>⏳ Follow the package cooking time – Avoid overcooking.</li>
-          <li>❄️ Save some pasta water – Helps bind sauce to pasta.</li>
-          <li>🥄 Toss pasta with sauce immediately – Absorbs flavor.</li>
-        </ul>
+            <div className="info-section">
+                <h2>{t("pastaMasteryTitle")}</h2>
+                <p>{t("pastaMasteryText")}</p>
 
-        <h2>Cooking Timeline</h2>
-        <ul>
-          <li>🔥 Bring salted water to a rolling boil.</li>
-          <li>🍝 Add pasta and stir to prevent sticking.</li>
-          <li>⏳ Cook according to instructions (al dente is best!).</li>
-          <li>🕳️ Drain in a colander, reserving some pasta water.</li>
-          <li>🍅 Toss with your favorite sauce and enjoy!</li>
-        </ul>
+                <h2>{t("keyStepsTitle")}</h2>
+                <ul>
+                    <li>💧 {t("pastaStep1")}</li>
+                    <li>🧂 {t("pastaStep2")}</li>
+                    <li>⏳ {t("pastaStep3")}</li>
+                    <li>❄️ {t("pastaStep4")}</li>
+                    <li>🥄 {t("pastaStep5")}</li>
+                </ul>
 
-        <p>Now you can make **restaurant-quality pasta** at home! 🎉</p>
-      </div>
-    </div>
-  );
+                <h2>{t("cookingTimelineTitle")}</h2>
+                <ul>
+                    <li>🔥 {t("timelineStep1")}</li>
+                    <li>🍝 {t("timelineStep2")}</li>
+                    <li>⏳ {t("timelineStep3")}</li>
+                    <li>🕳️ {t("timelineStep4")}</li>
+                    <li>🍅 {t("timelineStep5")}</li>
+                </ul>
+
+                <p>{t("pastaOutro")}</p>
+            </div>
+        </div>
+    );
 };
 
 export default PastaCooking;

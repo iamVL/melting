@@ -245,186 +245,118 @@ const UploadRecipe = () => {
  const visibilityOptions = ["Public", "Followers Only"];
 
 
- return (
-   <div className="page-container">
-     {isLoaded ? (
-       <div className="upload-recipe-container">
-         <div className="upload-recipe-form">
+    return (
+        <div className="page-container">
+            {isLoaded ? (
+                <div className="upload-recipe-container">
+                    <div className="upload-recipe-form">
+                        <div className="upload-recipe-header">{t("uploadRecipe_title")}</div>
 
-            <div style={{color:"black"}} className="upload-recipe-header">{t('uploadRecipe_title')}</div>
-           <label>{t('recipeTitle')}</label>
-           <input type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
+                        <label>{t("recipeTitle")}</label>
+                        <input type="text" name="title" value={recipe.title} onChange={handleChange} required maxLength={60} />
 
+                        <label>{t("description")}</label>
+                        <textarea name="description" value={recipe.description} onChange={handleChange} required maxLength={125} />
 
-           <label>{t('description')}</label>
-           <textarea name="description" value={recipe.description} onChange={handleChange} required maxLength={125} />
+                        <label>{t("totalTime")}</label>
+                        <div className="time-inputs">
+                            <input type="number" name="timeHours" value={recipe.timeHours} onChange={handleChange} placeholder={t("hours")} />
+                            <input type="number" name="timeMinutes" value={recipe.timeMinutes} onChange={handleChange} placeholder={t("minutes")} />
+                        </div>
 
+                        <label>{t("servingSize")}</label>
+                        <input type="number" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
 
-           <label>{t('totalTime')}</label>
-           <div className="time-inputs">
-             <input type="number" name="timeHours" value={recipe.timeHours} onChange={handleChange} placeholder="hr" />
-             <input
-               type="number"
-               name="timeMinutes"
-               value={recipe.timeMinutes}
-               onChange={handleChange}
-               placeholder="min"
-             />
-           </div>
+                        <label>{t("selectDifficulty")}</label>
+                        <div className="difficulty-options">
+                            {["Easy", "Medium", "Hard"].map((level) => (
+                                <button key={level} className={`difficulty-btn ${recipe.difficulty === level ? "selected" : ""}`} onClick={() => setRecipe({ ...recipe, difficulty: level })}>
+                                    {t(level.toLowerCase())}
+                                </button>
+                            ))}
+                        </div>
 
+                        <label>{t("listOfIngredients")}</label>
+                        <div className="ingredient-input">
+                            <input type="text" value={newIngredient} onChange={(e) => setNewIngredient(e.target.value)} placeholder={t("addIngredient")} />
+                            <button type="button" onClick={handleAddIngredient}>+</button>
+                        </div>
+                        <ul className="ingredient-list">
+                            {recipe.ingredients.map((item, index) => (
+                                <li key={index}>{`${index + 1}. ${item}`} <button type="button" onClick={() => handleDeleteIngredient(index)}>❌</button></li>
+                            ))}
+                        </ul>
 
-           <label>{t('servingSize')}</label>
-           <input type="number" name="servingSize" value={recipe.servingSize} onChange={handleChange} required />
+                        <label>{t("stepsToCreate")}</label>
+                        <div className="ingredient-input">
+                            <input type="text" value={newStep} onChange={(e) => setNewStep(e.target.value)} placeholder={t("addStep")} />
+                            <button type="button" onClick={handleAddStep}>+</button>
+                        </div>
+                        <ul className="ingredient-list">
+                            {recipe.steps.map((step, index) => (
+                                <li key={index}>{`${index + 1}. ${step}`} <button type="button" onClick={() => handleDeleteStep(index)}>❌</button></li>
+                            ))}
+                        </ul>
 
+                        <label>{t("cuisineTags")}</label>
+                        <div className="cuisine-tags">
+                            {cuisineOptions.map((cuisine) => (
+                                <div key={cuisine} className={`cuisine-tagz ${recipe.cuisine.includes(cuisine) ? "selected" : ""}`} onClick={() => handleCuisineToggle(cuisine)}>
+                                    {t(cuisine.toLowerCase())}
+                                </div>
+                            ))}
+                        </div>
 
+                        <label>{t("allergyTags")}</label>
+                        <div className="cuisine-tags">
+                            {allergyOptions.map((allergy) => (
+                                <div key={allergy} className={`cuisine-tagz ${recipe.allergy.includes(allergy) ? "selected" : ""}`} onClick={() => handleAllergyToggle(allergy)}>
+                                    {t(allergy.toLowerCase())}
+                                </div>
+                            ))}
+                        </div>
 
-           <label>{t('selectDifficulty')}</label>
-           <div className="difficulty-options">
-             {["Easy", "Medium", "Hard"].map((level) => (
-               <button
-                 key={level}
-                 className={`difficulty-btn ${recipe.difficulty === level ? "selected" : ""}`}
-                 onClick={() => setRecipe({ ...recipe, difficulty: level })}
-               >
-                 {level}
-               </button>
-             ))}
-           </div>
+                        <label>{t("dietTags")}</label>
+                        <div className="cuisine-tags">
+                            {dietOptions.map((diet) => (
+                                <div key={diet} className={`cuisine-tagz ${recipe.diet.includes(diet) ? "selected" : ""}`} onClick={() => handleDietToggle(diet)}>
+                                    {t(diet.toLowerCase())}
+                                </div>
+                            ))}
+                        </div>
 
+                        <label>{t("visibility")}</label>
+                        <div className="cuisine-tags">
+                            {visibilityOptions.map((option) => (
+                                <div key={option} className={`cuisine-tagz ${recipe.visibility === option ? "selected" : ""}`} onClick={() => handleVisibility(option)}>
+                                    {t(option.toLowerCase().replace(" ", ""))}
+                                </div>
+                            ))}
+                        </div>
 
-           <label>{t('listOfIngredients')}</label>
-           <div className="ingredient-input">
-             <input
-               type="text"
-               value={newIngredient}
-               onChange={(e) => setNewIngredient(e.target.value)}
-               placeholder="Add Ingredient"
-             />
-             <button type="button" onClick={handleAddIngredient}>
-               +
-             </button>
-           </div>
-           <ul className="ingredient-list">
-             {recipe.ingredients.map((item, index) => (
-               <li key={index}>
-                 {`${index + 1}. ${item}`}{" "}
-                 <button type="button" onClick={() => handleDeleteIngredient(index)}>
-                   ❌
-                 </button>
-               </li>
-             ))}
-           </ul>
+                        <button type="button" className="submit-btn" onClick={handleSubmit}>{t("serve")}</button>
+                    </div>
 
+                    <div className="upload-recipe-image">
+                        <label>{t("image")}</label>
+                        <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>
+                            <input type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} required hidden />
+                            <span>{t("chooseFile")}</span>
+                        </div>
+                        {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
+                    </div>
 
-           <label>{t('stepsToCreate')}</label>
-           <div className="ingredient-input">
-             <input
-               type="text"
-               value={newStep}
-               onChange={(e) => setNewStep(e.target.value)}
-               placeholder="Add Step"
-             />
-             <button type="button" onClick={handleAddStep}>
-               +
-             </button>
-           </div>
-           <ul className="ingredient-list">
-             {recipe.steps.map((step, index) => (
-               <li key={index}>
-                 {`${index + 1}. ${step}`}{" "}
-                 <button type="button" onClick={() => handleDeleteStep(index)}>
-                   ❌
-                 </button>
-               </li>
-             ))}
-           </ul>
-
-
-           <label>{t('cuisineTags')}</label>
-           <div className="cuisine-tags">
-             {cuisineOptions.map((cuisine) => (
-               <div
-                 key={cuisine}
-                 className={`cuisine-tagz ${recipe.cuisine.includes(cuisine) ? "selected" : ""}`}
-                 onClick={() => handleCuisineToggle(cuisine)}
-               >
-                 {cuisine}
-               </div>
-             ))}
-           </div>
-
-
-           <label>{t('allergyTags')}</label>
-           <div className="cuisine-tags">
-             {allergyOptions.map((allergy) => (
-               <div
-                 key={allergy}
-                 className={`cuisine-tagz ${recipe.allergy.includes(allergy) ? "selected" : ""}`}
-                 onClick={() => handleAllergyToggle(allergy)}
-               >
-                 {allergy}
-               </div>
-             ))}
-           </div>
-
-
-           <label>{t('dietTags')}</label>
-           <div className="cuisine-tags">
-             {dietOptions.map((diet) => (
-               <div
-                 key={diet}
-                 className={`cuisine-tagz ${recipe.diet.includes(diet) ? "selected" : ""}`}
-                 onClick={() => handleDietToggle(diet)}
-               >
-                 {diet}
-               </div>
-             ))}
-           </div>
-
-
-           <label>{t('visibility')}</label>
-           <div className="cuisine-tags">
-             {visibilityOptions.map((option) => (
-               <div
-                 key={option}
-                 className={`cuisine-tagz ${recipe.visibility === option ? "selected" : ""}`}
-                 onClick={() => handleVisibility(option)}
-               >
-                 {option}
-               </div>
-             ))}
-           </div>
-
-
-           <button type="button" className="submit-btn" onClick={handleSubmit}>
-               {t('serve')}
-           </button>
-         </div>
-
-
-         <div className="upload-recipe-image">
-           <label>{t('image')}</label>
-           <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>
-             <input type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} required hidden />
-             <span>Choose a file or drag and drop it here</span>
-           </div>
-           {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
-         </div>
-           <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
-               <h2 style={{ color: "#b00020" }}>⚠️ Error</h2>
-               <p>{error || "Something went wrong."}</p>
-               <button className="modal-button" onClick={() => setShowErrorModal(false)}>
-                   Close
-               </button>
-           </Modal>
-
-       </div>
-     ) : (
-       <div>Loading...</div>
-     )}
-   </div>
- );
+                    <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                        <h2 style={{ color: "#b00020" }}>⚠️ Error</h2>
+                        <p>{error || t("somethingWentWrong")}</p>
+                        <button className="modal-button" onClick={() => setShowErrorModal(false)}>{t("close")}</button>
+                    </Modal>
+                </div>
+            ) : (
+                <div>{t("loading")}</div>
+            )}
+        </div>
+    );
 };
-
 
 export default UploadRecipe;
