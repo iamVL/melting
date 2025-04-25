@@ -4,6 +4,7 @@ import "../Communities.css";
 import Groups from "./Groups";
 import GroupList from "./GroupList";
 import CommentForm from "./CommentForm";
+import Modal from "../Component/Modal";
 import { useLanguage } from "../translator/Languagecontext";
 
 function CommunityPage() {
@@ -13,6 +14,8 @@ function CommunityPage() {
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [groupName, setGroupName] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [error, setError] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const { t } = useLanguage();
 
@@ -79,6 +82,12 @@ function CommunityPage() {
   };
 
   const createGroup = () => {
+    if (newGroupName === "") {
+      setError("New Group cannot have an empty name!");
+      setShowErrorModal(true);
+      return;
+  }
+
     const trimmedGroupName = newGroupName.trim();
     if (!trimmedGroupName) {
       setErrorMessage(t("error_group_name_empty"));
@@ -139,14 +148,8 @@ function CommunityPage() {
           {showSearchBar ? `👨‍🍳 ${t("start_group")}` : `🔍 ${t("back_to_search")}`}
         </button>
 
-        {showSearchBar ? (
-            <div className="SearchBar">
-              <input
-                  type="text"
-                  className="search-input"
-                  placeholder={t("search_placeholder")}
-              />
-            </div>
+        {showSearchBar ? (<>
+        </>
         ) : (
             <div className="CreateGroupForm">
               <input
@@ -176,6 +179,11 @@ function CommunityPage() {
               <h2>{t("selected_group")}: {groupName}</h2>
             </div>
         )}
+        <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+            <h2 style={{ color: "#b00020" }}>⚠️ Error</h2>
+            <p>{error || t("somethingWentWrong")}</p>
+            <button className="modal-button" onClick={() => setShowErrorModal(false)}>{t("close")}</button>
+        </Modal>
       </div>
   );
 }
