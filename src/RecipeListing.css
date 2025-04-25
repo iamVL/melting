@@ -394,6 +394,19 @@ select.search-bar-1 {
   height: 50px;
 }
 
+.favorite-subheader {
+  font-size: 1rem;
+}
+
+.favorite-subheader {
+  animation: opacityChange 1s ease-out forwards;
+  display: flex
+;
+  align-items: center;
+  color: #777;
+  margin-top: 0px;
+}
+
 @media (max-width: 768px) {
   .recipe-header {
     margin: 0px;
@@ -417,6 +430,11 @@ select.search-bar-1 {
   #listing-information label {
     margin-left: 0px;
     height: 40px;
+  }
+
+  .favorite-subheader {
+    text-align: center;
+    justify-content: center;
   }
 }
 

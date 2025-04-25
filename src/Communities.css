@@ -87,7 +87,7 @@ input::placeholder {
   padding: 30px;
 }
 
-.userlist {
+.community-model {
   background-color: #fff7f4;
   border-radius: 15px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
@@ -99,7 +99,7 @@ input::placeholder {
   gap: 15px;
 }
 
-.userlist h4 {
+.community-model h4 {
   margin: 0;
   font-size: 18px;
   font-weight: bold;
@@ -113,8 +113,8 @@ input::placeholder {
   flex-wrap: wrap;
 }
 
-.userlist button,
-.userlist a {
+.community-model button,
+.community-model a {
   background-color: rgb(255, 171, 140);
   border: none;
   border-radius: 10px;
@@ -127,13 +127,13 @@ input::placeholder {
   cursor: pointer;
 }
 
-.userlist button:hover,
-.userlist a:hover {
+.community-model button:hover,
+.community-model a:hover {
   background-color: rgb(247, 154, 121);
   transform: scale(1.05) translateY(-1px);
 }
 
-.userlist:hover {
+.community-model:hover {
   transform: scale(1.02);
 }
 

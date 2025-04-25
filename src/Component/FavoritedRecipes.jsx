@@ -182,7 +182,7 @@ const visibleFavorites = filteredFavorites.filter((recipe) => {
     return (
         <div className="recipe-container">
           <h2 className="recipe-header">{t("favorites_title")}</h2>
-          <p className="recipe-subheader">{t("favorites_subheader")}</p>
+          <p className="favorite-subheader">{t("favorites_subheader")}</p>
 
           <div className="search-container">
             <input

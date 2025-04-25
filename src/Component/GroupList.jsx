@@ -257,7 +257,7 @@ const GroupList = () => {
           <p style={{ color: "black", marginBottom: "0px" }}>{t("my_communities")}</p>
           <div className="community-box">
             {mygroups.map((group) => (
-                <div key={group.groupID} className="userlist">
+                <div key={group.groupID} className="community-model">
                   <h4>{group.group.name}</h4>
                   <div className="group-buttons">
                     {group.group.attributes?.ownerID == userID ? (
@@ -278,7 +278,7 @@ const GroupList = () => {
           <p style={{ color: "black", marginBottom: "0px" }}>{t("all_communities")}</p>
           <div className="community-box">
             {groups.map((group) => (
-                <div key={group.id} className="userlist">
+                <div key={group.id} className="community-model">
                   <h4>{group.name}</h4>
                   <button onClick={() => updateConnection(group.id, "active")}>{t("join")}</button>
                 </div>
