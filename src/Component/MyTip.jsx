@@ -239,10 +239,10 @@ const TipDetails = () => {
         setTimeout(() => navigate("/cookbooks"), 1500);
       } else {
         const result = await response.json();
-        setModalMessage("❌ Error deleting recipe: " + (result.error || "Something went wrong"));
+        setModalMessage("❌ Error deleting Tip: " + (result.error || "Something went wrong"));
       }
     } catch (error) {
-      setModalMessage("❌ Failed to delete the recipe. Please try again.");
+      setModalMessage("❌ Failed to delete the Tip. Please try again.");
     }
 
     setPendingDelete(false);
@@ -256,28 +256,8 @@ const TipDetails = () => {
       return;
     }
 
-
     setShowConfirmModal(true);
     setPendingDelete(true);
-
-
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
- 
- 
-      if (response.ok) {
-        setModalMessage("✅ Recipe deleted successfully!");
-        setTimeout(() => navigate("/cookbooks"), 2000);
-      } else {
-        const result = await response.json();
-        setModalMessage("❌ Error deleting recipe: " + (result.error || "Something went wrong"));
-      }
-    } catch (error) {
-      setModalMessage("❌ Failed to delete the recipe. Please try again.");
-    }
   };
 
   if (error) return <p>Error loading tip.</p>;

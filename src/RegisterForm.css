@@ -212,8 +212,6 @@
     display: none !important;
   }
 }
-
-/* 🔥 Fix for "in-between" screen sizes (tablet/responsive mode) */
 @media (min-width: 768px) and (max-width: 1024px) {
   .content-wrapper {
     flex-direction: column;

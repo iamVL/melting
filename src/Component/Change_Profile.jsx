@@ -145,7 +145,11 @@ const Profile = () => {
             </div>
             <div className="editUser">
               <button onClick={logout} className="logout">Log out</button><br />
+              <Link to="/settings">
+                <button className="account-button editprofile-button">Cancel</button>
+              </Link>
             </div>
+            
           </div>
           <div className="bottonProfileSection">
             <div className="accountSettings">

@@ -16,7 +16,7 @@
     grid-column: 1;
 }
 
-.recipe-sidebar {
+.recipe-sidebar-sec {
     grid-column: 2;
     background-color: #f3f3f3;
     color: black;
@@ -27,7 +27,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 350px;
-    max-height: 850px;
+    max-height: 1000px;
     width: 320px;
     height: auto;
     word-wrap: break-word; /* Forces long words to wrap */
@@ -336,13 +336,13 @@
         max-width: 100%; /* Allow recipe content to take full width */
     }
 
-    .recipe-sidebar-container {
+    .recipe-sidebar-sec-container {
         max-width: 100%; /* Sidebar should take full width */
         display: flex; /* Ensure it doesn't collapse */
         justify-content: center;
     }
 
-    .recipe-sidebar {
+    .recipe-sidebar-sec {
         width: 90%; /* Ensure it appears properly */
         padding: 15px;
         display: flex;
@@ -530,7 +530,7 @@
   box-sizing: border-box;
 }
   
-    .recipe-sidebar {
+    .recipe-sidebar-sec {
       width: 100%;
       max-width: 100%;
       padding: 20px;

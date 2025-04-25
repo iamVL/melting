@@ -2,7 +2,7 @@ import React, { useState, useEffect, use } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PostForm from "./PostForm";
 import CommentForm from "./CommentForm";
-
+import Modal from "../Component/Modal";
 import "../CommunityDetails.css";
 import { useLanguage } from "../translator/Languagecontext";
 
@@ -35,6 +35,8 @@ const CommunityDetails = () => {
   const [mainImage, setMainImage] = useState(null); 
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
     let url = `${process.env.REACT_APP_API_PATH}/groups/${communityId}`;
@@ -135,6 +137,18 @@ const CommunityDetails = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (title === "") {
+      setError("Fill in the Title!");
+      setShowErrorModal(true);
+      return;
+    }
+
+    if (description === "") {
+        setError("Fill in the Description!");
+        setShowErrorModal(true);
+        return;
+    }
 
     const postData = {
       authorID: sessionStorage.getItem("user"),
@@ -558,6 +572,12 @@ const CommunityDetails = () => {
 
         )}
       </div>
+
+      <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                        <h2 style={{ color: "#b00020" }}>⚠️ Error</h2>
+                        <p>{error || t("somethingWentWrong")}</p>
+                        <button className="modal-button" onClick={() => setShowErrorModal(false)}>{t("close")}</button>
+                    </Modal>
 
       {/* {selectedPostId && (
         <div className="tip-comments-container">

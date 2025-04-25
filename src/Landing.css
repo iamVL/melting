@@ -506,7 +506,7 @@
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
 
     .slogan-layout {
         width: 80%;
@@ -544,7 +544,7 @@
     }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 540px) {
     .site-showcase {
         padding: 40px 40px;
     }
@@ -603,6 +603,12 @@
     
     .feature-showcase h2 {
         font-size: 26px;
+    }
+}
+
+@media (max-width: 390px) {
+    .feature-box h4 {
+        font-size: 15px;
     }
 }
 
