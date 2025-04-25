@@ -700,3 +700,9 @@ profile-header {
     width: 50%;
   }
 }
+
+@media (max-width:768px) {
+  .account-button.editprofile-button {
+    width: 250px;
+  }
+}
