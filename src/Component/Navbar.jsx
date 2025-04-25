@@ -182,8 +182,8 @@ const Navbar = () => {
       {/* Main nav container (slides in from left on mobile) */}
       <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
         <ul className="landing-links">
-        <li><Link to="/login">{t("nav_login")}</Link></li>
-        <li><Link to="/register">{t("nav_register")}</Link></li>
+          <li><Link to="/login" className={`nav-btn ${location.pathname === "/login" ? "active-nav-btn" : ""}`}>{t("nav_login")}</Link></li>
+          <li><Link to="/register" className={`nav-btn ${location.pathname === "/register" ? "active-nav-btn" : ""}`}>{t("nav_register")}</Link></li>
         </ul>
       </div>
 
