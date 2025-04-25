@@ -2,8 +2,10 @@ import React, { useState, useEffect, use } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PostForm from "./PostForm";
 import CommentForm from "./CommentForm";
+
 import "../CommunityDetails.css";
 import { useLanguage } from "../translator/Languagecontext";
+
 
 const CommunityDetails = () => {
   const { t } = useLanguage();
@@ -379,6 +381,8 @@ const CommunityDetails = () => {
               <input type="text" placeholder={t("enter_group_desc")} value={groupDesc}
                      onChange={(e) => setGroupDesc(e.target.value)}/>
               <input type="file" accept="image/*" onChange={handleMainImageUpload}/>
+
+
               <button type="submit">{t("make_post")}t</button>
             </form>
           </div>

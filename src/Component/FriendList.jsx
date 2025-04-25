@@ -126,72 +126,76 @@ const FriendList = (props) => {
   if (!props.isLoaded) return <div>Loading…</div>;
 
   return (
-    <div className="friend-posts">
-      <h3>{props.title}</h3>
+      <div className="friend-posts">
+          <h3>
+              {props.title === "Your Following" && t("friend_your_following")}
+              {props.title === "People Who Follow You" && t("friend_people_follow_you")}
+              {props.title === "Blocked Users" && t("friend_blocked_users")}
+          </h3>
 
-      <div className="friend-listing">
-        {filteredConnections
-          .slice()
-          .reverse()
-          .map((connection) => {
-            const friend =
-              connection.toUser.id.toString() === myId
-                ? connection.fromUser
-                : connection.toUser;
+          <div className="friend-listing">
+              {filteredConnections
+                  .slice()
+                  .reverse()
+                  .map((connection) => {
+                      const friend =
+                          connection.toUser.id.toString() === myId
+                              ? connection.fromUser
+                              : connection.toUser;
 
-            return (
-              <div key={connection.id} className="user-list">
-                <div className="friend-info">
-                  {friend.attributes.picture ? (
-                    <img src={friend.attributes.picture} alt="user avatar" />
-                  ) : (
-                    <img src={Default} alt="user avatar" />
-                  )}
+                      return (
+                          <div key={connection.id} className="user-list">
+                              <div className="friend-info">
+                                  {friend.attributes.picture ? (
+                                      <img src={friend.attributes.picture} alt="user avatar"/>
+                                  ) : (
+                                      <img src={Default} alt="user avatar"/>
+                                  )}
 
-                  <div className="friend-information">
-                    <p>{friend.attributes.username}</p>
+                                  <div className="friend-information">
+                                      <p>{friend.attributes.username}</p>
 
-                    <div className="friend-buttons">
-                      {props.title !== "Blocked Users" && connection.attributes.status !== "blocked" && (
-                        <button
-                          className="message-btn"
-                          type="button"
-                          onClick={() => goToChat(friend.id, friend)}
-                        >
-                            {t('message')}
-                        </button>
-                      )}
+                                      <div className="friend-buttons">
+                                          {props.title !== "Blocked Users" && connection.attributes.status !== "blocked" && (
+                                              <button
+                                                  className="message-btn"
+                                                  type="button"
+                                                  onClick={() => goToChat(friend.id, friend)}
+                                              >
+                                                  {t('message')}
+                                              </button>
+                                          )}
 
-                      {props.title !== "Blocked Users" && (
-                        <button
-                          className="message-btn"
-                          type="button"
-                          onClick={() => deleteConnection(connection.id)}
-                        >
-                            {t('remove')}
-                        </button>
-                      )}
+                                          {props.title !== "Blocked Users" && (
+                                              <button
+                                                  className="message-btn"
+                                                  type="button"
+                                                  onClick={() => deleteConnection(connection.id)}
+                                              >
+                                                  {t('remove')}
+                                              </button>
+                                          )}
 
-                      {props.title === "Your Following" &&
-                        conditionalAction(connection.attributes.status, connection.id, props.title)}
+                                          {props.title === "Your Following" &&
+                                              conditionalAction(connection.attributes.status, connection.id, props.title)}
 
-                      {props.title === "Blocked Users" && (
-                        <button
-                          className="message-btn"
-                          type="button"
-                          onClick={() => deleteConnection(connection.id)}
-                        >
-                            {t('unblock')}
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                                          {props.title === "Blocked Users" && (
+                                              <button
+                                                  className="message-btn"
+                                                  type="button"
+                                                  onClick={() => deleteConnection(connection.id)}
+                                              >
+                                                  {t('unblock')}
+                                              </button>
+                                          )}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      );
+                  })}
+          </div>
       </div>
-    </div>
   );
 };
 

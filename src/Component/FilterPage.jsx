@@ -485,15 +485,24 @@ const FilterPage = () => {
                             {!favoritedRecipeIDs.has(String(post.id)) && (
                                 <button onClick={() => handleFavorite(post.id)}>{t("favoriteButton")}</button>
                             )}
-                            <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                              <img
-                                  src={meltingLogo}
-                                  alt="Melting Pot Logo"
-                                  style={{ width: "120px", marginBottom: "1rem" }}
-                              />
-                              <h2>{t("recipeFavorited")}</h2>
-                              <p>{t("redirectToFavorites")}</p>
-                            </Modal>
+                            {isModalOpen && (
+                                <Modal show={true} onClose={() => setIsModalOpen(false)}>
+                                  <h2 style={{ color: "#e67e22" }}>{t("favorite_success_title")}</h2>
+                                  <p>{t("favorite_success_message")}</p>
+                                  <div className="modal-buttons">
+                                    <button
+                                        className="confirm-button"
+                                        onClick={() => {
+                                          setIsModalOpen(false);
+                                          navigate("/favorites");
+                                        }}
+                                    >
+                                      {t("goToFavorites")}
+                                    </button>
+                                  </div>
+                                </Modal>
+                            )}
+
                             <div className="recipe-meta">
                               <span>{attrs.cuisine || t("None")}</span>
                               <span>{attrs.totalTime || t("unknown_time")}</span>

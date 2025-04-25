@@ -229,3 +229,22 @@
     color: #333;
   }
 }
+.nav-btn {
+  background-color: #ff835f;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  margin: 0 4px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.nav-btn:hover {
+  background-color: #ff996e;
+}
+
+.active-nav-btn {
+  background-color: #262626 !important;
+  color: white;
+}

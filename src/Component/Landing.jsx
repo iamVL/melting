@@ -1,20 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../Landing.css";
-import cookingpots from "../assets/2023_0817-kitchen-scaled.webp";
 import { useLanguage } from "../translator/Languagecontext";
 import Share from "../assets/sharearrow.png";
 import Review from "../assets/finalreview.png";
 import Filter from "../assets/filtersymbol.png";
 import Help from "../assets/helpsymbol.png";
 
+import bg1 from "../assets/meltin4.webp";
+import bg2 from "../assets/melting1.webp";
+import bg3 from "../assets/melting6.jpg";
+import bg4 from "../assets/melting7.webp";
+
+const images = [bg1, bg2, bg3, bg4];
+
 const Landing = ({ setLoggedIn }) => {
     const { t } = useLanguage();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="landing-page">
             <div className="image-overlay">
-                <img src={cookingpots} alt="Cooking Pot" />
+                <img
+                    key={currentIndex}
+                    src={images[currentIndex]}
+                    alt="Background"
+                    className="background-carousel"
+                />
                 <div className="overlay-text">
                     <div className="slogan-text">
                         <h1 className="slogan-title">{t("landing_slogan_title")}</h1>
