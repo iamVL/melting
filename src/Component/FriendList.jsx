@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Friend.css";
 import Default from "../assets/Default-Avatar.jpg";
-
+import { useLanguage } from "../translator/Languagecontext";
 const FriendList = (props) => {
   const navigate = useNavigate();
+    const { t } = useLanguage();
   const myId = sessionStorage.getItem("user");
 
   useEffect(() => {
@@ -77,11 +78,11 @@ const FriendList = (props) => {
 
     return status === "active" ? (
       <button type="button" onClick={() => updateConnection(id, "blocked")}>
-        Block
+          {t('block')}
       </button>
     ) : (
       <button type="button" onClick={() => updateConnection(id, "active")}>
-        Unblock
+          {t('unblock')}
       </button>
     );
   };
@@ -157,7 +158,7 @@ const FriendList = (props) => {
                           type="button"
                           onClick={() => goToChat(friend.id, friend)}
                         >
-                          Message
+                            {t('message')}
                         </button>
                       )}
 
@@ -167,7 +168,7 @@ const FriendList = (props) => {
                           type="button"
                           onClick={() => deleteConnection(connection.id)}
                         >
-                          Remove
+                            {t('remove')}
                         </button>
                       )}
 
@@ -180,7 +181,7 @@ const FriendList = (props) => {
                           type="button"
                           onClick={() => deleteConnection(connection.id)}
                         >
-                          Unblock
+                            {t('unblock')}
                         </button>
                       )}
                     </div>

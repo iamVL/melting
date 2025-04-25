@@ -221,7 +221,7 @@ const Profile = (props) => {
           {/* user info */}
           <div class="userInfo">
             <a>{fullName}</a><br />
-            <a>User: {username}</a>
+            <a>{t('user')}: {username}</a>
           </div>
         </div>
 
@@ -291,17 +291,17 @@ const Profile = (props) => {
                 <country>
                   <input
                       type="button"
-                      value="USA"
+                      value={t("usa")}
                       class={country === "USA" ? "selected_country" : "countrybutton"}
                   />
                   <input
                       type="button"
-                      value="Canada"
+                      value={t("canada")}
                       class={country === "Canada" ? "selected_country" : "countrybutton"}
                   />
                   <input
                       type="button"
-                      value="UK"
+                      value={t("uk")}
                       class={country === "UK" ? "selected_country" : "countrybutton"}
                   />
                 </country>

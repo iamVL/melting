@@ -2,9 +2,12 @@ import React, { useState, useEffect, use } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PostForm from "./PostForm";
 import CommentForm from "./CommentForm";
-import "../CommunityDetails.css";  // Ensure this file exists
+import "../CommunityDetails.css";
+import { useLanguage } from "../translator/Languagecontext";
 
 const CommunityDetails = () => {
+  const { t } = useLanguage();
+
   const { communityId, communityName } = useParams();
   const [posts, setPosts] = useState([]); 
   const [selectedPostId, setSelectedPostId] = useState(null); 
@@ -20,7 +23,7 @@ const CommunityDetails = () => {
   const [ownerMode, setOwnerMode] = useState(false);
   const navigate = useNavigate();
   const [groupName,  setGroupName] = useState("");
-  const [groupDesc,  setGroupDesc] = useState("None");
+  const [groupDesc,  setGroupDesc] = useState(null);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -264,7 +267,7 @@ const CommunityDetails = () => {
 
   const cancelCommunity = () => {
     setEditMode(false);
-    setGroupDesc(group.attributes.description || "None");
+    setGroupDesc(group.attributes.description || "None"|| "Nada");
     setGroupName(group.name)
   }
 
@@ -347,49 +350,51 @@ const CommunityDetails = () => {
 
   return (
     (editMode ? ( <> <div className="community-container">
-      {/* Display error message if any */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {/* Post Form */}
       <div className="community-headers">
         <form onSubmit={updateCommunity}>
           <div className="community-information">
-            <h4 style={{marginBottom:"10px", fontSize:"36px"}}>Welcome to</h4>
-            <input type="text" placeholder="Enter Group Name..." value={groupName} onChange={(e) => setGroupName(e.target.value)}/>
+            <h4 style={{marginBottom: "10px", fontSize: "36px"}}>{t("welcome_to")} {groupName}!</h4>
+            <input type="text" placeholder={t("enter_group_name")} value={groupName}
+                   onChange={(e) => setGroupName(e.target.value)}/>
 
-            { group === null ? (<p> None </p>) : (
-              <input type="text" placeholder="Enter Group Desc..." value={groupDesc} onChange={(e) => setGroupDesc(e.target.value)}/>
+            {group === null ? (<p>{t('none')} </p>) : (
+
+                <input type="text" placeholder={t("enter_group_desc")} value={groupDesc} onChange={(e) =>
+                    setGroupDesc(e.target.value)}/>
             )}
-            <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
-              <button type="button" onClick={cancelCommunity} id="edit-my-recipe"> Cancel </button>
-              <button type="submit" id="save-my-recipe"> Save Changes </button>
+            <div style={{display: "flex", gap: "10px", alignItems: "center", justifyContent: "center"}}>
+              <button type="button" onClick={cancelCommunity} id="edit-my-recipe">{t("cancel")}</button>
+              <button type="submit" id="save-my-recipe"> {t("save_changes")}</button>
             </div>
           </div>
         </form>
 
         <div className="community-post-display">
           <div className="make-community-post">
-            <h4 style={{marginBottom:"10px"}}>Share with Others</h4>
+          <h4 style={{marginBottom:"10px"}}>{t("share_with_others")}</h4>
             <form onSubmit={handleSubmit}>
-              <input type="text" placeholder="Enter post title..." value={title} onChange={(e) => setTitle(e.target.value)}/>
-              <input type="text" placeholder="Enter post desc..." value={description} onChange={(e) => setDescription(e.target.value)}/>
-              <input type="file" accept="image/*" onChange={handleMainImageUpload} />
-              <button type="submit" >Make Post</button>
+              <input type="text" placeholder={t("enter_group_name")} value={groupName}
+                     onChange={(e) => setGroupName(e.target.value)}/>
+              <input type="text" placeholder={t("enter_group_desc")} value={groupDesc}
+                     onChange={(e) => setGroupDesc(e.target.value)}/>
+              <input type="file" accept="image/*" onChange={handleMainImageUpload}/>
+              <button type="submit">{t("make_post")}t</button>
             </form>
           </div>
-          <p id="picture-preview"> 
-            <img
-                  src={mainImage  }
-                  alt="Picture Preview"
-                  className="tip-image-preview"
-                />
+          <p id={t("picture_preview")}>
+            <p><strong>{t("picture_preview")}</strong></p>
+
+            <img src={mainImage} alt="Preview" className="tip-image-preview"/>
           </p>
+
         </div>
       </div>
 
-      {/* Community Posts */}
-      <h4> See what others are talking about:</h4>
-      <div className="community-posts">
-        {posts.length > 0 ? (
+          {/* Community Posts */}
+          <h4> {t("see_what_others")}</h4>
+          <div className="community-posts">
+          {posts.length > 0 ? (
           posts.map((post) => {
             const postImage = post.attributes?.mainImage;
             const postGroupID = post.attributes?.groupID;
@@ -399,7 +404,7 @@ const CommunityDetails = () => {
                 <div className="cpost-info">
                   <div className="post-headers">
                     <div className="headers-user">
-                      <p id="post-user">Posted by {getUsername(post.author)}</p>
+                      <p id="post-user">{t("posted_by")}  {getUsername(post.author)}</p>
                       <span style={{ fontWeight: "normal", marginBottom:"10px" }}> ({post.created})</span>
                     </div>
                   </div>
@@ -440,12 +445,13 @@ const CommunityDetails = () => {
       {/* Post Form */}
       <div className="community-headers">
         <div className="community-information">
-          <h4 style={{marginBottom:"10px", fontSize:"36px"}}>Welcome to {groupName}!</h4>
+          <h4 style={{marginBottom:"10px", fontSize:"36px"}}>{t("welcome_to")} {groupName}!</h4>
           { group === null ? (<p> None </p>) : (
-            <p>{groupDesc|| "None"}</p>
+              <p>{groupDesc || t("none")}</p>
+
           )}
-          { ownerMode && (
-            <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}> 
+          {ownerMode && (
+              <div style={{display:"flex", gap:"10px", alignItems:"center", justifyContent:"center"}}>
               <button type="button" onClick={() => setEditMode(true)} id="edit-my-recipe"> Edit </button>
             </div>
           )}
@@ -453,26 +459,33 @@ const CommunityDetails = () => {
 
         <div className="community-post-display">
           <div className="make-community-post">
-            <h4 style={{marginBottom:"10px"}}>Share with Others</h4>
+            <h4 style={{marginBottom:"10px"}}>{t("share_with_others")}</h4>
             <form onSubmit={handleSubmit}>
-              <input type="text" placeholder="Enter post title..." value={title} onChange={(e) => setTitle(e.target.value)}/>
-              <input type="text" placeholder="Enter post desc..." value={description} onChange={(e) => setDescription(e.target.value)}/>
-              <input type="file" accept="image/*" onChange={handleMainImageUpload} />
-              <button type="submit" >Make Post</button>
+              <input type="text" placeholder={t("enter_post_title")} value={title}
+                     onChange={(e) => setTitle(e.target.value)}/>
+              <input type="text" placeholder={t("enter_post_desc")} value={description}
+                     onChange={(e) => setDescription(e.target.value)}/>
+                <input type="file" accept="image/*" onChange={handleMainImageUpload}/>
+
+
+
+
+              <button type="submit">{t("make_post")}</button>
+
             </form>
           </div>
-          <p id="picture-preview"> 
+          <p id="picture-preview">
             <img
-                  src={mainImage  }
-                  alt="Picture Preview"
-                  className="tip-image-preview"
-                />
+                src={mainImage}
+                alt={t("choose_file")}
+                className="tip-image-preview"
+            />
           </p>
         </div>
       </div>
 
       {/* Community Posts */}
-      <h4> See what others are talking about:</h4>
+      <h4>{t("share_with_others")}</h4>
       <div className="community-posts">
         {posts.length > 0 ? (
           posts.map((post) => {
@@ -484,20 +497,21 @@ const CommunityDetails = () => {
                 <div className="cpost-info">
                   <div className="post-headers">
                     <div className="headers-user">
-                      <p id="post-user">Posted by {getUsername(post.author)}</p>
+                      <p id="post-user">{t("posted_by")} {getUsername(post.author)}</p>
                       <span style={{ fontWeight: "normal", marginBottom:"10px" }}> ({post.created})</span>
                     </div>
                     {post.authorID === parseInt(sessionStorage.getItem("user")) && 
                       (post.id !== editPost ? ( 
                         <div className="community-post-buttons">
-                          <button onClick={() => handleDelete(post.id)}>🗑 Delete</button>
-                          <button style={{backgroundColor:"#ffc492"}} onClick={() => {setEditPost(post.id); setEditPostTitle(post.content); setEditPostDesc(post.attributes.description); setSelectedImage(post.attributes.mainImage);}}> Edit</button>
+                          <button onClick={() => handleDelete(post.id)}>🗑{t("delete")}</button>
+                          <button style={{backgroundColor:"#ffc492"}} onClick={() => {setEditPost(post.id);
+                            setEditPostTitle(post.content); setEditPostDesc(post.attributes.description); setSelectedImage(post.attributes.mainImage);}}> {t("edit")} </button>
                         </div>
                       ) : (
                         <form onSubmit={(e) => updatePost(post, e)}>
                           <div className="community-post-buttons">
-                            <button type="button" style={{backgroundColor:"rgb(172 176 173)"}} onClick={() => setEditPost(0)}>Cancel</button>
-                            <button style={{backgroundColor:"rgb(146 255 160)"}} > Save </button>
+                            <button type="button" style={{backgroundColor:"rgb(172 176 173)"}} onClick={() => setEditPost(0)}>{t("cancel")}</button>
+                            <button style={{backgroundColor:"rgb(146 255 160)"}} > {t("save")} </button>
                           </div>
                         </form>
                       ))
@@ -507,31 +521,37 @@ const CommunityDetails = () => {
                     <p id="post-title">{post.content}</p>
                     <p id="post-description">{post.attributes?.description}</p></>
                   ) : ( <>
-                    <input type="text" placeholder="Enter post desc..." value={editPostTitle} onChange={(e) => setEditPostTitle(e.target.value)}/>
-                    <input type="text" placeholder="Enter post desc..." value={editPostDesc} onChange={(e) => setEditPostDesc(e.target.value)}/>
+                    <input type="text" placeholder={t("enter_post_title")}value={editPostTitle} onChange={(e) => setEditPostTitle(e.target.value)}/>
+                    <input type="text" placeholder={t("enter_post_desc")} value={editPostDesc} onChange={(e) => setEditPostDesc(e.target.value)}/>
                   </>
                   )}
                 </div>
                 {/* <button onClick={() => loadComments(post.id)}>View Comments</button> */}
                 {post.id === editPost ? ( <>
                   <div className="upload-recipe-image">
-                    <div className="file-upload-box" onClick={() => document.getElementById("imageUpload").click()}>
-                      <input name="tip-pic" type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} hidden />
-                      {selectedImage && <img src={selectedImage} alt="Preview" className="preview-img" />}
-                    </div>
-                    <button type="button" style={{backgroundColor:"rgb(255, 146, 146)"}} onClick={()=> {setRemovePostPic(true); setSelectedImage(null);}} > Remove </button>
+                    <label htmlFor="file-upload" className="custom-file-upload">
+                      {t("choose_file")}
+                    </label>
+                    <input id="file-upload" type="file" onChange={handleMainImageUpload} style={{display: "none"}}/>
+
+
+                    <button type="button" style={{backgroundColor: "rgb(255, 146, 146)"}} onClick={() => {
+                      setRemovePostPic(true);
+                      setSelectedImage(null);
+                    }}> {t("remove")} </button>
                   </div>
                 </>) : (<>
-                    {postImage && <img src={postImage} alt ="post"/> }
-                  </>
+                      {postImage && <img src={postImage} alt="post"/>}
+                    </>
                 )}
               </div>
-              </>
-              
+                </>
+
             )
           )})
         ) : (
-          <p>No posts in this community yet. Be the first to post!</p>
+            <p>{t("no_posts_yet")}</p>
+
         )}
       </div>
 
