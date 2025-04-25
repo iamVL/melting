@@ -92,7 +92,7 @@ const Navbar = () => {
           >
             <span className="dropdown-title" style={{textDecoration: location.pathname === "/recipes"|| location.pathname === "/tips" || location.pathname === "/how-to-guides" || location.pathname === "/community" ? "underline" : undefined}}>{t("nav_featured")} ▼</span>
             {featuredOpen && (
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menuss">
                 <li><Link to="/recipes">{t("nav_recipes")}</Link></li>
                 <li><Link to="/tips">{t("nav_cooking_tips")}</Link></li>
                 <li><Link to="/how-to-guides">{t("nav_how_to_guides")}</Link></li>
@@ -116,7 +116,7 @@ const Navbar = () => {
           >
             <span className="dropdown-title" style={{textDecoration: location.pathname === "/upload" || location.pathname === "/tip-upload"  ? "underline" : undefined}}>{t("nav_upload")} ▼</span>
             {uploadOpen && (
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menuss">
                 <li><Link to="/upload">{t("nav_recipe")}</Link></li>
                 <li><Link to="/tip-upload">{t("nav_cooking_tip")}</Link></li>
               </ul>
@@ -137,7 +137,7 @@ const Navbar = () => {
           >
             <span className="dropdown-title" style={{textDecoration: location.pathname === "/aboutus" || location.pathname === "/StyleGuide" ? "underline" : undefined}}>{t("nav_about")} ▼</span>
             {aboutOpen && (
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menuss">
                 <li><Link to="/aboutus">{t("nav_our_team")}</Link></li>
                 <li><Link to="/StyleGuide">{t("nav_style_guide")}</Link></li>
               </ul>
