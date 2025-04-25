@@ -1,7 +1,6 @@
   import React, { useState, useEffect } from "react";
   import { Link,useNavigate } from "react-router-dom"; // Import Link for navigation
   import "../Landing.css";
-  import cookingpots from "../assets/2023_0817-kitchen-scaled.webp";
   import { useLanguage } from "../translator/Languagecontext";
   import Share from "../assets/sharearrow.png"
   import Review from "../assets/finalreview.png"
