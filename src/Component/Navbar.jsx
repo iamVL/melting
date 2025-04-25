@@ -181,6 +181,7 @@ const Navbar = () => {
       </div>
 
       {/* Main nav container (slides in from left on mobile) */}
+
           <div className={`nav-links-container ${mobileMenuOpen ? "open" : ""}`}>
             <ul className="landing-links">
               <li>
@@ -207,6 +208,7 @@ const Navbar = () => {
           </button>
         </nav>
     </>))
+
   );
 };
 

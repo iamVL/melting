@@ -17,8 +17,7 @@ const CookbookManager = () => {
     const [category, setCategory] = useState("Recipes");
 
     const token = sessionStorage.getItem("token");
-    const currentUser = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const currentUserID = currentUser.id || currentUser.userID;
+    const currentUserID = sessionStorage.getItem("user");
 
     const [tips, setTips] = useState([]);
     const [posts, setPosts] = useState([]);
