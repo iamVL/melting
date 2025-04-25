@@ -495,8 +495,8 @@ const FilterPage = () => {
                               <p>{t("redirectToFavorites")}</p>
                             </Modal>
                             <div className="recipe-meta">
-                              <span>{attrs.cuisine || "N/A"}</span>
-                              <span>{attrs.totalTime || "⏱ Unknown"}</span>
+                              <span>{attrs.cuisine || t("None")}</span>
+                              <span>{attrs.totalTime || t("unknown_time")}</span>
                             </div>
                           </div>
                         </div>

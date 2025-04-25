@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../ResetPassword.css";
 import logo from "../assets/melting-pot-logo.jpeg";
+import { useLanguage } from "../translator/Languagecontext";
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [gotToken, setGotToken] = useState(false);
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // For programmatic navigation
+  const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleResetRequest = (event) => {
     event.preventDefault();
@@ -19,9 +21,9 @@ const ResetPassword = () => {
       body: JSON.stringify({ email }),
     }).then((res) => {
       if (res.ok) {
-        setGotToken(true); // Show the token/password form
+        setGotToken(true);
       } else {
-        alert("Failed to send reset link. Please try again.");
+        alert(t("reset_failed_request"));
       }
     });
   };
@@ -35,10 +37,10 @@ const ResetPassword = () => {
       body: JSON.stringify({ token, password }),
     }).then((res) => {
       if (res.ok) {
-        alert("Password successfully reset!");
-        navigate("/"); // Redirect to login page ("/")
+        alert(t("reset_success"));
+        navigate("/");
       } else {
-        alert("Failed to reset password. Please try again.");
+        alert(t("reset_failed_confirm"));
       }
     });
   };
@@ -48,12 +50,12 @@ const ResetPassword = () => {
         <div className="reset-box">
           <img src={logo} alt="Melting Pot Logo" className="reset-logo" />
           <h2 className="reset-title">
-            {gotToken ? "Enter Your New Password" : "Reset Your Password"}
+            {gotToken ? t("enter_new_password") : t("reset_password")}
           </h2>
 
           {!gotToken ? (
               <form onSubmit={handleResetRequest}>
-                <label>Email</label>
+                <label>{t("email")}</label>
                 <input
                     type="email"
                     value={email}
@@ -61,19 +63,19 @@ const ResetPassword = () => {
                     required
                 />
                 <button type="submit" className="reset-button">
-                  Send Reset Link
+                  {t("send_reset_link")}
                 </button>
               </form>
           ) : (
               <form onSubmit={handleResetPassword}>
-                <label>Token</label>
+                <label>{t("token")}</label>
                 <input
                     type="text"
                     value={token}
                     onChange={(event) => setToken(event.target.value)}
                     required
                 />
-                <label>New Password</label>
+                <label>{t("new_password")}</label>
                 <input
                     type="password"
                     value={password}
@@ -81,7 +83,7 @@ const ResetPassword = () => {
                     required
                 />
                 <button type="submit" className="reset-button">
-                  Reset Password
+                  {t("reset_password_button")}
                 </button>
               </form>
           )}

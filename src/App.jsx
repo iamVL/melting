@@ -105,7 +105,7 @@ function App() {
       <LanguageProvider>      
       <div className="App">
         <header className="App-header">
-          {location.pathname !== "/login" && location.pathname !== "/register" && <Navbar toggleModal={toggleModal} logout={logout} />}
+          {/*location.pathname !== "/login" && location.pathname !== "/register" &&*/ <Navbar toggleModal={toggleModal} logout={logout} />}
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/tip-upload" element={<TipForm />} />
