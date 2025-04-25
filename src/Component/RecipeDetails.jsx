@@ -159,10 +159,12 @@ const RecipeDetails = () => {
   const handleCommentSubmit = (event) => {
     event.preventDefault();
     if (rating === 0) {
-      setModalMessage("⚠️ Please choose a rating between 1 and 5.");
+      setModalMessage(t("reviews_choose_rating_error")
+      );
       return;
     } else if (commentText === "") {
-      setModalMessage("✏️ Please write something for your review.");
+      setModalMessage(t("reviews_fill_in_review_error")
+      );
 
       return;
     }

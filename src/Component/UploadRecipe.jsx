@@ -349,10 +349,13 @@ const UploadRecipe = () => {
                     </div>
 
                     <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
-                        <h2 style={{ color: "#b00020" }}>⚠️ Error</h2>
-                        <p>{error || t("somethingWentWrong")}</p>
-                        <button className="modal-button" onClick={() => setShowErrorModal(false)}>{t("close")}</button>
+                        <h2 style={{ color: "#b00020" }}>{t("uploadRecipe_error_title")}</h2>
+                        <p>{error || t("uploadRecipe_fill_required_fields")}</p>
+                        <button className="modal-button" onClick={() => setShowErrorModal(false)}>
+                            {t("modalCloseButton")}
+                        </button>
                     </Modal>
+
                 </div>
             ) : (
                 <div>{t("loading")}</div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "../TipDetails.css";
+import Modal from "../Component/Modal";
 
 import { useLanguage } from "../translator/Languagecontext";
 const TipDetails = () => {
@@ -9,6 +10,9 @@ const TipDetails = () => {
   const [error, setError] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [reviewsLoaded, setReviewsLoaded] = useState(false); // 🌟 Important flag
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
 
   const [rating, setRating] = useState(0);
@@ -97,10 +101,12 @@ const TipDetails = () => {
   const handleCommentSubmit = (event) => {
     event.preventDefault();
     if (rating === 0) {
-      alert("Choose a rating 1-5!");
+      setErrorMessage(t("reviews_choose_rating_error") || "Choose a rating 1-5!");
+      setShowErrorModal(true);
       return;
-    } else if (commentText === "") {
-      alert("Fill in a review!");
+    } else if (commentText.trim() === "") {
+      setErrorMessage(t("reviews_fill_in_review_error") || "Fill in a review!");
+      setShowErrorModal(true);
       return;
     }
 
@@ -122,16 +128,29 @@ const TipDetails = () => {
         },
       }),
     })
-      .then(async (res) => {
-        const result = await res.json();
-        setReviews((prev) => [result, ...prev]);
-        setCommentText("");
-        setRating(0);   
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log("Review Submit error:", error);
-      });
+        .then(async (res) => {
+          if (res.ok) {
+            const result = await res.json();
+            setReviews((prev) => [result, ...prev]);
+            setCommentText("");
+            setRating(0);
+
+            setShowSuccessModal(true);
+            setTimeout(() => {
+              setShowSuccessModal(false);
+            }, 2000);
+
+          } else {
+            const result = await res.json();
+            setErrorMessage(t("reviews_submit_error") + (result.error || "Something went wrong"));
+            setShowErrorModal(true);
+          }
+        })
+        .catch((error) => {
+          console.log("Review Submit error:", error);
+          setErrorMessage(t("reviews_submit_error") || "Error submitting review.");
+          setShowErrorModal(true);
+        });
   };
 
   const handleCommentUpdate = (review, editComment, editRating) => {
@@ -427,6 +446,28 @@ const TipDetails = () => {
             </div>
           </div>
         </div>
+        {showSuccessModal && (
+            <Modal show={true} onClose={() => setShowSuccessModal(false)}>
+              <h2 className="modal-title" style={{ color: "#27ae60" }}>
+                {t("reviewSuccessTitle") || "Review Submitted!"}
+              </h2>
+              <p className="modal-message">
+                {t("reviewSuccessMessage") || "Thanks for leaving a review!"}
+              </p>
+            </Modal>
+        )}
+
+        {showErrorModal && (
+            <Modal show={true} onClose={() => setShowErrorModal(false)}>
+              <h2 className="modal-title" style={{ color: "#c0392b" }}>
+                {t("errorOccurred") || "An error occurred"}
+              </h2>
+              <p className="modal-message">
+                {errorMessage || t("reviews_submit_error")}
+              </p>
+            </Modal>
+        )}
+
       </div>
   );
 
