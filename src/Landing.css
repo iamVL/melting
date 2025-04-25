@@ -60,6 +60,8 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+    width: 50%;
+    animation: opacityChange 1.3s ease-out forwards;
 }
 
 .slogan-layout a {
@@ -69,10 +71,11 @@
 .slogan-buttons {
     display: flex;
     flex-direction: row;
-    gap: 10px
+    gap: 10px;
+    width: 100%;
 }
 
-.slogan-buttons button {
+.slogan-buttons a {
     padding: 15px 25px;
     border-radius: 15px;
     border: 0px;
@@ -83,48 +86,50 @@
     height: 50px;
 }
 
-.slogan-buttons button:hover {
+.slogan-buttons a:hover {
     cursor: pointer;
     transform: translateY(-2px);
+    background-color: #efe4d8;
     box-shadow: 0px 3px 10px #f9f1e832;
+}
+
+.slogan-buttons a:active {
+    transform: scale(.98);
 }
 
 #landing-learn {
     padding: 10px;
     border-radius: 15px;
     border: 0px;
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
     background-color: #ffffff;
     color: black;
     transition: .3s;
+    height: 45px;
 }
 
 #landing-learn:hover {
+    background-color: #f5f5f5;
     cursor: pointer;
     transform: translateY(-2px);
     box-shadow: 0px 3px 10px #f9f1e832;
 }
 
-.feature-box h5, .feature-box h6  {
+#landing-learn:active {
+    transform: scale(.98);
+}
+
+.feature-box h3, .feature-box h4  {
     color: black;
 }
 
 .site-showcase {
-    padding: 80px 40px;
+    padding: 120px 40px;
     width: 100%;
     display: flex;
     justify-content: center;
     background-color: #faf7f2;
-}
-
-.feature-showcase {
-    padding: 40px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f5eade;
 }
 
 .feature-display {
@@ -134,13 +139,12 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
-    margin: 0px auto;
 }
 
 .feature-box {
     border-radius: 20px;
     padding: 20px;
-    background-color: rgb(253, 253, 253);
+    background-color: #f6edea;
     border: 1px solid rgb(0, 0, 0);
     max-width: 350px;
     height: 200px;
@@ -165,47 +169,89 @@
 }
 
 .feature-box img {
-    background-color: #ff8558;
+    background-color: #b5350e;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.193);
     border-radius: 50px;
     padding: 10px;
     width: 50px;
 }
 
-.feature-box h5, .feature-box h6 {
+.feature-box h3, .feature-box h4 {
     margin: 0px;
 }
 
-.feature-box h5 {
+.feature-box h3 {
     font-size: 22px;
-    color: #ff8558;
+    color: #b5350e;
     text-shadow: 0px 2px 3px #00000034;
 }
 
-.feature-box h6 {
+.feature-box h3:hover, .feature-box h4:hover, .landing-about h4:hover, .landing-about h3:hover, .feature-showcase h4, .example-box p {
+    cursor: default;
+}
+
+.feature-box h3::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #b5350e, rgb(255, 102, 0) 100%);
+    transition: width 0.3s;
+}
+
+.feature-box h3:hover::after {
+    width: 100%;
+}
+
+.feature-box h4 {
     font-weight: 100;
     text-align: left;
+    font-size: 18px
 }
 
 
 .landing-about {
-    width: 50%;
-
+    width: 40%;
+    height: auto;
+    background-color: #97735229;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0px 0px 0px 30px;
 }
 
 .landing-about h3 {
     color: #62472f;
     text-shadow: 0px 1px 10px #00000038;
     text-align: left;
-    margin: 0px 50px;
+    margin: 30px 0px 10px;
+    font-size: 34px;
+}
+
+.landing-about h3::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg,#ebc4a1 0, #7a5d3e);
+    transition: width 0.3s;
+}
+
+.landing-about h3:hover::after {
+    width: 100%;
 }
 
 .landing-about h4 {
     text-align: left;
-    margin: 10px 0px 0px 50px;
-    color: rgb(255, 255, 255);
-    text-shadow: 0px 1px 5px #0000005f;
+    margin: 10px 0px;
+    font-size: 22px;
+    color: rgb(0, 0, 0);
+    text-shadow: 0px 1px 5px #0000002e;
+    font-weight: 100;
 }
+
 .image-overlay {
     position: relative;
     height: 90vh;
@@ -295,7 +341,252 @@
     margin-top: 4px;
     margin-left: 2px;
     font-weight: 500;
+} 
+
+#journey-join-button {
+    padding: 10px 55px;
+    border-radius: 15px;
+    border: 0px;
+    font-size: 14px;
+    background-color: #6e4d43;
+    color: white;
+    transition: .3s;
+    height: 45px;
 }
 
+#journey-join-button:hover {
+    cursor: pointer;
+    transform: translateY(-1px);
+    box-shadow: 0px 3px 8px #0000002e;
+}
 
+.feature-showcase {
+    padding: 100px 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8efe5;
+    gap: 20px
+}
 
+.feature-showcase h2 {
+    font-size: 36px;
+    color: #b5350e;
+    text-shadow: 0px 3px 5px #00000042;
+    margin: 0px;
+}
+
+.feature-showcase h2::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg,#ecb486 0, #D96846);
+    transition: width 0.3s;
+    margin-bottom: 40px;
+}
+
+.feature-showcase h2::after {
+    width: 100%;
+}
+
+.example-box {
+    border: 1px solid black;
+    border-radius: 25px;
+    height: 70px;
+    width: 400px;
+    padding: 0px 60px;
+    overflow: hidden;
+    box-shadow: 0px 3px 8px #00000050;
+    transition: .2s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #ebebeb;
+    border: 2px solid gray;
+    box-shadow: 0px 0px 10px #00000055;
+}
+
+.example-box p {
+    margin: 0px;
+    color: rgb(0, 0, 0);
+}
+
+.example-box p {
+    font-weight: 1000;
+    font-size: 16px;
+}
+
+.example-box:hover {
+    transform: scale(1.01);
+    border: 2px solid #D96846;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.landing-contact {
+    background-color: #533328;
+    padding: 60px;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.landing-contact h5 {
+    color: white;
+    font-weight: 1000;
+    margin-bottom: 0px;
+    font-size: 34px;
+    text-shadow: 0px 2px 10px #0000007b;
+}
+
+.landing-contact p a {
+    color: white;
+    text-decoration: underline;
+}
+
+.landing-contact p {
+    text-shadow: 0px 3px 10px #00000047;
+}
+
+@media (max-width: 1440px) {
+    .feature-box {
+        max-width: 300px;
+    }
+
+    .feature-box h3 {
+        font-size: 18px;
+    }
+
+    .feature-box-header {
+        gap: 10px;
+    }
+
+    .site-showcase {
+        gap: 40px;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .slogan-layout {
+        width: 80%;
+    }
+    
+    .site-showcase {
+        flex-direction: column;
+        padding: 80px 80px;
+        gap: 80px;
+    }
+
+    .landing-about {
+        width: 100%;
+        padding: 50px 0px;
+    }
+
+    .feature-display {
+        width: 100%;
+        gap: 4%;
+        row-gap: 20px;
+    }
+
+    .landing-about h3 {
+        margin-top: 0px;
+    }
+
+    .feature-box {
+        max-width: 48%;
+    }
+}
+
+@media (max-width: 768px) {
+    .slogan-layout {
+        width: 90%;
+    }
+}
+
+@media (max-width: 425px) {
+    .site-showcase {
+        padding: 40px 40px;
+    }
+    .feature-showcase h4 {
+        font-size: 26px;
+    }
+    .example-container {
+        gap: 5px;
+    }
+    .example-box {
+        width: 49%;
+        padding: 0px;
+        height: 40px;
+        border-radius: 15px;
+    }
+
+    .example-box img {
+        width: 30px;
+    }
+    
+    .example-box p {
+        font-size: 10px;
+    }
+    .slogan-buttons {
+        flex-direction: column;
+    }
+
+    .slogan-layout {
+        width: 100%;
+    }
+
+    .feature-showcase {
+        padding: 60px 20px;
+    }
+
+    .feature-box-header h3 {
+        font-size: 16px;
+    }
+
+    .feature-box {
+        max-width: 100%;
+        height: 150px;
+    }
+
+    .feature-box img {
+        width: 40px;
+    }
+
+    .feature-box h4 {
+        font-size: 16px;
+    }
+
+    .landing-about h3 {
+        font-size: 28px;
+    }
+
+    .landing-about h4 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 375px) {
+    .feature-box h4 {
+        font-size: 14px;
+    }
+
+    .feature-box-header h3 {
+        font-size: 16px;
+        text-align: left;
+    }
+}

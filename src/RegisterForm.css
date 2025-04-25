@@ -2,7 +2,9 @@
 .register-container {
   width: 100vw;
   min-height: 100vh;
+
   background-color: #da7948;
+
   display: flex;
   align-items: center;
   justify-content: center;
