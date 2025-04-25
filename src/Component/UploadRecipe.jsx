@@ -7,242 +7,244 @@ import { useLanguage } from "../translator/Languagecontext";
 
 
 const UploadRecipe = () => {
- const [recipe, setRecipe] = useState({
-   title: "",
-   description: "",
-   timeHours: "",
-   timeMinutes: "",
-   servingSize: "",
-   difficulty: "",
-   ingredients: [],
-   steps: [],
-   image: null,
-   cuisine: [],
-   allergy: [],
-   diet: [],
-   visibility: "Public",
- });
+    const [recipe, setRecipe] = useState({
+        title: "",
+        description: "",
+        timeHours: "",
+        timeMinutes: "",
+        servingSize: "",
+        difficulty: "",
+        ingredients: [],
+        steps: [],
+        image: null,
+        cuisine: [],
+        allergy: [],
+        diet: [],
+        visibility: "Public",
+    });
     const { t } = useLanguage();
 
- const [newIngredient, setNewIngredient] = useState("");
- const [newStep, setNewStep] = useState(""); // ✅ NEW STATE
- const [selectedImage, setSelectedImage] = useState(null);
- const [error, setError] = useState(null);
- const [isLoaded, setIsLoaded] = useState(false);
- const [imageFile, setImageFile] = useState(null);
- const navigate = useNavigate();
- const [showErrorModal, setShowErrorModal] = useState(false);
+    const [newIngredient, setNewIngredient] = useState("");
+    const [newStep, setNewStep] = useState(""); // ✅ NEW STATE
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+    const navigate = useNavigate();
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
- const handleChange = (e) => {
-   const { name, value } = e.target;
-   setRecipe((prev) => ({ ...prev, [name]: value }));
- };
-
-
- const handleAddIngredient = () => {
-   if (newIngredient.trim()) {
-     setRecipe((prev) => ({
-       ...prev,
-       ingredients: [...prev.ingredients, newIngredient.trim()],
-     }));
-     setNewIngredient("");
-   }
- };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setRecipe((prev) => ({ ...prev, [name]: value }));
+    };
 
 
- const handleDeleteIngredient = (index) => {
-   setRecipe((prev) => {
-     const updated = [...prev.ingredients];
-     updated.splice(index, 1);
-     return { ...prev, ingredients: updated };
-   });
- };
+    const handleAddIngredient = () => {
+        if (newIngredient.trim()) {
+            setRecipe((prev) => ({
+                ...prev,
+                ingredients: [...prev.ingredients, newIngredient.trim()],
+            }));
+            setNewIngredient("");
+        }
+    };
 
 
- const handleAddStep = () => {
-   if (newStep.trim()) {
-     setRecipe((prev) => ({
-       ...prev,
-       steps: [...prev.steps, newStep.trim()],
-     }));
-     setNewStep("");
-   }
- };
+    const handleDeleteIngredient = (index) => {
+        setRecipe((prev) => {
+            const updated = [...prev.ingredients];
+            updated.splice(index, 1);
+            return { ...prev, ingredients: updated };
+        });
+    };
 
 
- const handleDeleteStep = (index) => {
-   setRecipe((prev) => {
-     const updated = [...prev.steps];
-     updated.splice(index, 1);
-     return { ...prev, steps: updated };
-   });
- };
+    const handleAddStep = () => {
+        if (newStep.trim()) {
+            setRecipe((prev) => ({
+                ...prev,
+                steps: [...prev.steps, newStep.trim()],
+            }));
+            setNewStep("");
+        }
+    };
 
 
- const handleImageUpload = (e) => {
-   const file = e.target.files[0];
-   if (file) {
-     setImageFile(file);
-     setSelectedImage(URL.createObjectURL(file));
-   }
- };
+    const handleDeleteStep = (index) => {
+        setRecipe((prev) => {
+            const updated = [...prev.steps];
+            updated.splice(index, 1);
+            return { ...prev, steps: updated };
+        });
+    };
 
 
- const handleCuisineToggle = (cuisine) => {
-   setRecipe((prev) => {
-     const updated = prev.cuisine.includes(cuisine)
-       ? prev.cuisine.filter((c) => c !== cuisine)
-       : [...prev.cuisine, cuisine];
-     return { ...prev, cuisine: updated };
-   });
- };
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            setSelectedImage(URL.createObjectURL(file));
+        }
+    };
 
 
- const handleAllergyToggle = (allergy) => {
-   setRecipe((prev) => {
-     const updated = prev.allergy.includes(allergy)
-       ? prev.allergy.filter((a) => a !== allergy)
-       : [...prev.allergy, allergy];
-     return { ...prev, allergy: updated };
-   });
- };
+    const handleCuisineToggle = (cuisine) => {
+        setRecipe((prev) => {
+            const updated = prev.cuisine.includes(cuisine)
+                ? prev.cuisine.filter((c) => c !== cuisine)
+                : [...prev.cuisine, cuisine];
+            return { ...prev, cuisine: updated };
+        });
+    };
 
 
- const handleDietToggle = (diet) => {
-   setRecipe((prev) => {
-     const updated = prev.diet.includes(diet)
-       ? prev.diet.filter((d) => d !== diet)
-       : [...prev.diet, diet];
-     return { ...prev, diet: updated };
-   });
- };
+    const handleAllergyToggle = (allergy) => {
+        setRecipe((prev) => {
+            const updated = prev.allergy.includes(allergy)
+                ? prev.allergy.filter((a) => a !== allergy)
+                : [...prev.allergy, allergy];
+            return { ...prev, allergy: updated };
+        });
+    };
 
 
- const handleVisibility = (visibility) => {
-   setRecipe((prev) => ({ ...prev, visibility }));
- };
+    const handleDietToggle = (diet) => {
+        setRecipe((prev) => {
+            const updated = prev.diet.includes(diet)
+                ? prev.diet.filter((d) => d !== diet)
+                : [...prev.diet, diet];
+            return { ...prev, diet: updated };
+        });
+    };
 
 
- const uploadImage = async () => {
-   if (!imageFile) return null;
-   const formData = new FormData();
-   formData.append("uploaderID", sessionStorage.getItem("user"));
-   formData.append("attributes", JSON.stringify({}));
-   formData.append("file", imageFile);
+    const handleVisibility = (visibility) => {
+        setRecipe((prev) => ({ ...prev, visibility }));
+    };
 
 
-   try {
-     const response = await fetch(`${process.env.REACT_APP_API_PATH}/file-uploads`, {
-       method: "POST",
-       headers: {
-         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-       },
-       body: formData,
-     });
+    const uploadImage = async () => {
+        if (!imageFile) return null;
+        const formData = new FormData();
+        formData.append("uploaderID", sessionStorage.getItem("user"));
+        formData.append("attributes", JSON.stringify({}));
+        formData.append("file", imageFile);
 
 
-     if (!response.ok) throw new Error(await response.text());
-     const data = await response.json();
-     return `https://webdev.cse.buffalo.edu${data.path}`;
-   } catch (err) {
-     console.error("Image upload error:", err);
-     return null;
-   }
- };
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_PATH}/file-uploads`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                },
+                body: formData,
+            });
 
 
- const handleSubmit = async () => {
-   if (
-     !recipe.title ||
-     !recipe.description ||
-     !recipe.servingSize ||
-     !recipe.difficulty ||
-     recipe.ingredients.length === 0 ||
-     recipe.steps.length === 0
-   ) {
-     alert("Please fill in all required fields.");
-     return;
-   }
+            if (!response.ok) throw new Error(await response.text());
+            const data = await response.json();
+            return `https://webdev.cse.buffalo.edu${data.path}`;
+        } catch (err) {
+            console.error("Image upload error:", err);
+            return null;
+        }
+    };
 
 
-   setIsLoaded(false);
+    const handleSubmit = async () => {
+        if (
+            !recipe.title ||
+            !recipe.description ||
+            !recipe.servingSize ||
+            !recipe.difficulty ||
+            recipe.ingredients.length === 0 ||
+            recipe.steps.length === 0
+        ) {
+            setError("Please fill in all required fields.");
+            setShowErrorModal(true);
+            return;
+
+        }
 
 
-   let uploadedImageUrl = null;
-   if (imageFile) {
-     uploadedImageUrl = await uploadImage();
-       if (!uploadedImageUrl) {
-           setError("Image upload failed.");
-           setShowErrorModal(true);
-           return;
-       }
-
-   }
+        setIsLoaded(false);
 
 
-   fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
-     method: "POST",
-     headers: {
-       "Content-Type": "application/json",
-       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-     },
-     body: JSON.stringify({
-       authorID: sessionStorage.getItem("user"),
-       content: recipe.description,
-       attributes: {
-         postType: "recipe",
-         title: recipe.title,
-         totalTime: `${recipe.timeHours}hours ${recipe.timeMinutes}minutes`,
-         servingSize: parseInt(recipe.servingSize) || 1,
-         difficulty: recipe.difficulty || "Easy",
-         ingredients: recipe.ingredients,
-         steps: recipe.steps,
-         cuisine: recipe.cuisine,
-         allergy: recipe.allergy,
-         diet: recipe.diet,
-         mainImage: uploadedImageUrl,
-         visibility: recipe.visibility,
-       },
-     }),
-   })
-     .then(async (res) => {
-       const data = await res.json();
-       if (!res.ok) throw new Error(data.message);
-       setIsLoaded(true);
-       navigate(`/recipe/${data.id}`);
-     })
-       .then(async (res) => {
-           const data = await res.json();
-           if (!res.ok) throw new Error(data.message);
-           setIsLoaded(true);
-           navigate(`/recipe/${data.id}`);
-       })
-       .catch((error) => {
-           setIsLoaded(true);
-           setError("Something went wrong while submitting your recipe. Please try again.");
-           setShowErrorModal(true);
-           console.error("Upload error:", error);
-       });
+        let uploadedImageUrl = null;
+        if (imageFile) {
+            uploadedImageUrl = await uploadImage();
+            if (!uploadedImageUrl) {
+                setError("Image upload failed.");
+                setShowErrorModal(true);
+                return;
+            }
 
-     if (!uploadedImageUrl) {
-         setError("Image upload failed.");
-         setShowErrorModal(true);
-         return;
-     }
+        }
 
 
- };
+        fetch(`${process.env.REACT_APP_API_PATH}/posts`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+                authorID: sessionStorage.getItem("user"),
+                content: recipe.description,
+                attributes: {
+                    postType: "recipe",
+                    title: recipe.title,
+                    totalTime: `${recipe.timeHours}hours ${recipe.timeMinutes}minutes`,
+                    servingSize: parseInt(recipe.servingSize) || 1,
+                    difficulty: recipe.difficulty || "Easy",
+                    ingredients: recipe.ingredients,
+                    steps: recipe.steps,
+                    cuisine: recipe.cuisine,
+                    allergy: recipe.allergy,
+                    diet: recipe.diet,
+                    mainImage: uploadedImageUrl,
+                    visibility: recipe.visibility,
+                },
+            }),
+        })
+            .then(async (res) => {
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                setIsLoaded(true);
+                navigate(`/recipe/${data.id}`);
+            })
+            .then(async (res) => {
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                setIsLoaded(true);
+                navigate(`/recipe/${data.id}`);
+            })
+            .catch((error) => {
+                setIsLoaded(true);
+                setError("Something went wrong while submitting your recipe. Please try again.");
+                setShowErrorModal(true);
+                console.error("Upload error:", error);
+            });
+
+        if (!uploadedImageUrl) {
+            setError("Image upload failed.");
+            setShowErrorModal(true);
+            return;
+        }
 
 
- useEffect(() => {
-   if (sessionStorage.getItem("token")) setIsLoaded(true);
- }, []);
+    };
 
 
- const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
- const allergyOptions = ["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"];
- const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian"];
- const visibilityOptions = ["Public", "Followers Only"];
+    useEffect(() => {
+        if (sessionStorage.getItem("token")) setIsLoaded(true);
+    }, []);
+
+
+    const cuisineOptions = ["Italian", "Chinese", "American", "Indian", "Mexican", "Japanese", "Spanish"];
+    const allergyOptions = ["Peanuts", "TreeNuts", "Shellfish", "Gluten", "Eggs", "Dairy"];
+    const dietOptions = ["Kosher", "Halal", "Vegetarian", "Vegan", "Pescitarian"];
+    const visibilityOptions = ["Public", "Followers Only"];
 
 
     return (

@@ -18,25 +18,47 @@
   import FeatureCookbook from "../assets/feature-cookbook.png";
   import FeatureSocial from "../assets/feature-socials.png";
 
+  import bg1 from "../assets/meltin4.webp";
+  import bg2 from "../assets/melting1.webp";
+  import bg3 from "../assets/melting6.jpg";
+  import bg4 from "../assets/melting7.webp";
+
+  const images = [bg1, bg2, bg3, bg4];
+
   const Landing = ({ setLoggedIn }) => {
+    const { t } = useLanguage();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
   return (
     <div className="landing-page">
       <div className="image-overlay">
-        <img src={cookingpots} alt="Cooking Pot" />
-        <div className="overlay-text">
-          <div className="slogan-text">
-            <h1 className="slogan-title">From Our Pot to Your Plate</h1>
-            <h1 className="slogan-subtitle">Taste Diversity</h1>
-          </div>
-          <div className="slogan-layout">
-            <div className="slogan-buttons">
-              <Link to="/register"> Start Cooking </Link>
-              <Link to="/aboutus"> Our Team </Link>
-            </div>
-            <button  onClick={() => document.getElementById("showcase-section").scrollIntoView({ behavior: "smooth" })} id="landing-learn"> Discover More</button>
-          </div>
-        </div>
+        <img
+                    key={currentIndex}
+                    src={images[currentIndex]}
+                    alt="Background"
+                    className="background-carousel"
+                />
+        	<div className="overlay-text">
+          	  <div className="slogan-text">
+            	    <h1 className="slogan-title">From Our Pot to Your Plate</h1>
+            		<h1 className="slogan-subtitle">Taste Diversity</h1>
+          	  </div>
+          	<div className="slogan-layout">
+            	  <div className="slogan-buttons">
+              	    <Link to="/register"> Start Cooking </Link>
+               	    <Link to="/aboutus"> Our Team </Link>
+           	  </div>
+            	  <button  onClick={() => document.getElementById("showcase-section").scrollIntoView({ behavior: "smooth" })} id="landing-learn"> Discover More</button>
+          	</div>
+           </div>
       </div>
 
       <div className="feature-showcase">
@@ -111,6 +133,7 @@
           <div className="feature-box-header">
               <img src={Help} alt="help-symbol" width={60}/>
               <h3> Helpful Tutorials</h3>
+
             </div>
             <h4> Need a hand in the kitchen? Follow easy, step-by-step guides to boost your skills.</h4>
           </div>

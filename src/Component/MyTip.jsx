@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../TipDetails.css";
+import Modal from "../Component/Modal";
+
 
 const TipDetails = () => {
   const { id } = useParams();
   const [tip, setTip] = useState(null);
   const [error, setError] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [reviewsLoaded, setReviewsLoaded] = useState(false); // 🌟 Important flag
+  const [reviewsLoaded, setReviewsLoaded] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const navigate = useNavigate();
   const [title,setTitle] = useState("");
   const [desc,setDesc] = useState("");
   const [steps,setSteps] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -105,31 +110,31 @@ const TipDetails = () => {
 
   const updateTip = async (event) => {
     event.preventDefault();
-    
+
     if (title === "") {
-      alert("Fill out title!");
+      setModalMessage("❗ Please fill out the title.");
       return;
     }
-
     if (desc === "") {
-      alert("Fill out description!");
+      setModalMessage("❗ Please fill out the description.");
       return;
     }
-
     for (let step of steps) {
       if (step.description === "") {
-        alert("Fill Out Steps!");
+        setModalMessage("❗ Please complete all step instructions.");
         return;
       }
     }
+
 
     let uploadedImageUrl = null;
     if (imageFile) {
       uploadedImageUrl = await uploadImage();
       if (!uploadedImageUrl) {
-        alert("Image upload failed.");
+        setModalMessage("🖼️ Image upload failed.");
         return;
       }
+
     } else {
       uploadedImageUrl = tip.attributes.mainImage;
     }
@@ -172,9 +177,10 @@ const TipDetails = () => {
 
   const removeStep = (step) => {
     if (steps.length === 1) {
-      alert("You must have atleast 1 instruction!");
+      setModalMessage("🚫 You must have at least 1 instruction.");
       return;
     }
+
     console.log("Step:", step);
 
     const newSteps = [...steps];
@@ -218,6 +224,30 @@ const TipDetails = () => {
       setSelectedImage(URL.createObjectURL(file));
     }
   };
+  const confirmActualDelete = async () => {
+    const token = sessionStorage.getItem("token");
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        setModalMessage("✅ Recipe deleted successfully!");
+        setShowConfirmModal(false);
+        setTimeout(() => navigate("/cookbooks"), 1500);
+      } else {
+        const result = await response.json();
+        setModalMessage("❌ Error deleting recipe: " + (result.error || "Something went wrong"));
+      }
+    } catch (error) {
+      setModalMessage("❌ Failed to delete the recipe. Please try again.");
+    }
+
+    setPendingDelete(false);
+  };
+
 
   const handleDelete = async () => {
     let token = sessionStorage.getItem("token");
@@ -225,12 +255,12 @@ const TipDetails = () => {
       alert("You must be logged in to delete a recipe.");
       return;
     }
- 
- 
-    const confirmDelete = window.confirm("Are you sure you want to delete this recipe?");
-    if (!confirmDelete) return;
- 
- 
+
+
+    setShowConfirmModal(true);
+    setPendingDelete(true);
+
+
     try {
       const response = await fetch(`${process.env.REACT_APP_API_PATH}/posts/${id}`, {
         method: "DELETE",
@@ -239,14 +269,14 @@ const TipDetails = () => {
  
  
       if (response.ok) {
-        alert("Recipe deleted successfully!");
-        navigate("/cookbooks");
+        setModalMessage("✅ Recipe deleted successfully!");
+        setTimeout(() => navigate("/cookbooks"), 2000);
       } else {
         const result = await response.json();
-        alert("Error deleting recipe: " + (result.error || "Something went wrong"));
+        setModalMessage("❌ Error deleting recipe: " + (result.error || "Something went wrong"));
       }
     } catch (error) {
-      alert("Failed to delete the recipe. Please try again.");
+      setModalMessage("❌ Failed to delete the recipe. Please try again.");
     }
   };
 
@@ -355,6 +385,27 @@ const TipDetails = () => {
           ))}
         </div>
       </div>
+      {modalMessage && (
+          <Modal show={true} onClose={() => setModalMessage("")}>
+            <h2 style={{ color: "#b00020" }}>Notice</h2>
+            <p>{modalMessage}</p>
+            <button className="modal-button" onClick={() => setModalMessage("")}>
+              Close
+            </button>
+          </Modal>
+      )}
+      {showConfirmModal && (
+          <Modal show={true} onClose={() => setShowConfirmModal(false)}>
+            <h2 style={{ color: "#e67e22" }}>⚠️ Confirm Deletion</h2>
+            <p>Are you sure you want to delete this recipe?</p>
+            <div className="modal-buttons">
+              <button className="cancel-btn" onClick={() => setShowConfirmModal(false)}>Cancel</button>
+              <button className="delete-btn" onClick={confirmActualDelete}>Delete</button>
+            </div>
+          </Modal>
+      )}
+
+
     </div>
     </>
     ))
