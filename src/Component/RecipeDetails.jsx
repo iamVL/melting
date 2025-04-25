@@ -553,7 +553,7 @@ const RecipeDetails = () => {
           </div>
         </div>
 
-        <div className="recipe-sidebar">
+        <div className="recipe-sidebar-sec">
           <div className="sidebar-section">
             <h4>{t("sidebar_total_time")}</h4>
             <div className="total-time-display">{recipe.attributes?.totalTime || "N/A"}</div>
