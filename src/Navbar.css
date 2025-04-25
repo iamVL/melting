@@ -5,13 +5,61 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #ff8254;
-  padding: 0.5rem 1rem;
+  background-color: #f9f1e8;
+  padding: 0.2rem 3rem;
   position: relative;
   z-index: 100;
+  max-height: 10vh;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.464);
 }
 
-.nav-left {}
+.landing-links {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.landing-links li {
+  background-color: #ff8558;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.164);
+  transition: .3s;
+}
+
+.landing-links li:hover {
+  transform: scale(1.01);
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.364);
+}
+
+.landing-links li:active {
+  transform: scale(.98);
+}
+
+.landing-links li a {
+  color: white;
+  font-weight: 1000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px
+}
+
+.nav-left select {
+  min-width: 100px;
+  height: 30px;
+  padding: 0px 0px 0px 10px;
+  border-radius: 10px;
+  transition: .2s;
+}
+
+.nav-left select:hover {
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.217);
+  cursor: pointer;
+}
 
 .logo {
   width: 100px;

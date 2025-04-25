@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Settings from "./Component/Settings";
 import ABProfile from "./Component/ProfileAB"
 import Edit from "./Component/Edit";
@@ -9,7 +9,7 @@ import TipDetails from "./Component/TipDetails";
 import RecipeListContainer from "./Component/RecipeCollection";
 import AboutUs from "./AboutUs";
 import AboutJustin from "./Team Pages/AboutJustin";
-import Login from "./Login";
+import LoginForm from "./Component/LoginForm";
 import StyleGuide from "./StyleGuide";
 import RecipeListing from "./Component/RecipeListing";
 import AboutYessica from "./Team Pages/AboutYessica";
@@ -76,6 +76,7 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
   const [refreshPosts, setRefreshPosts] = useState(false);
   const token = sessionStorage.getItem("token");
+  const location = useLocation();
 
   const logout = (e) => {
     e.preventDefault();
@@ -101,13 +102,10 @@ function App() {
   }, []);
 
   return (
-      <LanguageProvider>
-    <Router basename={process.env.PUBLIC_URL}>
-
+      <LanguageProvider>      
       <div className="App">
         <header className="App-header">
-          {token !== null && <Navbar toggleModal={toggleModal} logout={logout} />}
-          <LanguageSwitcher />
+          {location.pathname !== "/login" && location.pathname !== "/register" && <Navbar toggleModal={toggleModal} logout={logout} />}
           <div className="maincontent" id="mainContent">
             <Routes>
               <Route path="/tip-upload" element={<TipForm />} />
@@ -119,7 +117,7 @@ function App() {
               <Route path="/ab-settings" element={<Edit />} />
               <Route path="/edit-profile" element={<Edit  />} />
               <Route path="/AboutUs" element={<AboutUs />} />
-              <Route path="/Login" element={<Login />} />
+              <Route path="/Login" element={<LoginForm setLoggedIn={setLoggedIn}/>} />
               <Route path="/StyleGuide" element={<StyleGuide />} />
               <Route path="/about_justin" element={<AboutJustin />} />
               <Route path="/about_yessica" element={<AboutYessica />} />
@@ -196,8 +194,6 @@ function App() {
           This is a modal dialog!
         </Modal>
       </div>
-
-    </Router>
         </LanguageProvider>
 
   );
