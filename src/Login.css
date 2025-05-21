@@ -229,7 +229,6 @@
 
   .signup-btna {
     align-self: center;
-    margin-top: 10px;
   }
 
   .login-text {
@@ -259,7 +258,7 @@
   }
 
   .login-title {
-    font-size: 30px;
+    font-size: 24px;
     text-align: center;
   }
 
@@ -270,7 +269,7 @@
   }
 
   .subtitle {
-    font-size: 17px;
+    font-size: 18px;
     text-align: center;
     margin-bottom: 20px;
   }
@@ -292,7 +291,7 @@
 
   .signup-btna {
     align-self: center;
-    margin-top: 10px;
+
   }
 
   .login-text {
