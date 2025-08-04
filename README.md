@@ -25,9 +25,9 @@ Users can explore global cuisines while filtering for allergies, ingredients, an
 
 ## 🖼️ UI Preview
 
-> `./assets/mp1.png`
-> `./assets/mp2.png`
-> `./assets/mp3.png`
+![UI Screenshot 1](./src/assets/mp1.png)
+![UI Screenshot 2](./src/assets/mp2.png)
+![UI Screenshot 3](./src/assets/mp3.png)
 
 ---
 
